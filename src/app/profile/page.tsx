@@ -41,7 +41,7 @@ export default function ProfilePage() {
                 const { data, error } = await supabase
                     .from("quiz_result")
                     .select("persona_name, gender")
-                    .eq("email", user.email)
+                    .eq("user_id", user.id)
                     .order("created_at", { ascending: false })
                     .limit(1)
                     .single();
@@ -272,15 +272,13 @@ export default function ProfilePage() {
                                 For You
                             </h3>
                             <div className="space-y-3">
-                                {!persona && (
-                                    <button
-                                        onClick={() => router.push("/quiz")}
-                                        className="w-full p-3 bg-[#0a0a0a] border border-[#2a2a2a] rounded-lg hover:border-[#d4af7f] transition text-left"
-                                    >
-                                        <p className="text-sm font-medium text-white mb-1">Take Style Quiz</p>
-                                        <p className="text-xs text-gray-500">Discover your unique vibe</p>
-                                    </button>
-                                )}
+                                <button
+                                    onClick={() => router.push("/quiz")}
+                                    className="w-full p-3 bg-[#0a0a0a] border border-[#2a2a2a] rounded-lg hover:border-[#d4af7f] transition text-left"
+                                >
+                                    <p className="text-sm font-medium text-white mb-1">Take Style Quiz</p>
+                                    <p className="text-xs text-gray-500">Discover your unique vibe</p>
+                                </button>
 
                                 <button
                                     onClick={() => router.push("/#trend")}
