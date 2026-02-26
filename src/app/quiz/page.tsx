@@ -38,7 +38,6 @@ const FEMALE_PERSONAS: Record<string, PersonaInfo> = {
   romantic: { title: "Romantic Softie", icon: "🌸", tagline: "Soft, dreamy, unforgettable.", color: "#f9a8d4" },
   creative: { title: "Playful Creative", icon: "🎨", tagline: "Color is your language.", color: "#a78bfa" },
   comfort: { title: "Comfort Queen", icon: "☁️", tagline: "Effortless is the vibe.", color: "#94a3b8" },
-  boho: { title: "Boho Spirit", icon: "🌿", tagline: "Free soul, wild heart.", color: "#84cc16" },
 };
 
 const MALE_PERSONAS: Record<string, PersonaInfo> = {
@@ -47,7 +46,6 @@ const MALE_PERSONAS: Record<string, PersonaInfo> = {
   gentleman: { title: "Modern Gentleman", icon: "💼", tagline: "Class never goes out of style.", color: "#3b82f6" },
   casual: { title: "Casual Cool", icon: "🌊", tagline: "Effortless is the best style.", color: "#06b6d4" },
   athleisure: { title: "Athleisure Pro", icon: "⚡", tagline: "Comfort meets performance.", color: "#22c55e" },
-  explorer: { title: "Urban Explorer", icon: "🏔️", tagline: "Ready for anything.", color: "#a16207" },
 };
 
 /* ================= PERSONA OUTFITS ================= */
@@ -73,10 +71,6 @@ const PERSONA_OUTFITS: Record<string, { title: string; image: string }[]> = {
     { title: "Elevated Lounge", image: "/suggestions/cq-1.jpg" },
     { title: "Chill Fit", image: "/suggestions/cq-2.jpg" },
   ],
-  "Boho Spirit": [
-    { title: "Earthy Vibes", image: "/suggestions/bs-1.jpg" },
-    { title: "Festival Queen", image: "/suggestions/bs-2.jpg" },
-  ],
   "Minimalist King": [
     { title: "Clean Authority", image: "/suggestions/mk-1.jpg" },
     { title: "Neutral Boss", image: "/suggestions/mk-2.jpg" },
@@ -97,10 +91,6 @@ const PERSONA_OUTFITS: Record<string, { title: string; image: string }[]> = {
     { title: "Gym Street", image: "/suggestions/ap-1.jpg" },
     { title: "Sport Luxe", image: "/suggestions/ap-2.jpg" },
   ],
-  "Urban Explorer": [
-    { title: "Adventure Core", image: "/suggestions/ue-1.jpg" },
-    { title: "Rugged Layer", image: "/suggestions/ue-2.jpg" },
-  ],
 };
 
 /* ================= QUESTIONS ================= */
@@ -114,7 +104,6 @@ export const QUESTIONS_FEMALE: Question[] = [
       { label: "Soft & delicate", icon: "🌸", persona: "romantic", points: 2, feedback: "Soft energy." },
       { label: "Colorful & playful", icon: "🎨", persona: "creative", points: 2, feedback: "Playful spirit." },
       { label: "Relaxed & easy", icon: "☁️", persona: "comfort", points: 2, feedback: "Ease first." },
-      { label: "Flowing & earthy", icon: "🌿", persona: "boho", points: 2, feedback: "Free soul." },
     ],
   },
   {
@@ -125,7 +114,6 @@ export const QUESTIONS_FEMALE: Question[] = [
       { label: "Dress / flowy skirt", icon: "👗", persona: "romantic", points: 2, feedback: "Feminine touch." },
       { label: "Prints or mixed colors", icon: "🌈", persona: "creative", points: 2, feedback: "Creative flair." },
       { label: "Co-ord / relaxed set", icon: "👕", persona: "comfort", points: 2, feedback: "Effortless." },
-      { label: "Maxi dress / earthy tones", icon: "🍂", persona: "boho", points: 2, feedback: "Boho vibe." },
     ],
   },
   {
@@ -136,7 +124,6 @@ export const QUESTIONS_FEMALE: Question[] = [
       { label: "Delicate pieces", icon: "✨", persona: "romantic", points: 2, feedback: "Elegant detail." },
       { label: "Fun & quirky", icon: "🎪", persona: "creative", points: 2, feedback: "Express yourself." },
       { label: "Only practical", icon: "⌚", persona: "comfort", points: 2, feedback: "Practical choice." },
-      { label: "Layered / handmade", icon: "📿", persona: "boho", points: 2, feedback: "Artistic touch." },
     ],
   },
   {
@@ -147,7 +134,6 @@ export const QUESTIONS_FEMALE: Question[] = [
       { label: "Heels / cute sandals", icon: "👠", persona: "romantic", points: 2, feedback: "Graceful." },
       { label: "Colorful sneakers", icon: "🌟", persona: "creative", points: 2, feedback: "Fun choice." },
       { label: "Slides / comfy shoes", icon: "🩴", persona: "comfort", points: 2, feedback: "Comfort zone." },
-      { label: "Boots / earthy sandals", icon: "🪵", persona: "boho", points: 2, feedback: "Grounded vibe." },
     ],
   },
   {
@@ -158,7 +144,6 @@ export const QUESTIONS_FEMALE: Question[] = [
       { label: "Pastels", icon: "💗", persona: "romantic", points: 2, feedback: "Soft charm." },
       { label: "Bright colors", icon: "💛", persona: "creative", points: 2, feedback: "Color lover." },
       { label: "Soft fabrics & muted tones", icon: "🩶", persona: "comfort", points: 2, feedback: "Relaxed energy." },
-      { label: "Earthy tones", icon: "🍃", persona: "boho", points: 2, feedback: "Nature inspired." },
     ],
   },
   {
@@ -169,7 +154,6 @@ export const QUESTIONS_FEMALE: Question[] = [
       { label: "Feel feminine", icon: "🌷", persona: "romantic", points: 3, feedback: "Graceful energy." },
       { label: "Show personality", icon: "🎯", persona: "creative", points: 3, feedback: "Authentic vibe." },
       { label: "Feel comfortable", icon: "🛋️", persona: "comfort", points: 3, feedback: "Comfort rules." },
-      { label: "Feel free", icon: "🕊️", persona: "boho", points: 3, feedback: "Free spirit." },
     ],
   },
 ];
@@ -183,7 +167,6 @@ export const QUESTIONS_MALE: Question[] = [
       { label: "Structured choice", icon: "💼", persona: "gentleman", points: 2, feedback: "Intentional choice." },
       { label: "Chill & easy", icon: "🌊", persona: "casual", points: 2, feedback: "Relaxed energy." },
       { label: "Comfort first", icon: "☁️", persona: "athleisure", points: 2, feedback: "Comfort driven." },
-      { label: "Practical & ready", icon: "🏔️", persona: "explorer", points: 2, feedback: "Ready mindset." },
     ],
   },
   {
@@ -194,7 +177,6 @@ export const QUESTIONS_MALE: Question[] = [
       { label: "Shirt + chinos", icon: "👔", persona: "gentleman", points: 2, feedback: "Sharp presence." },
       { label: "Hoodie + denim", icon: "🧢", persona: "casual", points: 2, feedback: "Effortless vibe." },
       { label: "Tracks / sporty", icon: "🏃", persona: "athleisure", points: 2, feedback: "Built for movement." },
-      { label: "Utility layers", icon: "🎒", persona: "explorer", points: 2, feedback: "Functional style." },
     ],
   },
   {
@@ -205,7 +187,6 @@ export const QUESTIONS_MALE: Question[] = [
       { label: "Coordinated details", icon: "💎", persona: "gentleman", points: 2, feedback: "Refined touch." },
       { label: "Rarely wear", icon: "🤷", persona: "casual", points: 2, feedback: "No fuss." },
       { label: "Sport bands / caps", icon: "🧢", persona: "athleisure", points: 2, feedback: "Sport energy." },
-      { label: "Utility belts / rugged", icon: "🪖", persona: "explorer", points: 2, feedback: "Practical edge." },
     ],
   },
   {
@@ -216,7 +197,6 @@ export const QUESTIONS_MALE: Question[] = [
       { label: "Loafers / boots", icon: "👞", persona: "gentleman", points: 2, feedback: "Elevated move." },
       { label: "Any comfy pair", icon: "🩴", persona: "casual", points: 2, feedback: "Chill pick." },
       { label: "Running shoes", icon: "🏃", persona: "athleisure", points: 2, feedback: "Comfort first." },
-      { label: "Tactical / rugged boots", icon: "🪖", persona: "explorer", points: 2, feedback: "Action ready." },
     ],
   },
   {
@@ -227,7 +207,6 @@ export const QUESTIONS_MALE: Question[] = [
       { label: "Navy / structured tones", icon: "💙", persona: "gentleman", points: 2, feedback: "Polished vibe." },
       { label: "Mixed casual tones", icon: "🎨", persona: "casual", points: 2, feedback: "Easy balance." },
       { label: "Sporty tones", icon: "💚", persona: "athleisure", points: 2, feedback: "Dynamic look." },
-      { label: "Earthy / military tones", icon: "🍃", persona: "explorer", points: 2, feedback: "Grounded style." },
     ],
   },
   {
@@ -238,7 +217,6 @@ export const QUESTIONS_MALE: Question[] = [
       { label: "Look sharp", icon: "💼", persona: "gentleman", points: 3, feedback: "Command respect." },
       { label: "Feel relaxed", icon: "🌊", persona: "casual", points: 3, feedback: "Stay comfortable." },
       { label: "Move freely", icon: "⚡", persona: "athleisure", points: 3, feedback: "Performance first." },
-      { label: "Be prepared", icon: "🏔️", persona: "explorer", points: 3, feedback: "Ready always." },
     ],
   },
 ];
@@ -605,57 +583,103 @@ export default function StyleQuizPage() {
                   })}
                 </div>
 
-                {/* CTA */}
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => {
-                    const persona = winner.title;
-                    localStorage.setItem("userPersona", persona);
-                    localStorage.setItem("quizGender", gender || "");
+                {/* AI Outfit CTA */}
+                <div className="mt-8 mb-6 space-y-4">
+                  <p className="text-gray-400 text-sm text-center px-4">
+                    According to your personalization Get Your personalized outfit here
+                  </p>
+                  <motion.button
+                    whileHover={{ scale: 1.02, boxShadow: `0 0 20px ${winner.color}40` }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => {
+                      const persona = winner.title;
+                      localStorage.setItem("userPersona", persona);
+                      localStorage.setItem("quizGender", gender || "");
 
-                    // Fire Supabase save in the background — don't block navigation
-                    if (user) {
-                      supabase
-                        .from("quiz_result")
-                        .upsert(
-                          {
-                            user_id: user.id,
-                            persona_name: persona,
-                            email: user.email || "",
-                            gender: gender === "male" ? "Boy" : "Girl",
-                          },
-                          { onConflict: "user_id" }
-                        )
-                        .then(({ error }) => {
-                          if (error) {
-                            console.error("Upsert failed:", error.message);
-                            // Fallback: try plain insert
-                            supabase
+                      // Fire Supabase save in the background — don't block navigation
+                      if (user && user.email) {
+                        const saveResult = async () => {
+                          try {
+                            // Check if a record already exists with this email
+                            const { data, error: fetchError } = await supabase
                               .from("quiz_result")
-                              .insert({
-                                user_id: user.id,
-                                persona_name: persona,
-                                email: user.email || "",
-                                gender: gender === "male" ? "Boy" : "Girl",
-                              })
-                              .then(({ error: e2 }) => {
-                                if (e2) console.error("Insert also failed:", e2.message);
-                              });
-                          }
-                        });
-                    }
+                              .select("id")
+                              .eq("email", user.email)
+                              .single();
 
-                    router.push("/suggestions");
-                  }}
-                  className="w-full py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 text-black"
-                  style={{ backgroundColor: winner.color }}
-                >
-                  ✨ Show Me My Fits
-                </motion.button>
+                            if (fetchError && fetchError.code !== "PGRST116") {
+                              // PGRST116 means zero rows found, which is fine
+                              console.error("Error checking existing record:", fetchError.message);
+                            }
+
+                            if (data) {
+                              // Record exists, update it
+                              const { error: updateError } = await supabase
+                                .from("quiz_result")
+                                .update({
+                                  persona_name: persona,
+                                  gender: gender === "male" ? "Boy" : "Girl"
+                                })
+                                .eq("email", user.email);
+
+                              if (updateError) {
+                                console.error("Update failed:", updateError.message);
+                              }
+                            } else {
+                              // Record does not exist, insert new
+                              const { error: insertError } = await supabase
+                                .from("quiz_result")
+                                .insert({
+                                  user_id: user.id || null, // fallback in case user.id is somehow missing
+                                  persona_name: persona,
+                                  email: user.email,
+                                  gender: gender === "male" ? "Boy" : "Girl",
+                                });
+
+                              if (insertError) {
+                                console.error("Insert failed:", insertError.message);
+                              }
+                            }
+                          } catch (err) {
+                            console.error("Failed to save quiz result:", err);
+                          }
+                        };
+
+                        saveResult();
+                      }
+
+                      router.push("/outfit");
+                    }}
+                    className="w-full py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 text-black"
+                    style={{ backgroundColor: winner.color }}
+                  >
+                    ✨ Get Your AI Outfit
+                  </motion.button>
+                </div>
 
                 {/* Secondary Actions */}
                 <div className="flex items-center justify-center gap-6 mt-6">
+                  <button
+                    onClick={() => {
+                      const shareText = `I found my style persona using Outfevibe AI! I am a ${winner.title}. Discover yours at`;
+                      const shareUrl = "https://www.outfevibe.com";
+
+                      if (navigator.share) {
+                        navigator.share({
+                          title: "My Outfevibe Style Persona",
+                          text: shareText,
+                          url: shareUrl,
+                        }).catch((error) => console.error("Error sharing", error));
+                      } else {
+                        // Fallback for browsers that don't support native sharing
+                        navigator.clipboard.writeText(`${shareText} ${shareUrl}`);
+                        alert("Link copied to clipboard!");
+                      }
+                    }}
+                    className="text-gray-500 hover:text-white text-sm transition flex items-center gap-1.5"
+                  >
+                    📤 Share
+                  </button>
                   <button
                     onClick={restart}
                     className="text-gray-500 hover:text-white text-sm transition flex items-center gap-1.5"
