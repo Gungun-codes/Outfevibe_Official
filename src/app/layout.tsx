@@ -15,6 +15,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Outfevibe",
   description: "Your Pocket Styler",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 import { AuthProvider } from "@/context/authContext";
