@@ -122,16 +122,16 @@ export default function Home() {
 
   const trending_general = {
     female: [
-      { id: 1, name: "Power Luxe", desc: "Minimal yet bold.", image: "/trending/power_luxe.jpg", affiliateLink: "https://myntr.it/KZQlcwk" },
-      { id: 2, name: "Regal Grace", desc: "Timeless elegance with commanding Aura.", image: "/trending/regal_grace.jpg", affiliateLink: "https://myntr.it/nqbG7HT" },
-      { id: 3, name: "Blush Breeze", desc: "Confident & structured.", image: "/trending/blush_breeze.jpg", affiliateLink: "https://myntr.it/3A7h4jM" },
-      { id: 4, name: "Velvet Poise", desc: "Sharp night aesthetic.", image: "/trending/velvet_poise.jpg", affiliateLink: "https://myntr.it/cduZpsB" },
+      { id: 1, name: "Power Luxe", desc: "Minimal yet bold.", image: "/outfits/party_02.jpg", affiliateLink: "https://amzn.to/4tXDZE7" },
+      { id: 2, name: "Regal Grace", desc: "Timeless elegance with commanding Aura.", image: "/outfits/wedding_04.jpg", affiliateLink: "https://amzn.to/4kYhjjc" },
+      { id: 3, name: "Blush Breeze", desc: "Confident & structured.", image: "/outfits/college_01.jpg", affiliateLink: "https://amzn.to/4aBPTfp" },
+      { id: 4, name: "Velvet Poise", desc: "Sharp night aesthetic.", image: "/outfits/college_03.jpg", affiliateLink: "https://amzn.to/4sc36S2" },
     ],
     male: [
-      { id: 1, name: "Gentlemen's Reserve", desc: "Classic tailoring with quiet Luxury.", image: "/trending/gentlemen_reserve.jpg", affiliateLink: "https://myntr.it/DXSr4Q5" },
-      { id: 2, name: "Urban Drift", desc: "Relaxed street style with everyday edge.", image: "/trending/urban_drift.jpg", affiliateLink: "https://myntr.it/91rJvpL" },
-      { id: 3, name: "Midnight Minimal", desc: "Sharp layers with understated edge.", image: "/trending/midnight_minimal.jpg", affiliateLink: "https://myntr.it/8xeku29" },
-      { id: 4, name: "Modern Gent", desc: "Relaxed premium.", image: "/trending/modern_gent.jpg", affiliateLink: "https://myntr.it/wfj2Ks0" },
+      { id: 1, name: "Gentlemen's Reserve", desc: "Classic tailoring with quiet Luxury.", image: "/outfits/party_13.jpg", affiliateLink: "https://myntr.it/2guT947" },
+      { id: 2, name: "Urban Drift", desc: "Relaxed street style with everyday edge.", image: "/outfits/party_13.jpg", affiliateLink: "https://amzn.to/4kWWOys" },
+      { id: 3, name: "Midnight Minimal", desc: "Sharp layers with understated edge.", image: "/outfits/wedding_09.jpg", affiliateLink: "https://amzn.to/40wa0pn" },
+      { id: 4, name: "Modern Gent", desc: "Relaxed premium.", image: "/outfits/date_10.jpg", affiliateLink: "https://amzn.to/4rFgMVT" },
     ],
   };
 
