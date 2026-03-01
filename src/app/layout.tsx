@@ -13,6 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: "https://www.outfevibe.com",
   title: "Outfevibe",
   description: "Your Pocket Styler",
   icons: {
