@@ -131,7 +131,7 @@ export default function Home() {
       { id: 1, name: "Gentlemen's Reserve", desc: "Classic tailoring with quiet Luxury.", image: "/outfits/party_13.jpg", affiliateLink: "https://myntr.it/2guT947" },
       { id: 2, name: "Urban Drift", desc: "Relaxed street style with everyday edge.", image: "/outfits/party_13.jpg", affiliateLink: "https://amzn.to/4kWWOys" },
       { id: 3, name: "Midnight Minimal", desc: "Sharp layers with understated edge.", image: "/outfits/wedding_09.jpg", affiliateLink: "https://amzn.to/40wa0pn" },
-      { id: 4, name: "Modern Gent", desc: "Relaxed premium.", image: "/outfits/date_10.jpg", affiliateLink: "https://amzn.to/4rFgMVT" },
+      { id: 4, name: "Modern Gent", desc: "Relaxed premium.", image: "/outfits/party_10.jpg", affiliateLink: "https://amzn.to/4s5e0Jc" },
     ],
   };
 
