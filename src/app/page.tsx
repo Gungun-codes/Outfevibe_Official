@@ -1,981 +1,871 @@
 ﻿"use client";
 
-import { useRouter } from "next/navigation";
-import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { motion } from "framer-motion";
+import { Upload, Cpu, Sparkles } from "lucide-react";
+import outfitsData from "../../backend/outfits.json";
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
-import { useAuth } from "@/context/authContext";
-import UserDropdown from "@/components/UserDropdown";
+import { useRouter } from "next/navigation";
 
-type FestiveOutfit = {
-  id: number;
-  title: string;
-  gender: "male" | "female";
-  occasion: string[];
-  mood: string[];
-  budget: string[];
-  categories: string[];
-  image: string;
-  affiliateLink: string;
+const fadeIn = {
+  hidden: { opacity: 0, y: 40 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.7 } },
 };
-import FallingColors from "@/components/FallingColors";
-import { motion } from "framer-motion";
-import { Sparkles, Upload, ArrowRight, Zap, Target, BarChart3, Menu, X } from "lucide-react";
 
 export default function Home() {
-  const { user, logout } = useAuth();
-  const [name, setName] = useState("");
-  const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [darkMode, setDarkMode] = useState(true)
+  const [activeCategory, setActiveCategory] = useState<'general' | 'festive' | 'forYou'>('general')
+  const [activeGender, setActiveGender] = useState<'women' | 'men'>('women')
   const [email, setEmail] = useState("");
-  const [selectedGender, setSelectedGender] = useState<"male" | "female">("female");
-  const [trendingTab, setTrendingTab] = useState<"general" | "persona" | "festive">("general");
-  const [userPersona, setUserPersona] = useState<string | null>(null);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [festiveOutfits, setFestiveOutfits] = useState<FestiveOutfit[]>([]);
-  const [festiveGender, setFestiveGender] = useState<"male" | "female">("female");
-
+  const [mounted, setMounted] = useState(false)
   const router = useRouter();
+  const [user, setUser] = useState<any>(null);
 
-  // Load user persona from Supabase (or localStorage fallback)
   useEffect(() => {
-    const loadPersona = async () => {
-      if (user && user.email) {
-        const { data, error } = await supabase
-          .from("quiz_result")
-          .select("persona_name")
-          .eq("email", user.email)
-          .order("created_at", { ascending: false })
-          .limit(1)
-          .single();
+    setMounted(true)
+  }, [])
 
-        if (!error && data && data.persona_name) {
-          setUserPersona(data.persona_name);
-          localStorage.setItem("userPersona", data.persona_name);
-          setTrendingTab("persona");
-        } else {
-          setUserPersona(null);
-        }
-      } else {
-        const storedPersona = localStorage.getItem("userPersona");
-        if (storedPersona) {
-          setUserPersona(storedPersona);
-          setTrendingTab("persona");
-        }
-      }
-    };
-    loadPersona();
-  }, [user]);
-
-  // Load festive outfits from API
   useEffect(() => {
-    async function loadFestive() {
-      try {
-        const res = await fetch("/api/outfits");
-        const data: FestiveOutfit[] = await res.json();
-        const holi = data.filter((item) =>
-          item.categories?.includes("holi_trending")
-        );
-        setFestiveOutfits(holi);
-      } catch (err) {
-        console.error("Failed to load festive outfits:", err);
-      }
+    if (darkMode) {
+      document.documentElement.classList.add("dark")
+    } else {
+      document.documentElement.classList.remove("dark")
     }
-    loadFestive();
+  }, [darkMode])
+
+  useEffect(() => {
+    const getUser = async () => {
+      const { data } = await supabase.auth.getUser();
+      setUser(data.user);
+    };
+
+    getUser();
   }, []);
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    if (!name || !message) {
-      alert("Please fill in both fields.");
-      return;
+  const trendingList = useMemo(() => {
+    const categoryMap: any = {
+      general: "general_trending",
+      festive: "holi_trending",
+      forYou: "persona_trending"
     }
-    try {
-      setLoading(true);
-      const insertData: any = {
-        message: `Name: ${name}\n\nMessage: ${message}`,
-        created_at: new Date().toISOString(),
-      };
-      if (user) {
-        insertData.user_id = user.id;
-      }
-
-      const { error } = await supabase
-        .from("feedback")
-        .insert(insertData);
-
-      if (error) throw error;
-
-      alert("Feedback submitted successfully!");
-      setName("");
-      setMessage("");
-    } catch (error) {
-      console.error("Error adding feedback:", error);
-      alert("Failed to submit feedback. Please try again.");
-    } finally {
-      setLoading(false);
+    const genderMap: any = {
+      men: "male",
+      women: "female"
     }
-  };
+    const selectedCategory = categoryMap[activeCategory]
+    const selectedGender = genderMap[activeGender]
 
-  /* ================= TRENDING DATA ================= */
-
-  const trending_general = {
-    female: [
-      { id: 1, name: "Power Luxe", desc: "Minimal yet bold.", image: "/outfits/party_02.jpg", affiliateLink: "https://amzn.to/4tXDZE7" },
-      { id: 2, name: "Regal Grace", desc: "Timeless elegance with commanding Aura.", image: "/outfits/wedding_04.jpg", affiliateLink: "https://amzn.to/4kYhjjc" },
-      { id: 3, name: "Blush Breeze", desc: "Confident & structured.", image: "/outfits/college_01.jpg", affiliateLink: "https://amzn.to/4aBPTfp" },
-      { id: 4, name: "Velvet Poise", desc: "Sharp night aesthetic.", image: "/outfits/college_03.jpg", affiliateLink: "https://amzn.to/4sc36S2" },
-    ],
-    male: [
-      { id: 1, name: "Gentlemen's Reserve", desc: "Classic tailoring with quiet Luxury.", image: "/outfits/party_13.jpg", affiliateLink: "https://myntr.it/2guT947" },
-      { id: 2, name: "Urban Drift", desc: "Relaxed street style with everyday edge.", image: "/outfits/party_12.jpg", affiliateLink: "https://amzn.to/4kWWOys" },
-      { id: 3, name: "Midnight Minimal", desc: "Sharp layers with understated edge.", image: "/outfits/wedding_09.jpg", affiliateLink: "https://amzn.to/40wa0pn" },
-      { id: 4, name: "Modern Gent", desc: "Relaxed premium.", image: "/outfits/party_10.jpg", affiliateLink: "https://amzn.to/4s5e0Jc" },
-    ],
-  };
-
-  const trending_persona: Record<string, { id: number; name: string; desc: string; image: string; affiliateLink: string }[]> = {
-    "Minimalist Maven": [],
-    "Edgy Trendsetter": [],
-    "Romantic Softie": [],
-    "Playful Creative": [],
-    "Comfort Queen": [],
-    "Minimalist King": [],
-    "Streetwear Icon": [],
-    "Modern Gentleman": [],
-    "Casual Cool": [],
-    "Athleisure Pro": [],
-  };
+    const filtered = outfitsData.filter((item: any) =>
+      item.categories?.includes(selectedCategory) &&
+      item.gender === selectedGender
+    )
+    return filtered.slice(0, 4)
+  }, [activeCategory, activeGender])
 
   return (
-    <main className="min-h-screen font-sans">
+    <div>
+      {/* NAVBAR */}
+      <header className={`sticky top-0 z-50 backdrop-blur-xl border-b border-neutral-800/40 ${darkMode ? 'bg-black' : 'bg-white'}`}>
 
-      {/* ================= NAVBAR ================= */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/70 backdrop-blur-xl border-b border-white/20 shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
-          {/* Left - Logo */}
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => router.push('/')}>
-            <Image src="/outfevibe_logo.png" alt="Outfevibe Logo" width={32} height={32} className="object-contain" />
-            <span className="text-xl font-bold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500">
+          {/* Logo */}
+          <div className="flex items-center gap-2 font-semibold text-lg">
+            <img src="/outfevibe_logo.png" alt="Outfevibe Logo" className="h-6 w-6" />
+            <span className={`${darkMode ? 'text-white' : 'text-black'}`}>
               Outfevibe
             </span>
           </div>
 
-          {/* CENTER - NAV LINKS (Desktop) */}
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
-            <a href="#about" className="hover:text-purple-600 transition-colors duration-300">
+          {/* Navigation */}
+          <nav className={`hidden md:flex items-center gap-8 text-sm ${darkMode ? 'text-neutral-300' : 'text-neutral-700'}`}>
+
+            <a href="#about" className="hover:text-yellow-400 transition">
               About
             </a>
-            <a href="#trend" className="hover:text-purple-600 transition-colors duration-300">
-              Trend
+
+            <a href="#trending" className="hover:text-yellow-400 transition">
+              Trending
             </a>
-            <a href="#feature" className="hover:text-purple-600 transition-colors duration-300">
-              Feature
+
+            <a href="#features" className="hover:text-yellow-400 transition">
+              Features
             </a>
-            <a href="#feedback" className="hover:text-purple-600 transition-colors duration-300">
+
+            <a href="#feedback" className="hover:text-yellow-400 transition">
               Feedback
             </a>
+
           </nav>
 
-          {/* RIGHT - Login / User + Mobile Menu */}
-          <div className="flex items-center gap-3">
-            {user ? (
-              <UserDropdown user={user} logout={logout} />
-            ) : (
-              <button
-                onClick={() => router.push("/login")}
-                className="bg-slate-900 text-white px-6 py-2.5 rounded-full font-semibold text-sm hover:bg-slate-800 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.02]"
-              >
-                Login
-              </button>
-            )}
-            {/* Mobile hamburger */}
-            <button
-              className="md:hidden p-2 rounded-lg hover:bg-white/50 transition"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              {mobileMenuOpen ? <X size={22} className="text-slate-700" /> : <Menu size={22} className="text-slate-700" />}
+          {/* Actions */}
+          <div className="flex items-center gap-4">
+
+            {/* Theme Toggle */}
+            <button className="w-9 h-9 flex items-center justify-center rounded-full border border-neutral-700 hover:border-yellow-400 transition" onClick={() => setDarkMode(!darkMode)}>
+              ☀️
             </button>
+
+            {/* LOGIN BUTTON */}
+            <div>
+              {user ? (
+                <button
+                  onClick={async () => {
+                    await supabase.auth.signOut();
+                    setUser(null);
+                  }}
+                  className="bg-white text-black px-6 py-2.5 rounded-full font-semibold hover:bg-[#d4af7f] transition"
+                >
+                  Logout
+                </button>
+              ) : (
+                <button
+                  onClick={() => router.push("/login")}
+                  className={`px-6 py-2.5 rounded-full font-semibold transition
+${darkMode ? "bg-white text-black hover:bg-[#d4af7f]" : "bg-black text-white hover:bg-neutral-800"}
+`}                >
+                  Login
+                </button>
+              )}
+            </div>
+
           </div>
+
         </div>
 
-        {/* Mobile Nav */}
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="md:hidden bg-white/90 backdrop-blur-xl border-t border-white/30 px-6 py-4 flex flex-col gap-3"
-          >
-            <a href="#about" onClick={() => setMobileMenuOpen(false)} className="text-slate-600 font-medium py-2 hover:text-purple-600 transition">About</a>
-            <a href="#trend" onClick={() => setMobileMenuOpen(false)} className="text-slate-600 font-medium py-2 hover:text-purple-600 transition">Trend</a>
-            <a href="#feature" onClick={() => setMobileMenuOpen(false)} className="text-slate-600 font-medium py-2 hover:text-purple-600 transition">Feature</a>
-            <a href="#feedback" onClick={() => setMobileMenuOpen(false)} className="text-slate-600 font-medium py-2 hover:text-purple-600 transition">Feedback</a>
-          </motion.div>
-        )}
       </header>
 
-      {/* ================= HERO SECTION ================= */}
-      <section className="holi-bg pt-28 pb-24 px-6 relative">
-        <FallingColors />
+      {/* HERO */}
+      <section className={`relative flex flex-col items-center justify-center text-center px-6 py-28 overflow-hidden ${darkMode ? 'bg-black text-white' : 'bg-white text-black'}`}>
 
-        <div className="max-w-4xl mx-auto flex flex-col items-center justify-center text-center relative z-10">
+        {/* GOLDEN RING */}
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+          className="absolute top-10 right-10 w-52 h-52 rounded-full border-[3px] border-yellow-400 opacity-40"
+          style={{
+            borderTopColor: "transparent",
+            borderLeftColor: "transparent",
+          }}
+        />
 
-          {/* Top Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="mb-8"
-          >
-            <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/70 backdrop-blur-md border border-white/40 shadow-lg text-sm font-medium text-slate-700">
-              <Sparkles size={16} className="text-purple-500" />
-              AI-Powered Styling Platform
-            </span>
-          </motion.div>
+        {/* GOLD GLOW */}
+        <div className="absolute top-20 right-20 w-40 h-40 bg-yellow-400 blur-[120px] opacity-30 rounded-full"></div>
 
-          {/* Hero Typography */}
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.15, ease: "easeOut" }}
-            className="text-5xl md:text-7xl font-extrabold leading-tight mb-6"
-          >
-            <span className="text-slate-800">Curate Your</span>
-            <br />
-            <span className="gradient-text-holi">Festival Aesthetic</span>
-          </motion.h1>
+        {/* SPARKLES (fixed positions to avoid hydration mismatch) */}
+        <div className="absolute inset-0 pointer-events-none">
 
-          {/* Subtitle */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="text-slate-500 text-lg md:text-xl max-w-2xl mb-3"
-          >
-            Discover outfits curated for your vibe.
-          </motion.p>
+          <motion.span
+            className={`absolute w-[3px] h-[3px] rounded-full ${darkMode ? 'bg-white' : 'bg-yellow-400/70'}`}
+            style={{ left: "20%", top: "35%" }}
+            animate={{ opacity: [0, 1, 0], y: [0, 30] }}
+            transition={{ duration: 5, repeat: Infinity }}
+          />
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="text-slate-400 text-base md:text-lg max-w-xl mb-10"
-          >
-            Upload your photo, let our AI analyze your style, and
-            get personalized Holi outfit recommendations instantly.
-          </motion.p>
+          <motion.span
+            className={`absolute w-[3px] h-[3px] rounded-full ${darkMode ? 'bg-white' : 'bg-yellow-400/70'}`}
+            style={{ left: "70%", top: "60%" }}
+            animate={{ opacity: [0, 1, 0], y: [0, 30] }}
+            transition={{ duration: 6, repeat: Infinity }}
+          />
 
-          {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="flex flex-col sm:flex-row items-center gap-4 mb-12"
-          >
-            {/* Let's Style */}
-            <button
-              onClick={() => router.push("/quiz")}
-              className="group relative px-8 py-4 rounded-full bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-white font-semibold text-lg overflow-hidden transition-all duration-300 hover:shadow-[0_0_40px_rgba(236,72,153,0.4)] hover:scale-[1.03] active:scale-[0.97]"
+          <motion.span
+            className={`absolute w-[3px] h-[3px] rounded-full ${darkMode ? 'bg-white' : 'bg-yellow-400/70'}`}
+            style={{ left: "40%", top: "80%" }}
+            animate={{ opacity: [0, 1, 0], y: [0, 30] }}
+            transition={{ duration: 7, repeat: Infinity }}
+          />
+
+          <motion.span
+            className={`absolute w-[3px] h-[3px] rounded-full ${darkMode ? 'bg-white' : 'bg-yellow-400/70'}`}
+            style={{ left: "85%", top: "25%" }}
+            animate={{ opacity: [0, 1, 0], y: [0, 30] }}
+            transition={{ duration: 6, repeat: Infinity }}
+          />
+
+        </div>
+
+        {/* BADGE */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+          className="backdrop-blur-md bg-white/5 border border-yellow-400/40 px-5 py-2 rounded-full text-sm text-yellow-200 mb-8"
+        >
+          🌙 Limited Festival Edition
+        </motion.div>
+
+        {/* HEADING */}
+        <h1 className={`text-4xl md:text-6xl font-bold leading-tight max-w-3xl ${darkMode ? 'text-white' : 'text-black'}`}>
+
+          This Eid, Let Your Outfit
+          <br />
+
+          Speak
+
+          <span className="relative ml-3 inline-flex items-center gap-2 bg-gradient-to-r from-yellow-300 to-yellow-500 bg-clip-text text-transparent">
+            <span>NOOR</span>
+            {/* Sparkle Animation moved to the side of NOOR */}
+            <motion.span
+              className="text-yellow-400 text-xl"
+              animate={{
+                scale: [1, 1.4, 1],
+                rotate: [0, 20, -20, 0]
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity
+              }}
             >
-              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
-              <span className="relative z-10 flex items-center gap-2">
-                <Sparkles size={18} />
-                Let&apos;s Style
-                <span className="inline-block group-hover:translate-x-1 transition-transform duration-300">→</span>
-              </span>
+              ✨
+            </motion.span>
+          </span>
+
+        </h1>
+
+        {/* SUBTEXT */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="text-neutral-400 mt-6 max-w-xl"
+        >
+          Discover your personalized festive style powered by AI.
+          Elevate your Eid celebration with curated elegance.
+        </motion.p>
+
+        {/* BUTTONS */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="flex flex-col md:flex-row gap-4 mt-10"
+        >
+
+          <a href="/quiz" className="relative px-8 py-3 rounded-full font-semibold inline-block
+bg-gradient-to-r from-yellow-400 to-yellow-500
+text-black
+hover:scale-105 transition">
+            <span className="relative z-10">
+              Let's Style Me
+            </span>
+            <span className="absolute inset-0 rounded-full blur-xl bg-yellow-400 opacity-40 animate-pulse"></span>
+          </a>
+
+          <a href="/outfit" className="px-8 py-3 rounded-full border border-yellow-400 text-yellow-300 hover:bg-yellow-400 hover:text-black transition inline-block">
+            Find My Personalized Fit
+          </a>
+
+        </motion.div>
+
+      </section>
+
+      {/* TRENDING */}
+      <section id="trending" className={`px-6 py-20 ${darkMode ? 'bg-black text-white' : 'bg-white text-black'}`}>
+
+        <motion.h2
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          variants={fadeIn}
+          className={`text-4xl md:text-5xl font-extrabold text-center ${darkMode ? 'text-white' : 'text-black'}`}
+        >
+          Trending Outfits
+        </motion.h2>
+
+        <p className={`text-center mt-3 ${darkMode ? 'text-neutral-400' : 'text-neutral-600'}`}>
+          Stay ahead of the curve. Curated fits that define the moment.
+        </p>
+
+        {/* Segmented categories */}
+        <div className="flex justify-center mt-6">
+          <div className={`flex flex-wrap items-center gap-2 px-2 py-2 rounded-full border ${darkMode ? 'border-neutral-800 bg-neutral-900/50' : 'border-neutral-200 bg-white'} shadow-sm`}>
+            <button
+              onClick={() => setActiveCategory('general')}
+              className={`inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-semibold shadow transition ${activeCategory === 'general' ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white' : (darkMode ? 'text-neutral-300 hover:bg-neutral-800' : 'text-neutral-700 hover:bg-neutral-100')}`}
+            >
+              🔥 General
             </button>
 
-            {/* Personalized Fit */}
             <button
-              onClick={() => router.push("/outfit")}
-              className="group relative px-10 py-4 rounded-full bg-slate-900 text-white font-semibold text-lg overflow-hidden transition-all duration-300 hover:shadow-[0_0_40px_rgba(168,85,247,0.3)] hover:scale-[1.03] active:scale-[0.97]"
+              onClick={() => setActiveCategory('festive')}
+              className={`inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-semibold shadow transition ${activeCategory === 'festive' ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white' : (darkMode ? 'text-neutral-300 hover:bg-neutral-800' : 'text-neutral-700 hover:bg-neutral-100')}`}
             >
-              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-500/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
-              <span className="relative z-10 flex items-center gap-2">
-                Personalized Fit
-                <ArrowRight size={20} className="inline-block group-hover:translate-x-1 transition-transform duration-300" />
-              </span>
+              ✨ Festive
             </button>
-          </motion.div>
 
-          {/* Stat Pills */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.65 }}
-            className="flex flex-wrap justify-center gap-3"
-          >
-            <span className="pill-glow-red inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-red-50/80 backdrop-blur-sm border border-red-200/50 text-red-600 text-sm font-semibold">
-              <BarChart3 size={14} />
-              50K+ Styles Analyzed
-            </span>
-            <span className="pill-glow-purple inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-purple-50/80 backdrop-blur-sm border border-purple-200/50 text-purple-600 text-sm font-semibold">
-              <Target size={14} />
-              98% Match Accuracy
-            </span>
-            <span className="pill-glow-green inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-green-50/80 backdrop-blur-sm border border-green-200/50 text-green-600 text-sm font-semibold">
-              <Zap size={14} />
-              Instant Results
-            </span>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ================= TRENDING OUTFITS ================= */}
-      <section id="trend" className="py-24 bg-gradient-to-b from-white to-slate-50 text-slate-900 relative overflow-hidden">
-        {/* Background ambient glows */}
-        <div className="absolute top-[-100px] left-1/4 w-[400px] h-[400px] bg-purple-300/10 blur-[150px] rounded-full pointer-events-none" />
-        <div className="absolute bottom-[-50px] right-1/4 w-[300px] h-[300px] bg-pink-300/10 blur-[120px] rounded-full pointer-events-none" />
-
-        <div className="max-w-6xl mx-auto px-6 relative z-10">
-
-          {/* Header */}
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold mb-3">
-              Trending <span className="gradient-text-holi">Outfits</span>
-            </h2>
-            <p className="text-slate-500 text-sm max-w-md mx-auto">
-              Stay ahead of the curve. Curated fits that define the moment.
-            </p>
-          </div>
-
-          {/* Tab Switcher: General / Festive / For You */}
-          <div className="flex justify-center mb-10">
-            <div className="inline-flex bg-white/80 backdrop-blur-sm border border-slate-200 rounded-full p-1 shadow-sm">
-              <button
-                onClick={() => setTrendingTab("general")}
-                className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${trendingTab === "general"
-                  ? "bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-lg"
-                  : "text-slate-500 hover:text-slate-800"
-                  }`}
-              >
-                🔥 General
-              </button>
-              <button
-                onClick={() => setTrendingTab("festive")}
-                className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${trendingTab === "festive"
-                  ? "bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-lg"
-                  : "text-slate-500 hover:text-slate-800"
-                  }`}
-              >
-                🎉 Festive
-              </button>
-              <button
-                onClick={() => setTrendingTab("persona")}
-                className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${trendingTab === "persona"
-                  ? "bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-lg"
-                  : "text-slate-500 hover:text-slate-800"
-                  }`}
-              >
-                ✨ For You
-              </button>
-            </div>
-          </div>
-
-          {/* GENERAL TAB */}
-          {trendingTab === "general" && (
-            <>
-              {/* Gender Toggle */}
-              <div className="flex justify-center mb-8">
-                <div className="inline-flex bg-white/80 backdrop-blur-sm border border-slate-200 rounded-full p-1 shadow-sm">
-                  <button
-                    onClick={() => setSelectedGender("female")}
-                    className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${selectedGender === "female"
-                      ? "bg-slate-900 text-white"
-                      : "text-slate-500 hover:text-slate-800"
-                      }`}
-                  >
-                    Women
-                  </button>
-                  <button
-                    onClick={() => setSelectedGender("male")}
-                    className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${selectedGender === "male"
-                      ? "bg-slate-900 text-white"
-                      : "text-slate-500 hover:text-slate-800"
-                      }`}
-                  >
-                    Men
-                  </button>
-                </div>
-              </div>
-
-              {/* General Cards Grid */}
-              <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {trending_general[selectedGender].map((item, i) => (
-                  <motion.div
-                    key={item.id}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: i * 0.1 }}
-                    className="group relative rounded-2xl overflow-hidden border border-slate-200/60 bg-white/80 backdrop-blur-sm hover:border-purple-300 transition-all duration-500 hover:shadow-[0_8px_30px_rgba(168,85,247,0.15)] hover:-translate-y-1"
-                  >
-                    {/* Image container */}
-                    <div className="relative h-56 overflow-hidden">
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-                      />
-                      {/* Gradient overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-5 space-y-2">
-                      <h3 className="font-semibold text-lg text-slate-800 group-hover:text-purple-600 transition-colors duration-300">
-                        {item.name}
-                      </h3>
-                      <p className="text-sm text-slate-500">{item.desc}</p>
-
-                      <a
-                        href={item.affiliateLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 mt-3 text-purple-500 text-sm font-medium hover:gap-2.5 transition-all duration-300"
-                      >
-                        Explore Look
-                        <span className="text-xs">→</span>
-                      </a>
-                    </div>
-
-                    {/* Hover glow effect */}
-                    <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-gradient-to-br from-purple-500/5 via-transparent to-transparent" />
-                  </motion.div>
-                ))}
-              </div>
-            </>
-          )}
-
-          {/* PERSONA TAB */}
-          {trendingTab === "persona" && (
-            <>
-              {userPersona && trending_persona[userPersona] ? (
-                <>
-                  {/* Persona badge */}
-                  <div className="text-center mb-8">
-                    <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-50 border border-purple-200/50 text-sm">
-                      <span className="text-purple-500">✨</span>
-                      <span className="text-slate-500">Curated for</span>
-                      <span className="text-purple-600 font-semibold">{userPersona}</span>
-                    </span>
-                  </div>
-
-                  {/* Persona Cards Grid */}
-                  <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-3xl mx-auto">
-                    {trending_persona[userPersona].map((item) => (
-                      <div
-                        key={item.id}
-                        className="group relative rounded-2xl overflow-hidden border border-slate-200/60 bg-white/80 backdrop-blur-sm hover:border-purple-300 transition-all duration-500 hover:shadow-[0_8px_30px_rgba(168,85,247,0.15)] hover:-translate-y-1"
-                      >
-                        <div className="relative h-64 overflow-hidden">
-                          <img
-                            src={item.image}
-                            alt={item.name}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                        </div>
-
-                        <div className="p-6 space-y-2">
-                          <h3 className="font-semibold text-lg text-slate-800 group-hover:text-purple-600 transition-colors duration-300">
-                            {item.name}
-                          </h3>
-                          <p className="text-sm text-slate-500">{item.desc}</p>
-
-                          <a
-                            href={item.affiliateLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 mt-3 text-purple-500 text-sm font-medium hover:gap-2.5 transition-all duration-300"
-                          >
-                            Explore Look
-                            <span className="text-xs">→</span>
-                          </a>
-                        </div>
-
-                        <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-gradient-to-br from-purple-500/5 via-transparent to-transparent" />
-                      </div>
-                    ))}
-                  </div>
-                </>
-              ) : (
-                /* No persona CTA */
-                <div className="text-center py-16">
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    className="inline-flex flex-col items-center gap-4 p-10 rounded-3xl border border-slate-200/60 bg-white/80 backdrop-blur-sm max-w-md shadow-xl"
-                  >
-                    <span className="text-5xl">🎯</span>
-                    <h3 className="text-xl font-semibold text-slate-800">
-                      Discover your <span className="gradient-text-holi">Style Persona</span>
-                    </h3>
-                    <p className="text-slate-500 text-sm">
-                      Take our 6-question style quiz to unlock personalized trending looks curated just for you.
-                    </p>
-                    <button
-                      onClick={() => router.push("/quiz")}
-                      className="mt-2 px-8 py-3 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 text-white font-semibold hover:opacity-90 transition-all duration-300 shadow-lg hover:shadow-[0_0_30px_rgba(168,85,247,0.4)]"
-                    >
-                      Take the Quiz →
-                    </button>
-                  </motion.div>
-                </div>
-              )}
-            </>
-          )}
-
-          {/* FESTIVE TAB */}
-          {trendingTab === "festive" && (
-            <>
-              {/* Festive badge */}
-              <div className="text-center mb-6">
-                <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-orange-50 border border-orange-200/50 text-sm">
-                  <span className="text-orange-500">🎨</span>
-                  <span className="text-slate-500">Holi Special Collection</span>
-                </span>
-              </div>
-
-              {/* Gender Toggle */}
-              <div className="flex justify-center mb-8">
-                <div className="inline-flex bg-white/80 backdrop-blur-sm border border-slate-200 rounded-full p-1 shadow-sm">
-                  <button
-                    onClick={() => setFestiveGender("female")}
-                    className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${festiveGender === "female"
-                      ? "bg-slate-900 text-white"
-                      : "text-slate-500 hover:text-slate-800"
-                      }`}
-                  >
-                    Women
-                  </button>
-                  <button
-                    onClick={() => setFestiveGender("male")}
-                    className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${festiveGender === "male"
-                      ? "bg-slate-900 text-white"
-                      : "text-slate-500 hover:text-slate-800"
-                      }`}
-                  >
-                    Men
-                  </button>
-                </div>
-              </div>
-
-              {/* Festive Cards Grid */}
-              <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {festiveOutfits
-                  .filter((item) => item.gender === festiveGender)
-                  .map((item, i) => (
-                    <motion.div
-                      key={item.id}
-                      initial={{ opacity: 0, y: 30 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: i * 0.1 }}
-                      className="group relative rounded-2xl overflow-hidden border border-slate-200/60 bg-white/80 backdrop-blur-sm hover:border-orange-300 transition-all duration-500 hover:shadow-[0_8px_30px_rgba(249,115,22,0.15)] hover:-translate-y-1"
-                    >
-                      {/* Image container */}
-                      <div className="relative h-56 overflow-hidden">
-                        <img
-                          src={item.image}
-                          alt={item.title}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-                        />
-                        {/* Gradient overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                      </div>
-
-                      {/* Content */}
-                      <div className="p-5 space-y-2">
-                        <h3 className="font-semibold text-sm text-slate-800 group-hover:text-orange-600 transition-colors duration-300 line-clamp-2">
-                          {item.title}
-                        </h3>
-                        <div className="flex flex-wrap gap-1">
-                          {item.mood.map((m) => (
-                            <span key={m} className="text-[10px] px-2 py-0.5 rounded-full bg-orange-50 text-orange-500 border border-orange-100 capitalize">
-                              {m}
-                            </span>
-                          ))}
-                          {item.budget.map((b) => (
-                            <span key={b} className="text-[10px] px-2 py-0.5 rounded-full bg-green-50 text-green-500 border border-green-100 capitalize">
-                              {b}
-                            </span>
-                          ))}
-                        </div>
-
-                        <a
-                          href={item.affiliateLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 mt-3 text-orange-500 text-sm font-medium hover:gap-2.5 transition-all duration-300"
-                        >
-                          Explore Look
-                          <span className="text-xs">→</span>
-                        </a>
-                      </div>
-
-                      {/* Hover glow effect */}
-                      <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-gradient-to-br from-orange-500/5 via-transparent to-transparent" />
-                    </motion.div>
-                  ))}
-              </div>
-            </>
-          )}
-
-        </div>
-      </section>
-
-
-      {/* ================= HOW IT WORKS ================= */}
-      <section className="py-28 px-6 bg-white border-t border-slate-100">
-        <div className="max-w-7xl mx-auto text-center">
-
-          <h2 className="text-5xl font-bold mb-20 text-slate-800">
-            How It <span className="gradient-text-holi">Works</span>
-          </h2>
-
-          <div className="grid md:grid-cols-4 gap-10 relative">
-
-            {/* CONNECTING LINE */}
-            <div className="hidden md:block absolute top-16 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-purple-300 to-transparent opacity-40" />
-
-            {[
-              {
-                number: "01",
-                title: "Upload",
-                desc: "Upload a clothing piece or start fresh.",
-                gradient: "from-pink-500 to-rose-400"
-              },
-              {
-                number: "02",
-                title: "Select Context",
-                desc: "Choose mood, occasion & color.",
-                gradient: "from-purple-500 to-violet-400"
-              },
-              {
-                number: "03",
-                title: "Style Engine",
-                desc: "Our AI matches pieces intelligently.",
-                gradient: "from-blue-500 to-cyan-400"
-              },
-              {
-                number: "04",
-                title: "Get Look",
-                desc: "Receive powerful outfit combinations.",
-                gradient: "from-green-500 to-emerald-400"
-              }
-            ].map((step, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="relative group p-10 rounded-2xl border border-slate-100 bg-white hover:border-purple-200 transition duration-300 overflow-hidden shadow-sm hover:shadow-xl"
-              >
-                {/* Big Background Number */}
-                <span className={`absolute -top-4 -left-2 text-[72px] font-bold bg-gradient-to-b ${step.gradient} bg-clip-text text-transparent opacity-15 transition-all duration-300 group-hover:opacity-30 pointer-events-none select-none`}>
-                  {step.number}
-                </span>
-
-                <h3 className="text-xl font-semibold mb-3 mt-8 text-slate-800">
-                  {step.title}
-                </h3>
-
-                <p className="text-slate-500 text-sm">
-                  {step.desc}
-                </p>
-
-              </motion.div>
-            ))}
-
-          </div>
-        </div>
-      </section>
-
-      {/* ================= FEATURES ================= */}
-      <section id="feature" className="py-20 px-6 bg-slate-50 border-t border-slate-100">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-16 text-slate-800">
-            Features
-          </h2>
-
-          <div className="grid md:grid-cols-2 gap-8">
-
-            {/* AI Outfit Suggestions */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              onClick={() => router.push("/outfit")}
-              className="cursor-pointer border border-slate-200/60 bg-white/90 backdrop-blur-sm p-8 rounded-2xl hover:border-purple-300 hover:shadow-[0_8px_30px_rgba(168,85,247,0.12)] transition group"
+            <button
+              onClick={() => setActiveCategory('forYou')}
+              className={`inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-semibold shadow transition ${activeCategory === 'forYou' ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white' : (darkMode ? 'text-neutral-300 hover:bg-neutral-800' : 'text-neutral-700 hover:bg-neutral-100')}`}
             >
-              <div className="mb-6">
+              🫶 For You
+            </button>
+          </div>
+        </div>
+
+        {/* Gender toggle */}
+        <div className="flex justify-center mt-6">
+          <div className={`flex items-center p-1 rounded-full ${darkMode ? 'bg-neutral-900 border border-neutral-800' : 'bg-neutral-100 border border-neutral-200'}`}>
+            <button
+              onClick={() => setActiveGender('women')}
+              className={`px-5 py-2 rounded-full text-sm font-semibold transition ${activeGender === 'women' ? 'bg-neutral-800 text-white' : (darkMode ? 'text-neutral-300 hover:bg-neutral-800' : 'text-neutral-700 hover:bg-white')}`}
+            >
+              Women
+            </button>
+
+            <button
+              onClick={() => setActiveGender('men')}
+              className={`px-5 py-2 rounded-full text-sm font-semibold transition ${activeGender === 'men' ? 'bg-neutral-800 text-white' : (darkMode ? 'text-neutral-300 hover:bg-neutral-800' : 'text-neutral-700 hover:bg-white')}`}
+            >
+              Men
+            </button>
+          </div>
+        </div>
+
+        {/* Cards grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
+          {trendingList.map((card: any, idx: number) => (
+            <div
+              key={`${card.title || card.image || 'it'}-${idx}`}
+              className={`rounded-2xl overflow-hidden ${darkMode ? 'bg-neutral-900 border border-neutral-800' : 'bg-neutral-100 border border-neutral-200'} shadow-sm`}
+            >
+
+              <div className="h-60 w-full overflow-hidden">
                 <img
-                  src="/features/ai-suggest.png"
-                  alt="AI Outfit Suggestion"
-                  className="w-16 h-16 object-contain group-hover:scale-110 transition duration-300"
+                  src={card.image || ''}
+                  alt={card.title || ''}
+                  className="h-full w-full object-cover"
                 />
               </div>
 
-              <h3 className="text-xl font-semibold mb-4 text-slate-800 group-hover:text-purple-600 transition">
-                AI Outfit Suggestions
+              <div className={`${darkMode ? 'bg-neutral-950 text-white' : 'bg-white text-black'} px-4 py-3`}>
+
+                <div className="font-medium">{card.title || 'Trending Fit'}</div>
+
+                {/* Explore Affiliate Link */}
+                {card.affiliateLink && (
+                  <a
+                    href={card.affiliateLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block mt-3 text-sm font-semibold text-pink-500 hover:underline"
+                  >
+                    Explore →
+                  </a>
+                )}
+
+              </div>
+
+            </div>
+          ))}
+        </div>
+
+      </section>
+
+      {/* HOW IT WORKS */}
+      <section id="howitworks" className={`px-6 py-24 text-center ${darkMode ? 'bg-black text-white' : 'bg-white text-black'}`}>
+
+        <motion.h2
+          variants={fadeIn}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          className="text-3xl font-bold mb-16">
+          How It <span className="text-yellow-400">Works</span>
+        </motion.h2>
+
+        <div className="grid md:grid-cols-3 gap-10">
+
+          {[
+            {
+              icon: <Upload className="mx-auto text-yellow-400 mb-4" />,
+              title: "Upload Your Wardrobe",
+              text: "Snap photos of your clothes or browse curated pieces"
+            },
+            {
+              icon: <Cpu className="mx-auto text-yellow-400 mb-4" />,
+              title: "AI Analyzes Style",
+              text: "AI learns your body type and preferences"
+            },
+            {
+              icon: <Sparkles className="mx-auto text-yellow-400 mb-4" />,
+              title: "Get Suggestions",
+              text: "Receive personalized outfit recommendations"
+            }
+          ].map((item, i) => (
+            <motion.div
+              key={i}
+              whileHover={{ y: -6 }}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              variants={fadeIn}
+              className={`${darkMode ? 'bg-neutral-900' : 'bg-neutral-100'} p-6 rounded-xl`}>
+
+              {item.icon}
+              <h3 className="font-semibold text-lg">{item.title}</h3>
+              <p className="text-neutral-400 text-sm mt-2">{item.text}</p>
+
+            </motion.div>
+          ))}
+
+        </div>
+      </section>
+
+      {/* FEATURES */}
+      <section
+        id="features"
+        className={`px-6 py-24 ${darkMode ? "bg-black text-white" : "bg-white text-black"}`}
+      >
+
+        <div className="max-w-6xl mx-auto text-center">
+
+          {/* Heading */}
+          <motion.h2
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            viewport={{ once: true }}
+            className="text-4xl md:text-5xl font-bold"
+          >
+            Explore Features
+          </motion.h2>
+
+          <p className={`mt-4 ${darkMode ? "text-neutral-400" : "text-neutral-600"}`}>
+            Powerful tools designed to elevate your fashion decisions.
+          </p>
+
+          {/* Cards */}
+          <div className="grid md:grid-cols-2 gap-8 mt-16">
+
+            {/* AI Outfit Suggestions */}
+            <motion.a
+              href="/outfit"
+              whileHover={{ scale: 1.05 }}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className={`p-8 rounded-2xl text-left transition shadow-lg 
+        ${darkMode
+                  ? "bg-neutral-900 border border-neutral-800 hover:border-yellow-400"
+                  : "bg-neutral-100 border border-neutral-200 hover:border-yellow-500"}
+        `}
+            >
+
+              <h3 className="text-xl font-semibold mb-3">
+                AI Based Outfit Suggestions
               </h3>
 
-              <p className="text-slate-500 text-sm">
-                Get personalized outfit recommendations based on your personality,
-                occasion, and style preferences.
+              <p className={`${darkMode ? "text-neutral-400" : "text-neutral-600"}`}>
+                Upload your image and let our AI analyze your body shape,
+                skin tone, and style preferences to recommend outfits that
+                perfectly match your personality and occasion.
               </p>
-            </motion.div>
+
+            </motion.a>
 
             {/* Virtual Wardrobe */}
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              whileHover={{ scale: 1.05 }}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="border border-slate-200/60 bg-white/90 backdrop-blur-sm p-8 rounded-2xl opacity-80 cursor-not-allowed hover:shadow-[0_8px_30px_rgba(236,72,153,0.1)] transition"
+              className={`p-8 rounded-2xl text-left shadow-lg 
+        ${darkMode
+                  ? "bg-neutral-900 border border-neutral-800"
+                  : "bg-neutral-100 border border-neutral-200"}
+        `}
             >
-              <div className="mb-6">
-                <img
-                  src="/features/wardrobe.png"
-                  alt="Virtual Wardrobe"
-                  className="w-16 h-16 object-contain"
-                />
-              </div>
 
-              <h3 className="text-xl font-semibold mb-4 text-slate-800">
+              <h3 className="text-xl font-semibold mb-3">
                 Virtual Wardrobe
+                <span className="ml-3 text-sm text-yellow-400">
+                  Coming Soon
+                </span>
               </h3>
 
-              <p className="text-slate-500 text-sm mb-4">
-                Organize and manage your wardrobe digitally. Mix, match, and plan
-                your outfits effortlessly.
+              <p className={`${darkMode ? "text-neutral-400" : "text-neutral-600"}`}>
+                Upload and organize your real wardrobe digitally.
+                Mix and match your clothes, plan outfits for events,
+                and get smart recommendations from the items you already own.
               </p>
 
-              <span className="inline-block text-xs px-3 py-1 border border-purple-200 rounded-full text-purple-500 bg-purple-50">
-                Coming Soon
-              </span>
             </motion.div>
 
           </div>
-        </div>
-      </section>
-
-
-      {/* ================= ABOUT ================= */}
-      <section id="about" className="py-28 px-6 bg-gradient-to-b from-white to-slate-50 border-t border-slate-100">
-        <div className="max-w-5xl mx-auto text-center">
-
-          <h2 className="text-5xl font-bold mb-8 text-slate-800">
-            About <span className="gradient-text-holi">Outfevibe</span>
-          </h2>
-
-          <p className="text-slate-500 text-lg leading-relaxed max-w-3xl mx-auto">
-            Outfevibe is built for individuals who want confidence without confusion.
-            We style what you already own and transform your wardrobe into a system of
-            powerful expression. Fashion is not gender. It is identity. It is presence.
-          </p>
 
         </div>
+
       </section>
 
-      {/* ================= TESTIMONIALS ================= */}
-      <section className="py-28 px-6 border-t border-slate-100 bg-white text-slate-900">
-        <div className="max-w-6xl mx-auto text-center">
+      {/* ABOUT */}
+      <section
+        id="about"
+        className={`px-6 py-24 ${darkMode ? "bg-black text-white" : "bg-white text-black"}`}
+      >
 
-          <h2 className="text-4xl md:text-5xl font-bold mb-16 text-slate-800">
-            What Users Say
-          </h2>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                quote: "Finally a styling system that understands identity. Not just clothes.",
-                author: "Early User",
-                gradient: "from-pink-500/10"
-              },
-              {
-                quote: "It feels like the app actually understands my vibe. The personality result was scary accurate.",
-                author: "Beta Tester",
-                gradient: "from-purple-500/10"
-              },
-              {
-                quote: "I shared my personality result with friends — now they're all using Outfevibe too.",
-                author: "College User",
-                gradient: "from-blue-500/10"
-              }
-            ].map((testimonial, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="relative border border-slate-200/60 bg-white p-8 rounded-2xl hover:border-purple-200 transition duration-300 group shadow-sm hover:shadow-lg"
-              >
-                <div className="gradient-text-holi text-3xl mb-4">❝</div>
-
-                <p className="text-slate-600 text-sm leading-relaxed mb-6">
-                  {testimonial.quote}
-                </p>
-
-                <span className="text-xs text-purple-500 tracking-wide font-medium">
-                  — {testimonial.author}
-                </span>
-
-                <div className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition pointer-events-none bg-gradient-to-br ${testimonial.gradient} via-transparent to-transparent`}></div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ================= FEEDBACK ================= */}
-      <section id="feedback" className="py-28 px-6 bg-gradient-to-b from-slate-50 to-white text-slate-900 border-t border-slate-100 relative overflow-hidden">
-
-        {/* subtle glow background */}
-        <div className="absolute -top-40 -left-40 w-96 h-96 bg-purple-300/10 blur-[120px] rounded-full" />
-        <div className="absolute bottom-0 right-0 w-80 h-80 bg-pink-300/10 blur-[100px] rounded-full" />
-
-        <div className="max-w-4xl mx-auto relative z-10">
+        <div className="max-w-4xl mx-auto text-center">
 
           {/* Heading */}
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 text-slate-800">
-            Your Voice <span className="gradient-text-holi">Matters</span>
-          </h2>
+          <motion.h2
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            viewport={{ once: true }}
+            className="text-4xl md:text-5xl font-bold"
+          >
+            About Outfevibe
+          </motion.h2>
 
-          <p className="text-center text-slate-500 mb-16 max-w-xl mx-auto">
-            Help us shape the future of Outfevibe. Your feedback fuels the revolution.
-          </p>
+          {/* Paragraph */}
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className={`mt-8 text-lg leading-relaxed ${darkMode ? "text-neutral-400" : "text-neutral-600"
+              }`}
+          >
+            Outfevibe is a smart fashion platform that helps you discover outfits that truly match your style.
+            Instead of spending hours deciding what to wear, you can upload your photo and get outfit ideas
+            based on your body type, skin tone, and the occasion. Our goal is to make styling simple,
+            fun, and accessible for everyone. With Outfevibe, finding the right outfit becomes faster,
+            easier, and more confident.
+          </motion.p>
 
-          {/* Card */}
-          <div className="bg-white/80 backdrop-blur-sm border border-slate-200/60 rounded-3xl p-10 shadow-xl">
+        </div>
 
-            {/* Name */}
-            <div className="mb-8">
-              <label className="block text-sm mb-2 text-slate-500">Name</label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Your name"
-                className="w-full px-5 py-4 rounded-xl bg-slate-50 border border-slate-200 focus:border-purple-400 outline-none transition text-slate-800"
-              />
-            </div>
+      </section>
 
-            {/* Message */}
-            <div className="mb-10">
-              <label className="block text-sm mb-2 text-slate-500">Message</label>
-              <textarea
-                rows={5}
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                placeholder="Tell us what you think..."
-                className="w-full px-5 py-4 rounded-xl bg-slate-50 border border-slate-200 focus:border-purple-400 outline-none transition resize-none text-slate-800"
-              />
-            </div>
+      {/* TESTIMONIAL */}
+      <section className={`px-6 py-20 text-center overflow-hidden ${darkMode ? 'bg-black text-white' : 'bg-white text-black'}`}>
 
-            {/* Button */}
-            <form onSubmit={handleSubmit}>
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full py-4 rounded-xl bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-white font-semibold tracking-wide hover:opacity-90 transition shadow-lg hover:shadow-[0_0_30px_rgba(168,85,247,0.3)]"
-              >
-                {loading ? "Submitting..." : "Submit Feedback"}
-              </button>
-            </form>
+        <motion.h2
+          variants={fadeIn}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          className="text-3xl font-bold mb-12"
+        >
+          What Users <span className="text-yellow-400">Say</span>
+        </motion.h2>
+
+        {!mounted ? null : (
+
+          <div className="relative w-full overflow-hidden">
+
+            <motion.div
+              className="flex gap-6"
+              animate={{ x: ["0%", "-50%"] }}
+              transition={{
+                duration: 25,
+                repeat: Infinity,
+                ease: "linear"
+              }}
+            >
+
+              {[
+                {
+                  text: "Outfevibe made choosing outfits so much easier. I get ready faster and feel more confident.",
+                  name: "Riya Sharma — Delhi"
+                },
+                {
+                  text: "I love how simple it is. Just open the app and instantly get outfit ideas.",
+                  name: "Emily Watson — London"
+                },
+                {
+                  text: "It feels like having a personal stylist. Perfect for college and casual outings.",
+                  name: "Aisha Khan — Mumbai"
+                },
+                {
+                  text: "The AI outfit suggestions are surprisingly accurate. It really understands my style.",
+                  name: "Sophia Martinez — Madrid"
+                },
+                {
+                  text: "Fashion decisions used to take me so long. Outfevibe made everything quicker.",
+                  name: "Neha Patel — Ahmedabad"
+                }
+              ].concat([
+                {
+                  text: "Outfevibe made choosing outfits so much easier. I get ready faster and feel more confident.",
+                  name: "Riya Sharma — Delhi"
+                },
+                {
+                  text: "I love how simple it is. Just open the app and instantly get outfit ideas.",
+                  name: "Emily Watson — London"
+                },
+                {
+                  text: "It feels like having a personal stylist. Perfect for college and casual outings.",
+                  name: "Aisha Khan — Mumbai"
+                },
+                {
+                  text: "The AI outfit suggestions are surprisingly accurate. It really understands my style.",
+                  name: "Sophia Martinez — Madrid"
+                },
+                {
+                  text: "Fashion decisions used to take me so long. Outfevibe made everything quicker.",
+                  name: "Neha Patel — Ahmedabad"
+                }
+              ]).map((item, i) => (
+
+                <motion.div
+                  key={i}
+                  whileHover={{ scale: 1.05 }}
+                  className={`${darkMode ? 'bg-neutral-900' : 'bg-neutral-100'} p-8 rounded-xl min-w-[300px] md:min-w-[360px] shadow-lg`}
+                >
+
+                  <p className="italic text-neutral-300">
+                    "{item.text}"
+                  </p>
+
+                  <div className="mt-4 text-sm text-neutral-400">
+                    {item.name}
+                  </div>
+
+                </motion.div>
+
+              ))}
+
+            </motion.div>
 
           </div>
 
+        )}
+
+      </section>
+
+      {/* FEEDBACK */}
+      <section
+        id="feedback"
+        className={`px-6 py-20 w-full ${darkMode ? 'bg-black text-white' : 'bg-white text-black'}`}
+      >
+
+        <div className="max-w-xl mx-auto">
+
+          <motion.h2
+            variants={fadeIn}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            className={`text-3xl font-bold text-center mb-8 ${darkMode ? 'text-white' : 'text-black'}`}
+          >
+            Submit Feedback
+          </motion.h2>
+
+          <form
+            className="flex flex-col gap-4"
+            onSubmit={async (e) => {
+              e.preventDefault()
+
+              const form = e.target as HTMLFormElement
+              const formData = new FormData(form)
+
+              const name = formData.get("name")
+              const email = formData.get("email")
+              const message = formData.get("message")
+
+              const { error } = await supabase.from("feedback").insert([
+                {
+                  name,
+                  email,
+                  message
+                }
+              ])
+
+              if (!error) {
+                alert("Thank you for your feedback ❤️")
+                form.reset()
+              } else {
+                alert("Something went wrong.")
+                console.error(error)
+              }
+            }}
+          >
+
+            <input
+              name="name"
+              placeholder="Your Name"
+              className={`${darkMode ? 'bg-neutral-900 border-neutral-700 text-white placeholder-neutral-400' : 'bg-white border-neutral-300 text-black placeholder-neutral-500'} p-3 rounded-lg border`}
+            />
+
+            <input
+              name="email"
+              type="email"
+              placeholder="Your Email"
+              className={`${darkMode ? 'bg-neutral-900 border-neutral-700 text-white placeholder-neutral-400' : 'bg-white border-neutral-300 text-black placeholder-neutral-500'} p-3 rounded-lg border`}
+            />
+
+            <textarea
+              name="message"
+              placeholder="Your Message"
+              rows={4}
+              className={`${darkMode ? 'bg-neutral-900 border-neutral-700 text-white placeholder-neutral-400' : 'bg-white border-neutral-300 text-black placeholder-neutral-500'} p-3 rounded-lg border`}
+            />
+
+            <button
+              type="submit"
+              className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-black py-3 rounded-lg font-semibold hover:scale-105 transition"
+            >
+              Share Your Thoughts
+            </button>
+
+          </form>
+
         </div>
+
       </section>
 
       {/* ================= FOOTER ================= */}
-      <footer className="border-t border-slate-100 bg-white text-slate-800 px-6 py-16">
+      <footer
+        className={`border-t px-6 py-16 ${darkMode
+          ? "bg-black text-white border-neutral-800"
+          : "bg-white text-black border-neutral-200"
+          }`}
+      >
         <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-12">
 
           {/* BRAND */}
           <div>
             <h3 className="text-2xl font-bold tracking-wide">
-              <span className="gradient-text-holi">OUTFEVIBE</span>
+              OUTFEVIBE
             </h3>
-            <p className="text-slate-500 mt-4 text-sm leading-relaxed">
+
+            <p className={`${darkMode ? "text-gray-400" : "text-gray-600"} mt-4 text-sm leading-relaxed`}>
               AI-powered styling that understands identity.
               Not just clothes.
             </p>
 
             <div className="flex gap-4 mt-6">
-              <a href="https://www.instagram.com/what.gungun?igsh=NDBma3Fzdnp3bG5q" target="_blank" className="w-9 h-9 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 text-white flex items-center justify-center text-xs font-bold hover:scale-110 transition-transform">
+
+              <a
+                href="https://www.instagram.com/what.gungun?igsh=NDBma3Fzdnp3bG5q"
+                target="_blank"
+                className={`circle ${darkMode ? "hover:text-yellow-400" : "hover:text-black"}`}
+              >
                 IG
               </a>
-              <a href="https://www.linkedin.com/in/gungun-jain-1508" target="_blank" className="w-9 h-9 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white flex items-center justify-center text-xs font-bold hover:scale-110 transition-transform">
+
+              <a
+                href="https://www.linkedin.com/in/gungun-jain-1508"
+                target="_blank"
+                className={`circle ${darkMode ? "hover:text-yellow-400" : "hover:text-black"}`}
+              >
                 LN
               </a>
-              <a href="https://youtube.com/@heygungun?si=QH1rCAhN-7EeNMvP" target="_blank" className="w-9 h-9 rounded-full bg-gradient-to-r from-red-500 to-rose-500 text-white flex items-center justify-center text-xs font-bold hover:scale-110 transition-transform">
+
+              <a
+                href="https://youtube.com/@heygungun?si=QH1rCAhN-7EeNMvP"
+                target="_blank"
+                className={`circle ${darkMode ? "hover:text-yellow-400" : "hover:text-black"}`}
+              >
                 YT
               </a>
+
             </div>
           </div>
 
           {/* PRODUCT */}
           <div>
-            <h4 className="text-lg font-semibold mb-4 text-slate-800">Product</h4>
-            <ul className="space-y-3 text-slate-500 text-sm">
-              <li> <Link href="/outfit" className="hover:text-purple-500 transition">AI Outfit Suggestions</Link></li>
-              <li className="hover:text-purple-500 transition" >Virtual Wardrobe </li>
-              <li> <Link href="/quiz" className="hover:text-purple-500 transition">Style Quiz</Link></li>
+            <h4 className="text-lg font-semibold mb-4">Product</h4>
+
+            <ul className={`space-y-3 text-sm ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
+
+              <li>
+                <Link href="/outfit" className="hover:text-yellow-400 transition">
+                  AI Outfit Suggestions
+                </Link>
+              </li>
+
+              <li className="hover:text-yellow-400 transition">
+                Virtual Wardrobe
+              </li>
+
+              <li>
+                <Link href="/quiz" className="hover:text-yellow-400 transition">
+                  Style Quiz
+                </Link>
+              </li>
+
             </ul>
           </div>
 
           {/* COMPANY */}
           <div>
-            <h4 className="text-lg font-semibold mb-4 text-slate-800">Company</h4>
-            <ul className="space-y-3 text-slate-500 text-sm">
-              <li><Link href="/about" className="hover:text-purple-500 transition">About</Link></li>
-              <li><Link href="/careers" className="hover:text-purple-500 transition">Careers</Link></li>
-              <li><Link href="/contact" className="hover:text-purple-500 transition">Contact</Link></li>
+            <h4 className="text-lg font-semibold mb-4">Company</h4>
+
+            <ul className={`space-y-3 text-sm ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
+
+              <li>
+                <Link href="/about" className="hover:text-yellow-400 transition">
+                  About
+                </Link>
+              </li>
+
+              <li>
+                <Link href="/careers" className="hover:text-yellow-400 transition">
+                  Careers
+                </Link>
+              </li>
+
+              <li>
+                <Link href="/contact" className="hover:text-yellow-400 transition">
+                  Contact
+                </Link>
+              </li>
+
             </ul>
           </div>
 
           {/* NEWSLETTER */}
           <div>
-            <h4 className="text-lg font-semibold mb-4 text-slate-800">Stay Updated</h4>
-            <p className="text-slate-500 text-sm mb-4">
+            <h4 className="text-lg font-semibold mb-4">Stay Updated</h4>
+
+            <p className={`${darkMode ? "text-gray-400" : "text-gray-600"} text-sm mb-4`}>
               Get early access to new features and drops.
             </p>
 
             <div className="flex">
+
               <input
                 type="email"
                 placeholder="Your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-l-xl text-sm focus:outline-none focus:border-purple-400 text-slate-800"
+                className={`w-full px-4 py-3 text-sm rounded-l-xl focus:outline-none ${darkMode
+                  ? "bg-black border border-neutral-700 text-white placeholder-neutral-400"
+                  : "bg-white border border-neutral-300 text-black placeholder-neutral-500"
+                  }`}
               />
+
               <button
                 onClick={() => {
                   if (!email) return alert("Enter Email First!");
                   alert("You Are On The List!");
                 }}
-                className="px-6 bg-gradient-to-r from-pink-500 to-purple-500 text-white font-semibold rounded-r-xl hover:opacity-90 transition">
+                className="px-6 bg-[#d4af7f] text-black font-semibold rounded-r-xl hover:opacity-90 transition"
+              >
                 Join
               </button>
+
             </div>
           </div>
+
         </div>
 
         {/* BOTTOM BAR */}
-        <div className="border-t border-slate-100 mt-16 pt-6 text-center text-slate-400 text-sm">
+        <div
+          className={`border-t mt-16 pt-6 text-center text-sm ${darkMode
+            ? "border-neutral-800 text-gray-500"
+            : "border-neutral-200 text-gray-600"
+            }`}
+        >
           © {new Date().getFullYear()} Outfevibe. Built with intention.
         </div>
       </footer>
 
-    </main >
+    </div>
   );
 }
