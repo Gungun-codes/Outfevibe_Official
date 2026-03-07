@@ -193,7 +193,7 @@ ${darkMode ? "bg-white text-black hover:bg-[#d4af7f]" : "bg-black text-white hov
           transition={{ duration: 0.7 }}
           className="backdrop-blur-md bg-white/5 border border-yellow-400/40 px-5 py-2 rounded-full text-sm text-yellow-200 mb-8"
         >
-          🌙 Limited Festival Edition
+          🌙 AI-Based Outfit Suggestion
         </motion.div>
 
         {/* HEADING */}
