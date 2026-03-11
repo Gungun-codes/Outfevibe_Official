@@ -336,7 +336,7 @@ export default function StyleQuizPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.1, duration: 0.5 }}
-              className="text-5xl md:text-6xl font-extrabold tracking-tight mb-4 leading-tight"
+              className="text-4xl md:text-6xl font-extrabold tracking-tight mb-4 leading-tight"
             >
               Discover Your <span className="text-[#d4af7f]">Style Persona</span>
             </motion.h1>
@@ -354,22 +354,23 @@ export default function StyleQuizPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.6, duration: 0.5 }}
-              className="flex flex-col sm:flex-row gap-5 justify-center"
+              className="grid grid-cols-2 gap-4 max-w-md mx-auto"
             >
               <motion.button
                 whileHover={{ scale: 1.04, y: -2 }}
                 whileTap={{ scale: 0.96 }}
                 onClick={() => setGender("female")}
-                className="group relative w-52 rounded-2xl bg-[#111] border border-[#2a2a2a] overflow-hidden hover:border-[#d4af7f] transition-all duration-300"
+                className="group relative w-full rounded-2xl bg-[#111] border border-[#2a2a2a] overflow-hidden hover:border-[#d4af7f] transition-all duration-300"
               >
 
-                <div className="relative w-full aspect-[4/5]">
+                <div className="relative w-full aspect-[3/4]">
                   <Image
                     src="/quiz/f_q4_o3.jpg"
                     alt="female fashion"
                     fill
                     className="object-cover"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                 </div>
 
                 <div className="py-3 text-center">
@@ -383,16 +384,17 @@ export default function StyleQuizPage() {
                 whileHover={{ scale: 1.04, y: -2 }}
                 whileTap={{ scale: 0.96 }}
                 onClick={() => setGender("male")}
-                className="group relative w-52 rounded-2xl bg-[#111] border border-[#2a2a2a] overflow-hidden hover:border-[#d4af7f] transition-all duration-300"
+                className="group relative w-full rounded-2xl bg-[#111] border border-[#2a2a2a] overflow-hidden hover:border-[#d4af7f] transition-all duration-300"
               >
 
-                <div className="relative w-full aspect-[4/5]">
+                <div className="relative w-full aspect-[3/4]">
                   <Image
                     src="/quiz/m_q2_o1.jpg"
                     alt="male fashion"
                     fill
                     className="object-cover"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                 </div>
 
                 <div className="py-3 text-center">
