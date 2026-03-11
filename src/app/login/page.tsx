@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { ArrowRight, Lock, Mail } from "lucide-react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -15,6 +16,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     if (user) {
@@ -37,8 +39,12 @@ export default function LoginPage() {
       // Auth state change will handle redirect
     } catch (err: any) {
       setError(err.message || "Login failed. Please try again.");
-      setLoading(false);
+      setLoading(false); 
     }
+
+    // redirect user 
+    const redirect = searchParams.get("redirect") || "/";
+    router.push(redirect);
   };
 
   const handleGoogleLogin = async () => {
@@ -49,6 +55,10 @@ export default function LoginPage() {
     } catch (err: any) {
       setError(err.message || "Google login failed.");
     }
+
+    // redirect user 
+    const redirect = searchParams.get("redirect") || "/";
+    router.push(redirect);
   };
 
   return (

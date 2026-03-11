@@ -557,6 +557,12 @@ export default function StyleQuizPage() {
                       localStorage.setItem("userPersona", persona);
                       localStorage.setItem("quizGender", gender || "");
 
+                      // if user not logged in then force login
+                      if(!user) {
+                        router.push("/login?redirect=/outfit");
+                        return;
+                      }
+
                       // Fire Supabase save in the background — don't block navigation
                       if (user && user.email) {
                         const saveResult = async () => {
