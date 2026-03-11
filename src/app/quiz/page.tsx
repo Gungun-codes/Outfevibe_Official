@@ -12,6 +12,7 @@ import Image from "next/image";
 interface Option {
   label: string;
   icon: string;
+  image?: string;
   persona: string;
   points: number;
   feedback: string;
@@ -99,61 +100,55 @@ export const QUESTIONS_FEMALE: Question[] = [
   {
     id: 1, question: "What defines your everyday style?",
     options: [
-      { label: "Clean & structured", icon: "🤍", persona: "minimal", points: 2, feedback: "Simplicity wins." },
-      { label: "Bold & attention-grabbing", icon: "🔥", persona: "edgy", points: 2, feedback: "You love impact." },
-      { label: "Soft & delicate", icon: "🌸", persona: "romantic", points: 2, feedback: "Soft energy." },
-      { label: "Colorful & playful", icon: "🎨", persona: "creative", points: 2, feedback: "Playful spirit." },
-      { label: "Relaxed & easy", icon: "☁️", persona: "comfort", points: 2, feedback: "Ease first." },
+      { label: "Minimal & polished", icon: "🤍", image: "/quiz/f_q1_o1.jpg", persona: "minimal", points: 2, feedback: "Simplicity wins." },
+      { label: "Bold & statement", icon: "🔥", image: "/quiz/f_q1_o2.jpg", persona: "edgy", points: 2, feedback: "You love impact." },
+      { label: "Soft & feminine", icon: "🌸", image: "/quiz/f_q1_o3.jpg", persona: "romantic", points: 2, feedback: "Soft energy." },
+      { label: "Relaxed & casual", icon: "🎨", image: "/quiz/f_q1_o4.jpg", persona: "comfort", points: 2, feedback: "Ease First." },
     ],
   },
   {
     id: 2, question: "Your go-to outfit is…",
     options: [
-      { label: "Neutral top + straight jeans", icon: "👖", persona: "minimal", points: 2, feedback: "Clean aesthetic." },
-      { label: "Statement piece + edgy layers", icon: "🧥", persona: "edgy", points: 2, feedback: "Bold move." },
-      { label: "Dress / flowy skirt", icon: "👗", persona: "romantic", points: 2, feedback: "Feminine touch." },
-      { label: "Prints or mixed colors", icon: "🌈", persona: "creative", points: 2, feedback: "Creative flair." },
-      { label: "Co-ord / relaxed set", icon: "👕", persona: "comfort", points: 2, feedback: "Effortless." },
+      { label: "Neutral top + straight jeans", icon: "👖", image: "/quiz/f_q2_o1.jpg", persona: "minimal", points: 2, feedback: "Clean aesthetic." },
+      { label: "Statement piece + edgy layers", icon: "🧥", image: "/quiz/f_q2_o2.jpg", persona: "edgy", points: 2, feedback: "Bold move." },
+      { label: "Dress / flowy skirt", icon: "👗", image: "/quiz/f_q2_o3.jpg", persona: "romantic", points: 2, feedback: "Feminine touch." },
+      { label: "Co-ord / relaxed set", icon: "👕", image: "/quiz/f_q2_o4.jpg", persona: "comfort", points: 2, feedback: "Effortless." },
     ],
   },
   {
     id: 3, question: "Accessories?",
     options: [
-      { label: "Minimal jewelry", icon: "💍", persona: "minimal", points: 2, feedback: "Less is more." },
-      { label: "Chunky or bold", icon: "⛓️", persona: "edgy", points: 2, feedback: "Statement ready." },
-      { label: "Delicate pieces", icon: "✨", persona: "romantic", points: 2, feedback: "Elegant detail." },
-      { label: "Fun & quirky", icon: "🎪", persona: "creative", points: 2, feedback: "Express yourself." },
-      { label: "Only practical", icon: "⌚", persona: "comfort", points: 2, feedback: "Practical choice." },
+      { label: "Minimal jewelry", icon: "💍", image: "/quiz/f_q3_o1.jpg", persona: "minimal", points: 2, feedback: "Less is more." },
+      { label: "Chunky or bold", icon: "⛓️", image: "/quiz/f_q3_o2.jpg", persona: "edgy", points: 2, feedback: "Statement ready." },
+      { label: "Delicate pieces", icon: "✨", image: "/quiz/f_q3_o3.jpg", persona: "romantic", points: 2, feedback: "Elegant detail." },
+      { label: "Only practical", icon: "⌚", image: "/quiz/f_q3_o4.jpg", persona: "comfort", points: 2, feedback: "Practical choice." },
     ],
   },
   {
     id: 4, question: "Footwear?",
     options: [
-      { label: "Clean sneakers / flats", icon: "👟", persona: "minimal", points: 2, feedback: "Classic." },
-      { label: "Chunky boots / edgy sneakers", icon: "🥾", persona: "edgy", points: 2, feedback: "Fearless step." },
-      { label: "Heels / cute sandals", icon: "👠", persona: "romantic", points: 2, feedback: "Graceful." },
-      { label: "Colorful sneakers", icon: "🌟", persona: "creative", points: 2, feedback: "Fun choice." },
-      { label: "Slides / comfy shoes", icon: "🩴", persona: "comfort", points: 2, feedback: "Comfort zone." },
+      { label: "Clean sneakers / flats", icon: "👟", image: "/quiz/f_q4_o1.jpg", persona: "minimal", points: 2, feedback: "Classic." },
+      { label: "Chunky boots / edgy sneakers", icon: "🥾", image: "/quiz/f_q4_o2.jpg", persona: "edgy", points: 2, feedback: "Fearless step." },
+      { label: "Heels / cute sandals", icon: "👠", image: "/quiz/f_q4_o3.jpg", persona: "romantic", points: 2, feedback: "Graceful." },
+      { label: "Slides / comfy shoes", icon: "🩴", image: "/quiz/f_q4_o4.jpg", persona: "comfort", points: 2, feedback: "Comfort zone." },
     ],
   },
   {
     id: 5, question: "Wardrobe colors?",
     options: [
-      { label: "Neutrals", icon: "🤎", persona: "minimal", points: 2, feedback: "Timeless." },
-      { label: "Dark bold shades", icon: "🖤", persona: "edgy", points: 2, feedback: "Strong presence." },
-      { label: "Pastels", icon: "💗", persona: "romantic", points: 2, feedback: "Soft charm." },
-      { label: "Bright colors", icon: "💛", persona: "creative", points: 2, feedback: "Color lover." },
-      { label: "Soft fabrics & muted tones", icon: "🩶", persona: "comfort", points: 2, feedback: "Relaxed energy." },
+      { label: "Neutral tones", icon: "🤎", image: "/quiz/f_q5_o1.jpg", persona: "minimal", points: 2, feedback: "Timeless." },
+      { label: "Dark bold shades", icon: "🖤", image: "/quiz/f_q5_o2.jpg", persona: "edgy", points: 2, feedback: "Strong presence." },
+      { label: "Soft Pastels", icon: "💗", image: "/quiz/f_q5_o3.jpg", persona: "romantic", points: 2, feedback: "Soft charm." },
+      { label: "Soft fabrics & muted tones", icon: "🩶", image: "/quiz/f_q5_o4.jpg", persona: "comfort", points: 2, feedback: "Relaxed energy." },
     ],
   },
   {
     id: 6, question: "What matters most when dressing up?",
     options: [
-      { label: "Look clean", icon: "✨", persona: "minimal", points: 3, feedback: "Sharp choice." },
-      { label: "Stand out", icon: "⚡", persona: "edgy", points: 3, feedback: "Unmissable." },
-      { label: "Feel feminine", icon: "🌷", persona: "romantic", points: 3, feedback: "Graceful energy." },
-      { label: "Show personality", icon: "🎯", persona: "creative", points: 3, feedback: "Authentic vibe." },
-      { label: "Feel comfortable", icon: "🛋️", persona: "comfort", points: 3, feedback: "Comfort rules." },
+      { label: "Look clean & polished", icon: "✨", image: "/quiz/f_q6_o1.jpg", persona: "minimal", points: 3, feedback: "Sharp choice." },
+      { label: "Stand out", icon: "⚡", image: "/quiz/f_q6_o2.jpg", persona: "edgy", points: 3, feedback: "Unmissable." },
+      { label: "Feel feminine", icon: "🌷", image: "/quiz/f_q6_o3.jpg", persona: "romantic", points: 3, feedback: "Graceful energy." },
+      { label: "Feel comfortable", icon: "🛋️", image: "/quiz/f_q6_o4.jpg", persona: "comfort", points: 3, feedback: "Comfort rules." },
     ],
   },
 ];
@@ -162,61 +157,55 @@ export const QUESTIONS_MALE: Question[] = [
   {
     id: 1, question: "How do you pick outfits?",
     options: [
-      { label: "Safe fit", icon: "🎯", persona: "minimal", points: 2, feedback: "Clean mindset." },
-      { label: "Trend inspired", icon: "🔥", persona: "street", points: 2, feedback: "Trend aware." },
-      { label: "Structured choice", icon: "💼", persona: "gentleman", points: 2, feedback: "Intentional choice." },
-      { label: "Chill & easy", icon: "🌊", persona: "casual", points: 2, feedback: "Relaxed energy." },
-      { label: "Comfort first", icon: "☁️", persona: "athleisure", points: 2, feedback: "Comfort driven." },
+      { label: "Safe fit", icon: "🎯", image: "/quiz/m_q1_o1.jpg", persona: "minimal", points: 2, feedback: "Clean mindset." },
+      { label: "Trend inspired", icon: "🔥", image: "/quiz/m_q1_o2.jpg", persona: "street", points: 2, feedback: "Trend aware." },
+      { label: "Structured choice", icon: "💼", image: "/quiz/m_q1_o3.jpg", persona: "gentleman", points: 2, feedback: "Intentional choice." },
+      { label: "Chill & easy", icon: "🌊", image: "/quiz/m_q1_o4.jpg", persona: "casual", points: 2, feedback: "Relaxed energy." },
     ],
   },
   {
     id: 2, question: "Everyday outfit?",
     options: [
-      { label: "Tee + jeans", icon: "👕", persona: "minimal", points: 2, feedback: "Classic move." },
-      { label: "Oversized + cargos", icon: "🧥", persona: "street", points: 2, feedback: "Street locked." },
-      { label: "Shirt + chinos", icon: "👔", persona: "gentleman", points: 2, feedback: "Sharp presence." },
-      { label: "Hoodie + denim", icon: "🧢", persona: "casual", points: 2, feedback: "Effortless vibe." },
-      { label: "Tracks / sporty", icon: "🏃", persona: "athleisure", points: 2, feedback: "Built for movement." },
+      { label: "Tee + jeans", icon: "👕", image: "/quiz/m_q2_o1.jpg", persona: "minimal", points: 2, feedback: "Classic move." },
+      { label: "Oversized + cargos", icon: "🧥", image: "/quiz/m_q2_o2.jpg", persona: "street", points: 2, feedback: "Street locked." },
+      { label: "Shirt + chinos", icon: "👔", image: "/quiz/m_q2_o3.jpg", persona: "gentleman", points: 2, feedback: "Sharp presence." },
+      { label: "Hoodie + denim", icon: "🧢", image: "/quiz/m_q2_o4.jpg", persona: "casual", points: 2, feedback: "Effortless vibe." },
     ],
   },
   {
     id: 3, question: "Accessories?",
     options: [
-      { label: "Watch only", icon: "⌚", persona: "minimal", points: 2, feedback: "Subtle power." },
-      { label: "Chains / rings", icon: "⛓️", persona: "street", points: 2, feedback: "Statement ready." },
-      { label: "Coordinated details", icon: "💎", persona: "gentleman", points: 2, feedback: "Refined touch." },
-      { label: "Rarely wear", icon: "🤷", persona: "casual", points: 2, feedback: "No fuss." },
-      { label: "Sport bands / caps", icon: "🧢", persona: "athleisure", points: 2, feedback: "Sport energy." },
+      { label: "Watch only", icon: "⌚", image: "/quiz/m_q3_o1.jpg", persona: "minimal", points: 2, feedback: "Subtle power." },
+      { label: "Chains / rings", icon: "⛓️", image: "/quiz/m_q3_o2.jpg", persona: "street", points: 2, feedback: "Statement ready." },
+      { label: "Coordinated details", icon: "💎", image: "/quiz/m_q3_o3.jpg", persona: "gentleman", points: 2, feedback: "Refined touch." },
+      { label: "Sport bands / caps", icon: "🧢", image: "/quiz/m_q3_o4.jpg", persona: "athleisure", points: 2, feedback: "Sport energy." },
     ],
   },
   {
     id: 4, question: "Footwear?",
     options: [
-      { label: "Clean sneakers", icon: "👟", persona: "minimal", points: 2, feedback: "Sharp choice." },
-      { label: "Chunky sneakers", icon: "🥾", persona: "street", points: 2, feedback: "Bold step." },
-      { label: "Loafers / boots", icon: "👞", persona: "gentleman", points: 2, feedback: "Elevated move." },
-      { label: "Any comfy pair", icon: "🩴", persona: "casual", points: 2, feedback: "Chill pick." },
-      { label: "Running shoes", icon: "🏃", persona: "athleisure", points: 2, feedback: "Comfort first." },
+      { label: "Clean sneakers", icon: "👟", image: "/quiz/m_q4_o1.jpg", persona: "minimal", points: 2, feedback: "Sharp choice." },
+      { label: "Chunky sneakers", icon: "🥾", image: "/quiz/m_q4_o2.jpg", persona: "street", points: 2, feedback: "Bold step." },
+      { label: "Loafers / boots", icon: "👞", image: "/quiz/m_q4_o3.jpg", persona: "gentleman", points: 2, feedback: "Elevated move." },
+      { label: "Any comfy pair", icon: "🩴", image: "/quiz/m_q4_o4.jpg", persona: "casual", points: 2, feedback: "Chill pick." },
     ],
   },
   {
     id: 5, question: "Wardrobe colors?",
     options: [
-      { label: "Black / white / grey", icon: "🖤", persona: "minimal", points: 2, feedback: "Timeless energy." },
-      { label: "Bold / trending colors", icon: "🔥", persona: "street", points: 2, feedback: "Attention locked." },
-      { label: "Navy / structured tones", icon: "💙", persona: "gentleman", points: 2, feedback: "Polished vibe." },
-      { label: "Mixed casual tones", icon: "🎨", persona: "casual", points: 2, feedback: "Easy balance." },
-      { label: "Sporty tones", icon: "💚", persona: "athleisure", points: 2, feedback: "Dynamic look." },
+      { label: "Black / white / grey", icon: "🖤", image: "/quiz/m_q5_o1.jpg", persona: "minimal", points: 2, feedback: "Timeless energy." },
+      { label: "Bold / trending colors", icon: "🔥", image: "/quiz/m_q5_o2.jpg", persona: "street", points: 2, feedback: "Attention locked." },
+      { label: "Navy / structured tones", icon: "💙", image: "/quiz/m_q5_o3.jpg", persona: "gentleman", points: 2, feedback: "Polished vibe." },
+      { label: "Mixed casual tones", icon: "🎨", image: "/quiz/m_q5_o4.jpg", persona: "casual", points: 2, feedback: "Easy balance." },
     ],
   },
   {
     id: 6, question: "What matters most when dressing up?",
     options: [
-      { label: "Look clean", icon: "✨", persona: "minimal", points: 3, feedback: "Precision matters." },
-      { label: "Look stylish", icon: "🔥", persona: "street", points: 3, feedback: "Impression counts." },
-      { label: "Look sharp", icon: "💼", persona: "gentleman", points: 3, feedback: "Command respect." },
-      { label: "Feel relaxed", icon: "🌊", persona: "casual", points: 3, feedback: "Stay comfortable." },
-      { label: "Move freely", icon: "⚡", persona: "athleisure", points: 3, feedback: "Performance first." },
+      { label: "Look clean", icon: "✨", image: "/quiz/m_q6_o1.jpg", persona: "minimal", points: 3, feedback: "Precision matters." },
+      { label: "Look stylish", icon: "🔥", image: "/quiz/m_q6_o2.jpg", persona: "street", points: 3, feedback: "Impression counts." },
+      { label: "Look sharp", icon: "💼", image: "/quiz/m_q6_o3.jpg", persona: "gentleman", points: 3, feedback: "Command respect." },
+      { label: "Feel relaxed", icon: "🌊", image: "/quiz/m_q6_o4.jpg", persona: "casual", points: 3, feedback: "Stay comfortable." },
     ],
   },
 ];
@@ -333,7 +322,6 @@ export default function StyleQuizPage() {
   /* ================= GENDER SCREEN ================= */
 
   if (!gender) {
-    const brandLetters = "OUTFEVIBE".split("");
     return (
       <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col relative overflow-hidden">
         {/* Background ambient glows */}
@@ -344,52 +332,13 @@ export default function StyleQuizPage() {
         <div className="flex-1 flex items-center justify-center px-6 relative z-10">
           <div className="text-center max-w-lg">
 
-            {/* Animated OUTFEVIBE letters */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.3 }}
-              onClick={() => router.push("/")}
-              className="flex items-center justify-center gap-[3px] mb-8 cursor-pointer group"
-              role="button"
-              tabIndex={0}
-            >
-              {brandLetters.map((letter, i) => (
-                <motion.span
-                  key={i}
-                  initial={{ opacity: 0, y: 30, rotateX: -90 }}
-                  animate={{ opacity: 1, y: 0, rotateX: 0 }}
-                  transition={{
-                    delay: 0.15 + i * 0.08,
-                    duration: 0.5,
-                    type: "spring",
-                    stiffness: 150,
-                    damping: 12,
-                  }}
-                  whileHover={{ y: -4, scale: 1.1 }}
-                  className="text-4xl md:text-5xl font-extrabold tracking-[0.15em] bg-gradient-to-b from-[#d4af7f] via-[#f5e6c8] to-[#b8860b] bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(212,175,127,0.3)] inline-block group-hover:drop-shadow-[0_0_30px_rgba(212,175,127,0.5)] transition-[filter] duration-300"
-                  style={{ perspective: "600px" }}
-                >
-                  {letter}
-                </motion.span>
-              ))}
-            </motion.div>
-
-            {/* Divider line */}
-            <motion.div
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ delay: 1, duration: 0.6, ease: "easeOut" }}
-              className="h-[1px] w-32 mx-auto bg-gradient-to-r from-transparent via-[#d4af7f]/50 to-transparent mb-8"
-            />
-
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.1, duration: 0.5 }}
-              className="text-5xl md:text-6xl font-extrabold tracking-tight mb-4"
+              className="text-5xl md:text-6xl font-extrabold tracking-tight mb-4 leading-tight"
             >
-              Let's <span className="text-[#d4af7f]">Style</span>
+              Discover Your <span className="text-[#d4af7f]">Style Persona</span>
             </motion.h1>
 
             <motion.p
@@ -398,7 +347,7 @@ export default function StyleQuizPage() {
               transition={{ delay: 1.4, duration: 0.5 }}
               className="text-gray-400 text-lg mb-14"
             >
-              6 quick questions. Your style persona awaits.
+              Answer 6 quick questions and discover the style that defines you.
             </motion.p>
 
             <motion.div
@@ -411,36 +360,46 @@ export default function StyleQuizPage() {
                 whileHover={{ scale: 1.04, y: -2 }}
                 whileTap={{ scale: 0.96 }}
                 onClick={() => setGender("female")}
-                className="group relative px-12 py-6 rounded-2xl bg-[#111] border border-[#2a2a2a] hover:border-[#d4af7f] transition-all duration-300 overflow-hidden hover:shadow-[0_0_40px_rgba(212,175,127,0.15)]"
+                className="group relative w-52 rounded-2xl bg-[#111] border border-[#2a2a2a] overflow-hidden hover:border-[#d4af7f] transition-all duration-300"
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-[#d4af7f]/0 via-transparent to-[#d4af7f]/10 opacity-0 group-hover:opacity-100 transition-all duration-500" />
-                <motion.span
-                  className="text-4xl block mb-3"
-                  animate={{ y: [0, -4, 0] }}
-                  transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
-                >
-                  👗
-                </motion.span>
-                <span className="text-lg font-semibold tracking-wide relative z-10">Style for Her</span>
-                <span className="block text-xs text-gray-500 mt-1 relative z-10">Discover your vibe</span>
+
+                <div className="relative w-full aspect-[4/5]">
+                  <Image
+                    src="/quiz/f_q4_o3.jpg"
+                    alt="female fashion"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+
+                <div className="py-3 text-center">
+                  <span className="text-lg font-semibold">Style for Her</span>
+                  <p className="text-xs text-gray-400">Discover your vibe</p>
+                </div>
+
               </motion.button>
 
               <motion.button
                 whileHover={{ scale: 1.04, y: -2 }}
                 whileTap={{ scale: 0.96 }}
                 onClick={() => setGender("male")}
-                className="group relative px-12 py-6 rounded-2xl bg-[#111] border border-[#2a2a2a] hover:border-[#d4af7f] transition-all duration-300 overflow-hidden hover:shadow-[0_0_40px_rgba(212,175,127,0.15)]"
+                className="group relative w-52 rounded-2xl bg-[#111] border border-[#2a2a2a] overflow-hidden hover:border-[#d4af7f] transition-all duration-300"
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-[#d4af7f]/0 via-transparent to-[#d4af7f]/10 opacity-0 group-hover:opacity-100 transition-all duration-500" />
-                <motion.span
-                  className="text-4xl block mb-3"
-                  animate={{ y: [0, -4, 0] }}
-                  transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut", delay: 0.4 }}
-                >
-                  🧥
-                </motion.span>
-                <span className="text-lg font-semibold tracking-wide relative z-10">Style for Him</span>
-                <span className="block text-xs text-gray-500 mt-1 relative z-10">Unlock your persona</span>
+
+                <div className="relative w-full aspect-[4/5]">
+                  <Image
+                    src="/quiz/m_q2_o1.jpg"
+                    alt="male fashion"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+
+                <div className="py-3 text-center">
+                  <span className="text-lg font-semibold">Style for Him</span>
+                  <p className="text-xs text-gray-400">Unlock your persona</p>
+                </div>
+
               </motion.button>
             </motion.div>
           </div>
@@ -552,14 +511,14 @@ export default function StyleQuizPage() {
 
                         {/* Outfit previews */}
                         {outfits.length > 0 && (
-                          <div className="flex gap-2">
+                          <div className="grid grid-cols-2 gap-3">
                             {outfits.map((outfit, j) => (
                               <motion.div
                                 key={j}
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ delay: 0.6 + i * 0.1 + j * 0.05 }}
-                                className={`flex-1 rounded-lg overflow-hidden border transition-all duration-300 ${isWinner
+                                className={`flex-1 rounded-xl overflow-hidden border transition-all duration-300 ${isWinner
                                   ? "border-[#d4af7f]/20 hover:border-[#d4af7f]/50"
                                   : "border-[#1f1f1f] opacity-50 hover:opacity-80"
                                   }`}
@@ -567,7 +526,7 @@ export default function StyleQuizPage() {
                                 <img
                                   src={outfit.image}
                                   alt={outfit.title}
-                                  className="w-full h-20 object-cover"
+                                  className="w-full aspect-[3/4] object-cover"
                                 />
                                 <div className="px-2 py-1.5 bg-[#0f0f0f]">
                                   <p className={`text-[10px] font-medium truncate ${isWinner ? "text-gray-300" : "text-gray-600"}`}>
@@ -784,40 +743,37 @@ export default function StyleQuizPage() {
                 {currentQ.question}
               </h2>
 
-              <div className="space-y-3">
+              <div className="grid grid-cols-2 gap-3">
                 {currentQ.options.map((opt, i) => (
                   <motion.button
                     key={i}
-                    initial={{ opacity: 0, y: 20, scale: 0.97 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ delay: i * 0.07, type: "spring", stiffness: 200, damping: 18 }}
-                    whileHover={{ scale: 1.02, x: 4 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.07 }}
+                    whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
                     onClick={() => handleSelect(opt)}
-                    className="group relative w-full p-4 pl-5 rounded-xl border border-[#1f1f1f] bg-[#111] hover:bg-[#141414] hover:border-[#d4af7f]/50 transition-all duration-300 text-left flex items-center gap-4 overflow-hidden hover:shadow-[0_0_25px_rgba(212,175,127,0.08)]"
+                    className="w-full rounded-xl border border-[#1f1f1f] bg-[#111] overflow-hidden hover:border-[#d4af7f]/60 transition-all"
                   >
-                    {/* Left accent bar */}
-                    <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-[#d4af7f] rounded-l-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-                    {/* Hover glow */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#d4af7f]/0 via-[#d4af7f]/3 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                    {/* IMAGE */}
+                    {opt.image && (
+                      <div className="relative w-full aspect-[4/5]">
+                        <Image
+                          src={opt.image}
+                          alt={opt.label}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    )}
 
-                    <span className="text-xl relative z-10 group-hover:scale-110 transition-transform duration-200">{opt.icon}</span>
-                    <span className="text-sm md:text-base font-medium relative z-10">{opt.label}</span>
+                    {/* TITLE + ICON */}
+                    <div className="flex items-center justify-center gap-2 py-3 px-2">
+                      <span className="text-lg">{opt.icon}</span>
+                      <span className="text-sm font-medium text-center">{opt.label}</span>
+                    </div>
 
-                    {/* Points badge */}
-                    <motion.span
-                      initial={{ opacity: 0, x: 10 }}
-                      whileHover={{ opacity: 1, x: 0 }}
-                      className="ml-auto text-xs font-mono text-[#d4af7f]/60 relative z-10 opacity-0 group-hover:opacity-100 transition-all duration-300"
-                    >
-                      +{opt.points}
-                    </motion.span>
-
-                    {/* Arrow indicator */}
-                    <span className="text-gray-600 group-hover:text-[#d4af7f] transition-colors duration-300 relative z-10 opacity-0 group-hover:opacity-100 text-sm">
-                      →
-                    </span>
                   </motion.button>
                 ))}
               </div>
