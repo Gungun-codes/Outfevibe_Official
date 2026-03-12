@@ -1,336 +1,380 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { useAuth } from "@/context/authContext";
-import { supabase } from "@/lib/supabase";
-import Link from "next/link";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Camera, Upload, RotateCcw } from "lucide-react";
+import { ChatBubble, TypingIndicator } from "@/components/ChatBubble";
+import { ChipSelector } from "@/components/ChipSelector";
+import { AnalysisEditor } from "@/components/AnalysisEditor";
+import { AnalysisScreen } from "@/components/AnalysisScreen";
+import { OutfitResultCard } from "@/components/OutfitCard";
+import {
+  OutfitResult,
+  OCCASIONS,
+  VIBES,
+  PLATFORMS,
+  BODY_SHAPES,
+  SKIN_TONES,
+} from "@/lib/type";
 
-/* ---------------- TYPES ---------------- */
+interface Msg {
+  id: string;
+  role: "bot" | "user";
+  content: React.ReactNode;
+}
 
-type Outfit = {
-  id: number;
-  gender: "male" | "female";
-  occasion: string[];
-  mood: string[];
-  budget: string[];
-  title?: string;
-  image: string;
-  affiliateLink?: string;
-};
+// ─── module-level singletons (survive React Strict Mode double-invoke) ───────
+let _n = 0;
+const uid = () => `m${++_n}_${Date.now()}`;
+const pick = <T,>(arr: T[]) => arr[Math.floor(Math.random() * arr.length)];
 
-export default function OutfitChat() {
-  const { user } = useAuth();
+// ONE flag: the welcome sequence must fire exactly once per page load
+let _booted = false;
 
-  const [step, setStep] = useState(1);
-  const [gender, setGender] = useState<"male" | "female" | "">("");
-  const [occasion, setOccasion] = useState("");
-  const [mood, setMood] = useState("");
-  const [budget, setBudget] = useState("");
-  const [results, setResults] = useState<Outfit[]>([]);
-  const [typing, setTyping] = useState(false);
-  const [saved, setSaved] = useState<number[]>([]);
-  const [allOutfits, setAllOutfits] = useState<Outfit[]>([]);
+// ─── component ────────────────────────────────────────────────────────────────
+export default function Page() {
+  const [msgs,          setMsgs]         = useState<Msg[]>([]);
+  const [typing,        setTyping]        = useState(false);
+  const [analysing,     setAnalysing]     = useState(false);
+  const [analyseImgUrl, setAnalyseImgUrl] = useState("");
 
-  const chatEndRef = useRef<HTMLDivElement | null>(null);
-
-  const moods = ["Chill", "Classic", "Bold", "Traditional"];
-  const occasions = ["College", "Party", "Date", "Wedding", "Eid"];
-  const budgets = ["Low", "Medium", "High"];
-
-  /* ---------------- LOAD JSON FROM PUBLIC ---------------- */
-
-  useEffect(() => {
-    async function loadOutfits() {
-      const res = await fetch("/api/outfits");
-      const data = await res.json();
-      setAllOutfits(data);
-    }
-
-    loadOutfits();
-  }, []);
-
-  /* ---------------- LOAD SAVED ---------------- */
+  const bottomRef   = useRef<HTMLDivElement>(null);
+  const fileRef     = useRef<HTMLInputElement>(null);
+  const camRef      = useRef<HTMLInputElement>(null);
+  const genderRef   = useRef("");
+  const occasionRef = useRef("");
+  const analysisRef = useRef<{ body_shape: string; skin_tone: string } | null>(null);
 
   useEffect(() => {
-    if (!user) return;
+    setTimeout(() => bottomRef.current?.scrollIntoView({ behavior: "smooth" }), 80);
+  }, [msgs, typing, analysing]);
 
-    const loadSaved = async () => {
-      const { data } = await supabase
-        .from("ai_outfit_images")
-        .select("ai_suggestion")
-        .eq("user_id", user.id);
+  // ── core push helpers ─────────────────────────────────────────────────────
+  const pushUser = useCallback((content: React.ReactNode) =>
+    setMsgs((p) => [...p, { id: uid(), role: "user", content }]), []);
 
-      if (data) {
-        const savedIds = data
-          .map((row: any) => {
-            const match = row.ai_suggestion?.match(/\[ID:(\d+)\]/);
-            return match ? parseInt(match[1]) : null;
-          })
-          .filter((id: number | null): id is number => id !== null);
+  const pushBot = useCallback(
+    (content: React.ReactNode, delay = 700): Promise<void> =>
+      new Promise((res) => {
+        setTyping(true);
+        setTimeout(() => {
+          setTyping(false);
+          setMsgs((p) => [...p, { id: uid(), role: "bot", content }]);
+          res();
+        }, delay);
+      }),
+    []
+  );
 
-        setSaved(savedIds);
-      }
+  // ── styling flow: gender → occasion → vibe → platform → outfits ──────────
+  const runFlow = useCallback((pb: typeof pushBot, pu: typeof pushUser) => {
+    // Defined inline so pb/pu are always the stable refs from this render
+    const flow = async () => {
+      await pb(
+        <div>
+          <p className="mb-3">Now let&apos;s personalize! Who are we styling today? 👗🎁</p>
+          <ChipSelector
+            options={["Female", "Male"]}
+            onSelect={async (gender) => {
+              pu(gender);
+              genderRef.current = gender;
+              await pb(
+                <div>
+                  <p className="mb-3">Great choice! What&apos;s the occasion? 🎉</p>
+                  <ChipSelector
+                    options={OCCASIONS}
+                    onSelect={async (occ) => {
+                      pu(occ);
+                      occasionRef.current = occ;
+                      await pb(
+                        <div>
+                          <p className="mb-3">Love it! What&apos;s your vibe today? ✨</p>
+                          <ChipSelector
+                            options={VIBES[gender] ?? VIBES["Female"]}
+                            onSelect={async (vibe) => {
+                              pu(vibe);
+                              await pb(
+                                <div>
+                                  <p className="mb-3">Almost there! Where would you like to shop? 🛍️</p>
+                                  <ChipSelector
+                                    options={PLATFORMS}
+                                    multi
+                                    actionLabel="✨ Find My Outfits"
+                                    onSelect={async (raw) => {
+                                      const plats = raw.split(",").filter(Boolean);
+                                      pu(plats.join(", "));
+                                      const target = plats[0] ?? "Myntra";
+
+                                      await pb(
+                                        <div>
+                                          <p className="font-semibold">Finding your perfect outfit! ✨</p>
+                                          <p className="text-gray-400 text-xs mt-0.5">Here&apos;s my top pick for you:</p>
+                                        </div>,
+                                        400
+                                      );
+
+                                      const loadId = uid();
+                                      setMsgs((p) => [...p, {
+                                        id: loadId,
+                                        role: "bot",
+                                        content: (
+                                          <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 flex flex-col items-center gap-3 border border-purple-100">
+                                            <div className="w-8 h-8 rounded-full animate-spin" style={{ border: "3px solid #e91e8c", borderTopColor: "transparent" }} />
+                                            <p className="text-sm font-semibold text-purple-700">Curating {target} outfit…</p>
+                                            <div className="flex gap-1">
+                                              {[0,1,2].map((i) => (
+                                                <span key={i} className="w-1.5 h-1.5 rounded-full bg-pink-400 animate-bounce" style={{ animationDelay: `${i * 0.15}s` }} />
+                                              ))}
+                                            </div>
+                                          </div>
+                                        ),
+                                      }]);
+
+                                      try {
+                                        const res = await fetch("/api/outfits", {
+                                          method: "POST",
+                                          headers: { "Content-Type": "application/json" },
+                                          body: JSON.stringify({
+                                            gender: genderRef.current,
+                                            occasion: occasionRef.current,
+                                            vibe, platform: target,
+                                            body_shape: analysisRef.current?.body_shape,
+                                            skin_tone:  analysisRef.current?.skin_tone,
+                                          }),
+                                        });
+                                        const data: OutfitResult & { success: boolean } = await res.json();
+                                        if (!data.success) throw new Error();
+
+                                        setMsgs((p) => p.map((m) =>
+                                          m.id === loadId
+                                            ? { ...m, content: <OutfitResultCard result={data} platform={target} /> }
+                                            : m
+                                        ));
+
+                                        await pb(
+                                          <div className="flex flex-col gap-2">
+                                            <p>Hope you love this look! 🛍️ Want to explore another style?</p>
+                                            <button
+                                              onClick={handleStartOver}
+                                              className="flex items-center gap-1.5 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-full px-4 py-2 text-sm font-medium w-fit"
+                                            >
+                                              <RotateCcw className="w-4 h-4" /> Start Over
+                                            </button>
+                                          </div>,
+                                          800
+                                        );
+                                      } catch {
+                                        setMsgs((p) => p.map((m) =>
+                                          m.id === loadId
+                                            ? { ...m, content: <p className="text-red-400 text-sm">Couldn&apos;t load outfits. Try again.</p> }
+                                            : m
+                                        ));
+                                      }
+                                    }}
+                                  />
+                                </div>,
+                                600
+                              );
+                            }}
+                          />
+                        </div>,
+                        600
+                      );
+                    }}
+                  />
+                </div>,
+                600
+              );
+            }}
+          />
+        </div>,
+        500
+      );
+    };
+    flow();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── boot sequence (welcome + upload prompt) ───────────────────────────────
+  const boot = useCallback(async (pb: typeof pushBot, pu: typeof pushUser) => {
+    // ─── WELCOME — single message ───────────────────────────────────────────
+    await pb(
+      <div>
+        <p className="font-semibold text-gray-900 mb-1">Hey! I&apos;m your AI Stylist 👋</p>
+        <p className="text-gray-600 text-sm leading-relaxed">
+          I&apos;ll help you find the perfect outfit tailored just for you. I can
+          analyse your body type &amp; skin tone to give you the most flattering
+          recommendations.
+        </p>
+        <p className="text-gray-400 text-xs mt-2">Let&apos;s get started!</p>
+      </div>,
+      900
+    );
+
+    // ─── UPLOAD PROMPT — single message ────────────────────────────────────
+    // We define skip here so it closes over pb/pu correctly
+    const skip = async () => {
+      pu("I'll skip the photo for now");
+      await pb("No worries! I'll still find amazing outfits for you 😊", 500);
+      runFlow(pb, pu);
     };
 
-    loadSaved();
-  }, [user]);
+    await pb(
+      <UploadPromptMsg
+        onCamera={() => camRef.current?.click()}
+        onUpload={() => fileRef.current?.click()}
+        onSkip={skip}
+      />,
+      1200
+    );
+  }, [runFlow]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // ── start over ────────────────────────────────────────────────────────────
+  const handleStartOver = useCallback(() => {
+    _n = 0;
+    genderRef.current   = "";
+    occasionRef.current = "";
+    analysisRef.current = null;
+    setAnalysing(false);
+    setMsgs([]);
+    // small delay so setMsgs([]) completes, then boot again
+    setTimeout(() => boot(pushBot, pushUser), 120);
+  }, [boot, pushBot, pushUser]);
+
+  // ── one-time init — guarded by module-level flag ──────────────────────────
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [step, results, typing]);
+    if (_booted) return;
+    _booted = true;
+    boot(pushBot, pushUser);
+  }, [boot, pushBot, pushUser]);
 
-  function simulateTyping(nextStep: number) {
-    setTyping(true);
-    setTimeout(() => {
-      setTyping(false);
-      setStep(nextStep);
-    }, 500);
-  }
+  // ── file upload → analysis overlay ───────────────────────────────────────
+  const handleFile = useCallback((file: File) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const url = e.target?.result as string;
+      pushUser(<img src={url} alt="you" className="w-28 h-36 object-cover rounded-2xl shadow-md" />);
+      setAnalyseImgUrl(url);
+      setAnalysing(true);
+    };
+    reader.readAsDataURL(file);
+  }, [pushUser]);
 
-  /* ---------------- RANKING LOGIC ---------------- */
+  const onAnalysisDone = useCallback(async () => {
+    setAnalysing(false);
+    const shape = pick(BODY_SHAPES);
+    const tone  = pick(SKIN_TONES);
+    analysisRef.current = { body_shape: shape, skin_tone: tone };
 
-  function generateLooks() {
-    if (!gender) return;
-
-    const genderFiltered = allOutfits.filter(
-      (item) => item.gender === gender
+    await pushBot(
+      <div>
+        <p className="mb-1 text-sm font-medium">Here&apos;s what I found! ✨</p>
+        <p className="text-xs text-gray-400 mb-3">If anything looks off, correct it below.</p>
+        <AnalysisEditor
+          bodyShape={shape}
+          skinTone={tone}
+          onConfirm={async (s, t) => {
+            analysisRef.current = { body_shape: s, skin_tone: t };
+            pushUser(`${s} · ${t} skin ✓`);
+            await pushBot("Perfect! I'll keep that in mind. ✨", 500);
+            runFlow(pushBot, pushUser);
+          }}
+        />
+      </div>,
+      600
     );
+  }, [pushBot, pushUser, runFlow]);
 
-    const scored = genderFiltered.map((item) => {
-      let score = 0;
-
-      if (item.occasion.includes(occasion.toLowerCase()))
-        score += 3;
-
-      if (item.mood.includes(mood.toLowerCase()))
-        score += 2;
-
-      if (item.budget.includes(budget.toLowerCase()))
-        score += 1;
-
-      return { ...item, score };
-    });
-
-    const sorted = scored.sort((a, b) => b.score - a.score);
-
-    let topTwo: Outfit[] = [];
-
-    if (sorted.length > 0) {
-      topTwo = sorted.slice(0, 2);
-    } else {
-      const shuffled = [...genderFiltered].sort(() => 0.5 - Math.random());
-      topTwo = shuffled.slice(0, 2);
-    }
-
-    setResults(topTwo);
-    simulateTyping(5);
-  }
-
-  /* ---------------- SURPRISE ---------------- */
-
-  function surpriseMe() {
-    if (!gender) return;
-
-    const genderFiltered = allOutfits.filter(
-      (item) => item.gender === gender
-    );
-
-    const shuffled = [...genderFiltered].sort(() => 0.5 - Math.random());
-    setResults(shuffled.slice(0, 2));
-  }
-
-  function restyle() {
-    setGender("");
-    setMood("");
-    setOccasion("");
-    setBudget("");
-    setResults([]);
-    setStep(1);
-  }
-
-  const handleShare = async () => {
-    if (results.length === 0) return;
-
-    const urls = results.map((r) => r.affiliateLink).filter(Boolean).join("\n");
-    const adjective = gender === "male" ? "sharp" : "gorgeous";
-    const emoji = gender === "male" ? "🔥" : "✨";
-    const closingEmoji = gender === "male" ? "😎" : "💖";
-
-    const message = `Check out these ${adjective} outfits curated just for me by the Outfevibe AI Stylist! ${emoji}\n\nShop my looks here:\n${urls}\n\nFind your perfect aesthetic at Outfevibe! ${closingEmoji}\nwww.outfevibe.com`;
-
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: `My Outfevibe Style ${emoji}`,
-          text: message,
-        });
-      } catch (error) {
-        console.log("Error sharing", error);
-      }
-    } else {
-      navigator.clipboard.writeText(message);
-      alert("Looks and message copied to clipboard! ✨ Share it with your friends!");
-    }
-  };
-
-  /* ---------------- UI ---------------- */
-
+  // ── render ────────────────────────────────────────────────────────────────
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex justify-center py-12 px-4">
-      <div className="w-full max-w-xl">
-        <div className="bg-white/80 backdrop-blur-xl border border-slate-200/60 rounded-3xl p-8 shadow-xl space-y-6">
+    <div className="flex flex-col h-full max-w-lg mx-auto bg-[#faf5ff] relative">
+      {/* Header */}
+      <header className="flex items-center justify-center px-4 py-4 bg-white/90 backdrop-blur border-b border-purple-50 shadow-sm z-10">
+        <h1 className="text-xl font-bold tracking-tight">
+          Steal the{" "}
+          <span className="gradient-text font-display italic">Look</span>
+        </h1>
+      </header>
 
-          <Link href="/" className="inline-block hover:opacity-80 transition-opacity">
-            <h1 className="text-2xl font-bold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500">
-              Outfevibe Stylist
-            </h1>
-          </Link>
+      {/* Chat */}
+      <main className="flex-1 overflow-y-auto scrollbar-hide px-4 py-4">
+        <AnimatePresence initial={false}>
+          {msgs.map((m) => (
+            <motion.div
+              key={m.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+            >
+              <ChatBubble role={m.role}>{m.content}</ChatBubble>
+            </motion.div>
+          ))}
+        </AnimatePresence>
+        {typing && <TypingIndicator />}
+        <div ref={bottomRef} />
+      </main>
 
-          {step >= 1 && (
-            <div className="space-y-3">
-              <p className="font-medium text-slate-800">Who are we styling today?</p>
-              {!gender ? (
-                <div className="flex gap-3 flex-wrap">
-                  <button
-                    className="px-5 py-2.5 rounded-full border border-slate-200 hover:border-purple-300 hover:bg-purple-50 text-slate-600 font-medium transition-all"
-                    onClick={() => { setGender("female"); simulateTyping(2); }}>Girl</button>
-                  <button
-                    className="px-5 py-2.5 rounded-full border border-slate-200 hover:border-purple-300 hover:bg-purple-50 text-slate-600 font-medium transition-all"
-                    onClick={() => { setGender("male"); simulateTyping(2); }}>Boy</button>
-                </div>
-              ) : (
-                <div className="inline-block px-4 py-2 rounded-2xl bg-purple-50 text-purple-700 text-sm font-medium border border-purple-100">
-                  {gender === "female" ? "Girl" : "Boy"}
-                </div>
-              )}
+      {/* Analysis fullscreen overlay */}
+      <AnimatePresence>
+        {analysing && (
+          <motion.div
+            initial={{ opacity: 0, y: 60 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 40 }}
+            transition={{ type: "spring", stiffness: 280, damping: 26 }}
+            className="absolute inset-0 z-20 bg-[#faf5ff]/95 backdrop-blur-sm flex items-center justify-center px-6"
+          >
+            <div className="w-full max-w-sm">
+              <AnalysisScreen imageUrl={analyseImgUrl} onDone={onAnalysisDone} durationMs={5000} />
             </div>
-          )}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-          {step >= 2 && (
-            <div className="space-y-3">
-              <p className="font-medium text-slate-800">Where are we going?</p>
-              {!occasion ? (
-                <div className="flex gap-3 flex-wrap">
-                  {occasions.map((o) => (
-                    <button
-                      key={o}
-                      className="px-5 py-2.5 rounded-full border border-slate-200 hover:border-purple-300 hover:bg-purple-50 text-slate-600 font-medium transition-all"
-                      onClick={() => { setOccasion(o); simulateTyping(3); }}>
-                      {o}
-                    </button>
-                  ))}
-                </div>
-              ) : (
-                <div className="inline-block px-4 py-2 rounded-2xl bg-purple-50 text-purple-700 text-sm font-medium border border-purple-100">
-                  {occasion}
-                </div>
-              )}
-            </div>
-          )}
+      {/* Hidden file inputs */}
+      <input ref={fileRef} type="file" accept="image/*" className="hidden"
+        onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); e.target.value = ""; }} />
+      <input ref={camRef} type="file" accept="image/*" capture="environment" className="hidden"
+        onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); e.target.value = ""; }} />
+    </div>
+  );
+}
 
-          {step >= 3 && (
-            <div className="space-y-3">
-              <p className="font-medium text-slate-800">What’s the vibe?</p>
-              {!mood ? (
-                <div className="flex gap-3 flex-wrap">
-                  {moods.map((m) => (
-                    <button
-                      key={m}
-                      className="px-5 py-2.5 rounded-full border border-slate-200 hover:border-purple-300 hover:bg-purple-50 text-slate-600 font-medium transition-all"
-                      onClick={() => { setMood(m); simulateTyping(4); }}>
-                      {m}
-                    </button>
-                  ))}
-                </div>
-              ) : (
-                <div className="inline-block px-4 py-2 rounded-2xl bg-purple-50 text-purple-700 text-sm font-medium border border-purple-100">
-                  {mood}
-                </div>
-              )}
-            </div>
-          )}
-
-          {step >= 4 && (
-            <div className="space-y-3">
-              <p className="font-medium text-slate-800">What’s your budget?</p>
-              {!budget ? (
-                <div className="flex gap-3 flex-wrap">
-                  {budgets.map((b) => (
-                    <button
-                      key={b}
-                      className="px-5 py-2.5 rounded-full border border-slate-200 hover:border-purple-300 hover:bg-purple-50 text-slate-600 font-medium transition-all"
-                      onClick={() => { setBudget(b); generateLooks(); }}>
-                      {b}
-                    </button>
-                  ))}
-                </div>
-              ) : (
-                <div className="inline-block px-4 py-2 rounded-2xl bg-purple-50 text-purple-700 text-sm font-medium border border-purple-100">
-                  {budget}
-                </div>
-              )}
-            </div>
-          )}
-
-          {typing && (
-            <div className="flex items-center gap-1 p-2">
-              <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-              <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-              <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce"></div>
-            </div>
-          )}
-
-          {step === 5 && (
-            <div className="space-y-6 mt-4">
-              <p className="font-medium text-slate-800 text-lg">Your looks ✨</p>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {results.map((look) => (
-                  <div key={look.id} className="rounded-2xl overflow-hidden border border-slate-200/60 bg-white hover:shadow-lg transition-all">
-                    <div className="relative aspect-[3/4] overflow-hidden">
-                      <img src={look.image} alt={look.title || "Outfit"} className="w-full h-full object-cover" />
-                    </div>
-                    {look.title && <p className="p-3 text-sm font-medium text-slate-700 text-center">{look.title}</p>}
-                    {look.affiliateLink && (
-                      <a
-                        href={look.affiliateLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block text-center text-xs text-purple-600 font-semibold py-3 bg-purple-50 hover:bg-purple-100 transition-colors"
-                      >
-                        Explore Look →
-                      </a>
-                    )}
-                  </div>
-                ))}
-              </div>
-
-              <div className="flex flex-wrap gap-3 pt-4 border-t border-slate-100">
-                <button
-                  onClick={restyle}
-                  className="px-6 py-3 rounded-full border border-slate-200 text-slate-700 font-medium hover:bg-slate-50 transition-colors"
-                >
-                  Restyle
-                </button>
-                <button
-                  onClick={surpriseMe}
-                  className="px-6 py-3 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 text-white font-medium hover:opacity-90 transition-opacity shadow-lg shadow-purple-500/30"
-                >
-                  Surprise Me
-                </button>
-                <button
-                  onClick={handleShare}
-                  className="px-6 py-3 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-medium hover:opacity-90 transition-opacity shadow-lg shadow-blue-500/30 sm:ml-auto"
-                >
-                  Share ✨
-                </button>
-              </div>
-            </div>
-          )}
-
-          <div ref={chatEndRef} />
-        </div>
+// ─── tiny presentational component for the upload prompt ─────────────────────
+function UploadPromptMsg({
+  onCamera,
+  onUpload,
+  onSkip,
+}: {
+  onCamera: () => void;
+  onUpload: () => void;
+  onSkip: () => void;
+}) {
+  return (
+    <div>
+      <p className="mb-3 text-sm leading-relaxed">
+        First, want to share a photo of yourself? It helps me understand your body
+        shape &amp; skin tone for better recommendations 📸
+      </p>
+      <div className="flex gap-2 flex-wrap">
+        <button
+          onClick={onCamera}
+          className="flex items-center gap-2 bg-white hover:bg-gray-50 border border-gray-200 rounded-full px-4 py-2 text-sm font-medium shadow-sm transition-all"
+        >
+          <Camera className="w-4 h-4 text-pink-500" /> Take Photo
+        </button>
+        <button
+          onClick={onUpload}
+          className="flex items-center gap-2 bg-white hover:bg-gray-50 border border-gray-200 rounded-full px-4 py-2 text-sm font-medium shadow-sm transition-all"
+        >
+          <Upload className="w-4 h-4 text-purple-500" /> Upload
+        </button>
       </div>
-    </main>
+      <button
+        onClick={onSkip}
+        className="mt-3 flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-600 transition-colors"
+      >
+        ▷ Skip for now
+      </button>
+    </div>
   );
 }
