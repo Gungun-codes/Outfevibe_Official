@@ -7,7 +7,6 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { ArrowRight, Lock, Mail } from "lucide-react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 
 export default function LoginPage() {
   const router = useRouter();

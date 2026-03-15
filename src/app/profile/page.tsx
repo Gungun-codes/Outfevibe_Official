@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { LogOut, Sparkles, TrendingUp, Zap, Calendar, Award, Heart, ShoppingBag } from "lucide-react";
+import { LogOut, Sparkles, TrendingUp, Zap, Calendar, Award, Heart, ShoppingBag, ArrowLeft } from "lucide-react";
 
 export default function ProfilePage() {
     const { user, loading, logout } = useAuth();
@@ -62,9 +62,16 @@ export default function ProfilePage() {
         loadPersona();
     }, [user]);
 
-    if (!user) {
-        return null;
+    // FIX 1 — Loading spinner so it never flashes a redirect
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
+                <div className="w-8 h-8 rounded-full border-2 border-[#d4af7f] border-t-transparent animate-spin" />
+            </div>
+        );
     }
+
+    if (!user) return null;
 
     const getInitials = (name: string | null | undefined) => {
         if (!name) return "U";
@@ -89,8 +96,17 @@ export default function ProfilePage() {
     const memberSince = user.created_at ? new Date(user.created_at).getFullYear() : new Date().getFullYear();
 
     return (
-        <div className="min-h-screen bg-[#0a0a0a] text-white pt-24 px-4 sm:px-6 lg:px-8 pb-12">
+        <div className="min-h-screen bg-[#0a0a0a] text-white px-4 sm:px-6 lg:px-8 pb-12 pt-10">
             <div className="max-w-7xl mx-auto">
+
+                {/* FIX 3 — Back button so page works even without a fixed navbar above */}
+                <button
+                    onClick={() => router.push("/")}
+                    className="mb-8 flex items-center gap-2 text-sm text-gray-500 hover:text-[#d4af7f] transition group"
+                >
+                    <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                    Back to Home
+                </button>
 
                 {/* Header */}
                 <div className="mb-10">
@@ -232,6 +248,7 @@ export default function ProfilePage() {
                                 </div>
                             )}
                         </div>
+
                         <div className="space-y-4">
                             <div>
                                 <div className="flex justify-between mb-1">
@@ -296,11 +313,11 @@ export default function ProfilePage() {
 
             </div>
 
-            {/* Sign Out — bottom of page cleanly separated */}
+            {/* Sign Out — FIX 2: corrected typo hover:border-red-500/30 */}
             <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-[#1a1a1a] flex justify-center">
                 <button
                     onClick={() => logout()}
-                    className="flex items-center gap-3 px-8 py-3 rounded-2xl bg-[#111] text-red-400 hover:text-red-300 hover:bg-red-500/10 transition font-medium border border-red-500/10 hover:border-500/30 text-sm tracking-wide"
+                    className="flex items-center gap-3 px-8 py-3 rounded-2xl bg-[#111] text-red-400 hover:text-red-300 hover:bg-red-500/10 transition font-medium border border-red-500/10 hover:border-red-500/30 text-sm tracking-wide"
                 >
                     <LogOut className="w-4 h-4" />
                     Sign Out
