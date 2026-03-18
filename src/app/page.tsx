@@ -9,6 +9,94 @@ import { useAuth } from "@/context/authContext";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+function FeedbackForm({ darkMode }: { darkMode: boolean }) {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
+  const handleSubmit = async () => {
+    if (!name.trim() || !email.trim() || !message.trim()) {
+      setStatus("error");
+      return;
+    }
+
+    setStatus("loading");
+
+    try {
+      const { error } = await supabase
+        .from("feedback")
+        .insert([{ name: name.trim(), email: email.trim(), message: message.trim() }]);
+
+      if (error) {
+        console.error("Supabase error:", error);
+        setStatus("error");
+      } else {
+        setStatus("success");
+        setName("");
+        setEmail("");
+        setMessage("");
+      }
+    } catch (err) {
+      console.error("Unexpected error:", err);
+      setStatus("error");
+    }
+  };
+
+  const inputClass = `w-full p-3 rounded-lg border text-sm ${
+    darkMode
+      ? "bg-neutral-900 border-neutral-700 text-white placeholder-neutral-400"
+      : "bg-white border-neutral-300 text-black placeholder-neutral-500"
+  }`;
+
+  return (
+    <div className="flex flex-col gap-4">
+      <input
+        placeholder="Your Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        className={inputClass}
+      />
+      <input
+        type="email"
+        placeholder="Your Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        className={inputClass}
+      />
+      <textarea
+        placeholder="Your Message"
+        rows={4}
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        className={inputClass}
+      />
+
+      {/* Status messages */}
+      {status === "error" && (
+        <p className="text-red-400 text-sm text-center">
+          {!name.trim() || !email.trim() || !message.trim()
+            ? "Please fill in all fields."
+            : "Something went wrong. Please try again."}
+        </p>
+      )}
+      {status === "success" && (
+        <p className="text-green-400 text-sm text-center">
+          Thank you for your feedback ❤️
+        </p>
+      )}
+
+      <button
+        onClick={handleSubmit}
+        disabled={status === "loading"}
+        className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-black py-3 rounded-lg font-semibold hover:scale-105 transition disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
+      >
+        {status === "loading" ? "Sending..." : "Share Your Thoughts"}
+      </button>
+    </div>
+  );
+}
+
 const fadeIn = {
   hidden: { opacity: 0, y: 40 },
   show: { opacity: 1, y: 0, transition: { duration: 0.7 } },
@@ -420,36 +508,21 @@ export default function Home() {
       </section>
 
       {/* FEEDBACK */}
-      <section id="feedback" className={`px-6 py-20 w-full ${darkMode ? 'bg-black text-white' : 'bg-white text-black'}`}>
-        <div className="max-w-xl mx-auto">
-          <motion.h2 variants={fadeIn} initial="hidden" whileInView="show" viewport={{ once: true }} className={`text-3xl font-bold text-center mb-8 ${darkMode ? 'text-white' : 'text-black'}`}>
-            Submit Feedback
-          </motion.h2>
-          <form className="flex flex-col gap-4" onSubmit={async (e) => {
-            e.preventDefault()
-            const form = e.target as HTMLFormElement
-            const formData = new FormData(form)
-            const name = formData.get("name")
-            const email = formData.get("email")
-            const message = formData.get("message")
-            const { error } = await supabase.from("feedback").insert([{ name, email, message }])
-            if (!error) {
-              alert("Thank you for your feedback ❤️")
-              form.reset()
-            } else {
-              alert("Something went wrong.")
-              console.error(error)
-            }
-          }}>
-            <input name="name" placeholder="Your Name" className={`${darkMode ? 'bg-neutral-900 border-neutral-700 text-white placeholder-neutral-400' : 'bg-white border-neutral-300 text-black placeholder-neutral-500'} p-3 rounded-lg border`} />
-            <input name="email" type="email" placeholder="Your Email" className={`${darkMode ? 'bg-neutral-900 border-neutral-700 text-white placeholder-neutral-400' : 'bg-white border-neutral-300 text-black placeholder-neutral-500'} p-3 rounded-lg border`} />
-            <textarea name="message" placeholder="Your Message" rows={4} className={`${darkMode ? 'bg-neutral-900 border-neutral-700 text-white placeholder-neutral-400' : 'bg-white border-neutral-300 text-black placeholder-neutral-500'} p-3 rounded-lg border`} />
-            <button type="submit" className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-black py-3 rounded-lg font-semibold hover:scale-105 transition">
-              Share Your Thoughts
-            </button>
-          </form>
-        </div>
-      </section>
+<section id="feedback" className={`px-6 py-20 w-full ${darkMode ? 'bg-black text-white' : 'bg-white text-black'}`}>
+  <div className="max-w-xl mx-auto">
+    <motion.h2
+      variants={fadeIn}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true }}
+      className={`text-3xl font-bold text-center mb-8 ${darkMode ? 'text-white' : 'text-black'}`}
+    >
+      Submit Feedback
+    </motion.h2>
+
+    <FeedbackForm darkMode={darkMode} />
+  </div>
+</section>
 
       {/* FOOTER */}
       <footer className={`border-t px-6 py-16 ${darkMode ? "bg-black text-white border-neutral-800" : "bg-white text-black border-neutral-200"}`}>
