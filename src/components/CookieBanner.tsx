@@ -6,7 +6,7 @@ import { Cookie, X, ShieldCheck } from "lucide-react";
 
 export type CookieConsent = "accepted" | "declined" | null;
 
-export const COOKIE_CONSENT_KEY = "outfevibe_cookie_consent";
+export const COOKIE_CONSENT_KEY = "outfevibe_cookie_consent_V2";
 
 export function getCookieConsent(): CookieConsent {
   if (typeof window === "undefined") return null;
