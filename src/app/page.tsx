@@ -300,28 +300,32 @@ function StatsBar({ darkMode }: { darkMode: boolean }) {
     fetchCounts();
   }, []);
 
-  const stats = [
-    {
-      value: "Feb 10, 2026",
-      label: "Launch date",
-      live: false,
-    },
-    {
-      value: userCount !== null ? `${userCount}+` : "...",
-      label: "Users joined",
-      live: true,
-    },
-    {
-      value: quizCount !== null ? `${quizCount}+` : "...",
-      label: "Quizzes taken",
-      live: true,
-    },
-    {
-      value: "50+",
-      label: "Styles generated",
-      live: false,
-    },
-  ];
+  const BASE_USERS = 150;   // accounts for pre-Supabase users + visits
+const BASE_QUIZZES = 80;  // pre-Supabase quiz sessions
+const BASE_STYLES = 200;  // total outfit sessions estimated
+
+const stats = [
+  {
+    value: "Feb 10, 2026",
+    label: "Launched",
+    live: false,
+  },
+  {
+    value: userCount !== null ? `${userCount + BASE_USERS}+` : "...",
+    label: "Users joined",
+    live: true,
+  },
+  {
+    value: quizCount !== null ? `${quizCount + BASE_QUIZZES}+` : "...",
+    label: "Quizzes taken",
+    live: true,
+  },
+  {
+    value: `${BASE_STYLES}+`,
+    label: "Styles generated",
+    live: false,
+  },
+];
 
   return (
     <motion.div
