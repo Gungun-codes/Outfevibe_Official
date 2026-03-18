@@ -205,6 +205,86 @@ function NewsletterSignup({ darkMode }: { darkMode: boolean }) {
   );
 }
 
+function WaitlistForm({ darkMode }: { darkMode: boolean }) {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
+  const handleJoin = async () => {
+    if (!email || !email.includes("@")) {
+      setStatus("error");
+      return;
+    }
+
+    setStatus("loading");
+
+    try {
+      const { error } = await supabase
+        .from("feedback")
+        .insert([{
+          name: "Waitlist",
+          email: email.trim(),
+          message: "Joined Virtual Wardrobe waitlist",
+        }]);
+
+      if (error) {
+        console.error("Supabase error:", error);
+        setStatus("error");
+      } else {
+        setStatus("success");
+        setEmail("");
+      }
+    } catch (err) {
+      console.error("Unexpected error:", err);
+      setStatus("error");
+    }
+  };
+
+  if (status === "success") {
+    return (
+      <div className="flex items-center gap-3 py-3 px-4 rounded-xl bg-yellow-400/10 border border-yellow-400/30">
+        <span className="text-yellow-400 text-lg">✓</span>
+        <p className="text-sm text-yellow-400 font-medium">
+          You're on the list! We'll notify you at launch.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-2">
+      <div className="flex gap-2">
+        <input
+          type="email"
+          placeholder="your@email.com"
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            if (status !== "idle") setStatus("idle");
+          }}
+          onKeyDown={(e) => e.key === "Enter" && handleJoin()}
+          className={`flex-1 px-4 py-2.5 text-sm rounded-xl focus:outline-none focus:ring-1 focus:ring-yellow-400 transition
+            ${darkMode
+              ? "bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500"
+              : "bg-white border border-neutral-300 text-black placeholder-neutral-400"
+            }`}
+        />
+        <button
+          onClick={handleJoin}
+          disabled={status === "loading"}
+          className="px-5 py-2.5 bg-yellow-400 text-black text-sm font-bold rounded-xl hover:bg-yellow-300 transition disabled:opacity-60 disabled:cursor-not-allowed whitespace-nowrap"
+        >
+          {status === "loading" ? "..." : "Notify Me"}
+        </button>
+      </div>
+      {status === "error" && (
+        <p className="text-red-400 text-xs pl-1">
+          {!email.includes("@") ? "Please enter a valid email." : "Something went wrong. Try again."}
+        </p>
+      )}
+    </div>
+  );
+}
+
 export default function Home() {
   const [darkMode, setDarkMode] = useState(true)
   const [activeCategory, setActiveCategory] = useState<'general' | 'festive' | 'forYou'>('general')
@@ -468,15 +548,23 @@ export default function Home() {
                 Upload your image and let our AI analyze your body shape, skin tone, and style preferences to recommend outfits that perfectly match your personality and occasion.
               </p>
             </motion.a>
-            <motion.div whileHover={{ scale: 1.05 }} initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} className={`p-8 rounded-2xl text-left shadow-lg ${darkMode ? "bg-neutral-900 border border-neutral-800" : "bg-neutral-100 border border-neutral-200"}`}>
-              <h3 className="text-xl font-semibold mb-3">
-                Virtual Wardrobe
-                <span className="ml-3 text-sm text-yellow-400">Coming Soon</span>
-              </h3>
-              <p className={`${darkMode ? "text-neutral-400" : "text-neutral-600"}`}>
-                Upload and organize your real wardrobe digitally. Mix and match your clothes, plan outfits for events, and get smart recommendations from the items you already own.
-              </p>
-            </motion.div>
+           <motion.div
+  whileHover={{ scale: 1.05 }}
+  initial={{ opacity: 0, y: 50 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.6 }}
+  viewport={{ once: true }}
+  className={`p-8 rounded-2xl text-left shadow-lg ${darkMode ? "bg-neutral-900 border border-neutral-800" : "bg-neutral-100 border border-neutral-200"}`}
+>
+  <h3 className="text-xl font-semibold mb-3">
+    Virtual Wardrobe
+    <span className="ml-3 text-sm text-yellow-400">Coming Soon</span>
+  </h3>
+  <p className={`mb-6 ${darkMode ? "text-neutral-400" : "text-neutral-600"}`}>
+    Upload and organize your real wardrobe digitally. Mix and match your clothes, plan outfits for events, and get smart recommendations from the items you already own.
+  </p>
+  <WaitlistForm darkMode={darkMode} />
+</motion.div>
           </div>
         </div>
       </section>
