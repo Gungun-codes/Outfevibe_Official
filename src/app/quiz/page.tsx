@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/authContext";
@@ -224,6 +224,35 @@ export default function StyleQuizPage() {
   const [feedbackMsg, setFeedbackMsg] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
+  // ── PERSISTENCE: restore quiz state on refresh ──────────────────
+  const QUIZ_KEY = "outfevibe_quiz_progress";
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(QUIZ_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.gender) setGender(parsed.gender);
+        if (typeof parsed.step === "number") setStep(parsed.step);
+        if (parsed.answers) setAnswers(parsed.answers);
+        if (parsed.scores) setScores(parsed.scores);
+        if (parsed.isFinished) setIsFinished(parsed.isFinished);
+      }
+    } catch (e) {
+      console.error("Failed to restore quiz state:", e);
+    }
+  }, []); // runs once on mount
+
+  useEffect(() => {
+    // Don't save the very initial empty state
+    if (!gender && step === 0 && answers.length === 0) return;
+    localStorage.setItem(
+      QUIZ_KEY,
+      JSON.stringify({ gender, step, answers, scores, isFinished })
+    );
+  }, [gender, step, answers, scores, isFinished]);
+  // ────────────────────────────────────────────────────────────────
+
   const currentQuestions = gender === "male" ? QUESTIONS_MALE : QUESTIONS_FEMALE;
   const personaMap = gender === "male" ? MALE_PERSONAS : FEMALE_PERSONAS;
   const totalQuestions = currentQuestions.length;
@@ -311,13 +340,14 @@ export default function StyleQuizPage() {
   };
 
   const restart = () => {
-    setGender(null);
-    setStep(0);
-    setAnswers([]);
-    setScores({});
-    setIsFinished(false);
-    setFeedbackMsg(null);
-  };
+  localStorage.removeItem("outfevibe_quiz_progress"); // ← ADD THIS LINE
+  setGender(null);
+  setStep(0);
+  setAnswers([]);
+  setScores({});
+  setIsFinished(false);
+  setFeedbackMsg(null);
+};
 
   /* ================= GENDER SCREEN ================= */
 
@@ -556,9 +586,10 @@ export default function StyleQuizPage() {
                       const persona = winner.title;
                       localStorage.setItem("userPersona", persona);
                       localStorage.setItem("quizGender", gender || "");
+                      localStorage.removeItem("outfevibe_quiz_progress"); // clear quiz state after completion
 
                       // if user not logged in then force login
-                      if(!user) {
+                      if (!user) {
                         router.push("/login?redirect=/outfit");
                         return;
                       }

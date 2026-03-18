@@ -224,16 +224,32 @@ export default function ProfilePage() {
                             </h3>
                             {persona ? (
                                 <div className="text-center space-y-3">
-                                    <div className="text-4xl">✨</div>
+                                    <div className="text-4xl">
+                                        {persona?.includes("Minimalist") ? "🤍" :
+                                            persona?.includes("Edgy") ? "🔥" :
+                                                persona?.includes("Romantic") ? "🌸" :
+                                                    persona?.includes("Playful") ? "🎨" :
+                                                        persona?.includes("Comfort") ? "☁️" :
+                                                            persona?.includes("Streetwear") ? "🔥" :
+                                                                persona?.includes("Gentleman") ? "💼" :
+                                                                    persona?.includes("Casual") ? "🌊" :
+                                                                        persona?.includes("Athleisure") ? "⚡" : "✨"}
+                                    </div>
                                     <p className="text-xl font-bold text-[#d4af7f]">{persona}</p>
                                     {quizGender && (
                                         <p className="text-sm text-gray-400">{quizGender}</p>
                                     )}
                                     <button
-                                        onClick={() => router.push("/suggestions")}
+                                        onClick={() => router.push("/outfit")}
                                         className="mt-2 w-full py-2 rounded-lg border border-[#2a2a2a] hover:border-[#d4af7f] transition text-sm text-gray-300"
                                     >
                                         View My Fits
+                                    </button>
+                                    <button
+                                        onClick={() => router.push("/quiz")}
+                                        className="w-full py-2 rounded-lg border border-[#2a2a2a] hover:border-[#d4af7f] transition text-sm text-gray-500"
+                                    >
+                                        Retake Quiz
                                     </button>
                                 </div>
                             ) : (

@@ -193,14 +193,14 @@ export default function OutfitChat() {
                 <div className="flex gap-3 flex-wrap">
                   <button
                     className="px-5 py-2.5 rounded-full border border-slate-200 hover:border-purple-300 hover:bg-purple-50 text-slate-600 font-medium transition-all"
-                    onClick={() => { setGender("female"); simulateTyping(2); }}>Girl</button>
+                    onClick={() => { setGender("female"); simulateTyping(2); }}>Her</button>
                   <button
                     className="px-5 py-2.5 rounded-full border border-slate-200 hover:border-purple-300 hover:bg-purple-50 text-slate-600 font-medium transition-all"
-                    onClick={() => { setGender("male"); simulateTyping(2); }}>Boy</button>
+                    onClick={() => { setGender("male"); simulateTyping(2); }}>Him</button>
                 </div>
               ) : (
                 <div className="inline-block px-4 py-2 rounded-2xl bg-purple-50 text-purple-700 text-sm font-medium border border-purple-100">
-                  {gender === "female" ? "Girl" : "Boy"}
+                  {gender === "female" ? "Her" : "Him"}
                 </div>
               )}
             </div>
