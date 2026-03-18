@@ -1,9 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Sparkles, Recycle, ShoppingBag, Heart } from "lucide-react";
-import { Variants } from "framer-motion";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 32 },
@@ -32,7 +31,7 @@ export default function AboutPage() {
         </button>
       </div>
 
-      {/* HERO */}
+      {/* ── HERO ── */}
       <section className="max-w-5xl mx-auto px-6 pb-24">
         <motion.div
           initial="hidden"
@@ -40,7 +39,6 @@ export default function AboutPage() {
           variants={stagger}
           className="space-y-6"
         >
-          {/* Eyebrow */}
           <motion.p
             variants={fadeUp}
             className="text-xs font-mono tracking-[0.25em] uppercase text-[#d4af7f]"
@@ -48,7 +46,6 @@ export default function AboutPage() {
             Our Story
           </motion.p>
 
-          {/* Headline */}
           <motion.h1
             variants={fadeUp}
             className="text-5xl md:text-7xl font-extrabold tracking-tight leading-[1.05]"
@@ -58,27 +55,26 @@ export default function AboutPage() {
             <span className="text-[#d4af7f]">who couldn't dress.</span>
           </motion.h1>
 
-          {/* Subhead */}
           <motion.p
             variants={fadeUp}
             className="text-lg text-neutral-400 max-w-2xl leading-relaxed"
           >
-            Outfevibe didn't start in a boardroom. It started in front of a wardrobe full of clothes
-            with absolutely nothing to wear.
+            Outfevibe didn't start in a boardroom. It started in front of a
+            wardrobe full of clothes with absolutely nothing to wear.
           </motion.p>
         </motion.div>
       </section>
 
-      {/* DIVIDER LINE */}
+      {/* DIVIDER */}
       <div className="max-w-5xl mx-auto px-6">
         <div className="h-px bg-gradient-to-r from-transparent via-neutral-800 to-transparent" />
       </div>
 
-      {/* FOUNDING STORY */}
+      {/* ── FOUNDING STORY ── */}
       <section className="max-w-5xl mx-auto px-6 py-24">
         <div className="grid md:grid-cols-2 gap-16 items-start">
 
-          {/* Left — big pull quote */}
+          {/* Left — pull quote */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -97,7 +93,7 @@ export default function AboutPage() {
             </div>
           </motion.div>
 
-          {/* Right — story paragraphs */}
+          {/* Right — story */}
           <motion.div
             initial="hidden"
             whileInView="show"
@@ -106,31 +102,35 @@ export default function AboutPage() {
             className="space-y-6 text-neutral-400 text-base leading-relaxed"
           >
             <motion.p variants={fadeUp}>
-              It started with a simple, embarrassing problem. I have always been terrible at fashion.
-              My cupboard was full — shirts, kurtas, co-ords, everything — and yet every morning
-              I'd stand there completely lost. I'd throw something together and walk out, only to
-              hear "that doesn't match at all" from the people around me.
+              It started with a simple, embarrassing problem. I have always been
+              terrible at fashion. My cupboard was full — shirts, kurtas, co-ords,
+              everything — and yet every morning I'd stand there completely lost.
+              I'd throw something together and walk out, only to hear "that doesn't
+              match at all" from the people around me.
             </motion.p>
 
             <motion.p variants={fadeUp}>
-              It wasn't funny anymore. It was affecting my confidence. And the worst part?
-              Hundreds of clothes sitting untouched in my wardrobe while I kept wearing the same
-              three outfits on rotation.
+              It wasn't funny anymore. It was affecting my confidence. And the
+              worst part? Hundreds of clothes sitting untouched in my wardrobe
+              while I kept wearing the same three outfits on rotation.
             </motion.p>
 
             <motion.p variants={fadeUp}>
-              So I decided to build something. Not for the fashion-forward — for people like me.
-              Something that looks at <span className="text-white font-medium">your body type, your skin tone, your occasion</span> and simply says:
-              wear this today. This is yours. This works for you.
+              So I decided to build something. Not for the fashion-forward — for
+              people like me. Something that looks at{" "}
+              <span className="text-white font-medium">
+                your body type, your skin tone, your occasion
+              </span>{" "}
+              and simply says: wear this today. This is yours. This works for you.
             </motion.p>
 
             <motion.p variants={fadeUp}>
-              That's Outfevibe. It's not perfect yet — I'll be the first to admit we're still building.
-              But every feature we ship is one step closer to what I originally needed: a personal stylist
-              that fits in your pocket and actually understands who you are.
+              That's Outfevibe. It's not perfect yet — I'll be the first to admit
+              we're still building. But every feature we ship is one step closer
+              to what I originally needed: a personal stylist that fits in your
+              pocket and actually understands who you are.
             </motion.p>
           </motion.div>
-
         </div>
       </section>
 
@@ -139,7 +139,7 @@ export default function AboutPage() {
         <div className="h-px bg-gradient-to-r from-transparent via-neutral-800 to-transparent" />
       </div>
 
-      {/* MISSION */}
+      {/* ── MISSION ── */}
       <section className="max-w-5xl mx-auto px-6 py-24 text-center">
         <motion.div
           initial="hidden"
@@ -166,9 +166,9 @@ export default function AboutPage() {
             variants={fadeUp}
             className="text-neutral-400 max-w-2xl mx-auto text-lg leading-relaxed"
           >
-            We believe everyone deserves to feel confident in what they wear — regardless of budget,
-            body type, or fashion knowledge. Our goal is to make styling simple, personal, and
-            accessible for every single person.
+            We believe everyone deserves to feel confident in what they wear —
+            regardless of budget, body type, or fashion knowledge. Our goal is
+            to make styling simple, personal, and accessible for every single person.
           </motion.p>
         </motion.div>
       </section>
@@ -178,7 +178,100 @@ export default function AboutPage() {
         <div className="h-px bg-gradient-to-r from-transparent via-neutral-800 to-transparent" />
       </div>
 
-      {/* PRODUCT VISION */}
+      {/* ── TEAM ── */}
+      <section className="max-w-5xl mx-auto px-6 py-24">
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          variants={stagger}
+          className="space-y-12"
+        >
+          <div className="text-center space-y-4">
+            <motion.p
+              variants={fadeUp}
+              className="text-xs font-mono tracking-[0.25em] uppercase text-[#d4af7f]"
+            >
+              The People Behind It
+            </motion.p>
+            <motion.h2
+              variants={fadeUp}
+              className="text-4xl md:text-5xl font-extrabold tracking-tight"
+            >
+              Built by two people
+              <br />
+              <span className="text-[#d4af7f]">with one obsession.</span>
+            </motion.h2>
+          </div>
+
+          <motion.div
+            variants={stagger}
+            className="grid md:grid-cols-2 gap-8"
+          >
+            {/* Gungun */}
+            <motion.div
+              variants={fadeUp}
+              className="bg-neutral-900 border border-neutral-800 rounded-2xl p-8 hover:border-[#d4af7f]/40 transition group"
+            >
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#d4af7f] to-[#b8860b] flex items-center justify-center text-black font-extrabold text-xl mb-6">
+                GJ
+              </div>
+              <div className="mb-1 flex items-center justify-between flex-wrap gap-2">
+                <h3 className="text-xl font-bold text-white group-hover:text-[#d4af7f] transition">
+                  Gungun Jain
+                </h3>
+                <span className="text-xs font-mono text-neutral-600 border border-neutral-700 px-3 py-1 rounded-full">
+                  Founder
+                </span>
+              </div>
+              <p className="text-xs text-neutral-500 mb-4 font-mono">
+                Product & Engineering
+              </p>
+              <p className="text-sm text-neutral-400 leading-relaxed">
+                Started Outfevibe after one too many "that doesn't match" comments.
+                Built the AI, the product, and the vision from scratch — driven by
+                the belief that great style shouldn't require a great fashion sense.
+              </p>
+            </motion.div>
+
+            {/* Aakriti */}
+            <motion.div
+              variants={fadeUp}
+              className="bg-neutral-900 border border-neutral-800 rounded-2xl p-8 hover:border-[#d4af7f]/40 transition group"
+            >
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#d4af7f] to-[#b8860b] flex items-center justify-center text-black font-extrabold text-xl mb-6">
+                AS
+              </div>
+              <div className="mb-1 flex items-center justify-between flex-wrap gap-2">
+                <h3 className="text-xl font-bold text-white group-hover:text-[#d4af7f] transition">
+                  Aakriti Soam
+                </h3>
+                <span className="text-xs font-mono text-neutral-600 border border-neutral-700 px-3 py-1 rounded-full">
+                  Co-Founder
+                </span>
+              </div>
+              <p className="text-xs text-neutral-500 mb-4 font-mono">
+                Fashion & Vision
+              </p>
+              <p className="text-sm text-neutral-400 leading-relaxed">
+                Joined with a vision to make fashion more personal, smart, and
+                confidence-driven. Not just another clothing website — a platform
+                where people discover styles that truly reflect who they are.
+                Combining fashion with AI to help people find their vibe in a way
+                that feels effortless, modern, and empowering. Outfevibe is about
+                self-expression, confidence, and creating a new future for fashion.
+              </p>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* DIVIDER */}
+      <div className="max-w-5xl mx-auto px-6">
+        <div className="h-px bg-gradient-to-r from-transparent via-neutral-800 to-transparent" />
+      </div>
+
+      {/* ── PRODUCT VISION ── */}
       <section className="max-w-5xl mx-auto px-6 py-24">
         <motion.div
           initial="hidden"
@@ -209,16 +302,12 @@ export default function AboutPage() {
             </motion.p>
           </div>
 
-          {/* Vision cards */}
-          <motion.div
-            variants={stagger}
-            className="grid md:grid-cols-2 gap-6"
-          >
+          <motion.div variants={stagger} className="grid md:grid-cols-2 gap-6">
             {[
               {
                 icon: <ShoppingBag className="w-6 h-6 text-[#d4af7f]" />,
                 title: "Style what you own",
-                desc: "The Virtual Wardrobe lets you digitise your existing clothes and get outfit suggestions from what you already have. Stop buying more. Start wearing better.",
+                desc: "The Virtual Wardrobe lets you digitalise your existing clothes and get outfit suggestions from what you already have. Stop buying more. Start wearing better.",
                 status: "Coming Soon",
               },
               {
@@ -256,7 +345,9 @@ export default function AboutPage() {
                 <h3 className="text-lg font-bold text-white mb-2 group-hover:text-[#d4af7f] transition">
                   {item.title}
                 </h3>
-                <p className="text-sm text-neutral-500 leading-relaxed">{item.desc}</p>
+                <p className="text-sm text-neutral-500 leading-relaxed">
+                  {item.desc}
+                </p>
               </motion.div>
             ))}
           </motion.div>
@@ -268,7 +359,7 @@ export default function AboutPage() {
         <div className="h-px bg-gradient-to-r from-transparent via-neutral-800 to-transparent" />
       </div>
 
-      {/* CTA */}
+      {/* ── CTA ── */}
       <section className="max-w-5xl mx-auto px-6 py-24 text-center">
         <motion.div
           initial="hidden"
