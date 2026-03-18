@@ -460,9 +460,9 @@ export default function Home() {
               AI-powered styling that understands identity. Not just clothes.
             </p>
             <div className="flex gap-4 mt-6">
-              <a href="https://www.instagram.com/what.gungun?igsh=NDBma3Fzdnp3bG5q" target="_blank" className={`circle ${darkMode ? "hover:text-yellow-400" : "hover:text-black"}`}>IG</a>
-              <a href="https://www.linkedin.com/in/gungun-jain-1508" target="_blank" className={`circle ${darkMode ? "hover:text-yellow-400" : "hover:text-black"}`}>LN</a>
-              <a href="https://youtube.com/@heygungun?si=QH1rCAhN-7EeNMvP" target="_blank" className={`circle ${darkMode ? "hover:text-yellow-400" : "hover:text-black"}`}>YT</a>
+              <a href="https://www.instagram.com/outfevibe?igsh=MXFwZmZpczVsbHj0dg==" target="_blank" className={`circle ${darkMode ? "hover:text-yellow-400" : "hover:text-black"}`}>IG</a>
+              <a href="https://www.linkedin.com/in/outfevibe-offical-14903a3a9" target="_blank" className={`circle ${darkMode ? "hover:text-yellow-400" : "hover:text-black"}`}>LN</a>
+              <a href="https://youtube.com/@outfevibe?si=WFslmfGzuiLvrR16" target="_blank" className={`circle ${darkMode ? "hover:text-yellow-400" : "hover:text-black"}`}>YT</a>
             </div>
           </div>
           <div>
