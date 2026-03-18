@@ -41,7 +41,7 @@ function FeedbackForm({ darkMode }: { darkMode: boolean }) {
       console.error("Unexpected error:", err);
       setStatus("error");
     }
-  };
+  };  
 
   const inputClass = `w-full p-3 rounded-lg border text-sm ${
     darkMode
@@ -49,6 +49,7 @@ function FeedbackForm({ darkMode }: { darkMode: boolean }) {
       : "bg-white border-neutral-300 text-black placeholder-neutral-500"
   }`;
 
+  
   return (
     <div className="flex flex-col gap-4">
       <input
@@ -134,6 +135,75 @@ const testimonials = [
     text: "love it. website's clean, elegant, super eye-catching. No unnecessary stuff, just what's needed. And the best part... the product actually works."
   },
 ];
+
+function NewsletterSignup({ darkMode }: { darkMode: boolean }) {
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
+  const handleSubscribe = async () => {
+    if (!newsletterEmail || !newsletterEmail.includes("@")) {
+      setStatus("error");
+      return;
+    }
+    setStatus("loading");
+    try {
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: newsletterEmail }),
+      });
+      if (res.ok) {
+        setStatus("success");
+        setNewsletterEmail("");
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
+  };
+
+  return (
+    <div className="space-y-3">
+      <div className="flex flex-col sm:flex-row gap-2">
+        <input
+          type="email"
+          placeholder="your@email.com"
+          value={newsletterEmail}
+          onChange={(e) => {
+            setNewsletterEmail(e.target.value);
+            if (status !== "idle") setStatus("idle");
+          }}
+          onKeyDown={(e) => e.key === "Enter" && handleSubscribe()}
+          disabled={status === "success"}
+          className={`flex-1 px-4 py-3 text-sm rounded-xl focus:outline-none focus:ring-1 focus:ring-yellow-400 transition
+            ${darkMode
+              ? "bg-neutral-900 border border-neutral-700 text-white placeholder-neutral-500"
+              : "bg-white border border-neutral-300 text-black placeholder-neutral-400"}
+            ${status === "success" ? "opacity-50 cursor-not-allowed" : ""}
+          `}
+        />
+        <button
+          onClick={handleSubscribe}
+          disabled={status === "loading" || status === "success"}
+          className="px-6 py-3 bg-[#d4af7f] text-black font-semibold rounded-xl hover:opacity-90 transition disabled:opacity-60 disabled:cursor-not-allowed whitespace-nowrap text-sm"
+        >
+          {status === "loading" ? "Joining..." : status === "success" ? "You're in ✓" : "Join"}
+        </button>
+      </div>
+      {status === "success" && (
+        <p className="text-green-400 text-xs">
+          🎉 Welcome to Outfevibe! Check your inbox for a surprise.
+        </p>
+      )}
+      {status === "error" && (
+        <p className="text-red-400 text-xs">
+          {!newsletterEmail.includes("@") ? "Please enter a valid email." : "Something went wrong. Try again."}
+        </p>
+      )}
+    </div>
+  );
+}
 
 export default function Home() {
   const [darkMode, setDarkMode] = useState(true)
@@ -555,29 +625,12 @@ export default function Home() {
             </ul>
           </div>
           <div>
-            <h4 className="text-lg font-semibold mb-4">Stay Updated</h4>
-            <p className={`${darkMode ? "text-gray-400" : "text-gray-600"} text-sm mb-4`}>
-              Get early access to new features and drops.
-            </p>
-            <div className="flex">
-              <input
-                type="email"
-                placeholder="Your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className={`w-full px-4 py-3 text-sm rounded-l-xl focus:outline-none ${darkMode ? "bg-black border border-neutral-700 text-white placeholder-neutral-400" : "bg-white border border-neutral-300 text-black placeholder-neutral-500"}`}
-              />
-              <button
-                onClick={() => {
-                  if (!email) return alert("Enter Email First!");
-                  alert("You Are On The List!");
-                }}
-                className="px-6 bg-[#d4af7f] text-black font-semibold rounded-r-xl hover:opacity-90 transition"
-              >
-                Join
-              </button>
-            </div>
-          </div>
+  <h4 className="text-lg font-semibold mb-4">Stay Updated</h4>
+  <p className={`${darkMode ? "text-gray-400" : "text-gray-600"} text-sm mb-4`}>
+    Weekly style drops, straight to your inbox.
+  </p>
+  <NewsletterSignup darkMode={darkMode} />
+</div>
         </div>
         <div className={`border-t mt-16 pt-6 text-center text-sm ${darkMode ? "border-neutral-800 text-gray-500" : "border-neutral-200 text-gray-600"}`}>
           © {new Date().getFullYear()} Outfevibe. Built with intention.
