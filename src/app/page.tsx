@@ -41,15 +41,14 @@ function FeedbackForm({ darkMode }: { darkMode: boolean }) {
       console.error("Unexpected error:", err);
       setStatus("error");
     }
-  };  
+  };
 
-  const inputClass = `w-full p-3 rounded-lg border text-sm ${
-    darkMode
+  const inputClass = `w-full p-3 rounded-lg border text-sm ${darkMode
       ? "bg-neutral-900 border-neutral-700 text-white placeholder-neutral-400"
       : "bg-white border-neutral-300 text-black placeholder-neutral-500"
-  }`;
+    }`;
 
-  
+
   return (
     <div className="flex flex-col gap-4">
       <input
@@ -285,6 +284,70 @@ function WaitlistForm({ darkMode }: { darkMode: boolean }) {
   );
 }
 
+function StatsBar({ darkMode }: { darkMode: boolean }) {
+  const [userCount, setUserCount] = useState<number | null>(null);
+  const [quizCount, setQuizCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    const fetchCounts = async () => {
+      const [{ count: users }, { count: quizzes }] = await Promise.all([
+        supabase.from("users_profile").select("*", { count: "exact", head: true }),
+        supabase.from("quiz_result").select("*", { count: "exact", head: true }),
+      ]);
+      setUserCount(users ?? 0);
+      setQuizCount(quizzes ?? 0);
+    };
+    fetchCounts();
+  }, []);
+
+  const stats = [
+    {
+      value: "Feb 10, 2026",
+      label: "Launch date",
+      live: false,
+    },
+    {
+      value: userCount !== null ? `${userCount}+` : "...",
+      label: "Users joined",
+      live: true,
+    },
+    {
+      value: quizCount !== null ? `${quizCount}+` : "...",
+      label: "Quizzes taken",
+      live: true,
+    },
+    {
+      value: "50+",
+      label: "Styles generated",
+      live: false,
+    },
+  ];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.8, duration: 0.6 }}
+      className={`flex flex-wrap justify-center gap-6 md:gap-12 mt-14 pt-10 border-t ${darkMode ? "border-neutral-800" : "border-neutral-200"
+        }`}
+    >
+      {stats.map((stat, i) => (
+        <div key={i} className="text-center">
+          <div className="flex items-center justify-center gap-1.5">
+            <p className={`text-2xl font-bold ${darkMode ? "text-white" : "text-black"}`}>
+              {stat.value}
+            </p>
+            {stat.live && (
+              <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse mt-0.5" />
+            )}
+          </div>
+          <p className="text-xs text-neutral-500 mt-1 tracking-wide">{stat.label}</p>
+        </div>
+      ))}
+    </motion.div>
+  );
+}
+
 export default function Home() {
   const [darkMode, setDarkMode] = useState(true)
   const [activeCategory, setActiveCategory] = useState<'general' | 'festive' | 'forYou'>('general')
@@ -470,6 +533,9 @@ export default function Home() {
             Find My Personalized Fit
           </a>
         </motion.div>
+        {/* traction signal proof what we did */}
+        <StatsBar darkMode={darkMode} />
+
       </section>
 
       {/* TRENDING */}
@@ -548,23 +614,23 @@ export default function Home() {
                 Upload your image and let our AI analyze your body shape, skin tone, and style preferences to recommend outfits that perfectly match your personality and occasion.
               </p>
             </motion.a>
-           <motion.div
-  whileHover={{ scale: 1.05 }}
-  initial={{ opacity: 0, y: 50 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.6 }}
-  viewport={{ once: true }}
-  className={`p-8 rounded-2xl text-left shadow-lg ${darkMode ? "bg-neutral-900 border border-neutral-800" : "bg-neutral-100 border border-neutral-200"}`}
->
-  <h3 className="text-xl font-semibold mb-3">
-    Virtual Wardrobe
-    <span className="ml-3 text-sm text-yellow-400">Coming Soon</span>
-  </h3>
-  <p className={`mb-6 ${darkMode ? "text-neutral-400" : "text-neutral-600"}`}>
-    Upload and organize your real wardrobe digitally. Mix and match your clothes, plan outfits for events, and get smart recommendations from the items you already own.
-  </p>
-  <WaitlistForm darkMode={darkMode} />
-</motion.div>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className={`p-8 rounded-2xl text-left shadow-lg ${darkMode ? "bg-neutral-900 border border-neutral-800" : "bg-neutral-100 border border-neutral-200"}`}
+            >
+              <h3 className="text-xl font-semibold mb-3">
+                Virtual Wardrobe
+                <span className="ml-3 text-sm text-yellow-400">Coming Soon</span>
+              </h3>
+              <p className={`mb-6 ${darkMode ? "text-neutral-400" : "text-neutral-600"}`}>
+                Upload and organize your real wardrobe digitally. Mix and match your clothes, plan outfits for events, and get smart recommendations from the items you already own.
+              </p>
+              <WaitlistForm darkMode={darkMode} />
+            </motion.div>
           </div>
         </div>
       </section>
@@ -666,21 +732,21 @@ export default function Home() {
       </section>
 
       {/* FEEDBACK */}
-<section id="feedback" className={`px-6 py-20 w-full ${darkMode ? 'bg-black text-white' : 'bg-white text-black'}`}>
-  <div className="max-w-xl mx-auto">
-    <motion.h2
-      variants={fadeIn}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true }}
-      className={`text-3xl font-bold text-center mb-8 ${darkMode ? 'text-white' : 'text-black'}`}
-    >
-      Submit Feedback
-    </motion.h2>
+      <section id="feedback" className={`px-6 py-20 w-full ${darkMode ? 'bg-black text-white' : 'bg-white text-black'}`}>
+        <div className="max-w-xl mx-auto">
+          <motion.h2
+            variants={fadeIn}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            className={`text-3xl font-bold text-center mb-8 ${darkMode ? 'text-white' : 'text-black'}`}
+          >
+            Submit Feedback
+          </motion.h2>
 
-    <FeedbackForm darkMode={darkMode} />
-  </div>
-</section>
+          <FeedbackForm darkMode={darkMode} />
+        </div>
+      </section>
 
       {/* FOOTER */}
       <footer className={`border-t px-6 py-16 ${darkMode ? "bg-black text-white border-neutral-800" : "bg-white text-black border-neutral-200"}`}>
@@ -713,12 +779,12 @@ export default function Home() {
             </ul>
           </div>
           <div>
-  <h4 className="text-lg font-semibold mb-4">Stay Updated</h4>
-  <p className={`${darkMode ? "text-gray-400" : "text-gray-600"} text-sm mb-4`}>
-    Weekly style drops, straight to your inbox.
-  </p>
-  <NewsletterSignup darkMode={darkMode} />
-</div>
+            <h4 className="text-lg font-semibold mb-4">Stay Updated</h4>
+            <p className={`${darkMode ? "text-gray-400" : "text-gray-600"} text-sm mb-4`}>
+              Weekly style drops, straight to your inbox.
+            </p>
+            <NewsletterSignup darkMode={darkMode} />
+          </div>
         </div>
         <div className={`border-t mt-16 pt-6 text-center text-sm ${darkMode ? "border-neutral-800 text-gray-500" : "border-neutral-200 text-gray-600"}`}>
           © {new Date().getFullYear()} Outfevibe. Built with intention.
