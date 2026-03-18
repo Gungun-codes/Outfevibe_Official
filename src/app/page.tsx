@@ -44,8 +44,8 @@ function FeedbackForm({ darkMode }: { darkMode: boolean }) {
   };
 
   const inputClass = `w-full p-3 rounded-lg border text-sm ${darkMode
-      ? "bg-neutral-900 border-neutral-700 text-white placeholder-neutral-400"
-      : "bg-white border-neutral-300 text-black placeholder-neutral-500"
+    ? "bg-neutral-900 border-neutral-700 text-white placeholder-neutral-400"
+    : "bg-white border-neutral-300 text-black placeholder-neutral-500"
     }`;
 
 
@@ -301,31 +301,31 @@ function StatsBar({ darkMode }: { darkMode: boolean }) {
   }, []);
 
   const BASE_USERS = 150;   // accounts for pre-Supabase users + visits
-const BASE_QUIZZES = 80;  // pre-Supabase quiz sessions
-const BASE_STYLES = 200;  // total outfit sessions estimated
+  const BASE_QUIZZES = 80;  // pre-Supabase quiz sessions
+  const BASE_STYLES = 200;  // total outfit sessions estimated
 
-const stats = [
-  {
-    value: "Feb 10, 2026",
-    label: "Launched",
-    live: false,
-  },
-  {
-    value: userCount !== null ? `${userCount + BASE_USERS}+` : "...",
-    label: "Users joined",
-    live: true,
-  },
-  {
-    value: quizCount !== null ? `${quizCount + BASE_QUIZZES}+` : "...",
-    label: "Quizzes taken",
-    live: true,
-  },
-  {
-    value: `${BASE_STYLES}+`,
-    label: "Styles generated",
-    live: false,
-  },
-];
+  const stats = [
+    {
+      value: "Feb 10, 2026",
+      label: "Launched",
+      live: false,
+    },
+    {
+      value: userCount !== null ? `${userCount + BASE_USERS}+` : "...",
+      label: "Users joined",
+      live: true,
+    },
+    {
+      value: quizCount !== null ? `${quizCount + BASE_QUIZZES}+` : "...",
+      label: "Quizzes taken",
+      live: true,
+    },
+    {
+      value: `${BASE_STYLES}+`,
+      label: "Styles generated",
+      live: false,
+    },
+  ];
 
   return (
     <motion.div
@@ -603,38 +603,68 @@ export default function Home() {
       </section>
 
       {/* FEATURES */}
-      <section id="features" className={`px-6 py-24 ${darkMode ? "bg-black text-white" : "bg-white text-black"}`}>
+      <section id="features" className={`px-6 py-24 overflow-x-hidden ${darkMode ? "bg-black text-white" : "bg-white text-black"}`}>
         <div className="max-w-6xl mx-auto text-center">
-          <motion.h2 initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} viewport={{ once: true }} className="text-4xl md:text-5xl font-bold">
+          <motion.h2
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            viewport={{ once: true }}
+            className="text-4xl md:text-5xl font-bold"
+          >
             Explore Features
           </motion.h2>
           <p className={`mt-4 ${darkMode ? "text-neutral-400" : "text-neutral-600"}`}>
             Powerful tools designed to elevate your fashion decisions.
           </p>
+
           <div className="grid md:grid-cols-2 gap-8 mt-16">
-            <motion.a href="/outfit" whileHover={{ scale: 1.05 }} initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} className={`p-8 rounded-2xl text-left transition shadow-lg ${darkMode ? "bg-neutral-900 border border-neutral-800 hover:border-yellow-400" : "bg-neutral-100 border border-neutral-200 hover:border-yellow-500"}`}>
-              <h3 className="text-xl font-semibold mb-3">AI Based Outfit Suggestions</h3>
-              <p className={`${darkMode ? "text-neutral-400" : "text-neutral-600"}`}>
-                Upload your image and let our AI analyze your body shape, skin tone, and style preferences to recommend outfits that perfectly match your personality and occasion.
-              </p>
-            </motion.a>
-            <motion.div
-              whileHover={{ scale: 1.05 }}
+
+            {/* AI Outfit Card */}
+            <motion.a
+              href="/outfit"
+              whileHover={{ scale: 1.02 }}
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className={`p-8 rounded-2xl text-left shadow-lg ${darkMode ? "bg-neutral-900 border border-neutral-800" : "bg-neutral-100 border border-neutral-200"}`}
+              style={{ transformOrigin: "center center" }}
+              className={`p-8 rounded-2xl text-left transition shadow-lg block ${darkMode
+                  ? "bg-neutral-900 border border-neutral-800 hover:border-yellow-400"
+                  : "bg-neutral-100 border border-neutral-200 hover:border-yellow-500"
+                }`}
+            >
+              <h3 className="text-xl font-semibold mb-3">AI Based Outfit Suggestions</h3>
+              <p className={`${darkMode ? "text-neutral-400" : "text-neutral-600"}`}>
+                Upload your image and let our AI analyze your body shape, skin tone, and style
+                preferences to recommend outfits that perfectly match your personality and occasion.
+              </p>
+            </motion.a>
+
+            {/* Virtual Wardrobe Card */}
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              style={{ transformOrigin: "center center" }}
+              className={`p-8 rounded-2xl text-left shadow-lg ${darkMode
+                  ? "bg-neutral-900 border border-neutral-800"
+                  : "bg-neutral-100 border border-neutral-200"
+                }`}
             >
               <h3 className="text-xl font-semibold mb-3">
                 Virtual Wardrobe
                 <span className="ml-3 text-sm text-yellow-400">Coming Soon</span>
               </h3>
               <p className={`mb-6 ${darkMode ? "text-neutral-400" : "text-neutral-600"}`}>
-                Upload and organize your real wardrobe digitally. Mix and match your clothes, plan outfits for events, and get smart recommendations from the items you already own.
+                Upload and organize your real wardrobe digitally. Mix and match your clothes,
+                plan outfits for events, and get smart recommendations from the items you already own.
               </p>
               <WaitlistForm darkMode={darkMode} />
             </motion.div>
+
           </div>
         </div>
       </section>
