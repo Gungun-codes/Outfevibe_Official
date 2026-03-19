@@ -599,45 +599,29 @@ export default function StyleQuizPage() {
                       if (user && user.email) {
                         const saveResult = async () => {
                           try {
-                            const { data, error: fetchError } = await supabase
+                            // ── Always upsert by user_id — single source of truth ──
+                            const { error } = await supabase
                               .from("quiz_result")
-                              .select("id")
-                              .eq("email", user.email)
-                              .single();
-
-                            if (fetchError && fetchError.code !== "PGRST116") {
-                              console.error("Error checking existing record:", fetchError.message);
-                            }
-
-                            if (data) {
-                              const { error: updateError } = await supabase
-                                .from("quiz_result")
-                                .update({
-                                  persona_name: persona,
-                                  gender: gender === "male" ? "Boy" : "Girl",
-                                })
-                                .eq("email", user.email);
-
-                              if (updateError) {
-                                console.error("Update failed:", updateError.message);
-                              }
-                            } else {
-                              const { error: insertError } = await supabase
-                                .from("quiz_result")
-                                .insert({
-                                  user_id: user.id || null,
+                              .upsert(
+                                {
+                                  user_id: user.id,
                                   persona_name: persona,
                                   email: user.email,
                                   gender: gender === "male" ? "Boy" : "Girl",
-                                });
+                                  created_at: new Date().toISOString(),
+                                },
+                                { onConflict: "user_id" } // ← always update if user_id exists
+                              );
 
-                              if (insertError) {
-                                console.error("Insert failed:", insertError.message);
-                              }
+                            if (error) {
+                              console.error("Save failed:", error.message);
                             }
 
-                            // ── Fire notifications after successful save ──
-                            // Push notification
+                            // ── Also update localStorage immediately ──
+                            localStorage.setItem("userPersona", persona);
+                            localStorage.setItem("quizGender", gender || "");
+
+                            // ── Fire notifications ──
                             fetch("/api/push/send", {
                               method: "POST",
                               headers: { "Content-Type": "application/json" },
@@ -648,7 +632,6 @@ export default function StyleQuizPage() {
                               }),
                             });
 
-                            // Email notification
                             if (user.email) {
                               fetch("/api/notify/email", {
                                 method: "POST",
