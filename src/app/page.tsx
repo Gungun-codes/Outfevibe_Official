@@ -287,24 +287,32 @@ function WaitlistForm({ darkMode }: { darkMode: boolean }) {
 }
 
 function StatsBar({ darkMode }: { darkMode: boolean }) {
-  const [userCount, setUserCount] = useState<number | null>(null);
-  const [quizCount, setQuizCount] = useState<number | null>(null);
+  const [userCount, setUserCount] = useState<number>(178); // ← base number shown immediately
+  const [quizCount, setQuizCount] = useState<number>(80);  // ← base number shown immediately
+  const [loaded, setLoaded] = useState(false);
+
+  const BASE_USERS = 150;
+  const BASE_QUIZZES = 80;
 
   useEffect(() => {
     const fetchCounts = async () => {
-      const [{ count: users }, { count: quizzes }] = await Promise.all([
-        supabase.from("users_profile").select("*", { count: "exact", head: true }),
-        supabase.from("quiz_result").select("*", { count: "exact", head: true }),
-      ]);
-      setUserCount(users ?? 0);
-      setQuizCount(quizzes ?? 0);
+      try {
+        const [{ count: users }, { count: quizzes }] = await Promise.all([
+          supabase.from("users_profile").select("*", { count: "exact", head: true }),
+          supabase.from("quiz_result").select("*", { count: "exact", head: true }),
+        ]);
+        // Only update if we got real data
+        if (users !== null) setUserCount((users ?? 0) + BASE_USERS);
+        if (quizzes !== null) setQuizCount((quizzes ?? 0) + BASE_QUIZZES);
+        setLoaded(true);
+      } catch (err) {
+        // Silently fail — base numbers already showing
+        console.error("Stats fetch failed:", err);
+        setLoaded(true);
+      }
     };
     fetchCounts();
   }, []);
-
-  const BASE_USERS = 150;   // accounts for pre-Supabase users + visits
-  const BASE_QUIZZES = 80;  // pre-Supabase quiz sessions
-  const BASE_STYLES = 200;  // total outfit sessions estimated
 
   const stats = [
     {
@@ -313,17 +321,17 @@ function StatsBar({ darkMode }: { darkMode: boolean }) {
       live: false,
     },
     {
-      value: userCount !== null ? `${userCount + BASE_USERS}+` : "...",
+      value: `${userCount}+`,
       label: "Users joined",
       live: true,
     },
     {
-      value: quizCount !== null ? `${quizCount + BASE_QUIZZES}+` : "...",
+      value: `${quizCount}+`,
       label: "Quizzes taken",
       live: true,
     },
     {
-      value: `${BASE_STYLES}+`,
+      value: "200+",
       label: "Styles generated",
       live: false,
     },
@@ -334,17 +342,26 @@ function StatsBar({ darkMode }: { darkMode: boolean }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.8, duration: 0.6 }}
-      className={`flex flex-wrap justify-center gap-6 md:gap-12 mt-14 pt-10 border-t ${darkMode ? "border-neutral-800" : "border-neutral-200"
-        }`}
+      className={`flex flex-wrap justify-center gap-6 md:gap-12 mt-14 pt-10 border-t ${
+        darkMode ? "border-neutral-800" : "border-neutral-200"
+      }`}
     >
       {stats.map((stat, i) => (
         <div key={i} className="text-center">
           <div className="flex items-center justify-center gap-1.5">
-            <p className={`text-2xl font-bold ${darkMode ? "text-white" : "text-black"}`}>
+            <motion.p
+              key={stat.value} // ← triggers animation when value updates
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className={`text-2xl font-bold ${darkMode ? "text-white" : "text-black"}`}
+            >
               {stat.value}
-            </p>
+            </motion.p>
             {stat.live && (
-              <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse mt-0.5" />
+              <span className={`w-1.5 h-1.5 rounded-full border-2 border-black flex-shrink-0 mt-0.5 ${
+                loaded ? "bg-green-400 animate-pulse" : "bg-yellow-400"
+              }`} />
             )}
           </div>
           <p className="text-xs text-neutral-500 mt-1 tracking-wide">{stat.label}</p>
