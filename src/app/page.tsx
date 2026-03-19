@@ -354,6 +354,44 @@ function StatsBar({ darkMode }: { darkMode: boolean }) {
   );
 }
 
+function MobileInstallBanner({ install, darkMode }: { install: () => void; darkMode: boolean }) {
+  const [dismissed, setDismissed] = useState(false);
+
+  if (dismissed) return null;
+
+  return (
+    <div className={`fixed bottom-0 left-0 right-0 z-50 md:hidden p-4 border-t flex items-center justify-between gap-3 ${
+      darkMode
+        ? "bg-neutral-900 border-neutral-800"
+        : "bg-white border-neutral-200"
+    }`}>
+      <div className="flex items-center gap-3">
+        <img src="/outfevibe_logo.png" alt="Outfevibe" className="w-10 h-10 rounded-xl" />
+        <div>
+          <p className={`text-sm font-semibold ${darkMode ? "text-white" : "text-black"}`}>
+            Install Outfevibe
+          </p>
+          <p className="text-xs text-neutral-500">Add to home screen for quick access</p>
+        </div>
+      </div>
+      <div className="flex items-center gap-2 flex-shrink-0">
+        <button
+          onClick={() => setDismissed(true)}
+          className="text-xs text-neutral-500 hover:text-neutral-400 px-2 py-1"
+        >
+          Not now
+        </button>
+        <button
+          onClick={install}
+          className="px-4 py-2 bg-yellow-400 text-black text-xs font-bold rounded-full hover:bg-yellow-300 transition"
+        >
+          Install
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const [darkMode, setDarkMode] = useState(true)
   const [activeCategory, setActiveCategory] = useState<'general' | 'festive' | 'forYou'>('general')
@@ -899,6 +937,11 @@ export default function Home() {
           © {new Date().getFullYear()} Outfevibe. Built with intention.
         </div>
       </footer>
+
+      {/* ✅ Mobile PWA install banner — bottom of screen, only on mobile */}
+      {isInstallable && (
+        <MobileInstallBanner install={install} darkMode={darkMode} />
+      )}
 
     </div>
   );
