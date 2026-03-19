@@ -4,6 +4,11 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bell, BellOff, X } from "lucide-react";
 import { useAuth } from "@/context/authContext";
+const [mounted, setMounted] = useState(false);
+
+useEffect(() => {
+  setMounted(true);
+}, []);
 
 const VAPID_PUBLIC_KEY = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!;
 const DISMISSED_KEY = "outfevibe_push_dismissed";
