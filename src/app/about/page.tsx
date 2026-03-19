@@ -167,9 +167,12 @@ export default function AboutPage() {
             variants={fadeUp}
             className="text-neutral-400 max-w-2xl mx-auto text-lg leading-relaxed"
           >
-            We believe everyone deserves to feel confident in what they wear —
-            regardless of budget, body type, or fashion knowledge. Our goal is
-            to make styling simple, personal, and accessible for every single person.
+            We believe every Indian deserves to feel confident in what they wear.
+            Outfevibe analyses your <span className="text-white font-medium">body shape</span>,{" "}
+            <span className="text-white font-medium">skin tone</span>, and{" "}
+            <span className="text-white font-medium">occasion</span> — then recommends outfits
+            from Indian platforms you actually use. No generic advice. No US-only links.
+            Just styling that understands who you are and where you're going.
           </motion.p>
         </motion.div>
       </section>
