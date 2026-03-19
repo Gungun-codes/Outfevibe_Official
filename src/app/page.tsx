@@ -9,6 +9,7 @@ import { useAuth } from "@/context/authContext";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import OutfitCard from "@/components/OutfitCard";
+import HowItWorks from "@/components/HowItWorks";
 
 function FeedbackForm({ darkMode }: { darkMode: boolean }) {
   const [name, setName] = useState("");
@@ -629,24 +630,7 @@ export default function Home() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section id="howitworks" className={`px-6 py-24 text-center ${darkMode ? 'bg-black text-white' : 'bg-white text-black'}`}>
-        <motion.h2 variants={fadeIn} initial="hidden" whileInView="show" viewport={{ once: true }} className="text-3xl font-bold mb-16">
-          How It <span className="text-yellow-400">Works</span>
-        </motion.h2>
-        <div className="grid md:grid-cols-3 gap-10">
-          {[
-            { icon: <Upload className="mx-auto text-yellow-400 mb-4" />, title: "Upload Your Wardrobe", text: "Snap photos of your clothes or browse curated pieces" },
-            { icon: <Cpu className="mx-auto text-yellow-400 mb-4" />, title: "AI Analyzes Style", text: "AI learns your body type and preferences" },
-            { icon: <Sparkles className="mx-auto text-yellow-400 mb-4" />, title: "Get Suggestions", text: "Receive personalized outfit recommendations" }
-          ].map((item, i) => (
-            <motion.div key={i} whileHover={{ y: -6 }} initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeIn} className={`${darkMode ? 'bg-neutral-900' : 'bg-neutral-100'} p-6 rounded-xl`}>
-              {item.icon}
-              <h3 className="font-semibold text-lg">{item.title}</h3>
-              <p className="text-neutral-400 text-sm mt-2">{item.text}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
+      <HowItWorks darkMode={darkMode} />
 
       {/* FEATURES */}
       <section id="features" className={`px-6 py-24 overflow-x-hidden ${darkMode ? "bg-black text-white" : "bg-white text-black"}`}>
