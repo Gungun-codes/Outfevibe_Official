@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import OutfitCard from "@/components/OutfitCard";
 import HowItWorks from "@/components/HowItWorks";
+import { usePWAInstall } from "@/app/hooks/usePWAInstall";
 
 function FeedbackForm({ darkMode }: { darkMode: boolean }) {
   const [name, setName] = useState("");
@@ -287,8 +288,8 @@ function WaitlistForm({ darkMode }: { darkMode: boolean }) {
 }
 
 function StatsBar({ darkMode }: { darkMode: boolean }) {
-  const [userCount, setUserCount] = useState<number>(178); // ← base number shown immediately
-  const [quizCount, setQuizCount] = useState<number>(80);  // ← base number shown immediately
+  const [userCount, setUserCount] = useState<number>(178);
+  const [quizCount, setQuizCount] = useState<number>(80);
   const [loaded, setLoaded] = useState(false);
 
   const BASE_USERS = 150;
@@ -301,12 +302,10 @@ function StatsBar({ darkMode }: { darkMode: boolean }) {
           supabase.from("users_profile").select("*", { count: "exact", head: true }),
           supabase.from("quiz_result").select("*", { count: "exact", head: true }),
         ]);
-        // Only update if we got real data
         if (users !== null) setUserCount((users ?? 0) + BASE_USERS);
         if (quizzes !== null) setQuizCount((quizzes ?? 0) + BASE_QUIZZES);
         setLoaded(true);
       } catch (err) {
-        // Silently fail — base numbers already showing
         console.error("Stats fetch failed:", err);
         setLoaded(true);
       }
@@ -315,26 +314,10 @@ function StatsBar({ darkMode }: { darkMode: boolean }) {
   }, []);
 
   const stats = [
-    {
-      value: "Feb 10, 2026",
-      label: "Launched",
-      live: false,
-    },
-    {
-      value: `${userCount}+`,
-      label: "Users joined",
-      live: true,
-    },
-    {
-      value: `${quizCount}+`,
-      label: "Quizzes taken",
-      live: true,
-    },
-    {
-      value: "200+",
-      label: "Styles generated",
-      live: false,
-    },
+    { value: "Feb 10, 2026", label: "Launched", live: false },
+    { value: `${userCount}+`, label: "Users joined", live: true },
+    { value: `${quizCount}+`, label: "Quizzes taken", live: true },
+    { value: "200+", label: "Styles generated", live: false },
   ];
 
   return (
@@ -350,7 +333,7 @@ function StatsBar({ darkMode }: { darkMode: boolean }) {
         <div key={i} className="text-center">
           <div className="flex items-center justify-center gap-1.5">
             <motion.p
-              key={stat.value} // ← triggers animation when value updates
+              key={stat.value}
               initial={{ opacity: 0, y: 4 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
@@ -380,6 +363,7 @@ export default function Home() {
   const router = useRouter();
 
   const { user, loading: authLoading } = useAuth();
+  const { isInstallable, install } = usePWAInstall(); // ✅ PWA install hook
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -481,6 +465,22 @@ export default function Home() {
 
           {/* Actions */}
           <div className="flex items-center gap-4">
+
+            {/* ✅ PWA Install button — only shows when browser is ready */}
+            {isInstallable && (
+              <button
+                onClick={install}
+                className={`hidden md:flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold border transition ${
+                  darkMode
+                    ? "border-yellow-400/50 text-yellow-400 hover:bg-yellow-400 hover:text-black"
+                    : "border-yellow-500/50 text-yellow-600 hover:bg-yellow-400 hover:text-black"
+                }`}
+              >
+                📲 Install App
+              </button>
+            )}
+
+            {/* Dark mode toggle */}
             <button
               className="w-9 h-9 flex items-center justify-center rounded-full border border-neutral-700 hover:border-yellow-400 transition"
               onClick={() => setDarkMode(!darkMode)}
@@ -556,9 +556,7 @@ export default function Home() {
             Find My Personalized Fit
           </a>
         </motion.div>
-        {/* traction signal proof what we did */}
         <StatsBar darkMode={darkMode} />
-
       </section>
 
       {/* TRENDING */}
@@ -634,7 +632,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Outfit grid — now uses OutfitCard with like/save */}
+        {/* Outfit grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
           {trendingList.map((card: any, idx: number) => (
             <OutfitCard
@@ -732,7 +730,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* WHY OUTFEVIBE — MOAT SECTION */}
+      {/* WHY OUTFEVIBE */}
       <section className={`px-6 py-24 ${darkMode ? "bg-[#0a0a0a] text-white" : "bg-neutral-50 text-black"}`}>
         <div className="max-w-5xl mx-auto">
           <motion.div
@@ -756,42 +754,12 @@ export default function Home() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             {[
-              {
-                icon: "🧬",
-                title: "Body shape analysis",
-                desc: "Classifies your body type — hourglass, pear, apple, rectangle — and recommends cuts and silhouettes that actually flatter you.",
-                tag: "AI-powered",
-              },
-              {
-                icon: "🎨",
-                title: "Skin tone matching",
-                desc: "Detects your skin tone and maps it to colours, fabrics, and palettes that complement your complexion — not just what's trending.",
-                tag: "AI-powered",
-              },
-              {
-                icon: "🇮🇳",
-                title: "India-first occasions",
-                desc: "Eid, Diwali, weddings, college fests, mehendi — we understand Indian occasions and dress you for them, not generic Western events.",
-                tag: "Unique to us",
-              },
-              {
-                icon: "🎯",
-                title: "Style persona quiz",
-                desc: "6 questions. 1 persona. Minimalist Maven, Streetwear Icon, Comfort Queen — your outfit feed is filtered entirely by who you are.",
-                tag: "Unique to us",
-              },
-              {
-                icon: "🛍️",
-                title: "Indian affiliate links",
-                desc: "Every recommendation links to Meesho, Ajio, Myntra, Flipkart, and Amazon India — not US stores that don't ship here.",
-                tag: "India-first",
-              },
-              {
-                icon: "💰",
-                title: "Budget-aware styling",
-                desc: "Low, medium, or high — your budget is a first-class filter, not an afterthought. Outfevibe never recommends what you can't afford.",
-                tag: "Practical",
-              },
+              { icon: "🧬", title: "Body shape analysis", desc: "Classifies your body type — hourglass, pear, apple, rectangle — and recommends cuts and silhouettes that actually flatter you.", tag: "AI-powered" },
+              { icon: "🎨", title: "Skin tone matching", desc: "Detects your skin tone and maps it to colours, fabrics, and palettes that complement your complexion — not just what's trending.", tag: "AI-powered" },
+              { icon: "🇮🇳", title: "India-first occasions", desc: "Eid, Diwali, weddings, college fests, mehendi — we understand Indian occasions and dress you for them, not generic Western events.", tag: "Unique to us" },
+              { icon: "🎯", title: "Style persona quiz", desc: "6 questions. 1 persona. Minimalist Maven, Streetwear Icon, Comfort Queen — your outfit feed is filtered entirely by who you are.", tag: "Unique to us" },
+              { icon: "🛍️", title: "Indian affiliate links", desc: "Every recommendation links to Meesho, Ajio, Myntra, Flipkart, and Amazon India — not US stores that don't ship here.", tag: "India-first" },
+              { icon: "💰", title: "Budget-aware styling", desc: "Low, medium, or high — your budget is a first-class filter, not an afterthought. Outfevibe never recommends what you can't afford.", tag: "Practical" },
             ].map((item, i) => (
               <motion.div
                 key={i}
@@ -803,28 +771,16 @@ export default function Home() {
               >
                 <div className="flex items-start justify-between mb-4">
                   <span className="text-2xl">{item.icon}</span>
-                  <span className={`text-xs font-mono px-2.5 py-1 rounded-full border ${item.tag === "AI-powered"
-                      ? "text-purple-400 border-purple-400/30 bg-purple-400/10"
-                      : item.tag === "Unique to us"
-                        ? "text-yellow-400 border-yellow-400/30 bg-yellow-400/10"
-                        : item.tag === "India-first"
-                          ? "text-green-400 border-green-400/30 bg-green-400/10"
-                          : "text-blue-400 border-blue-400/30 bg-blue-400/10"
-                    }`}>
+                  <span className={`text-xs font-mono px-2.5 py-1 rounded-full border ${item.tag === "AI-powered" ? "text-purple-400 border-purple-400/30 bg-purple-400/10" : item.tag === "Unique to us" ? "text-yellow-400 border-yellow-400/30 bg-yellow-400/10" : item.tag === "India-first" ? "text-green-400 border-green-400/30 bg-green-400/10" : "text-blue-400 border-blue-400/30 bg-blue-400/10"}`}>
                     {item.tag}
                   </span>
                 </div>
-                <h3 className={`text-base font-bold mb-2 group-hover:text-yellow-400 transition ${darkMode ? "text-white" : "text-black"}`}>
-                  {item.title}
-                </h3>
-                <p className={`text-sm leading-relaxed ${darkMode ? "text-neutral-400" : "text-neutral-600"}`}>
-                  {item.desc}
-                </p>
+                <h3 className={`text-base font-bold mb-2 group-hover:text-yellow-400 transition ${darkMode ? "text-white" : "text-black"}`}>{item.title}</h3>
+                <p className={`text-sm leading-relaxed ${darkMode ? "text-neutral-400" : "text-neutral-600"}`}>{item.desc}</p>
               </motion.div>
             ))}
           </div>
 
-          {/* Coming soon row */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -865,56 +821,27 @@ export default function Home() {
                 transition={{ duration: 0.4, ease: "easeOut" }}
                 className={`${darkMode ? 'bg-neutral-900' : 'bg-neutral-100'} p-10 rounded-2xl shadow-lg`}
               >
-                {/* Avatar + Name — side by side */}
                 <div className="flex items-center gap-4 mb-6">
                   <div className="w-14 h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-yellow-400">
-                    <img
-                      src={testimonials[activeIndex].image}
-                      alt={testimonials[activeIndex].name}
-                      className="w-full h-full object-cover"
-                      draggable={false}
-                    />
+                    <img src={testimonials[activeIndex].image} alt={testimonials[activeIndex].name} className="w-full h-full object-cover" draggable={false} />
                   </div>
                   <div className="text-left">
-                    <p className={`font-semibold text-base ${darkMode ? 'text-white' : 'text-black'}`}>
-                      {testimonials[activeIndex].name}
-                    </p>
+                    <p className={`font-semibold text-base ${darkMode ? 'text-white' : 'text-black'}`}>{testimonials[activeIndex].name}</p>
                     <p className="text-xs text-neutral-500 mt-0.5">{testimonials[activeIndex].location}</p>
                   </div>
                 </div>
-
-                {/* Quote */}
-                <p className={`italic text-base leading-relaxed ${darkMode ? 'text-neutral-300' : 'text-neutral-700'}`}>
-                  {testimonials[activeIndex].text}
-                </p>
-
-
+                <p className={`italic text-base leading-relaxed ${darkMode ? 'text-neutral-300' : 'text-neutral-700'}`}>{testimonials[activeIndex].text}</p>
               </motion.div>
             </div>
 
-            {/* Controls */}
             <div className="flex items-center justify-center gap-6 mt-8">
-              <button
-                onClick={() => goTo(activeIndex - 1)}
-                className={`w-9 h-9 rounded-full border flex items-center justify-center transition ${darkMode ? 'border-neutral-700 text-neutral-300 hover:border-yellow-400 hover:text-yellow-400' : 'border-neutral-300 text-neutral-600 hover:border-yellow-500 hover:text-yellow-500'}`}
-              >
-                ‹
-              </button>
+              <button onClick={() => goTo(activeIndex - 1)} className={`w-9 h-9 rounded-full border flex items-center justify-center transition ${darkMode ? 'border-neutral-700 text-neutral-300 hover:border-yellow-400 hover:text-yellow-400' : 'border-neutral-300 text-neutral-600 hover:border-yellow-500 hover:text-yellow-500'}`}>‹</button>
               <div className="flex gap-2">
                 {testimonials.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => goTo(i)}
-                    className={`rounded-full transition-all duration-300 ${i === activeIndex ? 'w-6 h-2 bg-yellow-400' : `w-2 h-2 ${darkMode ? 'bg-neutral-700' : 'bg-neutral-300'} hover:bg-yellow-400/50`}`}
-                  />
+                  <button key={i} onClick={() => goTo(i)} className={`rounded-full transition-all duration-300 ${i === activeIndex ? 'w-6 h-2 bg-yellow-400' : `w-2 h-2 ${darkMode ? 'bg-neutral-700' : 'bg-neutral-300'} hover:bg-yellow-400/50`}`} />
                 ))}
               </div>
-              <button
-                onClick={() => goTo(activeIndex + 1)}
-                className={`w-9 h-9 rounded-full border flex items-center justify-center transition ${darkMode ? 'border-neutral-700 text-neutral-300 hover:border-yellow-400 hover:text-yellow-400' : 'border-neutral-300 text-neutral-600 hover:border-yellow-500 hover:text-yellow-500'}`}
-              >
-                ›
-              </button>
+              <button onClick={() => goTo(activeIndex + 1)} className={`w-9 h-9 rounded-full border flex items-center justify-center transition ${darkMode ? 'border-neutral-700 text-neutral-300 hover:border-yellow-400 hover:text-yellow-400' : 'border-neutral-300 text-neutral-600 hover:border-yellow-500 hover:text-yellow-500'}`}>›</button>
             </div>
           </div>
         )}
@@ -923,16 +850,9 @@ export default function Home() {
       {/* FEEDBACK */}
       <section id="feedback" className={`px-6 py-20 w-full ${darkMode ? 'bg-black text-white' : 'bg-white text-black'}`}>
         <div className="max-w-xl mx-auto">
-          <motion.h2
-            variants={fadeIn}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            className={`text-3xl font-bold text-center mb-8 ${darkMode ? 'text-white' : 'text-black'}`}
-          >
+          <motion.h2 variants={fadeIn} initial="hidden" whileInView="show" viewport={{ once: true }} className={`text-3xl font-bold text-center mb-8 ${darkMode ? 'text-white' : 'text-black'}`}>
             Submit Feedback
           </motion.h2>
-
           <FeedbackForm darkMode={darkMode} />
         </div>
       </section>
