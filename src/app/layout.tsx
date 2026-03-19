@@ -25,23 +25,25 @@ export const metadata: Metadata = {
   },
 
   description:
-    "Outfevibe is your AI-powered personal stylist. Upload your photo and get outfit recommendations based on your body type, skin tone, and occasion. Discover your style persona with our free quiz.",
+    "Outfevibe is India's first AI-powered personal stylist built for Gen Z & Millennials. Get outfit recommendations based on your body type, skin tone, and occasion. Free style quiz included.",
 
   keywords: [
-    "AI stylist",
-    "outfit recommendations",
-    "personal styling",
-    "fashion AI",
+    "AI stylist India",
+    "outfit recommendations India",
+    "Gen Z fashion app India",
+    "millennial style app",
+    "personal styling India",
+    "fashion AI India",
     "body type outfits",
     "skin tone fashion",
-    "style quiz",
-    "virtual wardrobe",
-    "outfit ideas India",
-    "AI fashion app",
+    "style quiz India",
+    "virtual wardrobe India",
+    "AI fashion app India",
+    "what to wear India",
+    "outfit ideas Gen Z",
     "Outfevibe",
-    "personalized fashion",
-    "what to wear",
-    "outfit suggester",
+    "Indian fashion app",
+    "outfit suggester India",
   ],
 
   authors: [{ name: "Outfevibe", url: "https://www.outfevibe.com" }],
@@ -154,7 +156,7 @@ const jsonLd = {
       operatingSystem: "Web",
       applicationCategory: "LifestyleApplication",
       description:
-        "AI-powered personal styling app that recommends outfits based on body type, skin tone, and occasion.",
+  "India's first AI-powered personal styling app for Gen Z & Millennials. Get outfit recommendations based on body type, skin tone, and occasion.",
       url: "https://www.outfevibe.com",
       offers: {
         "@type": "Offer",

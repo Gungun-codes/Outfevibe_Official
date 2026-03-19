@@ -56,12 +56,12 @@ export default function AboutPage() {
             <span className="text-[#d4af7f]">who couldn't dress.</span>
           </motion.h1>
 
-          <motion.p
-            variants={fadeUp}
-            className="text-lg text-neutral-400 max-w-2xl leading-relaxed"
-          >
+          <motion.p variants={fadeUp} className="text-lg text-neutral-400 max-w-2xl leading-relaxed">
             Outfevibe didn't start in a boardroom. It started in front of a
             wardrobe full of clothes with absolutely nothing to wear.
+          </motion.p>
+          <motion.p variants={fadeUp} className="text-sm text-[#d4af7f] font-mono tracking-widest uppercase mt-2">
+            India's first AI stylist for Gen Z & Millennials
           </motion.p>
         </motion.div>
       </section>

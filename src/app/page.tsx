@@ -515,7 +515,7 @@ export default function Home() {
           <motion.span className={`absolute w-[3px] h-[3px] rounded-full ${darkMode ? 'bg-white' : 'bg-yellow-400/70'}`} style={{ left: "85%", top: "25%" }} animate={{ opacity: [0, 1, 0], y: [0, 30] }} transition={{ duration: 6, repeat: Infinity }} />
         </div>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="backdrop-blur-md bg-white/5 border border-yellow-400/40 px-5 py-2 rounded-full text-sm text-yellow-200 mb-8">
-          🌙 AI-Based Outfit Suggestion
+          🇮🇳 India's First AI Stylist for Gen Z & Millennials
         </motion.div>
         <h1 className={`text-4xl md:text-6xl font-bold leading-tight max-w-3xl ${darkMode ? 'text-white' : 'text-black'}`}>
           This Eid, Let Your Outfit
