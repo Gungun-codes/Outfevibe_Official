@@ -8,6 +8,7 @@ import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/context/authContext";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import OutfitCard from "@/components/OutfitCard";
 
 function FeedbackForm({ darkMode }: { darkMode: boolean }) {
   const [name, setName] = useState("");
@@ -543,41 +544,86 @@ export default function Home() {
       </section>
 
       {/* TRENDING */}
-      <section id="trending" className={`px-6 py-20 ${darkMode ? 'bg-black text-white' : 'bg-white text-black'}`}>
-        <motion.h2 initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeIn} className={`text-4xl md:text-5xl font-extrabold text-center ${darkMode ? 'text-white' : 'text-black'}`}>
+      <section id="trending" className={`px-6 py-20 overflow-x-hidden ${darkMode ? 'bg-black text-white' : 'bg-white text-black'}`}>
+        <motion.h2
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          variants={fadeIn}
+          className={`text-4xl md:text-5xl font-extrabold text-center ${darkMode ? 'text-white' : 'text-black'}`}
+        >
           Trending Outfits
         </motion.h2>
+
         <p className={`text-center mt-3 ${darkMode ? 'text-neutral-400' : 'text-neutral-600'}`}>
           Stay ahead of the curve. Curated fits that define the moment.
         </p>
+
+        {/* Category filter */}
         <div className="flex justify-center mt-6">
           <div className={`flex flex-wrap items-center gap-2 px-2 py-2 rounded-full border ${darkMode ? 'border-neutral-800 bg-neutral-900/50' : 'border-neutral-200 bg-white'} shadow-sm`}>
-            <button onClick={() => setActiveCategory('general')} className={`inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-semibold shadow transition ${activeCategory === 'general' ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white' : (darkMode ? 'text-neutral-300 hover:bg-neutral-800' : 'text-neutral-700 hover:bg-neutral-100')}`}>🔥 General</button>
-            <button onClick={() => setActiveCategory('festive')} className={`inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-semibold shadow transition ${activeCategory === 'festive' ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white' : (darkMode ? 'text-neutral-300 hover:bg-neutral-800' : 'text-neutral-700 hover:bg-neutral-100')}`}>✨ Festive</button>
-            <button onClick={() => setActiveCategory('forYou')} className={`inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-semibold shadow transition ${activeCategory === 'forYou' ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white' : (darkMode ? 'text-neutral-300 hover:bg-neutral-800' : 'text-neutral-700 hover:bg-neutral-100')}`}>🫶 For You</button>
+            <button
+              onClick={() => setActiveCategory('general')}
+              className={`inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-semibold transition ${activeCategory === 'general'
+                  ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white'
+                  : darkMode ? 'text-neutral-300 hover:bg-neutral-800' : 'text-neutral-700 hover:bg-neutral-100'
+                }`}
+            >
+              🔥 General
+            </button>
+            <button
+              onClick={() => setActiveCategory('festive')}
+              className={`inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-semibold transition ${activeCategory === 'festive'
+                  ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white'
+                  : darkMode ? 'text-neutral-300 hover:bg-neutral-800' : 'text-neutral-700 hover:bg-neutral-100'
+                }`}
+            >
+              ✨ Festive
+            </button>
+            <button
+              onClick={() => setActiveCategory('forYou')}
+              className={`inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-semibold transition ${activeCategory === 'forYou'
+                  ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white'
+                  : darkMode ? 'text-neutral-300 hover:bg-neutral-800' : 'text-neutral-700 hover:bg-neutral-100'
+                }`}
+            >
+              🫶 For You
+            </button>
           </div>
         </div>
+
+        {/* Gender filter */}
         <div className="flex justify-center mt-6">
           <div className={`flex items-center p-1 rounded-full ${darkMode ? 'bg-neutral-900 border border-neutral-800' : 'bg-neutral-100 border border-neutral-200'}`}>
-            <button onClick={() => setActiveGender('women')} className={`px-5 py-2 rounded-full text-sm font-semibold transition ${activeGender === 'women' ? 'bg-neutral-800 text-white' : (darkMode ? 'text-neutral-300 hover:bg-neutral-800' : 'text-neutral-700 hover:bg-white')}`}>Women</button>
-            <button onClick={() => setActiveGender('men')} className={`px-5 py-2 rounded-full text-sm font-semibold transition ${activeGender === 'men' ? 'bg-neutral-800 text-white' : (darkMode ? 'text-neutral-300 hover:bg-neutral-800' : 'text-neutral-700 hover:bg-white')}`}>Men</button>
+            <button
+              onClick={() => setActiveGender('women')}
+              className={`px-5 py-2 rounded-full text-sm font-semibold transition ${activeGender === 'women'
+                  ? 'bg-neutral-800 text-white'
+                  : darkMode ? 'text-neutral-300 hover:bg-neutral-800' : 'text-neutral-700 hover:bg-white'
+                }`}
+            >
+              Women
+            </button>
+            <button
+              onClick={() => setActiveGender('men')}
+              className={`px-5 py-2 rounded-full text-sm font-semibold transition ${activeGender === 'men'
+                  ? 'bg-neutral-800 text-white'
+                  : darkMode ? 'text-neutral-300 hover:bg-neutral-800' : 'text-neutral-700 hover:bg-white'
+                }`}
+            >
+              Men
+            </button>
           </div>
         </div>
+
+        {/* Outfit grid — now uses OutfitCard with like/save */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
           {trendingList.map((card: any, idx: number) => (
-            <div key={`${card.title || card.image || 'it'}-${idx}`} className={`rounded-2xl overflow-hidden ${darkMode ? 'bg-neutral-900 border border-neutral-800' : 'bg-neutral-100 border border-neutral-200'} shadow-sm`}>
-              <div className="h-60 w-full overflow-hidden">
-                <img src={card.image || ''} alt={card.title || ''} className="h-full w-full object-cover" />
-              </div>
-              <div className={`${darkMode ? 'bg-neutral-950 text-white' : 'bg-white text-black'} px-4 py-3`}>
-                <div className="font-medium">{card.title || 'Trending Fit'}</div>
-                {card.affiliateLink && (
-                  <a href={card.affiliateLink} target="_blank" rel="noopener noreferrer" className="inline-block mt-3 text-sm font-semibold text-pink-500 hover:underline">
-                    Explore →
-                  </a>
-                )}
-              </div>
-            </div>
+            <OutfitCard
+              key={`${card.title || card.image || 'card'}-${idx}`}
+              card={card}
+              darkMode={darkMode}
+            />
           ))}
         </div>
       </section>
@@ -630,8 +676,8 @@ export default function Home() {
               viewport={{ once: true }}
               style={{ transformOrigin: "center center" }}
               className={`p-8 rounded-2xl text-left transition shadow-lg block ${darkMode
-                  ? "bg-neutral-900 border border-neutral-800 hover:border-yellow-400"
-                  : "bg-neutral-100 border border-neutral-200 hover:border-yellow-500"
+                ? "bg-neutral-900 border border-neutral-800 hover:border-yellow-400"
+                : "bg-neutral-100 border border-neutral-200 hover:border-yellow-500"
                 }`}
             >
               <h3 className="text-xl font-semibold mb-3">AI Based Outfit Suggestions</h3>
@@ -650,8 +696,8 @@ export default function Home() {
               viewport={{ once: true }}
               style={{ transformOrigin: "center center" }}
               className={`p-8 rounded-2xl text-left shadow-lg ${darkMode
-                  ? "bg-neutral-900 border border-neutral-800"
-                  : "bg-neutral-100 border border-neutral-200"
+                ? "bg-neutral-900 border border-neutral-800"
+                : "bg-neutral-100 border border-neutral-200"
                 }`}
             >
               <h3 className="text-xl font-semibold mb-3">
