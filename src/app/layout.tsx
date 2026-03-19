@@ -92,12 +92,16 @@ export const metadata: Metadata = {
   },
 
   icons: {
-    icon: "/favicon.ico",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon0.svg", type: "image/svg+xml" },
+      { url: "/icon1.png", sizes: "96x96", type: "image/png" },
+    ],
     shortcut: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
+    apple: "/apple-icon.png", // ✅ fixed: was apple-touch-icon.png
   },
 
-  manifest: "/manifest.json",
+  manifest: "/manifest.webmanifest", // ✅ fixed: was /manifest.json
 
   alternates: {
     canonical: "https://www.outfevibe.com",
@@ -156,7 +160,7 @@ const jsonLd = {
       operatingSystem: "Web",
       applicationCategory: "LifestyleApplication",
       description:
-  "India's first AI-powered personal styling app for Gen Z & Millennials. Get outfit recommendations based on body type, skin tone, and occasion.",
+        "India's first AI-powered personal styling app for Gen Z & Millennials. Get outfit recommendations based on body type, skin tone, and occasion.",
       url: "https://www.outfevibe.com",
       offers: {
         "@type": "Offer",
@@ -188,7 +192,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AuthProvider>{children}
+        <AuthProvider>
+          {children}
           <PushPermission />
         </AuthProvider>
         <Analytics />
