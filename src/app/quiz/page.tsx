@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/authContext";
 import { supabase } from "@/lib/supabase";
 import Image from "next/image";
+import { useNotify } from "@/components/PushPermission";
+
 
 /* ================= TYPES ================= */
 
@@ -30,6 +32,9 @@ interface PersonaInfo {
   tagline: string;
   color: string;
 }
+
+// Inside your quiz result component:
+const { sendPush, sendEmail } = useNotify();
 
 /* ================= PERSONA META ================= */
 
@@ -340,14 +345,15 @@ export default function StyleQuizPage() {
   };
 
   const restart = () => {
-  localStorage.removeItem("outfevibe_quiz_progress"); // ← ADD THIS LINE
-  setGender(null);
-  setStep(0);
-  setAnswers([]);
-  setScores({});
-  setIsFinished(false);
-  setFeedbackMsg(null);
-};
+    localStorage.removeItem("outfevibe_quiz_progress"); // ← ADD THIS LINE
+    setGender(null);
+    setStep(0);
+    setAnswers([]);
+    setScores({});
+    setIsFinished(false);
+    setFeedbackMsg(null);
+  };
+
 
   /* ================= GENDER SCREEN ================= */
 
@@ -598,7 +604,6 @@ export default function StyleQuizPage() {
                       if (user && user.email) {
                         const saveResult = async () => {
                           try {
-                            // Check if a record already exists with this email
                             const { data, error: fetchError } = await supabase
                               .from("quiz_result")
                               .select("id")
@@ -606,17 +611,15 @@ export default function StyleQuizPage() {
                               .single();
 
                             if (fetchError && fetchError.code !== "PGRST116") {
-                              // PGRST116 means zero rows found, which is fine
                               console.error("Error checking existing record:", fetchError.message);
                             }
 
                             if (data) {
-                              // Record exists, update it
                               const { error: updateError } = await supabase
                                 .from("quiz_result")
                                 .update({
                                   persona_name: persona,
-                                  gender: gender === "male" ? "Boy" : "Girl"
+                                  gender: gender === "male" ? "Boy" : "Girl",
                                 })
                                 .eq("email", user.email);
 
@@ -624,11 +627,10 @@ export default function StyleQuizPage() {
                                 console.error("Update failed:", updateError.message);
                               }
                             } else {
-                              // Record does not exist, insert new
                               const { error: insertError } = await supabase
                                 .from("quiz_result")
                                 .insert({
-                                  user_id: user.id || null, // fallback in case user.id is somehow missing
+                                  user_id: user.id || null,
                                   persona_name: persona,
                                   email: user.email,
                                   gender: gender === "male" ? "Boy" : "Girl",
@@ -638,6 +640,32 @@ export default function StyleQuizPage() {
                                 console.error("Insert failed:", insertError.message);
                               }
                             }
+
+                            // ── Fire notifications after successful save ──
+                            // Push notification
+                            fetch("/api/push/send", {
+                              method: "POST",
+                              headers: { "Content-Type": "application/json" },
+                              body: JSON.stringify({
+                                type: "quiz_completed",
+                                payload: persona,
+                                userId: user.id,
+                              }),
+                            });
+
+                            // Email notification
+                            if (user.email) {
+                              fetch("/api/notify/email", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({
+                                  type: "quiz_completed",
+                                  to: user.email,
+                                  payload: persona,
+                                }),
+                              });
+                            }
+
                           } catch (err) {
                             console.error("Failed to save quiz result:", err);
                           }

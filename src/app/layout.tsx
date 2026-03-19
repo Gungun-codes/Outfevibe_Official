@@ -4,6 +4,7 @@ import "./globals.css";
 import { AuthProvider } from "@/context/authContext";
 import { Analytics } from "@vercel/analytics/react";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import PushPermission from "@/components/PushPermission";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -186,6 +187,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <AuthProvider>{children}</AuthProvider>
+        <PushPermission />
         <Analytics />
         <GoogleAnalytics />
       </body>
