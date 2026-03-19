@@ -6,8 +6,6 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/authContext";
 import { supabase } from "@/lib/supabase";
 import Image from "next/image";
-import { useNotify } from "@/components/PushPermission";
-
 
 /* ================= TYPES ================= */
 
@@ -32,9 +30,6 @@ interface PersonaInfo {
   tagline: string;
   color: string;
 }
-
-// Inside your quiz result component:
-const { sendPush, sendEmail } = useNotify();
 
 /* ================= PERSONA META ================= */
 
