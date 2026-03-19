@@ -4,11 +4,6 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bell, BellOff, X } from "lucide-react";
 import { useAuth } from "@/context/authContext";
-const [mounted, setMounted] = useState(false);
-
-useEffect(() => {
-  setMounted(true);
-}, []);
 
 const VAPID_PUBLIC_KEY = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!;
 const DISMISSED_KEY = "outfevibe_push_dismissed";
@@ -22,14 +17,17 @@ function urlBase64ToUint8Array(base64String: string) {
 
 export default function PushPermission() {
   const { user } = useAuth();
+  const [mounted, setMounted] = useState(false); // ← INSIDE component
   const [show, setShow] = useState(false);
   const [status, setStatus] = useState<"idle" | "loading" | "granted" | "denied">("idle");
 
+  // Mount guard — prevents SSR crash
   useEffect(() => {
-    // Don't show if:
-    // - Not supported
-    // - Already granted/denied
-    // - User dismissed before
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
     if (
       typeof window === "undefined" ||
       !("serviceWorker" in navigator) ||
@@ -43,20 +41,19 @@ export default function PushPermission() {
     const dismissed = localStorage.getItem(DISMISSED_KEY);
     if (dismissed) return;
 
-    // Show after 30 seconds on site
     const t = setTimeout(() => setShow(true), 30000);
     return () => clearTimeout(t);
-  }, []);
+  }, [mounted]);
+
+  // Don't render anything on server
+  if (!mounted) return null;
 
   const handleAllow = async () => {
     setStatus("loading");
-
     try {
-      // Register service worker
       const registration = await navigator.serviceWorker.register("/sw.js");
       await navigator.serviceWorker.ready;
 
-      // Request permission
       const permission = await Notification.requestPermission();
       if (permission !== "granted") {
         setStatus("denied");
@@ -64,13 +61,11 @@ export default function PushPermission() {
         return;
       }
 
-      // Subscribe to push
       const subscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
       });
 
-      // Save subscription to backend
       await fetch("/api/push/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -94,7 +89,6 @@ export default function PushPermission() {
     setShow(false);
   };
 
-  // Show inline bell icon in navbar/profile if already granted
   if (status === "granted") {
     return (
       <div className="flex items-center gap-1.5 text-xs text-green-400">
@@ -115,7 +109,6 @@ export default function PushPermission() {
           className="fixed bottom-24 left-4 right-4 md:left-auto md:right-6 md:bottom-24 md:max-w-sm z-[9998]"
         >
           <div className="bg-[#111] border border-[#2a2a2a] rounded-2xl p-5 shadow-2xl shadow-black/60">
-
             <div className="flex items-start justify-between gap-3 mb-3">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-lg bg-[#d4af7f]/10 flex items-center justify-center flex-shrink-0">
@@ -123,10 +116,7 @@ export default function PushPermission() {
                 </div>
                 <p className="text-sm font-semibold text-white">Stay in the loop</p>
               </div>
-              <button
-                onClick={handleDismiss}
-                className="text-neutral-600 hover:text-neutral-400 transition flex-shrink-0"
-              >
+              <button onClick={handleDismiss} className="text-neutral-600 hover:text-neutral-400 transition flex-shrink-0">
                 <X className="w-4 h-4" />
               </button>
             </div>
@@ -136,7 +126,6 @@ export default function PushPermission() {
               and your style milestones. No spam — only the good stuff.
             </p>
 
-            {/* What you'll get */}
             <div className="space-y-1.5 mb-4">
               {[
                 "🔥 Weekly trending outfit drops",
@@ -167,7 +156,6 @@ export default function PushPermission() {
                 {status === "loading" ? "Enabling..." : "Allow"}
               </button>
             </div>
-
           </div>
         </motion.div>
       )}
@@ -175,15 +163,11 @@ export default function PushPermission() {
   );
 }
 
-// ── Helper hook to send notifications from anywhere in the app ──
+// ── Helper hook ──
 export function useNotify() {
   const { user } = useAuth();
 
-  const sendPush = async (
-    type: string,
-    payload?: string,
-    userId?: string
-  ) => {
+  const sendPush = async (type: string, payload?: string, userId?: string) => {
     try {
       await fetch("/api/push/send", {
         method: "POST",
@@ -195,11 +179,7 @@ export function useNotify() {
     }
   };
 
-  const sendEmail = async (
-    type: string,
-    to: string,
-    payload?: string
-  ) => {
+  const sendEmail = async (type: string, to: string, payload?: string) => {
     try {
       await fetch("/api/notify/email", {
         method: "POST",
