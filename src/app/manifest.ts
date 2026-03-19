@@ -15,34 +15,33 @@ export default function manifest(): MetadataRoute.Manifest {
         src: "/web-app-manifest-192x192.png",
         sizes: "192x192",
         type: "image/png",
-        purpose: "any",            // ✅ fixes the install criteria error
+        purpose: "any",
       },
       {
         src: "/web-app-manifest-512x512.png",
         sizes: "512x512",
         type: "image/png",
-        purpose: "any",            // ✅ fixes the install criteria error
+        purpose: "any",
       },
       {
         src: "/web-app-manifest-512x512.png",
         sizes: "512x512",
         type: "image/png",
-        purpose: "maskable",       // ✅ keep maskable separately
+        purpose: "maskable",
       },
     ],
     screenshots: [
       {
         src: "/screenshots/mobile.png",
-        sizes: "390x844",
+        sizes: "1072x2385",   // ✅ matches actual size
         type: "image/png",
-        // no form_factor = mobile screenshot ✅
       },
       {
         src: "/screenshots/desktop.png",
-        sizes: "1280x720",
+        sizes: "1358x644",    // ✅ matches actual size
         type: "image/png",
-        // @ts-ignore — Next.js types lag behind, this is valid
-        form_factor: "wide",       // ✅ fixes desktop richer UI warning
+        // @ts-ignore
+        form_factor: "wide",
       },
     ],
   };
