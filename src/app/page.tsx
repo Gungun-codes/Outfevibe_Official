@@ -325,9 +325,8 @@ function StatsBar({ darkMode }: { darkMode: boolean }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.8, duration: 0.6 }}
-      className={`flex flex-wrap justify-center gap-6 md:gap-12 mt-14 pt-10 border-t ${
-        darkMode ? "border-neutral-800" : "border-neutral-200"
-      }`}
+      className={`flex flex-wrap justify-center gap-6 md:gap-12 mt-14 pt-10 border-t ${darkMode ? "border-neutral-800" : "border-neutral-200"
+        }`}
     >
       {stats.map((stat, i) => (
         <div key={i} className="text-center">
@@ -342,9 +341,8 @@ function StatsBar({ darkMode }: { darkMode: boolean }) {
               {stat.value}
             </motion.p>
             {stat.live && (
-              <span className={`w-1.5 h-1.5 rounded-full border-2 border-black flex-shrink-0 mt-0.5 ${
-                loaded ? "bg-green-400 animate-pulse" : "bg-yellow-400"
-              }`} />
+              <span className={`w-1.5 h-1.5 rounded-full border-2 border-black flex-shrink-0 mt-0.5 ${loaded ? "bg-green-400 animate-pulse" : "bg-yellow-400"
+                }`} />
             )}
           </div>
           <p className="text-xs text-neutral-500 mt-1 tracking-wide">{stat.label}</p>
@@ -360,11 +358,10 @@ function MobileInstallBanner({ install, darkMode }: { install: () => void; darkM
   if (dismissed) return null;
 
   return (
-    <div className={`fixed bottom-0 left-0 right-0 z-50 md:hidden p-4 border-t flex items-center justify-between gap-3 ${
-      darkMode
+    <div className={`fixed bottom-0 left-0 right-0 z-50 md:hidden p-4 border-t flex items-center justify-between gap-3 ${darkMode
         ? "bg-neutral-900 border-neutral-800"
         : "bg-white border-neutral-200"
-    }`}>
+      }`}>
       <div className="flex items-center gap-3">
         <img src="/outfevibe_logo.png" alt="Outfevibe" className="w-10 h-10 rounded-xl" />
         <div>
@@ -508,11 +505,10 @@ export default function Home() {
             {isInstallable && (
               <button
                 onClick={install}
-                className={`hidden md:flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold border transition ${
-                  darkMode
+                className={`hidden md:flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold border transition ${darkMode
                     ? "border-yellow-400/50 text-yellow-400 hover:bg-yellow-400 hover:text-black"
                     : "border-yellow-500/50 text-yellow-600 hover:bg-yellow-400 hover:text-black"
-                }`}
+                  }`}
               >
                 📲 Install App
               </button>
@@ -907,6 +903,8 @@ export default function Home() {
               <a href="https://www.instagram.com/outfevibe?igsh=MXFwZmZpczVsbHj0dg==" target="_blank" className={`circle ${darkMode ? "hover:text-yellow-400" : "hover:text-black"}`}>IG</a>
               <a href="https://www.linkedin.com/in/outfevibe-offical-14903a3a9" target="_blank" className={`circle ${darkMode ? "hover:text-yellow-400" : "hover:text-black"}`}>LN</a>
               <a href="https://youtube.com/@outfevibe?si=WFslmfGzuiLvrR16" target="_blank" className={`circle ${darkMode ? "hover:text-yellow-400" : "hover:text-black"}`}>YT</a>
+              <Link href="/privacy-policy" className="hover:text-yellow-400 transition">Privacy Policy</Link>
+              <Link href="/terms-of-service" className="hover:text-yellow-400 transition">Terms of Service</Link>
             </div>
           </div>
           <div>

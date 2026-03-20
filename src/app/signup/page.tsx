@@ -18,7 +18,6 @@ export default function SignupPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // OTP state
   const [step, setStep] = useState<"signup" | "otp">("signup");
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [otpLoading, setOtpLoading] = useState(false);
@@ -30,29 +29,20 @@ export default function SignupPage() {
     if (user) router.push("/");
   }, [user, router]);
 
-  // Resend cooldown timer
   useEffect(() => {
     if (resendCooldown <= 0) return;
     const timer = setTimeout(() => setResendCooldown((c) => c - 1), 1000);
     return () => clearTimeout(timer);
   }, [resendCooldown]);
 
-  /* ── Signup handler ─────────────────────────────────────── */
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !email || !password) {
-      setError("Please fill in all fields.");
-      return;
-    }
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters.");
-      return;
-    }
+    if (!name || !email || !password) { setError("Please fill in all fields."); return; }
+    if (password.length < 6) { setError("Password must be at least 6 characters."); return; }
     try {
       setLoading(true);
       setError("");
       await signup(email, password, name);
-      // Move to OTP step
       setStep("otp");
       setResendCooldown(60);
     } catch (err: any) {
@@ -62,59 +52,36 @@ export default function SignupPage() {
     }
   };
 
-  /* ── OTP input handler ──────────────────────────────────── */
   const handleOtpChange = (index: number, value: string) => {
-    // Only allow numbers
     if (!/^\d*$/.test(value)) return;
-
     const newOtp = [...otp];
-    newOtp[index] = value.slice(-1); // only last char
+    newOtp[index] = value.slice(-1);
     setOtp(newOtp);
     setOtpError("");
-
-    // Auto-focus next
-    if (value && index < 5) {
-      otpRefs.current[index + 1]?.focus();
-    }
-
-    // Auto-submit when all 6 filled
-    if (newOtp.every((d) => d !== "") && newOtp.join("").length === 6) {
-      verifyOtp(newOtp.join(""));
-    }
+    if (value && index < 5) otpRefs.current[index + 1]?.focus();
+    if (newOtp.every((d) => d !== "") && newOtp.join("").length === 6) verifyOtp(newOtp.join(""));
   };
 
   const handleOtpKeyDown = (index: number, e: React.KeyboardEvent) => {
-    if (e.key === "Backspace" && !otp[index] && index > 0) {
-      otpRefs.current[index - 1]?.focus();
-    }
+    if (e.key === "Backspace" && !otp[index] && index > 0) otpRefs.current[index - 1]?.focus();
   };
 
   const handleOtpPaste = (e: React.ClipboardEvent) => {
     e.preventDefault();
     const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);
-    if (pasted.length === 6) {
-      setOtp(pasted.split(""));
-      verifyOtp(pasted);
-    }
+    if (pasted.length === 6) { setOtp(pasted.split("")); verifyOtp(pasted); }
   };
 
-  /* ── Verify OTP ─────────────────────────────────────────── */
   const verifyOtp = async (code: string) => {
     setOtpLoading(true);
     setOtpError("");
     try {
-      const { error } = await supabase.auth.verifyOtp({
-        email,
-        token: code,
-        type: "signup",
-      });
-
+      const { error } = await supabase.auth.verifyOtp({ email, token: code, type: "signup" });
       if (error) {
         setOtpError("Invalid or expired code. Please try again.");
         setOtp(["", "", "", "", "", ""]);
         otpRefs.current[0]?.focus();
       } else {
-        // Verified — redirect to home
         router.push("/");
       }
     } catch (err: any) {
@@ -126,35 +93,21 @@ export default function SignupPage() {
 
   const handleVerifyClick = () => {
     const code = otp.join("");
-    if (code.length !== 6) {
-      setOtpError("Please enter the full 6-digit code.");
-      return;
-    }
+    if (code.length !== 6) { setOtpError("Please enter the full 6-digit code."); return; }
     verifyOtp(code);
   };
 
-  /* ── Resend OTP ─────────────────────────────────────────── */
   const handleResend = async () => {
     if (resendCooldown > 0) return;
     setOtpError("");
     setOtp(["", "", "", "", "", ""]);
     try {
-      const { error } = await supabase.auth.resend({
-        type: "signup",
-        email,
-      });
-      if (error) {
-        setOtpError("Failed to resend code. Try again.");
-      } else {
-        setResendCooldown(60);
-        otpRefs.current[0]?.focus();
-      }
-    } catch {
-      setOtpError("Failed to resend code.");
-    }
+      const { error } = await supabase.auth.resend({ type: "signup", email });
+      if (error) { setOtpError("Failed to resend code. Try again."); }
+      else { setResendCooldown(60); otpRefs.current[0]?.focus(); }
+    } catch { setOtpError("Failed to resend code."); }
   };
 
-  /* ── Google signup ──────────────────────────────────────── */
   const handleGoogleSignup = async () => {
     try {
       setError("");
@@ -187,7 +140,6 @@ export default function SignupPage() {
                 <h2 className="text-2xl font-bold tracking-widest">OUTFEVIBE</h2>
               </div>
 
-              {/* Heading */}
               <div>
                 <h1 className="text-4xl font-bold mb-2">Create Account</h1>
                 <p className="text-gray-400">Start your style journey today</p>
@@ -245,6 +197,7 @@ export default function SignupPage() {
                   </div>
                 </div>
 
+                {/* Submit */}
                 <button
                   type="submit"
                   disabled={loading}
@@ -253,6 +206,19 @@ export default function SignupPage() {
                   {loading ? "Creating Account..." : "Sign Up"}
                   {!loading && <ArrowRight className="w-5 h-5" />}
                 </button>
+
+                {/* ✅ Terms & Privacy consent under Sign Up button */}
+                <p className="text-xs text-gray-600 text-center leading-relaxed">
+                  By signing up, you agree to our{" "}
+                  <Link href="/terms-of-service" className="text-[#d4af7f] hover:underline">
+                    Terms of Service
+                  </Link>{" "}
+                  and{" "}
+                  <Link href="/privacy-policy" className="text-[#d4af7f] hover:underline">
+                    Privacy Policy
+                  </Link>
+                </p>
+
               </form>
 
               <div className="text-center text-sm text-gray-400">
@@ -266,18 +232,30 @@ export default function SignupPage() {
                 <div className="flex-1 h-px bg-[#2a2a2a]"></div>
               </div>
 
-              <button
-                onClick={handleGoogleSignup}
-                className="w-full py-3 rounded-xl border border-[#2a2a2a] hover:border-[#d4af7f] transition flex items-center justify-center gap-3 font-medium"
-              >
-                <svg className="w-5 h-5" viewBox="0 0 24 24">
-                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                  <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
-                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
-                </svg>
-                Continue with Google
-              </button>
+              {/* Google */}
+              <div className="space-y-3">
+                <button
+                  onClick={handleGoogleSignup}
+                  className="w-full py-3 rounded-xl border border-[#2a2a2a] hover:border-[#d4af7f] transition flex items-center justify-center gap-3 font-medium"
+                >
+                  <svg className="w-5 h-5" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                  </svg>
+                  Continue with Google
+                </button>
+
+                {/* ✅ Terms under Google button too */}
+                <p className="text-xs text-gray-600 text-center leading-relaxed">
+                  By continuing with Google, you agree to our{" "}
+                  <Link href="/terms-of-service" className="text-[#d4af7f] hover:underline">Terms</Link>
+                  {" "}and{" "}
+                  <Link href="/privacy-policy" className="text-[#d4af7f] hover:underline">Privacy Policy</Link>
+                </p>
+              </div>
+
             </motion.div>
           )}
 
@@ -297,16 +275,13 @@ export default function SignupPage() {
                 <h2 className="text-2xl font-bold tracking-widest">OUTFEVIBE</h2>
               </div>
 
-              {/* Icon + Heading */}
               <div className="text-center space-y-4">
                 <div className="w-16 h-16 rounded-full bg-[#d4af7f]/10 border border-[#d4af7f]/30 flex items-center justify-center mx-auto">
                   <ShieldCheck className="w-8 h-8 text-[#d4af7f]" />
                 </div>
                 <div>
                   <h1 className="text-3xl font-bold mb-2">Verify your email</h1>
-                  <p className="text-gray-400 text-sm">
-                    We sent a 6-digit code to
-                  </p>
+                  <p className="text-gray-400 text-sm">We sent a 6-digit code to</p>
                   <p className="text-[#d4af7f] font-medium mt-1">{email}</p>
                 </div>
               </div>
@@ -330,14 +305,12 @@ export default function SignupPage() {
                 ))}
               </div>
 
-              {/* Error */}
               {otpError && (
                 <div className="bg-red-500/10 border border-red-500/50 text-red-400 px-4 py-3 rounded-lg text-sm text-center">
                   {otpError}
                 </div>
               )}
 
-              {/* Verify button */}
               <button
                 onClick={handleVerifyClick}
                 disabled={otpLoading || otp.join("").length !== 6}
@@ -347,23 +320,19 @@ export default function SignupPage() {
                 {!otpLoading && <ArrowRight className="w-5 h-5" />}
               </button>
 
-              {/* Resend */}
               <div className="text-center text-sm text-gray-400">
                 Didn't receive the code?{" "}
                 <button
                   onClick={handleResend}
                   disabled={resendCooldown > 0}
                   className={`font-medium transition ${
-                    resendCooldown > 0
-                      ? "text-gray-600 cursor-not-allowed"
-                      : "text-[#d4af7f] hover:underline"
+                    resendCooldown > 0 ? "text-gray-600 cursor-not-allowed" : "text-[#d4af7f] hover:underline"
                   }`}
                 >
                   {resendCooldown > 0 ? `Resend in ${resendCooldown}s` : "Resend code"}
                 </button>
               </div>
 
-              {/* Back */}
               <div className="text-center">
                 <button
                   onClick={() => { setStep("signup"); setOtp(["", "", "", "", "", ""]); setOtpError(""); }}
@@ -372,13 +341,14 @@ export default function SignupPage() {
                   ← Wrong email? Go back
                 </button>
               </div>
+
             </motion.div>
           )}
 
         </AnimatePresence>
       </div>
 
-      {/* RIGHT SIDE - IMAGE */}
+      {/* RIGHT SIDE */}
       <div className="hidden lg:block w-1/2 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a0a] via-[#1a1a1a] to-[#d4af7f]/20"></div>
         <Image src="/hero/hero.jpg" alt="Fashion" fill className="object-cover opacity-40" />
