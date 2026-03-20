@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://www.outfevibe.com"),
 
   title: {
-    default: "Outfevibe — AI-Powered Personal Stylist",
+    default: "Outfevibe — India's First AI Stylist for Gen Z & Millennials", // ✅ 57 chars
     template: "%s | Outfevibe",
   },
 
@@ -55,15 +55,15 @@ export const metadata: Metadata = {
     locale: "en_IN",
     url: "https://www.outfevibe.com",
     siteName: "Outfevibe",
-    title: "Outfevibe — AI-Powered Personal Stylist",
+    title: "Outfevibe — India's First AI Stylist for Gen Z & Millennials", // ✅ 57 chars
     description:
-      "Upload your photo and get outfit ideas based on your body type, skin tone, and occasion. AI-powered styling that understands identity — not just clothes.",
+      "Upload your photo → get personalized outfit recs based on your body type, skin tone & occasion. Try India's free AI stylist now ✨", // ✅ CTA added
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Outfevibe — AI-Powered Personal Stylist",
+        alt: "Outfevibe — India's First AI Stylist for Gen Z & Millennials",
         type: "image/jpeg",
       },
     ],
@@ -73,9 +73,9 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@outfevibe",
     creator: "@outfevibe",
-    title: "Outfevibe — AI-Powered Personal Stylist",
+    title: "Outfevibe — India's First AI Stylist for Gen Z & Millennials", // ✅ updated
     description:
-      "Upload your photo and get outfit ideas based on your body type, skin tone, and occasion.",
+      "Upload your photo → get AI outfit recs for your body type, skin tone & occasion. Try free ✨", // ✅ CTA added
     images: ["/og-image.jpg"],
   },
 
@@ -98,10 +98,10 @@ export const metadata: Metadata = {
       { url: "/icon1.png", sizes: "96x96", type: "image/png" },
     ],
     shortcut: "/favicon.ico",
-    apple: "/apple-icon.png", // ✅ fixed: was apple-touch-icon.png
+    apple: "/apple-icon.png",
   },
 
-  manifest: "/manifest.webmanifest", // ✅ fixed: was /manifest.json
+  manifest: "/manifest.webmanifest",
 
   alternates: {
     canonical: "https://www.outfevibe.com",
