@@ -4,19 +4,15 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check } from "lucide-react";
 
-// Emoji maps for visual richness
 const OPTION_META: Record<string, { icon: string; desc?: string }> = {
-  // Gender
-  Female:    { icon: "👗" },
-  Male:      { icon: "👔" },
-  // Occasions
-  College:   { icon: "🎒", desc: "Casual & cool" },
-  Party:     { icon: "🎉", desc: "Night out ready" },
-  Date:      { icon: "💕", desc: "Romantic vibes" },
-  Festive:   { icon: "✨", desc: "Celebrate it" },
-  Wedding:   { icon: "💍", desc: "All dressed up" },
-  Work:      { icon: "💼", desc: "Power dressing" },
-  // Vibes
+  Female:         { icon: "👗" },
+  Male:           { icon: "👔" },
+  College:        { icon: "🎒", desc: "Casual & cool" },
+  Party:          { icon: "🎉", desc: "Night out ready" },
+  Date:           { icon: "💕", desc: "Romantic vibes" },
+  Festive:        { icon: "✨", desc: "Celebrate it" },
+  Wedding:        { icon: "💍", desc: "All dressed up" },
+  Work:           { icon: "💼", desc: "Power dressing" },
   Classic:        { icon: "🖤", desc: "Timeless" },
   Boho:           { icon: "🌸", desc: "Free spirit" },
   Trendy:         { icon: "🔥", desc: "Right now" },
@@ -25,12 +21,24 @@ const OPTION_META: Record<string, { icon: string; desc?: string }> = {
   Romantic:       { icon: "🌹", desc: "Soft & dreamy" },
   "Street Style": { icon: "🧢", desc: "Urban cool" },
   "Smart Casual": { icon: "✔️", desc: "Effortlessly neat" },
-  // Platforms
-  Myntra:   { icon: "🛍️" },
-  Ajio:     { icon: "🏷️" },
-  Amazon:   { icon: "📦" },
-  Flipkart: { icon: "🛒" },
-  Meesho:   { icon: "💜" },
+  Myntra:         { icon: "🛍️" },
+  Ajio:           { icon: "🏷️" },
+  Amazon:         { icon: "📦" },
+  Flipkart:       { icon: "🛒" },
+  Meesho:         { icon: "💜" },
+};
+
+// Brand colors
+const ACTIVE_STYLE = {
+  background: "linear-gradient(135deg,#d4af7f,#b8860b)",
+  borderColor: "transparent",
+  color: "#000",
+  boxShadow: "0 4px 20px rgba(212,175,127,0.35)",
+};
+const INACTIVE_STYLE = {
+  background: "#111111",
+  borderColor: "#2a2a2a",
+  color: "#d4af7f",
 };
 
 interface ChipSelectorProps {
@@ -40,14 +48,9 @@ interface ChipSelectorProps {
   actionLabel?: string;
 }
 
-export function ChipSelector({
-  options,
-  onSelect,
-  multi = false,
-  actionLabel = "✨ Find My Outfits",
-}: ChipSelectorProps) {
+export function ChipSelector({ options, onSelect, multi = false, actionLabel = "✦ Find My Outfits" }: ChipSelectorProps) {
   const [selected,  setSelected]  = useState<string[]>([]);
-  const [committed, setCommitted] = useState<string | null>(null); // single-select lock
+  const [committed, setCommitted] = useState<string | null>(null);
 
   const hasMeta    = options.some((o) => OPTION_META[o]);
   const hasDesc    = options.some((o) => OPTION_META[o]?.desc);
@@ -56,9 +59,9 @@ export function ChipSelector({
 
   const toggle = (opt: string) => {
     if (!multi) {
-      if (committed) return;          // already chosen, lock it
+      if (committed) return;
       setCommitted(opt);
-      setTimeout(() => onSelect(opt), 320); // slight delay so user sees selection
+      setTimeout(() => onSelect(opt), 320);
       return;
     }
     setSelected((p) => p.includes(opt) ? p.filter((x) => x !== opt) : [...p, opt]);
@@ -67,23 +70,19 @@ export function ChipSelector({
   // ── Gender — two big cards ───────────────────────────────────────────────
   if (isGender) {
     return (
-      <motion.div
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="grid grid-cols-2 gap-3 mt-2"
-      >
+      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="grid grid-cols-2 gap-3 mt-2">
         {options.map((opt) => {
           const isChosen = committed === opt;
+          // ✅ Hide unchosen options after selection
+          if (committed && !isChosen) return null;
           return (
             <motion.button
               key={opt}
               onClick={() => toggle(opt)}
-              whileTap={{ scale: 0.95 }}
+              whileTap={committed ? {} : { scale: 0.95 }}
+              disabled={!!committed}
               className="relative flex flex-col items-center gap-2 py-5 rounded-2xl border-2 transition-all duration-200 overflow-hidden"
-              style={isChosen
-                ? { background: "linear-gradient(135deg,#e91e8c,#9c27b0)", borderColor: "transparent", color: "#fff", boxShadow: "0 4px 20px rgba(233,30,140,0.35)" }
-                : { background: "#faf5ff", borderColor: "#e9d5ff", color: "#6b21a8" }
-              }
+              style={isChosen ? ACTIVE_STYLE : INACTIVE_STYLE}
             >
               <span className="text-3xl">{OPTION_META[opt]?.icon}</span>
               <span className="text-sm font-bold tracking-wide">{opt}</span>
@@ -91,9 +90,9 @@ export function ChipSelector({
                 <motion.div
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  className="absolute top-2 right-2 w-5 h-5 bg-white/30 rounded-full flex items-center justify-center"
+                  className="absolute top-2 right-2 w-5 h-5 bg-black/20 rounded-full flex items-center justify-center"
                 >
-                  <Check className="w-3 h-3 text-white" />
+                  <Check className="w-3 h-3 text-black" />
                 </motion.div>
               )}
             </motion.button>
@@ -103,7 +102,7 @@ export function ChipSelector({
     );
   }
 
-  // ── Platform — multi select with icons ──────────────────────────────────
+  // ── Platform — multi select ──────────────────────────────────────────────
   if (isPlatform) {
     return (
       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-2">
@@ -116,14 +115,11 @@ export function ChipSelector({
                 onClick={() => toggle(opt)}
                 whileTap={{ scale: 0.93 }}
                 className="flex items-center gap-2 px-4 py-2.5 rounded-full border-2 text-sm font-semibold transition-all duration-200"
-                style={active
-                  ? { background: "linear-gradient(135deg,#e91e8c,#9c27b0)", borderColor: "transparent", color: "#fff", boxShadow: "0 2px 12px rgba(233,30,140,0.3)" }
-                  : { background: "white", borderColor: "#e9d5ff", color: "#6b21a8" }
-                }
+                style={active ? ACTIVE_STYLE : INACTIVE_STYLE}
               >
                 <span>{OPTION_META[opt]?.icon}</span>
                 {opt}
-                {active && <Check className="w-3.5 h-3.5" />}
+                {active && <Check className="w-3.5 h-3.5 text-black" />}
               </motion.button>
             );
           })}
@@ -135,8 +131,8 @@ export function ChipSelector({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 4 }}
               onClick={() => onSelect(selected.join(","))}
-              className="mt-4 w-full text-white rounded-2xl py-3.5 text-sm font-bold shadow-lg flex items-center justify-center gap-2"
-              style={{ background: "linear-gradient(135deg,#e91e8c,#9c27b0)", boxShadow: "0 4px 20px rgba(233,30,140,0.4)" }}
+              className="mt-4 w-full rounded-2xl py-3.5 text-sm font-bold shadow-lg flex items-center justify-center gap-2 text-black"
+              style={{ background: "linear-gradient(135deg,#d4af7f,#b8860b)", boxShadow: "0 4px 20px rgba(212,175,127,0.4)" }}
             >
               {actionLabel} ({selected.length} selected)
             </motion.button>
@@ -146,52 +142,43 @@ export function ChipSelector({
     );
   }
 
-  // ── Occasions & Vibes — card grid with icon + desc ───────────────────────
+  // ── Occasions & Vibes — card grid ────────────────────────────────────────
   if (hasDesc) {
     return (
-      <motion.div
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="grid grid-cols-2 gap-2 mt-2"
-      >
+      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="grid grid-cols-2 gap-2 mt-2">
         {options.map((opt) => {
           const meta     = OPTION_META[opt];
           const isChosen = committed === opt;
+          // ✅ Hide unchosen options after selection
+          if (committed && !isChosen) return null;
           return (
             <motion.button
               key={opt}
               onClick={() => toggle(opt)}
-              whileTap={{ scale: 0.94 }}
+              whileTap={committed ? {} : { scale: 0.94 }}
+              disabled={!!committed}
               className="relative flex items-center gap-3 px-3 py-3 rounded-xl border-2 text-left transition-all duration-200"
-              style={isChosen
-                ? { background: "linear-gradient(135deg,#e91e8c,#9c27b0)", borderColor: "transparent", boxShadow: "0 3px 14px rgba(233,30,140,0.35)" }
-                : { background: "white", borderColor: "#e9d5ff" }
-              }
+              style={isChosen ? ACTIVE_STYLE : INACTIVE_STYLE}
             >
-              {/* Icon bubble */}
               <span
                 className="w-9 h-9 rounded-xl flex items-center justify-center text-lg flex-shrink-0"
-                style={isChosen ? { background: "rgba(255,255,255,0.2)" } : { background: "#faf5ff" }}
+                style={isChosen ? { background: "rgba(0,0,0,0.15)" } : { background: "#1a1a1a" }}
               >
                 {meta?.icon ?? "✦"}
               </span>
               <div>
-                <p className={`text-sm font-bold leading-tight ${isChosen ? "text-white" : "text-gray-800"}`}>
-                  {opt}
-                </p>
+                <p className={`text-sm font-bold leading-tight ${isChosen ? "text-black" : "text-white"}`}>{opt}</p>
                 {meta?.desc && (
-                  <p className={`text-xs mt-0.5 ${isChosen ? "text-white/70" : "text-gray-400"}`}>
-                    {meta.desc}
-                  </p>
+                  <p className={`text-xs mt-0.5 ${isChosen ? "text-black/60" : "text-neutral-500"}`}>{meta.desc}</p>
                 )}
               </div>
               {isChosen && (
                 <motion.div
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  className="absolute top-2 right-2 w-5 h-5 bg-white/25 rounded-full flex items-center justify-center"
+                  className="absolute top-2 right-2 w-5 h-5 bg-black/20 rounded-full flex items-center justify-center"
                 >
-                  <Check className="w-3 h-3 text-white" />
+                  <Check className="w-3 h-3 text-black" />
                 </motion.div>
               )}
             </motion.button>
@@ -206,16 +193,16 @@ export function ChipSelector({
     <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="flex flex-wrap gap-2 mt-2">
       {options.map((opt) => {
         const isChosen = !multi ? committed === opt : selected.includes(opt);
+        // ✅ Hide unchosen options after single-select committed
+        if (!multi && committed && !isChosen) return null;
         return (
           <motion.button
             key={opt}
             onClick={() => toggle(opt)}
-            whileTap={{ scale: 0.93 }}
+            whileTap={committed && !multi ? {} : { scale: 0.93 }}
+            disabled={!!committed && !multi}
             className="flex items-center gap-1.5 px-4 py-2 rounded-full border-2 text-sm font-semibold transition-all duration-200"
-            style={isChosen
-              ? { background: "linear-gradient(135deg,#e91e8c,#9c27b0)", borderColor: "transparent", color: "#fff" }
-              : { background: "white", borderColor: "#e9d5ff", color: "#6b21a8" }
-            }
+            style={isChosen ? ACTIVE_STYLE : INACTIVE_STYLE}
           >
             {hasMeta && <span>{OPTION_META[opt]?.icon}</span>}
             {opt}
@@ -226,8 +213,8 @@ export function ChipSelector({
         <div className="w-full mt-2">
           <button
             onClick={() => onSelect(selected.join(","))}
-            className="text-white rounded-full px-6 py-2.5 text-sm font-bold shadow-md"
-            style={{ background: "linear-gradient(135deg,#e91e8c,#9c27b0)" }}
+            className="text-black rounded-full px-6 py-2.5 text-sm font-bold shadow-md"
+            style={{ background: "linear-gradient(135deg,#d4af7f,#b8860b)" }}
           >
             {actionLabel}
           </button>

@@ -43,32 +43,32 @@ export function AnalysisEditor({ bodyShape, skinTone, onConfirm }: Props) {
       initial={{ opacity: 0, y: 12, scale: 0.97 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ type: "spring", stiffness: 300, damping: 28 }}
-      className="rounded-2xl border border-purple-100 overflow-hidden bg-white shadow-md mt-2"
+      className="rounded-2xl border border-neutral-800 overflow-hidden bg-[#111111] shadow-xl mt-2"
     >
       {/* Header */}
-      <div className="px-4 py-3 flex items-center gap-2" style={{ background: "linear-gradient(135deg,#fdf0ff,#f0e6fa)" }}>
+      <div className="px-4 py-3 flex items-center gap-2 border-b border-neutral-800"
+        style={{ background: "linear-gradient(135deg,#1a1a0a,#111111)" }}>
         <span className="text-lg">🧬</span>
         <div>
-          <p className="text-xs font-bold text-purple-800 uppercase tracking-wider">Analysis Complete</p>
-          <p className="text-xs text-purple-500">Correct if anything looks off</p>
+          <p className="text-xs font-bold text-[#d4af7f] uppercase tracking-wider">Analysis Complete</p>
+          <p className="text-xs text-neutral-500">Correct if anything looks off</p>
         </div>
       </div>
 
       <div className="p-4 space-y-5">
         {/* Body Shape */}
         <div>
-          <label className="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-2">Body Shape</label>
+          <label className="text-xs font-bold text-neutral-500 uppercase tracking-wider block mb-2">Body Shape</label>
           <div className="flex flex-wrap gap-2 mb-2">
             {BODY_SHAPES.map((s) => (
               <button
                 key={s}
                 onClick={() => setShape(s)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all duration-200 ${
-                  shape === s
-                    ? "text-white border-transparent shadow-sm"
-                    : "bg-gray-50 text-gray-500 border-gray-200 hover:border-purple-300"
-                }`}
-                style={shape === s ? { background: "linear-gradient(135deg,#e91e8c,#9c27b0)" } : {}}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all duration-200"
+                style={shape === s
+                  ? { background: "linear-gradient(135deg,#d4af7f,#b8860b)", borderColor: "transparent", color: "#000" }
+                  : { background: "#1a1a1a", borderColor: "#2a2a2a", color: "#d4af7f" }
+                }
               >
                 <span>{SHAPE_ICONS[s]}</span>
                 {s}
@@ -79,17 +79,17 @@ export function AnalysisEditor({ bodyShape, skinTone, onConfirm }: Props) {
             <select
               value={shape}
               onChange={(e) => setShape(e.target.value)}
-              className="w-full appearance-none bg-purple-50 border border-purple-100 rounded-xl px-4 py-2.5 text-sm font-semibold text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-300 cursor-pointer"
+              className="w-full appearance-none bg-[#1a1a1a] border border-neutral-800 rounded-xl px-4 py-2.5 text-sm font-semibold text-neutral-200 focus:outline-none focus:ring-1 focus:ring-[#d4af7f] cursor-pointer"
             >
               {BODY_SHAPES.map((s) => <option key={s} value={s}>{s}</option>)}
             </select>
-            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 pointer-events-none" />
           </div>
         </div>
 
         {/* Skin Tone */}
         <div>
-          <label className="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-2">Skin Tone</label>
+          <label className="text-xs font-bold text-neutral-500 uppercase tracking-wider block mb-2">Skin Tone</label>
           <div className="grid grid-cols-6 gap-2 mb-1">
             {SKIN_TONES.map((t) => (
               <button
@@ -97,7 +97,7 @@ export function AnalysisEditor({ bodyShape, skinTone, onConfirm }: Props) {
                 title={t}
                 onClick={() => setTone(t)}
                 className={`relative aspect-square rounded-xl border-2 transition-all duration-200 ${
-                  tone === t ? "border-purple-500 scale-110 shadow-lg" : "border-transparent hover:scale-105"
+                  tone === t ? "border-[#d4af7f] scale-110 shadow-lg shadow-[#d4af7f]/20" : "border-transparent hover:scale-105"
                 }`}
                 style={{ background: TONE_COLORS[t]?.bg }}
               >
@@ -111,24 +111,24 @@ export function AnalysisEditor({ bodyShape, skinTone, onConfirm }: Props) {
           </div>
           <div className="grid grid-cols-6 gap-2 mb-3">
             {SKIN_TONES.map((t) => (
-              <p key={t} className={`text-center text-[10px] font-medium truncate ${tone === t ? "text-purple-600" : "text-gray-400"}`}>
+              <p key={t} className={`text-center text-[10px] font-medium truncate ${tone === t ? "text-[#d4af7f]" : "text-neutral-600"}`}>
                 {t}
               </p>
             ))}
           </div>
           <div className="relative">
             <span
-              className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full border border-gray-200 pointer-events-none"
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full border border-neutral-700 pointer-events-none"
               style={{ background: TONE_COLORS[tone]?.bg }}
             />
             <select
               value={tone}
               onChange={(e) => setTone(e.target.value)}
-              className="w-full appearance-none bg-purple-50 border border-purple-100 rounded-xl px-4 pl-10 py-2.5 text-sm font-semibold text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-300 cursor-pointer"
+              className="w-full appearance-none bg-[#1a1a1a] border border-neutral-800 rounded-xl px-4 pl-10 py-2.5 text-sm font-semibold text-neutral-200 focus:outline-none focus:ring-1 focus:ring-[#d4af7f] cursor-pointer"
             >
               {SKIN_TONES.map((t) => <option key={t} value={t}>{t}</option>)}
             </select>
-            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 pointer-events-none" />
           </div>
         </div>
 
@@ -137,14 +137,14 @@ export function AnalysisEditor({ bodyShape, skinTone, onConfirm }: Props) {
           key={shape + tone}
           initial={{ opacity: 0, y: 4 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex items-center gap-3 bg-gradient-to-r from-pink-50 to-purple-50 rounded-xl p-3 border border-purple-100"
+          className="flex items-center gap-3 rounded-xl p-3 border border-neutral-800 bg-[#1a1a1a]"
         >
-          <span className="w-9 h-9 rounded-full flex-shrink-0 border-2 border-white shadow-sm" style={{ background: TONE_COLORS[tone]?.bg }} />
+          <span className="w-9 h-9 rounded-full flex-shrink-0 border-2 border-neutral-700 shadow-sm" style={{ background: TONE_COLORS[tone]?.bg }} />
           <div>
-            <p className="text-xs text-gray-400 font-medium">Your detected profile</p>
-            <p className="text-sm font-bold text-gray-800">{shape} · {tone} skin</p>
+            <p className="text-xs text-neutral-500 font-medium">Your detected profile</p>
+            <p className="text-sm font-bold text-white">{shape} · {tone} skin</p>
           </div>
-          <RefreshCw className="w-4 h-4 text-purple-300 ml-auto flex-shrink-0" />
+          <RefreshCw className="w-4 h-4 text-neutral-700 ml-auto flex-shrink-0" />
         </motion.div>
 
         {/* Confirm */}
@@ -156,8 +156,8 @@ export function AnalysisEditor({ bodyShape, skinTone, onConfirm }: Props) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
               onClick={handleConfirm}
-              className="w-full text-white rounded-xl py-3 text-sm font-bold flex items-center justify-center gap-2 shadow-md active:scale-95 transition-transform"
-              style={{ background: "linear-gradient(135deg,#e91e8c,#9c27b0)" }}
+              className="w-full text-black rounded-xl py-3 text-sm font-bold flex items-center justify-center gap-2 shadow-md active:scale-95 transition-transform"
+              style={{ background: "linear-gradient(135deg,#d4af7f,#b8860b)" }}
             >
               <Check className="w-4 h-4" /> Looks good — Let&apos;s style me!
             </motion.button>
@@ -166,7 +166,7 @@ export function AnalysisEditor({ bodyShape, skinTone, onConfirm }: Props) {
               key="done"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="w-full rounded-xl py-3 flex items-center justify-center gap-2 bg-green-50 border border-green-200 text-green-700 text-sm font-bold"
+              className="w-full rounded-xl py-3 flex items-center justify-center gap-2 bg-neutral-900 border border-neutral-700 text-[#d4af7f] text-sm font-bold"
             >
               <Check className="w-4 h-4" /> Profile saved ✓
             </motion.div>
