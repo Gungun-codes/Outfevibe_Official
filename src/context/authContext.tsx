@@ -16,6 +16,14 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// ✅ Helper — clears all guest/local quiz data
+const clearLocalQuizData = () => {
+    localStorage.removeItem("userPersona");
+    localStorage.removeItem("quizGender");
+    localStorage.removeItem("quizPersona");    // in case other keys exist
+    localStorage.removeItem("stylePersona");   // safety net
+};
+
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
     const [session, setSession] = useState<Session | null>(null);
@@ -59,6 +67,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                     );
                 if (error) console.error("Error saving user profile:", error);
             }
+
+            // ✅ Clear stale guest quiz data when a new session starts
+            // Prevents a fresh account from showing a previous guest's persona
+            if (event === "SIGNED_IN") {
+                clearLocalQuizData();
+            }
         });
 
         return () => subscription.unsubscribe();
@@ -83,6 +97,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             },
         });
         if (error) throw error;
+
+        // ✅ Clear any stale guest quiz data immediately after signup
+        clearLocalQuizData();
 
         // Store user data in users_profile table (non-fatal if it fails)
         if (data.user) {
@@ -115,6 +132,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     const logout = async () => {
+        // ✅ Clear guest quiz data on logout so next user on same device
+        // doesn't see a previous user's persona
+        clearLocalQuizData();
         await supabase.auth.signOut();
         // Force a hard redirect to clear all state properly
         window.location.href = "/";
