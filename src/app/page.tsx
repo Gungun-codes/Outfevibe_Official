@@ -894,27 +894,32 @@ export default function Home() {
       {/* FOOTER */}
       <footer className={`border-t px-6 py-16 ${darkMode ? "bg-black text-white border-neutral-800" : "bg-white text-black border-neutral-200"}`}>
         <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-12">
+
+          {/* Brand col */}
           <div>
             <h3 className="text-2xl font-bold tracking-wide">OUTFEVIBE</h3>
             <p className={`${darkMode ? "text-gray-400" : "text-gray-600"} mt-4 text-sm leading-relaxed`}>
               AI-powered styling that understands identity. Not just clothes.
             </p>
+            {/* Social links */}
             <div className="flex gap-4 mt-6">
               <a href="https://www.instagram.com/outfevibe?igsh=MXFwZmZpczVsbHj0dg==" target="_blank" className={`circle ${darkMode ? "hover:text-yellow-400" : "hover:text-black"}`}>IG</a>
               <a href="https://www.linkedin.com/in/outfevibe-offical-14903a3a9" target="_blank" className={`circle ${darkMode ? "hover:text-yellow-400" : "hover:text-black"}`}>LN</a>
               <a href="https://youtube.com/@outfevibe?si=WFslmfGzuiLvrR16" target="_blank" className={`circle ${darkMode ? "hover:text-yellow-400" : "hover:text-black"}`}>YT</a>
-              <Link href="/privacy-policy" className="hover:text-yellow-400 transition">Privacy Policy</Link>
-              <Link href="/terms-of-service" className="hover:text-yellow-400 transition">Terms of Service</Link>
             </div>
           </div>
+
+          {/* Product col */}
           <div>
             <h4 className="text-lg font-semibold mb-4">Product</h4>
             <ul className={`space-y-3 text-sm ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
               <li><Link href="/outfit" className="hover:text-yellow-400 transition">AI Outfit Suggestions</Link></li>
-              <li className="hover:text-yellow-400 transition">Virtual Wardrobe</li>
+              <li className="hover:text-yellow-400 transition cursor-default">Virtual Wardrobe</li>
               <li><Link href="/quiz" className="hover:text-yellow-400 transition">Style Quiz</Link></li>
             </ul>
           </div>
+
+          {/* Company col */}
           <div>
             <h4 className="text-lg font-semibold mb-4">Company</h4>
             <ul className={`space-y-3 text-sm ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
@@ -923,6 +928,8 @@ export default function Home() {
               <li><Link href="/contact" className="hover:text-yellow-400 transition">Contact</Link></li>
             </ul>
           </div>
+
+          {/* Newsletter col */}
           <div>
             <h4 className="text-lg font-semibold mb-4">Stay Updated</h4>
             <p className={`${darkMode ? "text-gray-400" : "text-gray-600"} text-sm mb-4`}>
@@ -930,10 +937,22 @@ export default function Home() {
             </p>
             <NewsletterSignup darkMode={darkMode} />
           </div>
+
         </div>
-        <div className={`border-t mt-16 pt-6 text-center text-sm ${darkMode ? "border-neutral-800 text-gray-500" : "border-neutral-200 text-gray-600"}`}>
-          © {new Date().getFullYear()} Outfevibe. Built with intention.
+
+        {/* ✅ Bottom bar — Legal links properly placed here */}
+        <div className={`border-t mt-16 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm ${darkMode ? "border-neutral-800 text-gray-500" : "border-neutral-200 text-gray-600"}`}>
+          <p>© {new Date().getFullYear()} Outfevibe. Built with intention.</p>
+          <div className="flex items-center gap-6">
+            <Link href="/privacy-policy" className="hover:text-yellow-400 transition">
+              Privacy Policy
+            </Link>
+            <Link href="/terms-of-service" className="hover:text-yellow-400 transition">
+              Terms of Service
+            </Link>
+          </div>
         </div>
+
       </footer>
 
       {/* ✅ Mobile PWA install banner — bottom of screen, only on mobile */}
