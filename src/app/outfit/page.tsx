@@ -37,7 +37,7 @@ export default function OutfitChat() {
   const chatEndRef = useRef<HTMLDivElement | null>(null);
 
   const moods = ["Chill", "Classic", "Bold", "Traditional"];
-  const occasions = ["College", "Party", "Date", "Wedding", "Eid"];
+  const occasions = ["College", "Party", "Date", "Wedding", "Navratri"];
   const budgets = ["Low", "Medium", "High"];
 
   /* ---------------- LOAD JSON ---------------- */
