@@ -1,12 +1,10 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Sign Up — Join Outfevibe",
-  description: "Create your free Outfevibe account and get AI-powered outfit recommendations based on your body type, skin tone, and occasion.",
-  robots: {
-    index: false,
-    follow: false,
-  },
+  title:       "Sign Up — Start Your Style Journey",
+  description: "Create your free Outfevibe account and get AI-powered outfit recommendations tailored to your body type, skin tone, and style personality.",
+  alternates:  { canonical: "https://www.outfevibe.com/signup" },
+  robots:      { index: false, follow: false }, // ✅ noindex signup pages
 };
 
 export default function SignupLayout({ children }: { children: React.ReactNode }) {

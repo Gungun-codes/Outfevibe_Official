@@ -1,44 +1,45 @@
 import { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://www.outfevibe.com";
+  const base = "https://www.outfevibe.com";
 
+  // Use fixed dates — changing to new Date() every build confuses Google
   return [
     {
-      url: baseUrl,
-      lastModified: new Date(),
+      url:             base,
+      lastModified:    new Date("2026-03-21"),
       changeFrequency: "weekly",
-      priority: 1.0,
+      priority:        1.0,
     },
     {
-      url: `${baseUrl}/quiz`,
-      lastModified: new Date(),
+      url:             `${base}/quiz`,
+      lastModified:    new Date("2026-03-21"),
       changeFrequency: "weekly",
-      priority: 0.9,
+      priority:        0.95,
     },
     {
-      url: `${baseUrl}/outfit`,
-      lastModified: new Date(),
+      url:             `${base}/outfit`,
+      lastModified:    new Date("2026-03-21"),
       changeFrequency: "weekly",
-      priority: 0.9,
+      priority:        0.95,
     },
     {
-      url: `${baseUrl}/about`,
-      lastModified: new Date(),
+      url:             `${base}/signup`,
+      lastModified:    new Date("2026-02-10"),
       changeFrequency: "monthly",
-      priority: 0.7,
+      priority:        0.7,
     },
     {
-      url: `${baseUrl}/careers`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.6,
+      url:             `${base}/privacy-policy`,
+      lastModified:    new Date("2026-02-10"),
+      changeFrequency: "yearly",
+      priority:        0.3,
     },
     {
-      url: `${baseUrl}/contact`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.5,
+      url:             `${base}/terms-of-service`,
+      lastModified:    new Date("2026-02-10"),
+      changeFrequency: "yearly",
+      priority:        0.3,
     },
   ];
 }
