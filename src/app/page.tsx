@@ -141,11 +141,13 @@ function WaitlistForm({ darkMode }: { darkMode: boolean }) {
 }
 
 function StatsBar({ darkMode }: { darkMode: boolean }) {
-  const [userCount, setUserCount] = useState<number>(178);
-  const [quizCount, setQuizCount] = useState<number>(80);
-  const [loaded, setLoaded] = useState(false);
+  const roundDown = (n: number) => Math.floor(n / 10) * 10;
   const BASE_USERS = 150;
   const BASE_QUIZZES = 80;
+
+  const [userCount, setUserCount] = useState<number>(roundDown(BASE_USERS));
+  const [quizCount, setQuizCount] = useState<number>(roundDown(BASE_QUIZZES));
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const fetchCounts = async () => {
@@ -154,8 +156,8 @@ function StatsBar({ darkMode }: { darkMode: boolean }) {
           supabase.from("users_profile").select("*", { count: "exact", head: true }),
           supabase.from("quiz_result").select("*", { count: "exact", head: true }),
         ]);
-        if (users !== null) setUserCount((users ?? 0) + BASE_USERS);
-        if (quizzes !== null) setQuizCount((quizzes ?? 0) + BASE_QUIZZES);
+        if (users !== null) setUserCount(roundDown((users ?? 0) + BASE_USERS));
+        if (quizzes !== null) setQuizCount(roundDown((quizzes ?? 0) + BASE_QUIZZES));
         setLoaded(true);
       } catch (err) { console.error("Stats fetch failed:", err); setLoaded(true); }
     };
@@ -164,7 +166,7 @@ function StatsBar({ darkMode }: { darkMode: boolean }) {
 
   const stats = [
     { value: "Feb 10, 2026", label: "Launched", live: false },
-    { value: `${userCount}+`, label: "Users joined", live: true },
+    { value: `${userCount}+`, label: "Users joined 🌸", live: true },
     { value: `${quizCount}+`, label: "Quizzes taken", live: true },
     { value: "200+", label: "Styles generated", live: false },
   ];
