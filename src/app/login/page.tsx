@@ -18,7 +18,7 @@ export default function LoginPage() {
   const [step,           setStep]           = useState<Step>("credentials");
   const [email,          setEmail]          = useState("");
   const [password,       setPassword]       = useState("");
-  const [otp,            setOtp]            = useState(["", "", "", "", "", ""]);
+  const [otp,            setOtp]            = useState(["", "", "", "", "", "", "", ""]);
   const [error,          setError]          = useState("");
   const [loading,        setLoading]        = useState(false);
   const [resendCooldown, setResendCooldown] = useState(0);
@@ -74,7 +74,7 @@ export default function LoginPage() {
 
   // ── Step 2: verify OTP → full session ────────────────────────────────────
   const verifyCode = async (code: string) => {
-    if (code.length < 6) return;
+    if (code.length < 8) return;
     try {
       setLoading(true);
       setError("");
@@ -82,7 +82,7 @@ export default function LoginPage() {
       router.push("/");
     } catch (err: any) {
       setError("Invalid or expired code. Please try again.");
-      setOtp(["", "", "", "", "", ""]);
+      setOtp(["", "", "", "", "", "", "", ""]);
       setTimeout(() => inputRefs.current[0]?.focus(), 100);
       setLoading(false);
     }
@@ -97,8 +97,8 @@ export default function LoginPage() {
     next[index] = value.slice(-1);
     setOtp(next);
     setError("");
-    if (value && index < 5) inputRefs.current[index + 1]?.focus();
-    if (next.join("").length === 6) setTimeout(() => verifyCode(next.join("")), 100);
+    if (value && index < 7) inputRefs.current[index + 1]?.focus();
+    if (next.join("").length === 8) setTimeout(() => verifyCode(next.join("")), 100);
   };
 
   const handleOtpKeyDown = (index: number, e: React.KeyboardEvent) => {
@@ -107,10 +107,10 @@ export default function LoginPage() {
 
   const handleOtpPaste = (e: React.ClipboardEvent) => {
     e.preventDefault();
-    const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);
-    if (pasted.length === 6) {
+    const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 8);
+    if (pasted.length === 8) {
       setOtp(pasted.split(""));
-      inputRefs.current[5]?.focus();
+      inputRefs.current[7]?.focus();
       setTimeout(() => verifyCode(pasted), 100);
     }
   };
@@ -122,7 +122,7 @@ export default function LoginPage() {
     try {
       await loginWithOtp(email);
       setResendCooldown(60);
-      setOtp(["", "", "", "", "", ""]);
+      setOtp(["", "", "", "", "", "", "", ""]);
       setTimeout(() => inputRefs.current[0]?.focus(), 100);
     } catch {
       setError("Failed to resend. Please try again.");
@@ -265,7 +265,7 @@ export default function LoginPage() {
                   </div>
                   <div>
                     <h1 className="text-2xl font-bold">Verify It&apos;s You</h1>
-                    <p className="text-gray-400 text-sm">Enter the 6-digit code we sent</p>
+                    <p className="text-gray-400 text-sm">Enter the 8-digit code we sent</p>
                   </div>
                 </div>
 
@@ -273,7 +273,7 @@ export default function LoginPage() {
                   <Mail className="w-4 h-4 text-[#d4af7f] flex-shrink-0" />
                   <span className="text-sm text-white font-medium truncate">{email}</span>
                   <button
-                    onClick={() => { setStep("credentials"); setOtp(["","","","","",""]); setError(""); }}
+                    onClick={() => { setStep("credentials"); setOtp(["","","","","","","",""]); setError(""); }}
                     className="ml-auto text-xs text-gray-500 hover:text-[#d4af7f] transition flex-shrink-0"
                   >
                     Change
@@ -304,7 +304,7 @@ export default function LoginPage() {
 
                 <button
                   onClick={handleVerifyOtp}
-                  disabled={loading || otp.join("").length < 6}
+                  disabled={loading || otp.join("").length < 8}
                   className="w-full py-3 rounded-xl bg-[#d4af7f] text-black font-semibold hover:bg-[#e5cca5] transition flex items-center justify-center gap-2 disabled:opacity-50"
                 >
                   {loading ? "Verifying..." : "Verify & Sign In"}
@@ -324,7 +324,7 @@ export default function LoginPage() {
                 </div>
 
                 <p className="text-xs text-gray-600 text-center leading-relaxed">
-                  Code expires in 10 minutes. Check spam if you don&apos;t see it.
+                  Enter all 8 digits. Check spam if you don't see it.
                 </p>
               </motion.div>
             )}

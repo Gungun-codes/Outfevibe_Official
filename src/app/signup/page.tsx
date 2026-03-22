@@ -19,7 +19,7 @@ export default function SignupPage() {
   const [loading, setLoading] = useState(false);
 
   const [step, setStep] = useState<"signup" | "otp">("signup");
-  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+  const [otp, setOtp] = useState(["", "", "", "", "", "", "", ""]);
   const [otpLoading, setOtpLoading] = useState(false);
   const [otpError, setOtpError] = useState("");
   const [resendCooldown, setResendCooldown] = useState(0);
@@ -58,8 +58,8 @@ export default function SignupPage() {
     newOtp[index] = value.slice(-1);
     setOtp(newOtp);
     setOtpError("");
-    if (value && index < 5) otpRefs.current[index + 1]?.focus();
-    if (newOtp.every((d) => d !== "") && newOtp.join("").length === 6) verifyOtp(newOtp.join(""));
+    if (value && index < 7) otpRefs.current[index + 1]?.focus();
+    if (newOtp.every((d) => d !== "") && newOtp.join("").length === 8) verifyOtp(newOtp.join(""));
   };
 
   const handleOtpKeyDown = (index: number, e: React.KeyboardEvent) => {
@@ -68,8 +68,8 @@ export default function SignupPage() {
 
   const handleOtpPaste = (e: React.ClipboardEvent) => {
     e.preventDefault();
-    const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);
-    if (pasted.length === 6) { setOtp(pasted.split("")); verifyOtp(pasted); }
+    const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 8);
+    if (pasted.length === 8) { setOtp(pasted.split("")); verifyOtp(pasted); }
   };
 
   const verifyOtp = async (code: string) => {
@@ -79,7 +79,7 @@ export default function SignupPage() {
       const { error } = await supabase.auth.verifyOtp({ email, token: code, type: "signup" });
       if (error) {
         setOtpError("Invalid or expired code. Please try again.");
-        setOtp(["", "", "", "", "", ""]);
+        setOtp(["", "", "", "", "", "", "", ""]);
         otpRefs.current[0]?.focus();
       } else {
         router.push("/");
@@ -93,14 +93,14 @@ export default function SignupPage() {
 
   const handleVerifyClick = () => {
     const code = otp.join("");
-    if (code.length !== 6) { setOtpError("Please enter the full 6-digit code."); return; }
+    if (code.length !== 8) { setOtpError("Please enter the full 8-digit code."); return; }
     verifyOtp(code);
   };
 
   const handleResend = async () => {
     if (resendCooldown > 0) return;
     setOtpError("");
-    setOtp(["", "", "", "", "", ""]);
+    setOtp(["", "", "", "", "", "", "", ""]);
     try {
       const { error } = await supabase.auth.resend({ type: "signup", email });
       if (error) { setOtpError("Failed to resend code. Try again."); }
@@ -281,13 +281,13 @@ export default function SignupPage() {
                 </div>
                 <div>
                   <h1 className="text-3xl font-bold mb-2">Verify your email</h1>
-                  <p className="text-gray-400 text-sm">We sent a 6-digit code to</p>
+                  <p className="text-gray-400 text-sm">We sent an 8-digit code to</p>
                   <p className="text-[#d4af7f] font-medium mt-1">{email}</p>
                 </div>
               </div>
 
               {/* OTP inputs */}
-              <div className="flex justify-center gap-3" onPaste={handleOtpPaste}>
+              <div className="flex justify-center gap-2" onPaste={handleOtpPaste}>
                 {otp.map((digit, index) => (
                   <input
                     key={index}
@@ -298,7 +298,7 @@ export default function SignupPage() {
                     value={digit}
                     onChange={(e) => handleOtpChange(index, e.target.value)}
                     onKeyDown={(e) => handleOtpKeyDown(index, e)}
-                    className={`w-12 h-14 text-center text-xl font-bold rounded-xl bg-[#0f0f0f] border transition outline-none
+                    className={`w-10 h-12 text-center text-lg font-bold rounded-xl bg-[#0f0f0f] border transition outline-none
                       ${digit ? "border-[#d4af7f] text-white" : "border-[#2a2a2a] text-gray-400"}
                       focus:border-[#d4af7f]`}
                   />
@@ -313,7 +313,7 @@ export default function SignupPage() {
 
               <button
                 onClick={handleVerifyClick}
-                disabled={otpLoading || otp.join("").length !== 6}
+                disabled={otpLoading || otp.join("").length !== 8}
                 className="w-full py-3 rounded-xl bg-[#d4af7f] text-black font-semibold hover:bg-[#e5cca5] transition flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 {otpLoading ? "Verifying..." : "Verify Email"}
@@ -335,7 +335,7 @@ export default function SignupPage() {
 
               <div className="text-center">
                 <button
-                  onClick={() => { setStep("signup"); setOtp(["", "", "", "", "", ""]); setOtpError(""); }}
+                  onClick={() => { setStep("signup"); setOtp(["", "", "", "", "", "", "", ""]); setOtpError(""); }}
                   className="text-xs text-gray-600 hover:text-gray-400 transition"
                 >
                   ← Wrong email? Go back
