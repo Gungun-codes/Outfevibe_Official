@@ -1,13 +1,10 @@
+// ── In useFestivalTheme.ts ────────────────────────────────────────────────
+// PROBLEM: useState("default") always renders Eid hero first
+// FIX: Calculate the correct theme synchronously before first render
+
 "use client";
 
 import { useState, useEffect } from "react";
-
-// ================================================================
-// OUTFEVIBE — FESTIVAL CALENDAR
-// ================================================================
-// To TEST any festival → set its override to true
-// To GO LIVE → set all overrides to false (dates auto-detect)
-// ================================================================
 
 export const FESTIVAL_OVERRIDES = {
   EID: false,
@@ -19,77 +16,55 @@ export const FESTIVAL_OVERRIDES = {
 };
 
 export type FestivalTheme =
-  | "eid"
-  | "navratri"
-  | "mahavir_jayanti"
-  | "diwali"
-  | "holi"
-  | "independence_day"
-  | "default";
+  | "eid" | "navratri" | "mahavir_jayanti"
+  | "diwali" | "holi" | "independence_day" | "default";
 
-export function useFestivalTheme(): FestivalTheme {
-  const [theme, setTheme] = useState<FestivalTheme>("default");
+// ✅ Run synchronously — no useEffect needed
+function detectTheme(): FestivalTheme {
+  // Manual overrides first
+  if (FESTIVAL_OVERRIDES.EID)              return "eid";
+  if (FESTIVAL_OVERRIDES.NAVRATRI)         return "navratri";
+  if (FESTIVAL_OVERRIDES.MAHAVIR_JAYANTI)  return "mahavir_jayanti";
+  if (FESTIVAL_OVERRIDES.DIWALI)           return "diwali";
+  if (FESTIVAL_OVERRIDES.HOLI)             return "holi";
+  if (FESTIVAL_OVERRIDES.INDEPENDENCE_DAY) return "independence_day";
 
-  useEffect(() => {
-    // ── Manual overrides ─────────────────────────────────────
-    if (FESTIVAL_OVERRIDES.EID)               { setTheme("eid");               return; }
-    if (FESTIVAL_OVERRIDES.NAVRATRI)          { setTheme("navratri");           return; }
-    if (FESTIVAL_OVERRIDES.MAHAVIR_JAYANTI)   { setTheme("mahavir_jayanti");    return; }
-    if (FESTIVAL_OVERRIDES.DIWALI)            { setTheme("diwali");             return; }
-    if (FESTIVAL_OVERRIDES.HOLI)              { setTheme("holi");               return; }
-    if (FESTIVAL_OVERRIDES.INDEPENDENCE_DAY)  { setTheme("independence_day");   return; }
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = now.getMonth(); // 0-indexed
+  const d = now.getDate();
+  const h = now.getHours();
 
-    // ── Auto date detection ───────────────────────────────────
-    const now = new Date();
-    const y = now.getFullYear();
-    const m = now.getMonth(); // 0-indexed (0=Jan, 9=Oct)
-    const d = now.getDate();
-    const h = now.getHours();
-
-    // ── 2026 ─────────────────────────────────────────────────
-
+  if (y === 2026) {
     // Holi: Mar 13–14
-    if (y === 2026 && m === 2 && d >= 13 && d <= 14) {
-      setTheme("holi"); return;
-    }
+    if (m === 2 && d >= 13 && d <= 14) return "holi";
 
     // Eid: Mar 20 to Mar 21 before 12pm
-    if (y === 2026 && m === 2 && (d === 20 || (d === 21 && h < 12))) {
-      setTheme("eid"); return;
-    }
+    if (m === 2 && (d === 20 || (d === 21 && h < 12))) return "eid";
 
     // Chaitra Navratri: Mar 21 12pm to Mar 26
-    if (y === 2026 && m === 2 && ((d === 21 && h >= 12) || (d >= 22 && d <= 26))) {
-      setTheme("navratri"); return;
-    }
+    if (m === 2 && ((d === 21 && h >= 12) || (d >= 22 && d <= 26))) return "navratri";
 
     // Mahavir Jayanti: Mar 27 to Apr 4
-    if (y === 2026 && ((m === 2 && d >= 27) || (m === 3 && d >= 1))) {
-      setTheme("mahavir_jayanti"); return;
-    }
+    if ((m === 2 && d >= 27) || (m === 3 && d >= 1 && d <= 4)) return "mahavir_jayanti";
 
     // Independence Day: Aug 11–15
-    if (y === 2026 && m === 7 && d >= 11 && d <= 15) {
-      setTheme("independence_day"); return;
-    }
+    if (m === 7 && d >= 11 && d <= 15) return "independence_day";
 
-    // Sharad Navratri: Oct 2–11 (approx — update when confirmed)
-    if (y === 2026 && m === 9 && d >= 2 && d <= 11) {
-      setTheme("navratri"); return;
-    }
+    // Sharad Navratri: Oct 2–11
+    if (m === 9 && d >= 2 && d <= 11) return "navratri";
 
-    // Diwali: Oct 15–22 (approx — update when confirmed)
-    if (y === 2026 && m === 9 && d >= 15 && d <= 22) {
-      setTheme("diwali"); return;
-    }
+    // Diwali: Oct 15–22
+    if (m === 9 && d >= 15 && d <= 22) return "diwali";
+  }
 
-    // ── 2025 fallback ─────────────────────────────────────────
-    if (y === 2025 && m === 9 && d >= 2 && d <= 11) {
-      setTheme("navratri"); return;
-    }
+  if (y === 2025 && m === 9 && d >= 2 && d <= 11) return "navratri";
 
-    setTheme("default");
-  }, []);
+  return "default";
+}
 
+export function useFestivalTheme(): FestivalTheme {
+  // ✅ Initialize with correct value immediately — no flash
+  const [theme] = useState<FestivalTheme>(() => detectTheme());
   return theme;
 }
