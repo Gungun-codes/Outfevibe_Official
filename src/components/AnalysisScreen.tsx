@@ -3,205 +3,186 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { PoseLandmarker, FilesetResolver } from "@mediapipe/tasks-vision";
+
 const STEPS = [
-  { label: "Loading AI vision model…",       icon: "🤖", pct: 10 },
-  { label: "Detecting body landmarks…",      icon: "📐", pct: 28 },
-  { label: "Calculating body proportions…",  icon: "📏", pct: 48 },
-  { label: "Sampling skin undertones…",      icon: "🎨", pct: 65 },
-  { label: "Classifying body shape…",        icon: "✨", pct: 82 },
-  { label: "Finalising your profile…",       icon: "💫", pct: 97 },
+  { label: "Loading AI vision model…",      icon: "🤖", pct: 10 },
+  { label: "Detecting body landmarks…",     icon: "📐", pct: 28 },
+  { label: "Calculating body proportions…", icon: "📏", pct: 48 },
+  { label: "Sampling skin undertones…",     icon: "🎨", pct: 65 },
+  { label: "Classifying body shape…",       icon: "✨", pct: 82 },
+  { label: "Finalising your profile…",      icon: "💫", pct: 97 },
 ];
 
-// ── Skin tone mapping from RGB ───────────────────────────────────────────────
+// ── Singleton PoseLandmarker ──────────────────────────────────────────────────
+let _landmarkerPromise: Promise<any> | null = null;
+
+function getPoseLandmarker(): Promise<any> {
+  if (!_landmarkerPromise) {
+    _landmarkerPromise = (async () => {
+      const filesetResolver = await FilesetResolver.forVisionTasks(
+        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm"
+      );
+      return PoseLandmarker.createFromOptions(filesetResolver, {
+        baseOptions: {
+          modelAssetPath:
+            "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_full/float16/1/pose_landmarker_full.task",
+          delegate: "CPU",
+        },
+        runningMode:                   "IMAGE",
+        numPoses:                      1,
+        minPoseDetectionConfidence:    0.3,
+        minPosePresenceConfidence:     0.3,
+        minTrackingConfidence:         0.3,
+      });
+    })().catch((e) => { _landmarkerPromise = null; throw e; });
+  }
+  return _landmarkerPromise;
+}
+
+function getCtx(canvas: HTMLCanvasElement) {
+  return canvas.getContext("2d", { willReadFrequently: true });
+}
+
 function rgbToSkinTone(r: number, g: number, b: number): string {
-  const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-  if (brightness > 210) return "Fair";
-  if (brightness > 185) return "Light";
-  if (brightness > 155) return "Medium";
-  if (brightness > 125) return "Tan";
-  if (brightness > 90)  return "Deep";
+  const br = (r * 299 + g * 587 + b * 114) / 1000;
+  if (br > 210) return "Fair";
+  if (br > 185) return "Light";
+  if (br > 155) return "Medium";
+  if (br > 125) return "Tan";
+  if (br > 90)  return "Deep";
   return "Dark";
 }
 
-// ── Quick person detection heuristic using skin pixel density ────────────────
-// Returns true if enough skin-coloured pixels found — rejects text/objects
-function hasPersonInImage(
-  img: HTMLImageElement,
-  canvas: HTMLCanvasElement
-): boolean {
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return true; // assume person if can't check
-
-  canvas.width  = Math.min(img.naturalWidth  || img.width,  400); // cap for perf
+// ── Person detection — uses its own fresh canvas draw ────────────────────────
+function hasPersonInImage(img: HTMLImageElement, canvas: HTMLCanvasElement): boolean {
+  const ctx = getCtx(canvas);
+  if (!ctx) return true;
+  // ✅ Draw at capped size for perf
+  canvas.width  = Math.min(img.naturalWidth  || img.width,  400);
   canvas.height = Math.min(img.naturalHeight || img.height, 400);
   ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
   const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-  let skinPixels = 0;
-  let totalPixels = 0;
-
+  let skin = 0, total = 0;
   for (let i = 0; i < data.length; i += 16) {
-    const r = data[i], g = data[i + 1], b = data[i + 2], a = data[i + 3];
+    const r = data[i], g = data[i+1], b = data[i+2], a = data[i+3];
     if (a < 128) continue;
-    totalPixels++;
-
-    // Skin tone heuristic:
-    // R > G > B (warm), reasonable brightness, not grey
-    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-    const maxC = Math.max(r, g, b);
-    const minC = Math.min(r, g, b);
-    const saturation = maxC - minC;
-
-    if (
-      brightness > 60 && brightness < 240 && // not too dark/light
-      saturation > 15 &&                      // not grey (text/paper)
-      r > g &&                                // warm tone
-      r > b &&                                // warm tone
-      r - b > 10                              // meaningful warmth
-    ) {
-      skinPixels++;
-    }
+    total++;
+    const br  = (r*299 + g*587 + b*114) / 1000;
+    const sat = Math.max(r,g,b) - Math.min(r,g,b);
+    if (br > 60 && br < 240 && sat > 15 && r > g && r > b && r-b > 10) skin++;
   }
-
-  if (totalPixels === 0) return true;
-  const skinRatio = skinPixels / totalPixels;
-
-  // Need at least 4% skin pixels to be considered a person photo
-  // Text screenshots have ~0%, product-only images ~1-2%
-  return skinRatio >= 0.04;
+  return total === 0 ? true : skin / total >= 0.04;
 }
 
-// ── Sample skin tone from face region of image ───────────────────────────────
-function sampleSkinTone(
-  img: HTMLImageElement,
-  canvas: HTMLCanvasElement
-): string {
-  const ctx = canvas.getContext("2d");
+// ── Skin tone — redraws canvas at FULL resolution independently ───────────────
+// ✅ KEY FIX: always resets canvas.width/height to full image size before sampling.
+// The person detection step left the canvas at 400x400 — face zones were wrong.
+function sampleSkinTone(img: HTMLImageElement, canvas: HTMLCanvasElement): string {
+  const ctx = getCtx(canvas);
   if (!ctx) return "Medium";
 
-  canvas.width  = img.naturalWidth  || img.width;
-  canvas.height = img.naturalHeight || img.height;
-  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  // ✅ Always draw at full image size for accurate face zone coordinates
+  const W = img.naturalWidth  || img.width  || 800;
+  const H = img.naturalHeight || img.height || 1000;
+  canvas.width  = W;
+  canvas.height = H;
+  ctx.drawImage(img, 0, 0, W, H);
 
-  // ✅ Sample cheek/lower-face zone — avoids hair, sunglasses, shadows
-  // y=15%-35% (below hair, above nose), x=30%-70% (center face)
-  const x = Math.floor(canvas.width  * 0.30);
-  const y = Math.floor(canvas.height * 0.15);
-  const w = Math.floor(canvas.width  * 0.40);
-  const h = Math.floor(canvas.height * 0.20);
-
-  const extractSkin = (pixels: Uint8ClampedArray, minBrightness: number) => {
-    let totalR = 0, totalG = 0, totalB = 0, count = 0;
+  const extract = (pixels: Uint8ClampedArray, minBr: number) => {
+    let tR = 0, tG = 0, tB = 0, n = 0;
     for (let i = 0; i < pixels.length; i += 16) {
-      const r = pixels[i], g = pixels[i + 1], b = pixels[i + 2], a = pixels[i + 3];
+      const r = pixels[i], g = pixels[i+1], b = pixels[i+2], a = pixels[i+3];
       if (a < 128) continue;
-      const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-      // ✅ Skip dark pixels — hair, glasses, shadows
-      if (brightness < minBrightness || brightness > 235) continue;
-      // ✅ Skip grey/neutral pixels — background, walls, clothing
-      const maxC = Math.max(r, g, b);
-      const minC = Math.min(r, g, b);
-      if (maxC - minC < 15) continue;
-      // ✅ Skin heuristic — red channel must dominate (warm skin tones)
+      const br = (r*299 + g*587 + b*114) / 1000;
+      if (br < minBr || br > 235) continue;
+      if (Math.max(r,g,b) - Math.min(r,g,b) < 15) continue;
       if (r < g || r < b) continue;
-      totalR += r; totalG += g; totalB += b; count++;
+      tR += r; tG += g; tB += b; n++;
     }
-    return { totalR, totalG, totalB, count };
+    return { tR, tG, tB, n };
   };
 
   try {
-    // Primary zone: cheek area
-    const primary = extractSkin(ctx.getImageData(x, y, w, h).data, 80);
+    // ✅ For full-body photos: face occupies top 5%–17% of image height
+    // Sample the centre 40% width to avoid background on sides
+    const faceX = Math.floor(W * 0.30);
+    const faceY = Math.floor(H * 0.05);
+    const faceW = Math.floor(W * 0.40);
+    const faceH = Math.floor(H * 0.12);
 
-    if (primary.count >= 20) {
-      return rgbToSkinTone(
-        Math.round(primary.totalR / primary.count),
-        Math.round(primary.totalG / primary.count),
-        Math.round(primary.totalB / primary.count)
-      );
+    console.log("[SkinTone] Sampling face zone:", { faceX, faceY, faceW, faceH, imgW: W, imgH: H });
+
+    const p = extract(ctx.getImageData(faceX, faceY, faceW, faceH).data, 80);
+
+    if (p.n >= 20) {
+      const tone = rgbToSkinTone(Math.round(p.tR/p.n), Math.round(p.tG/p.n), Math.round(p.tB/p.n));
+      console.log("[SkinTone] ✅ Primary zone:", tone, `(${p.n} skin pixels)`);
+      return tone;
     }
 
-    // ✅ Fallback: wider face zone if primary had too few skin pixels
-    const fallbackData = ctx.getImageData(
-      Math.floor(canvas.width * 0.20),
-      Math.floor(canvas.height * 0.08),
-      Math.floor(canvas.width * 0.60),
-      Math.floor(canvas.height * 0.45)
-    ).data;
+    // Wider fallback: top 2%–27%, centre 70% width
+    const fb = extract(ctx.getImageData(
+      Math.floor(W*0.15), Math.floor(H*0.02),
+      Math.floor(W*0.70), Math.floor(H*0.25)
+    ).data, 70);
 
-    const fallback = extractSkin(fallbackData, 70);
-    if (fallback.count > 0) {
-      return rgbToSkinTone(
-        Math.round(fallback.totalR / fallback.count),
-        Math.round(fallback.totalG / fallback.count),
-        Math.round(fallback.totalB / fallback.count)
-      );
+    if (fb.n > 0) {
+      const tone = rgbToSkinTone(Math.round(fb.tR/fb.n), Math.round(fb.tG/fb.n), Math.round(fb.tB/fb.n));
+      console.log("[SkinTone] ✅ Fallback zone:", tone, `(${fb.n} skin pixels)`);
+      return tone;
     }
 
+    console.warn("[SkinTone] No skin pixels found — defaulting to Medium");
     return "Medium";
-  } catch {
+  } catch (e) {
+    console.error("[SkinTone] Error:", e);
     return "Medium";
   }
 }
 
-// ── Body shape from MediaPipe pose landmarks ──────────────────────────────────
-// landmark indices: 11=left shoulder, 12=right shoulder,
-// 23=left hip, 24=right hip
-// visibility: 0.0–1.0 confidence score per landmark
+// ── Body shape — normalised coords, arms ignored ──────────────────────────────
 function classifyBodyShape(
   landmarks: Array<{ x: number; y: number; visibility?: number }>
 ): string {
-  try {
-    const lShoulder = landmarks[11];
-    const rShoulder = landmarks[12];
-    const lHip      = landmarks[23];
-    const rHip      = landmarks[24];
+  const vis = (i: number) => landmarks[i]?.visibility ?? 0;
 
-    if (!lShoulder || !rShoulder) return "Rectangle";
+  const lSh  = landmarks[11];
+  const rSh  = landmarks[12];
+  const lHip = landmarks[23];
+  const rHip = landmarks[24];
 
-    const shoulderWidth = Math.abs(rShoulder.x - lShoulder.x);
-    if (shoulderWidth === 0) return "Rectangle";
+  if (!lSh || !rSh || vis(11) < 0.25 || vis(12) < 0.25) return "Rectangle";
 
-    // ✅ Check hip visibility — cropped images often miss hips
-    const lHipVis = lHip?.visibility ?? 0;
-    const rHipVis = rHip?.visibility ?? 0;
-    const hipConfidence = Math.min(lHipVis, rHipVis);
+  const shoulderW = Math.abs(rSh.x  - lSh.x);
 
-    // ✅ If hips not detected confidently — only Inverted Triangle is reliable
-    if (hipConfidence < 0.5 || !lHip || !rHip) {
-      // Broad shoulders relative to frame = Inverted Triangle
-      if (shoulderWidth > 0.38) return "Inverted Triangle";
-      // Can't determine without hips — honest fallback
-      return "Rectangle";
-    }
-
-    const hipWidth = Math.abs(rHip.x - lHip.x);
-    if (hipWidth === 0) return "Rectangle";
-
-    const ratio = shoulderWidth / hipWidth;
-
-    // ✅ Waist estimation via elbow landmarks (13=left elbow, 14=right elbow)
-    const lElbow = landmarks[13];
-    const rElbow = landmarks[14];
-    const lElbowVis = lElbow?.visibility ?? 0;
-    const rElbowVis = rElbow?.visibility ?? 0;
-    let waistRatio = 0.85; // default — assume some waist definition
-
-    if (lElbow && rElbow && lElbowVis > 0.4 && rElbowVis > 0.4) {
-      const elbowWidth = Math.abs(rElbow.x - lElbow.x);
-      waistRatio = elbowWidth / hipWidth;
-    }
-
-    // ✅ Classification with visibility-aware thresholds
-    if (ratio > 1.15) return "Inverted Triangle"; // shoulders clearly wider
-    if (ratio < 0.82) return "Pear";              // hips clearly wider
-    // Hourglass: balanced shoulders+hips with narrow waist
-    if (ratio >= 0.88 && ratio <= 1.12 && waistRatio < 0.78) return "Hourglass";
-    if (ratio >= 0.88 && ratio <= 1.12) return "Rectangle";
-    return "Apple";
-  } catch {
-    return "Rectangle";
+  if (!lHip || !rHip || vis(23) < 0.25 || vis(24) < 0.25) {
+    return shoulderW > 0.28 ? "Inverted Triangle" : "Rectangle";
   }
+
+  const hipW = Math.abs(rHip.x - lHip.x);
+  if (hipW < 0.01) return "Rectangle";
+
+  const lWaistX = lSh.x + (lHip.x - lSh.x) * 0.50;
+  const rWaistX = rSh.x + (rHip.x - rSh.x) * 0.50;
+  const waistW  = Math.abs(rWaistX - lWaistX);
+
+  const shToHip    = shoulderW / hipW;
+  const waistToHip = waistW    / hipW;
+  const waistToSh  = waistW    / shoulderW;
+
+  console.log("[BodyShape] ✅ Ratios:", {
+    shoulderW: shoulderW.toFixed(3), hipW: hipW.toFixed(3), waistW: waistW.toFixed(3),
+    shToHip: shToHip.toFixed(3), waistToHip: waistToHip.toFixed(3), waistToSh: waistToSh.toFixed(3),
+  });
+
+  if (shToHip > 1.18)                         return "Inverted Triangle";
+  if (shToHip < 0.82)                         return "Pear";
+  if (waistToHip < 0.82 && waistToSh < 0.82) return "Hourglass";
+  if (waistToHip > 0.94 && waistToSh > 0.94) return "Apple";
+  return "Rectangle";
 }
 
 interface AnalysisResult {
@@ -213,16 +194,16 @@ interface AnalysisResult {
 interface Props {
   imageUrl: string;
   onDone: (result: AnalysisResult) => void;
-  onError?: (message: string) => void; // ✅ called when no person detected
+  onError?: (message: string) => void;
   durationMs?: number;
 }
 
-export function AnalysisScreen({ imageUrl, onDone, onError, durationMs = 6000 }: Props) {
-  const [stepIdx,   setStepIdx]   = useState(0);
-  const [progress,  setProgress]  = useState(0);
-  const [error,     setError]     = useState<string | null>(null);
-  const canvasRef   = useRef<HTMLCanvasElement>(null);
-  const resultRef   = useRef<AnalysisResult | null>(null);
+export function AnalysisScreen({ imageUrl, onDone, onError, durationMs = 7000 }: Props) {
+  const [stepIdx,  setStepIdx]  = useState(0);
+  const [progress, setProgress] = useState(0);
+  const [error,    setError]    = useState<string | null>(null);
+  const canvasRef     = useRef<HTMLCanvasElement>(null);
+  const resultRef     = useRef<AnalysisResult | null>(null);
   const doneCalledRef = useRef(false);
 
   useEffect(() => {
@@ -230,17 +211,7 @@ export function AnalysisScreen({ imageUrl, onDone, onError, durationMs = 6000 }:
 
     const run = async () => {
       try {
-        // ── Step 1: Load MediaPipe ──────────────────────────────────────
         setStepIdx(0); setProgress(8);
-
-        // Dynamically import mediapipe from CDN
-        const vision = await import(
-          "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm/vision_bundle.mjs" as string
-        ).catch(() => null);
-
-        // ── Step 2: Load image ──────────────────────────────────────────
-        setStepIdx(1); setProgress(22);
-
         const img = new Image();
         img.crossOrigin = "anonymous";
         await new Promise<void>((resolve, reject) => {
@@ -248,89 +219,69 @@ export function AnalysisScreen({ imageUrl, onDone, onError, durationMs = 6000 }:
           img.onerror = () => reject(new Error("Image load failed"));
           img.src = imageUrl;
         });
-
         if (cancelled) return;
 
-        // ── Step 2.5: Quick person detection before heavy processing ────
-        // Reject text screenshots, random objects, logos etc.
-        if (canvasRef.current) {
-          const isPerson = hasPersonInImage(img, canvasRef.current);
-          if (!isPerson) {
-            if (!doneCalledRef.current) {
-              doneCalledRef.current = true;
-              onError?.("No person detected in this image. Please upload a clear photo of yourself. 📸");
-            }
-            return;
+        setStepIdx(1); setProgress(20);
+        if (canvasRef.current && !hasPersonInImage(img, canvasRef.current)) {
+          if (!doneCalledRef.current) {
+            doneCalledRef.current = true;
+            onError?.("No person detected. Please upload a clear full-body photo. 📸");
           }
+          return;
         }
 
-        // ── Step 3: Skin tone from canvas ───────────────────────────────
-        setStepIdx(2); setProgress(45);
-
+        // ✅ Skin tone sampled AFTER person check, canvas redrawn at full res
+        setStepIdx(2); setProgress(38);
         let skinTone = "Medium";
-        if (canvasRef.current) {
-          skinTone = sampleSkinTone(img, canvasRef.current);
-        }
-
+        if (canvasRef.current) skinTone = sampleSkinTone(img, canvasRef.current);
         if (cancelled) return;
 
-        // ── Step 4: Body shape via MediaPipe pose ───────────────────────
-        setStepIdx(3); setProgress(62);
-
-        let bodyShape = "Rectangle";
+        setStepIdx(3); setProgress(55);
+        let bodyShape      = "Rectangle";
         let personDetected = false;
 
         try {
-          if (vision) {
-            const { PoseLandmarker, FilesetResolver } = vision as any;
-            const filesetResolver = await FilesetResolver.forVisionTasks(
-              "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm"
-            );
-            const poseLandmarker = await PoseLandmarker.createFromOptions(filesetResolver, {
-              baseOptions: {
-                modelAssetPath:
-                  "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task",
-                delegate: "GPU",
-              },
-              runningMode: "IMAGE",
-              numPoses: 1,
-            });
+          const landmarker = await getPoseLandmarker();
+          if (cancelled) return;
 
-            if (cancelled) return;
-            setStepIdx(4); setProgress(78);
-
-            const result = poseLandmarker.detect(img);
-            poseLandmarker.close();
-
-            // ✅ No landmarks = no person in image
-            if (!result.landmarks || result.landmarks.length === 0) {
-              if (!cancelled && !doneCalledRef.current) {
-                doneCalledRef.current = true;
-                // Stop analysis — show error, do not proceed
-                onError?.("No person detected in this image. Please upload a clear photo of yourself.");
-              }
-              return;
-            }
-
-            bodyShape = classifyBodyShape(result.landmarks[0]);
-            personDetected = true;
-          } else {
-            // MediaPipe failed to load — use fallback heuristic
-            setStepIdx(4); setProgress(78);
-            await new Promise((r) => setTimeout(r, 600));
-          }
-        } catch {
-          // MediaPipe unavailable — body shape stays Rectangle (already validated person above)
           setStepIdx(4); setProgress(78);
-          await new Promise((r) => setTimeout(r, 500));
+
+          // ✅ Suppress the harmless TFLite INFO log from Next.js error overlay
+          const origError = console.error;
+          console.error = (...args: any[]) => {
+            if (typeof args[0] === "string" && args[0].includes("INFO:")) return;
+            origError(...args);
+          };
+          const result = landmarker.detect(img);
+          console.error = origError; // restore immediately after
+
+          console.log("[AnalysisScreen] Landmark sets found:", result.landmarks?.length ?? 0);
+
+          if (result.landmarks && result.landmarks.length > 0) {
+            bodyShape      = classifyBodyShape(result.landmarks[0]);
+            personDetected = true;
+            console.log("[AnalysisScreen] ✅ Final shape:", bodyShape, "| Skin:", skinTone);
+          } else {
+            console.warn("[AnalysisScreen] No landmarks — manual fallback");
+            if (!doneCalledRef.current) {
+              doneCalledRef.current = true;
+              onDone({ body_shape: "Rectangle", skin_tone: skinTone, person_detected: false });
+            }
+            return;
+          }
+        } catch (e) {
+          console.error("[AnalysisScreen] MediaPipe error:", e);
+          if (!doneCalledRef.current) {
+            doneCalledRef.current = true;
+            onDone({ body_shape: "Rectangle", skin_tone: skinTone, person_detected: false });
+          }
+          return;
         }
 
         if (cancelled) return;
 
-        // ── Step 5: Finalise ────────────────────────────────────────────
         setStepIdx(5); setProgress(97);
         await new Promise((r) => setTimeout(r, 500));
-
         if (cancelled) return;
 
         setProgress(100);
@@ -344,34 +295,26 @@ export function AnalysisScreen({ imageUrl, onDone, onError, durationMs = 6000 }:
         }, 300);
 
       } catch (err: any) {
-        if (!cancelled) {
-          setError("Analysis failed — using manual selection.");
-          setTimeout(() => {
-            if (!doneCalledRef.current) {
-              doneCalledRef.current = true;
-              onDone({ body_shape: "Rectangle", skin_tone: "Medium", person_detected: false });
-            }
-          }, 1500);
+        console.error("[AnalysisScreen] Fatal:", err);
+        if (!cancelled && !doneCalledRef.current) {
+          doneCalledRef.current = true;
+          setError("Analysis failed — please select manually.");
+          setTimeout(() => onDone({ body_shape: "Rectangle", skin_tone: "Medium", person_detected: false }), 1500);
         }
       }
     };
 
-    // Also set up a max-duration fallback in case MediaPipe hangs
     const fallbackTimer = setTimeout(() => {
       if (!doneCalledRef.current) {
+        console.warn("[AnalysisScreen] Fallback timer fired");
         doneCalledRef.current = true;
-        onDone(
-          resultRef.current ?? { body_shape: "Rectangle", skin_tone: "Medium", person_detected: false }
-        );
+        onDone(resultRef.current ?? { body_shape: "Rectangle", skin_tone: "Medium", person_detected: false });
       }
-    }, durationMs + 2000);
+    }, 30000);
 
-    // Progress animation (visual only)
     const start = Date.now();
     const progressId = setInterval(() => {
-      const elapsed = Date.now() - start;
-      const pct = Math.min((elapsed / durationMs) * 95, 95);
-      setProgress((p) => Math.max(p, pct));
+      setProgress((p) => Math.max(p, Math.min(((Date.now() - start) / durationMs) * 95, 95)));
     }, 80);
 
     run();
@@ -392,43 +335,28 @@ export function AnalysisScreen({ imageUrl, onDone, onError, durationMs = 6000 }:
       exit={{ opacity: 0, scale: 0.94 }}
       className="rounded-2xl overflow-hidden border border-neutral-800 shadow-2xl bg-[#111111]"
     >
-      {/* Hidden canvas for skin tone sampling */}
       <canvas ref={canvasRef} className="hidden" />
 
-      {/* Image with scan overlay */}
       <div className="relative w-full h-52 overflow-hidden bg-neutral-900">
         <img src={imageUrl} alt="analysing" className="w-full h-full object-cover opacity-80" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60" />
-
-        {/* Animated gold scan line */}
         <motion.div
           className="absolute left-0 right-0 h-0.5"
-          style={{
-            background: "linear-gradient(90deg, transparent, #d4af7f, transparent)",
-            boxShadow: "0 0 12px 3px rgba(212,175,127,0.6)",
-          }}
+          style={{ background: "linear-gradient(90deg, transparent, #d4af7f, transparent)", boxShadow: "0 0 12px 3px rgba(212,175,127,0.6)" }}
           animate={{ top: ["0%", "100%", "0%"] }}
           transition={{ duration: 2.4, repeat: Infinity, ease: "linear" }}
         />
-
-        {/* Gold corner brackets */}
-        {[
-          "top-3 left-3 border-t-2 border-l-2",
-          "top-3 right-3 border-t-2 border-r-2",
-          "bottom-3 left-3 border-b-2 border-l-2",
-          "bottom-3 right-3 border-b-2 border-r-2",
+        {["top-3 left-3 border-t-2 border-l-2","top-3 right-3 border-t-2 border-r-2",
+          "bottom-3 left-3 border-b-2 border-l-2","bottom-3 right-3 border-b-2 border-r-2",
         ].map((cls, i) => (
           <div key={i} className={`absolute w-5 h-5 border-[#d4af7f] ${cls} rounded-sm`} />
         ))}
-
-        {/* AI badge */}
         <div className="absolute top-3 left-1/2 -translate-x-1/2 bg-black/70 backdrop-blur-sm text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1.5 border border-[#d4af7f]/30">
           <span className="w-1.5 h-1.5 rounded-full bg-[#d4af7f] animate-pulse inline-block" />
           AI VISION ACTIVE
         </div>
       </div>
 
-      {/* Steps & progress */}
       <div className="p-4">
         <AnimatePresence mode="wait">
           <motion.div
@@ -440,40 +368,27 @@ export function AnalysisScreen({ imageUrl, onDone, onError, durationMs = 6000 }:
             className="flex items-center gap-2 mb-3"
           >
             <span className="text-lg">{current.icon}</span>
-            <span className="text-sm font-medium text-neutral-300">
-              {error ?? current.label}
-            </span>
+            <span className="text-sm font-medium text-neutral-300">{error ?? current.label}</span>
           </motion.div>
         </AnimatePresence>
 
-        {/* Gold progress bar */}
         <div className="w-full h-1.5 bg-neutral-800 rounded-full overflow-hidden">
           <motion.div
             className="h-full rounded-full"
-            style={{
-              width: `${progress}%`,
-              background: "linear-gradient(90deg, #d4af7f, #b8860b)",
-            }}
+            style={{ width: `${progress}%`, background: "linear-gradient(90deg,#d4af7f,#b8860b)" }}
             transition={{ duration: 0.15 }}
           />
         </div>
         <p className="text-right text-xs text-neutral-600 mt-1">{Math.round(progress)}%</p>
 
-        {/* Step dots */}
         <div className="flex justify-center gap-1.5 mt-3">
           {STEPS.map((_, i) => (
-            <div
-              key={i}
-              className="h-1.5 rounded-full transition-all duration-300"
+            <div key={i} className="h-1.5 rounded-full transition-all duration-300"
               style={i <= stepIdx
                 ? { background: "#d4af7f", width: "16px" }
-                : { background: "#2a2a2a", width: "6px" }
-              }
-            />
+                : { background: "#2a2a2a", width: "6px" }} />
           ))}
         </div>
-
-        {/* Powered by label */}
         <p className="text-center text-[10px] text-neutral-700 mt-3 font-medium tracking-wide">
           Powered by MediaPipe Vision
         </p>
