@@ -58,43 +58,111 @@ const SKIN_TONE_COLORS: Record<string, Array<{ name: string; hex: string; why: s
   ],
 };
 
-// ── Style tips by body shape ──────────────────────────────────────────────────
-const BODY_SHAPE_TIPS: Record<string, { tip: string; avoid: string }> = {
+// ── Style tips by body shape — WOMEN ─────────────────────────────────────────
+const BODY_SHAPE_TIPS_FEMALE: Record<string, {
+  tip: string;
+  avoid: string;
+  outfits: string[];
+}> = {
   Hourglass: {
-    tip:   "Fitted silhouettes, wrap dresses, belted styles that highlight your waist.",
-    avoid: "Boxy or shapeless cuts that hide your natural curves.",
+    tip:     "Fitted silhouettes, wrap dresses, belted kurtas that highlight your waist.",
+    avoid:   "Boxy or shapeless cuts that hide your natural curves.",
+    outfits: ["Wrap dress", "Belted anarkali", "Bodycon co-ord set", "Fitted salwar suit", "Peplum top + straight jeans"],
   },
   Pear: {
-    tip:   "Bold tops, off-shoulder, A-line skirts, wide-leg pants that balance proportions.",
-    avoid: "Tight bottoms, pencil skirts, or anything that adds volume to hips.",
+    tip:     "Bold tops, off-shoulder styles, A-line lehengas, palazzo pants that balance proportions.",
+    avoid:   "Tight bottoms, pencil skirts, or anything that adds volume to hips.",
+    outfits: ["A-line lehenga", "Off-shoulder top + palazzo", "Flared skirt + embellished blouse", "Boat neck kurti + churidar", "Ruffled top + wide-leg trousers"],
   },
   Apple: {
-    tip:   "Empire waists, V-necks, flowy tops, straight-leg trousers that elongate.",
-    avoid: "Tight waistbands, cropped tops, or clingy fabric around the midsection.",
+    tip:     "Empire waists, V-neck kurtis, flowy anarkalis, straight-leg trousers that elongate.",
+    avoid:   "Tight waistbands, cropped tops, or clingy fabric around the midsection.",
+    outfits: ["Empire waist anarkali", "V-neck flowy kurti", "Straight-cut salwar suit", "Longline blazer + trousers", "Wrap top + palazzo"],
   },
   Rectangle: {
-    tip:   "Peplum tops, ruffles, layered outfits, and belts to create the illusion of curves.",
-    avoid: "Straight cuts with no definition — add structure and shape.",
+    tip:     "Peplum kurtis, ruffled dupattas, layered outfits, and cinched waist belts to create curves.",
+    avoid:   "Straight cuts with no definition — always add structure and shape.",
+    outfits: ["Peplum kurti + fitted pants", "Layered lehenga", "Ruffled saree drape", "Tiered skirt + fitted top", "Belted shrug + flared dress"],
   },
   "Inverted Triangle": {
-    tip:   "Flared skirts, wide-leg pants, A-line silhouettes to balance broader shoulders.",
-    avoid: "Boat necks, shoulder pads, or anything that widens the upper body further.",
+    tip:     "Flared lehengas, wide-leg pants, A-line kurtas to balance broader shoulders.",
+    avoid:   "Boat necks, shoulder pads, or anything that widens the upper body further.",
+    outfits: ["A-line flared lehenga", "Wide-leg palazzo + simple top", "V-neck kurta + churidar", "Fit & flare dress", "Straight-cut salwar"],
   },
 };
 
+// ── Style tips by body shape — MEN ───────────────────────────────────────────
+const BODY_SHAPE_TIPS_MALE: Record<string, {
+  tip: string;
+  avoid: string;
+  outfits: string[];
+}> = {
+  Athletic: {
+    tip:     "Fitted shirts, structured blazers, slim-fit trousers that showcase your build.",
+    avoid:   "Oversized or boxy fits that hide your physique.",
+    outfits: ["Slim-fit kurta + churidar", "Fitted bandhgala", "Structured sherwani", "Slim chinos + fitted shirt", "Tailored blazer + trousers"],
+  },
+  Slim: {
+    tip:     "Layered outfits, structured sherwanis, slim-fit kurtas with jackets that add visual bulk.",
+    avoid:   "Ultra-tight fits that emphasise leanness; pure vertical stripes.",
+    outfits: ["Layered nehru jacket + kurta", "Slim-fit kurta + jacket", "Structured sherwani", "Chinos + textured shirt", "Double-breasted bandhgala"],
+  },
+  Rectangle: {
+    tip:     "Structured sherwanis, well-tailored kurtas, layered ensembles that create shape.",
+    avoid:   "Completely straight-cut outfits with no dimension.",
+    outfits: ["Structured sherwani set", "Nehru jacket + kurta pajama", "Tailored suit", "Kurta + fitted joggers", "Textured blazer + trousers"],
+  },
+  Oval: {
+    tip:     "Longline kurtas, vertical patterns, dark solid tones and straight-cut trousers that elongate.",
+    avoid:   "Tight waistbands, horizontal stripes, or anything that draws attention to the midsection.",
+    outfits: ["Longline straight kurta + churidar", "Dark solid sherwani", "Straight-cut kurta pajama", "Vertical print shirt + straight trousers", "Nehru collar shirt + flat-front pants"],
+  },
+  "Inverted Triangle": {
+    tip:     "Straight-cut trousers, slim-fit bottoms, simple kurtas that balance broader shoulders.",
+    avoid:   "Wide lapels, bold shoulder detailing, or bulky upper layers.",
+    outfits: ["Slim-fit kurta + straight pajama", "Simple bandhgala", "Flat-front trousers + plain shirt", "Straight sherwani + no embellishment at shoulders", "Chinos + crew-neck tee"],
+  },
+};
+
+// ── Fallback body shapes if analyser returns something unexpected ─────────────
+const FEMALE_SHAPE_KEYS = Object.keys(BODY_SHAPE_TIPS_FEMALE);
+const MALE_SHAPE_KEYS   = Object.keys(BODY_SHAPE_TIPS_MALE);
+
+function resolveShape(shape: string, gender: "male" | "female"): string {
+  if (gender === "female") {
+    return FEMALE_SHAPE_KEYS.includes(shape) ? shape : "Rectangle";
+  }
+  // Male shapes may come in as "Rectangle", "Athletic", "Slim", "Oval" etc.
+  // Also gracefully map female shape names that might slip through
+  const map: Record<string, string> = {
+    Hourglass:           "Athletic",
+    Pear:                "Oval",
+    Apple:               "Oval",
+    "Inverted Triangle": "Inverted Triangle",
+  };
+  if (MALE_SHAPE_KEYS.includes(shape)) return shape;
+  return map[shape] ?? "Rectangle";
+}
+
 interface Props {
   bodyShape: string;
-  skinTone: string;
+  skinTone:  string;
+  gender?:   "male" | "female";   // default: "female"
   onContinue: () => void;
 }
 
-export function ColorPaletteCard({ bodyShape, skinTone, onContinue }: Props) {
-  const { user } = useAuth();
-  const [saved, setSaved] = useState(false);
-  const [saving, setSaving] = useState(false);
+export function ColorPaletteCard({ bodyShape, skinTone, gender = "female", onContinue }: Props) {
+  const { user }                = useAuth();
+  const [saved,   setSaved]     = useState(false);
+  const [saving,  setSaving]    = useState(false);
 
-  const colors = SKIN_TONE_COLORS[skinTone] ?? SKIN_TONE_COLORS["Medium"];
-  const shapeTips = BODY_SHAPE_TIPS[bodyShape] ?? BODY_SHAPE_TIPS["Rectangle"];
+  const isMale      = gender === "male";
+  const resolvedShape = resolveShape(bodyShape, gender);
+
+  const colors     = SKIN_TONE_COLORS[skinTone] ?? SKIN_TONE_COLORS["Medium"];
+  const shapeTips  = isMale
+    ? (BODY_SHAPE_TIPS_MALE[resolvedShape]   ?? BODY_SHAPE_TIPS_MALE["Rectangle"])
+    : (BODY_SHAPE_TIPS_FEMALE[resolvedShape] ?? BODY_SHAPE_TIPS_FEMALE["Rectangle"]);
 
   const handleSave = async () => {
     if (!user || saved) return;
@@ -103,7 +171,7 @@ export function ColorPaletteCard({ bodyShape, skinTone, onContinue }: Props) {
       await supabase
         .from("users_profile")
         .update({
-          body_shape:    bodyShape,
+          body_shape:    resolvedShape,
           skin_tone:     skinTone,
           color_palette: colors.map((c) => c.name),
         })
@@ -132,7 +200,7 @@ export function ColorPaletteCard({ bodyShape, skinTone, onContinue }: Props) {
           🎨 Your Colour Palette
         </p>
         <p className="text-xs text-neutral-500 mt-0.5">
-          Curated for {bodyShape} · {skinTone} skin
+          Curated for {resolvedShape} · {skinTone} skin · {isMale ? "Men" : "Women"}
         </p>
       </div>
 
@@ -152,15 +220,13 @@ export function ColorPaletteCard({ bodyShape, skinTone, onContinue }: Props) {
                 transition={{ delay: i * 0.06 }}
                 className="rounded-xl overflow-hidden border border-neutral-800"
               >
-                {/* Swatch */}
                 <div
                   className="h-14 w-full"
                   style={{
                     background: color.hex,
-                    border: color.hex === "#FFFFFF" || color.hex === "#FFFFF0" ? "1px solid #333" : "none",
+                    border: color.hex === "#FFFFFF" || color.hex === "#FFFFF0" || color.hex === "#FFFF00" ? "1px solid #333" : "none",
                   }}
                 />
-                {/* Label */}
                 <div className="px-2 py-1.5 bg-[#1a1a1a]">
                   <p className="text-[11px] font-semibold text-white leading-tight truncate">{color.name}</p>
                   <p className="text-[10px] text-neutral-600 truncate">{color.why}</p>
@@ -171,9 +237,9 @@ export function ColorPaletteCard({ bodyShape, skinTone, onContinue }: Props) {
         </div>
 
         {/* Style tips */}
-        <div className="rounded-xl border border-neutral-800 bg-[#1a1a1a] p-3 space-y-2">
+        <div className="rounded-xl border border-neutral-800 bg-[#1a1a1a] p-3 space-y-3">
           <p className="text-xs font-bold text-[#d4af7f] uppercase tracking-wider">
-            Style Tips for {bodyShape}
+            Style Tips for {resolvedShape} {isMale ? "Men" : ""}
           </p>
           <div className="space-y-1.5">
             <div className="flex gap-2">
@@ -185,6 +251,27 @@ export function ColorPaletteCard({ bodyShape, skinTone, onContinue }: Props) {
               <p className="text-xs text-neutral-500 leading-relaxed">{shapeTips.avoid}</p>
             </div>
           </div>
+
+          {/* Outfit recommendations */}
+          <div>
+            <p className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-2 mt-1">
+              {isMale ? "👔" : "👗"} Recommended Outfits
+            </p>
+            <div className="flex flex-wrap gap-1.5">
+              {shapeTips.outfits.map((outfit, i) => (
+                <motion.span
+                  key={outfit}
+                  initial={{ opacity: 0, scale: 0.85 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.2 + i * 0.05 }}
+                  className="text-[11px] px-2.5 py-1 rounded-full border border-neutral-700 text-neutral-300"
+                  style={{ background: "#111111" }}
+                >
+                  {outfit}
+                </motion.span>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Save to profile */}
@@ -194,9 +281,10 @@ export function ColorPaletteCard({ bodyShape, skinTone, onContinue }: Props) {
             disabled={saved || saving}
             whileTap={{ scale: 0.97 }}
             className="w-full rounded-xl py-2.5 text-xs font-bold flex items-center justify-center gap-2 transition-all border"
-            style={saved
-              ? { background: "#1a1a1a", borderColor: "#2a2a2a", color: "#d4af7f" }
-              : { background: "linear-gradient(135deg,#d4af7f,#b8860b)", borderColor: "transparent", color: "#000" }
+            style={
+              saved
+                ? { background: "#1a1a1a", borderColor: "#2a2a2a", color: "#d4af7f" }
+                : { background: "linear-gradient(135deg,#d4af7f,#b8860b)", borderColor: "transparent", color: "#000" }
             }
           >
             {saved ? (
