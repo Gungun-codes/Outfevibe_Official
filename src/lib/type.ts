@@ -53,8 +53,8 @@ export const OCCASIONS = [
 ];
 
 export const VIBES: Record<string, string[]> = {
-  Female: ["Classic", "Boho", "Trendy", "Minimal", "Edgy", "Romantic"],
-  Male: ["Classic", "Trendy", "Minimal", "Street Style", "Smart Casual"],
+  female: ["Classic", "Boho", "Trendy", "Minimal", "Edgy", "Romantic"],
+  male: ["Classic", "Trendy", "Minimal", "Street Style", "Smart Casual"],
 };
 
 export const PLATFORMS = ["Myntra", "Ajio", "Amazon", "Flipkart", "Meesho"];
