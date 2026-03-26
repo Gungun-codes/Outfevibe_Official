@@ -9,7 +9,7 @@ import { useState, useEffect } from "react";
 export const FESTIVAL_OVERRIDES = {
   EID: false,
   NAVRATRI: false,
-  MAHAVIR_JAYANTI: false,
+  MAHAVIR_JAYANTI: true,
   DIWALI: false,
   HOLI: false,
   INDEPENDENCE_DAY: false,
