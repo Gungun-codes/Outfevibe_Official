@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import OutfitCard from "@/components/OutfitCard";
 import HowItWorks from "@/components/HowItWorks";
 import { usePWAInstall } from "@/app/hooks/usePWAInstall";
-import FestivalHero from "@/components/FestivalHero"; // ✅ added
+import FestivalHero from "@/components/FestivalHero";
 
 function FeedbackForm({ darkMode }: { darkMode: boolean }) {
   const [name, setName] = useState("");
@@ -337,7 +337,7 @@ export default function Home() {
         </div>
       </header>
 
-      {/* ✅ FESTIVAL HERO — auto-switches by date, manual override via useFestivalTheme.ts */}
+      {/* FESTIVAL HERO */}
       <FestivalHero darkMode={darkMode} defaultHero={defaultHero} />
 
       {/* TRENDING */}
@@ -405,38 +405,121 @@ export default function Home() {
         </div>
       </section>
 
-      {/* WHY OUTFEVIBE */}
+      {/* ── WHY OUTFEVIBE — reframed, no competitor mentions ── */}
       <section className={`px-6 py-24 ${darkMode ? "bg-[#0a0a0a] text-white" : "bg-neutral-50 text-black"}`}>
         <div className="max-w-5xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }} className="text-center mb-16">
-            <p className="text-xs font-mono tracking-[0.25em] uppercase text-yellow-400 mb-4">Why not just use ChatGPT?</p>
-            <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight">Built different.<span className="text-yellow-400"> For India.</span></h2>
-            <p className={`mt-4 max-w-xl mx-auto text-lg ${darkMode ? "text-neutral-400" : "text-neutral-600"}`}>ChatGPT doesn't know your body shape, your skin tone, your budget, or that you have a Diwali function next week. Outfevibe does.</p>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="text-center mb-16"
+          >
+            <p className="text-xs font-mono tracking-[0.25em] uppercase text-yellow-400 mb-4">
+              Made for you. Made for India.
+            </p>
+            <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight">
+              Style that knows{" "}
+              <span className="text-yellow-400">who you are.</span>
+            </h2>
+            <p className={`mt-4 max-w-xl mx-auto text-lg ${darkMode ? "text-neutral-400" : "text-neutral-600"}`}>
+              Outfevibe goes beyond trends. It understands your body, your skin, your budget, and your culture — then dresses you for it.
+            </p>
           </motion.div>
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             {[
-              { icon: "🧬", title: "Body shape analysis", desc: "Classifies your body type — hourglass, pear, apple, rectangle — and recommends cuts and silhouettes that actually flatter you.", tag: "AI-powered" },
-              { icon: "🎨", title: "Skin tone matching", desc: "Detects your skin tone and maps it to colours, fabrics, and palettes that complement your complexion — not just what's trending.", tag: "AI-powered" },
-              { icon: "🇮🇳", title: "India-first occasions", desc: "Eid, Diwali, weddings, college fests, mehendi — we understand Indian occasions and dress you for them, not generic Western events.", tag: "Unique to us" },
-              { icon: "🎯", title: "Style persona quiz", desc: "6 questions. 1 persona. Minimalist Maven, Streetwear Icon, Comfort Queen — your outfit feed is filtered entirely by who you are.", tag: "Unique to us" },
-              { icon: "🛍️", title: "Indian affiliate links", desc: "Every recommendation links to Meesho, Ajio, Myntra, Flipkart, and Amazon India — not US stores that don't ship here.", tag: "India-first" },
-              { icon: "💰", title: "Budget-aware styling", desc: "Low, medium, or high — your budget is a first-class filter, not an afterthought. Outfevibe never recommends what you can't afford.", tag: "Practical" },
+              {
+                icon: "🧬",
+                title: "Body shape analysis",
+                desc: "Classifies your body type — hourglass, pear, apple, rectangle — and recommends cuts and silhouettes that actually flatter you.",
+                tag: "AI-powered",
+              },
+              {
+                icon: "🎨",
+                title: "Skin tone matching",
+                desc: "Detects your skin tone and maps it to colours, fabrics, and palettes that complement your complexion — not just what's trending.",
+                tag: "AI-powered",
+              },
+              {
+                icon: "🇮🇳",
+                title: "India-first occasions",
+                desc: "Eid, Diwali, weddings, college fests, mehendi — we understand Indian occasions and dress you for them, not generic Western events.",
+                tag: "Unique to us",
+              },
+              {
+                icon: "🎯",
+                title: "Style persona quiz",
+                desc: "6 questions. 1 persona. Minimalist Maven, Streetwear Icon, Comfort Queen — your outfit feed is filtered entirely by who you are.",
+                tag: "Unique to us",
+              },
+              {
+                icon: "🛍️",
+                title: "Indian affiliate links",
+                desc: "Every recommendation links to Meesho, Ajio, Myntra, Flipkart, and Amazon India — not US stores that don't ship here.",
+                tag: "India-first",
+              },
+              {
+                icon: "💰",
+                title: "Budget-aware styling",
+                desc: "Low, medium, or high — your budget is a first-class filter, not an afterthought. Outfevibe never recommends what you can't afford.",
+                tag: "Practical",
+              },
             ].map((item, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.08 }}
-                className={`p-6 rounded-2xl border ${darkMode ? "bg-neutral-900 border-neutral-800 hover:border-yellow-400/40" : "bg-white border-neutral-200 hover:border-yellow-400/60"} transition group`}>
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
+                className={`p-6 rounded-2xl border ${
+                  darkMode
+                    ? "bg-neutral-900 border-neutral-800 hover:border-yellow-400/40"
+                    : "bg-white border-neutral-200 hover:border-yellow-400/60"
+                } transition group`}
+              >
                 <div className="flex items-start justify-between mb-4">
                   <span className="text-2xl">{item.icon}</span>
-                  <span className={`text-xs font-mono px-2.5 py-1 rounded-full border ${item.tag === "AI-powered" ? "text-purple-400 border-purple-400/30 bg-purple-400/10" : item.tag === "Unique to us" ? "text-yellow-400 border-yellow-400/30 bg-yellow-400/10" : item.tag === "India-first" ? "text-green-400 border-green-400/30 bg-green-400/10" : "text-blue-400 border-blue-400/30 bg-blue-400/10"}`}>{item.tag}</span>
+                  <span
+                    className={`text-xs font-mono px-2.5 py-1 rounded-full border ${
+                      item.tag === "AI-powered"
+                        ? "text-purple-400 border-purple-400/30 bg-purple-400/10"
+                        : item.tag === "Unique to us"
+                        ? "text-yellow-400 border-yellow-400/30 bg-yellow-400/10"
+                        : item.tag === "India-first"
+                        ? "text-green-400 border-green-400/30 bg-green-400/10"
+                        : "text-blue-400 border-blue-400/30 bg-blue-400/10"
+                    }`}
+                  >
+                    {item.tag}
+                  </span>
                 </div>
-                <h3 className={`text-base font-bold mb-2 group-hover:text-yellow-400 transition ${darkMode ? "text-white" : "text-black"}`}>{item.title}</h3>
-                <p className={`text-sm leading-relaxed ${darkMode ? "text-neutral-400" : "text-neutral-600"}`}>{item.desc}</p>
+                <h3
+                  className={`text-base font-bold mb-2 group-hover:text-yellow-400 transition ${
+                    darkMode ? "text-white" : "text-black"
+                  }`}
+                >
+                  {item.title}
+                </h3>
+                <p className={`text-sm leading-relaxed ${darkMode ? "text-neutral-400" : "text-neutral-600"}`}>
+                  {item.desc}
+                </p>
               </motion.div>
             ))}
           </div>
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.5 }}
-            className={`mt-6 p-5 rounded-2xl border border-dashed ${darkMode ? "border-neutral-700 bg-neutral-900/50" : "border-neutral-300 bg-neutral-50"} text-center`}>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            className={`mt-6 p-5 rounded-2xl border border-dashed ${
+              darkMode ? "border-neutral-700 bg-neutral-900/50" : "border-neutral-300 bg-neutral-50"
+            } text-center`}
+          >
             <p className={`text-sm ${darkMode ? "text-neutral-400" : "text-neutral-500"}`}>
-              <span className="text-yellow-400 font-semibold">Coming soon —</span>{" "}Virtual Wardrobe · Tailor connect · Rent &amp; donate · Sell unused clothes · Budget tracker
+              <span className="text-yellow-400 font-semibold">Coming soon —</span>{" "}
+              Virtual Wardrobe · Tailor connect · Rent &amp; donate · Sell unused clothes · Budget tracker
             </p>
           </motion.div>
         </div>
