@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { BODY_SHAPES, SKIN_TONES } from "@/lib/type";
-import { Check, ChevronDown, RefreshCw } from "lucide-react";
+import { Check, RefreshCw } from "lucide-react";
 
 const TONE_COLORS: Record<string, { bg: string; text: string }> = {
   Fair:   { bg: "#FFE8D6", text: "#8B5E3C" },
@@ -29,8 +29,8 @@ interface Props {
 }
 
 export function AnalysisEditor({ bodyShape, skinTone, onConfirm }: Props) {
-  const [shape, setShape] = useState(bodyShape);
-  const [tone,  setTone]  = useState(skinTone);
+  const [shape, setShape]       = useState(bodyShape);
+  const [tone,  setTone]        = useState(skinTone);
   const [confirmed, setConfirmed] = useState(false);
 
   const handleConfirm = () => {
@@ -56,14 +56,18 @@ export function AnalysisEditor({ bodyShape, skinTone, onConfirm }: Props) {
       </div>
 
       <div className="p-4 space-y-5">
-        {/* Body Shape */}
+
+        {/* ── Body Shape — chips only, no dropdown ── */}
         <div>
-          <label className="text-xs font-bold text-neutral-500 uppercase tracking-wider block mb-2">Body Shape</label>
-          <div className="flex flex-wrap gap-2 mb-2">
+          <label className="text-xs font-bold text-neutral-500 uppercase tracking-wider block mb-2">
+            Body Shape
+          </label>
+          <div className="flex flex-wrap gap-2">
             {BODY_SHAPES.map((s) => (
               <button
                 key={s}
                 onClick={() => setShape(s)}
+                disabled={confirmed}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all duration-200"
                 style={shape === s
                   ? { background: "linear-gradient(135deg,#d4af7f,#b8860b)", borderColor: "transparent", color: "#000" }
@@ -75,27 +79,20 @@ export function AnalysisEditor({ bodyShape, skinTone, onConfirm }: Props) {
               </button>
             ))}
           </div>
-          <div className="relative">
-            <select
-              value={shape}
-              onChange={(e) => setShape(e.target.value)}
-              className="w-full appearance-none bg-[#1a1a1a] border border-neutral-800 rounded-xl px-4 py-2.5 text-sm font-semibold text-neutral-200 focus:outline-none focus:ring-1 focus:ring-[#d4af7f] cursor-pointer"
-            >
-              {BODY_SHAPES.map((s) => <option key={s} value={s}>{s}</option>)}
-            </select>
-            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 pointer-events-none" />
-          </div>
         </div>
 
-        {/* Skin Tone */}
+        {/* ── Skin Tone — swatches only, no dropdown ── */}
         <div>
-          <label className="text-xs font-bold text-neutral-500 uppercase tracking-wider block mb-2">Skin Tone</label>
+          <label className="text-xs font-bold text-neutral-500 uppercase tracking-wider block mb-2">
+            Skin Tone
+          </label>
           <div className="grid grid-cols-6 gap-2 mb-1">
             {SKIN_TONES.map((t) => (
               <button
                 key={t}
                 title={t}
                 onClick={() => setTone(t)}
+                disabled={confirmed}
                 className={`relative aspect-square rounded-xl border-2 transition-all duration-200 ${
                   tone === t ? "border-[#d4af7f] scale-110 shadow-lg shadow-[#d4af7f]/20" : "border-transparent hover:scale-105"
                 }`}
@@ -109,37 +106,27 @@ export function AnalysisEditor({ bodyShape, skinTone, onConfirm }: Props) {
               </button>
             ))}
           </div>
-          <div className="grid grid-cols-6 gap-2 mb-3">
+          {/* Tone labels */}
+          <div className="grid grid-cols-6 gap-2">
             {SKIN_TONES.map((t) => (
               <p key={t} className={`text-center text-[10px] font-medium truncate ${tone === t ? "text-[#d4af7f]" : "text-neutral-600"}`}>
                 {t}
               </p>
             ))}
           </div>
-          <div className="relative">
-            <span
-              className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full border border-neutral-700 pointer-events-none"
-              style={{ background: TONE_COLORS[tone]?.bg }}
-            />
-            <select
-              value={tone}
-              onChange={(e) => setTone(e.target.value)}
-              className="w-full appearance-none bg-[#1a1a1a] border border-neutral-800 rounded-xl px-4 pl-10 py-2.5 text-sm font-semibold text-neutral-200 focus:outline-none focus:ring-1 focus:ring-[#d4af7f] cursor-pointer"
-            >
-              {SKIN_TONES.map((t) => <option key={t} value={t}>{t}</option>)}
-            </select>
-            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 pointer-events-none" />
-          </div>
         </div>
 
-        {/* Summary badge */}
+        {/* ── Summary badge ── */}
         <motion.div
           key={shape + tone}
           initial={{ opacity: 0, y: 4 }}
           animate={{ opacity: 1, y: 0 }}
           className="flex items-center gap-3 rounded-xl p-3 border border-neutral-800 bg-[#1a1a1a]"
         >
-          <span className="w-9 h-9 rounded-full flex-shrink-0 border-2 border-neutral-700 shadow-sm" style={{ background: TONE_COLORS[tone]?.bg }} />
+          <span
+            className="w-9 h-9 rounded-full flex-shrink-0 border-2 border-neutral-700 shadow-sm"
+            style={{ background: TONE_COLORS[tone]?.bg }}
+          />
           <div>
             <p className="text-xs text-neutral-500 font-medium">Your detected profile</p>
             <p className="text-sm font-bold text-white">{shape} · {tone} skin</p>
@@ -147,7 +134,7 @@ export function AnalysisEditor({ bodyShape, skinTone, onConfirm }: Props) {
           <RefreshCw className="w-4 h-4 text-neutral-700 ml-auto flex-shrink-0" />
         </motion.div>
 
-        {/* Confirm */}
+        {/* ── Confirm ── */}
         <AnimatePresence mode="wait">
           {!confirmed ? (
             <motion.button
