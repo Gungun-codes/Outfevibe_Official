@@ -1,16 +1,15 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useAuth } from "@/context/authContext";
-import { useEffect, useState } from "react";
 
 interface ChatBubbleProps {
   role:      "bot" | "user";
   children:  React.ReactNode;
   /**
-   * Pass `true` once the user has answered this bot message.
-   * The bot bubble (question + chips) will fade out, leaving only
-   * the user's reply bubble visible — matching the screenshot behaviour.
+   * When true the chips inside a bot bubble hide themselves,
+   * but the question text and any analysis cards stay visible forever.
+   * Has no effect on user bubbles.
    */
   answered?: boolean;
 }
@@ -25,10 +24,15 @@ export function ChatBubble({ role, children, answered = false }: ChatBubbleProps
       user?.user_metadata?.name          ||
       user?.email?.split("@")[0]         ||
       "U";
-    return name.split(" ").map((n: string) => n[0]).join("").slice(0, 2).toUpperCase();
+    return name
+      .split(" ")
+      .map((n: string) => n[0])
+      .join("")
+      .slice(0, 2)
+      .toUpperCase();
   })();
 
-  // ── USER bubble ───────────────────────────────────────────────────────────
+  // ── USER bubble — never disappears ─────────────────────────────────────────
   if (role === "user") {
     return (
       <div className="flex justify-end items-end gap-2 mb-4">
@@ -60,54 +64,53 @@ export function ChatBubble({ role, children, answered = false }: ChatBubbleProps
     );
   }
 
-  // ── BOT bubble ────────────────────────────────────────────────────────────
-  // When `answered` becomes true, the entire bot turn (question + chip options)
-  // fades out smoothly. Only the user's reply remains visible.
+  // ── BOT bubble — NEVER disappears; chips inside hide themselves via context ─
+  // We pass `answered` down via a data-attribute so ChipSelector can read it
+  // through a shared React context (AnsweredContext).
   return (
-    <AnimatePresence>
-      {!answered && (
-        <motion.div
-          key="bot-bubble"
-          initial={{ opacity: 0, x: -12, scale: 0.95 }}
-          animate={{ opacity: 1,  x: 0,   scale: 1   }}
-          exit={{
-            opacity: 0,
-            scale:   0.96,
-            y:       -6,
-            transition: { duration: 0.25, ease: "easeIn" },
-          }}
-          transition={{ type: "spring", stiffness: 300, damping: 28 }}
-          className="flex items-start gap-2 mb-4"
-        >
-          {/* Outfevibe logo avatar */}
-          <div
-            className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 shadow-md overflow-hidden border border-[#d4af7f]/30"
-            style={{ background: "#111111" }}
-          >
-            <img
-              src="/outfevibe_logo.png"
-              alt="Outfevibe"
-              className="w-6 h-6 object-contain"
-            />
-          </div>
+    <motion.div
+      key="bot-bubble"
+      initial={{ opacity: 0, x: -12, scale: 0.95 }}
+      animate={{ opacity: 1,  x: 0,   scale: 1   }}
+      transition={{ type: "spring", stiffness: 300, damping: 28 }}
+      className="flex items-start gap-2 mb-4"
+    >
+      {/* Outfevibe logo avatar */}
+      <div
+        className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 shadow-md overflow-hidden border border-[#d4af7f]/30"
+        style={{ background: "#111111" }}
+      >
+        <img
+          src="/outfevibe_logo.png"
+          alt="Outfevibe"
+          className="w-6 h-6 object-contain"
+        />
+      </div>
 
-          <div
-            className="rounded-2xl rounded-tl-sm px-4 py-3 max-w-[88%] text-sm shadow-sm"
-            style={{
-              background:  "#161616",
-              border:      "1px solid #2a2a2a",
-              color:       "#e5e5e5",
-              lineHeight:  "1.6",
-            }}
-          >
-            {children}
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+      <div
+        className="rounded-2xl rounded-tl-sm px-4 py-3 max-w-[88%] text-sm shadow-sm"
+        style={{
+          background: "#161616",
+          border:     "1px solid #2a2a2a",
+          color:      "#e5e5e5",
+          lineHeight: "1.6",
+        }}
+      >
+        {/* Inject answered state via context so nested ChipSelector can react */}
+        <AnsweredContext.Provider value={answered}>
+          {children}
+        </AnsweredContext.Provider>
+      </div>
+    </motion.div>
   );
 }
 
+// ── AnsweredContext — lets ChipSelector know chips should hide ─────────────────
+import { createContext, useContext } from "react";
+export const AnsweredContext = createContext<boolean>(false);
+export const useAnswered     = () => useContext(AnsweredContext);
+
+// ── Typing indicator ───────────────────────────────────────────────────────────
 export function TypingIndicator() {
   return (
     <div className="flex items-start gap-2 mb-4">
