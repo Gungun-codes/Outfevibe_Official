@@ -1,0 +1,113 @@
+{
+  "outfits": [
+    {
+      "id": "outfit_001",
+      "title": "Minimal College Look",
+      "occasion": "college",
+      "mood": "minimal",
+
+      "items": {
+        "top": "top-001",
+        "bottom": "bottom-001",
+        "shoes": "shoes-001",
+        "accessories": ["accessory-001"]
+      },
+
+      "total_price": 1523,
+
+      "why_this_outfit": [
+        "Clean and minimal aesthetic",
+        "Comfortable for daily college wear",
+        "Balanced silhouette with bootcut jeans"
+      ]
+    },
+
+    {
+      "id": "outfit_002",
+      "title": "Ethnic College Look",
+      "occasion": "college",
+      "mood": "ethnic",
+
+      "items": {
+        "top": "top-002",
+        "bottom": null,
+        "shoes": "shoes-002",
+        "accessories": ["accessory-002"]
+      },
+
+      "total_price": 582,
+
+      "why_this_outfit": [
+        "Traditional yet comfortable",
+        "Perfect for ethnic days in college",
+        "Lightweight and breathable fabrics"
+      ]
+    },
+
+    {
+      "id": "outfit_003",
+      "title": "Edgy College Look",
+      "occasion": "college",
+      "mood": "edgy",
+
+      "items": {
+        "top": "top-003",
+        "bottom": "bottom-003",
+        "shoes": "shoes-003",
+        "accessories": ["accessory-003"]
+      },
+
+      "total_price": 1003,
+
+      "why_this_outfit": [
+        "Bold and confident styling",
+        "Ribbed top adds texture",
+        "Sneakers give a cool street vibe"
+      ]
+    },
+
+    {
+      "id": "outfit_004",
+      "title": "Chic College Look",
+      "occasion": "college",
+      "mood": "chic",
+
+      "items": {
+        "top": "top-004",
+        "bottom": "bottom-004",
+        "shoes": "shoes-004",
+        "accessories": ["accessory-004"]
+      },
+
+      "total_price": 924,
+
+      "why_this_outfit": [
+        "Stylish and polished appearance",
+        "Black top gives elegant touch",
+        "Perfect for semi-formal college days"
+      ]
+    },
+
+    {
+      "id": "outfit_005",
+      "title": "Festival Ethnic Look",
+      "occasion": "festival",
+      "mood": "ethnic",
+
+      "items": {
+        "top": "top-005",
+        "bottom": null,
+        "shoes": null,
+        "accessories": []
+      },
+
+      "total_price": 1212,
+
+      "why_this_outfit": [
+        "Rich festive fabric",
+        "Perfect for traditional occasions",
+        "Elegant embroidered design"
+      ]
+    }
+  ]
+}
