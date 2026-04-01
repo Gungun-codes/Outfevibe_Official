@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-// ── Email Templates ──
+// ── Email Templates ──────────────────────────────────────────────────────────
 const EMAIL_TEMPLATES = {
   new_feature: (featureName: string) => ({
     subject: `New on Outfevibe: ${featureName} is live ✨`,
@@ -102,6 +100,16 @@ function emailWrapper(content: string): string {
 }
 
 export async function POST(req: NextRequest) {
+  // ✅ Instantiate Resend lazily — only when the route is actually called,
+  //    not at module load time. This prevents the build-time crash when
+  //    RESEND_API_KEY is not available as a static env var.
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    console.error("RESEND_API_KEY is not set");
+    return NextResponse.json({ error: "Email service not configured" }, { status: 503 });
+  }
+  const resend = new Resend(apiKey);
+
   try {
     const { type, payload, to, toAll } = await req.json();
 

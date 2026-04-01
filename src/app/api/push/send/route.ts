@@ -2,18 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import webpush from "web-push";
 import { createClient } from "@supabase/supabase-js";
 
+// ✅ Supabase safe at module level — NEXT_PUBLIC_ vars are inlined at build time
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-webpush.setVapidDetails(
-  process.env.VAPID_EMAIL!,
-  process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
-  process.env.VAPID_PRIVATE_KEY!
-);
-
-// Notification templates for each event type
+// Notification templates
 export const NOTIFICATION_TEMPLATES = {
   new_feature: (featureName: string) => ({
     title: "New on Outfevibe ✨",
@@ -48,6 +43,19 @@ export const NOTIFICATION_TEMPLATES = {
 };
 
 export async function POST(req: NextRequest) {
+  // ✅ VAPID setup inside handler — env vars only available at runtime, not build time
+  const vapidEmail = process.env.VAPID_EMAIL;
+  const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+  const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY;
+
+  if (!vapidEmail || !vapidPublicKey || !vapidPrivateKey) {
+    console.error("VAPID env vars not set — push notifications disabled");
+    return NextResponse.json({ error: "Push service not configured" }, { status: 503 });
+  }
+
+  // Safe to call here — all three keys are confirmed present
+  webpush.setVapidDetails(vapidEmail, vapidPublicKey, vapidPrivateKey);
+
   try {
     const { type, payload, userId } = await req.json();
 
@@ -55,11 +63,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Invalid notification type" }, { status: 400 });
     }
 
-    // Build notification data from template
     const template = NOTIFICATION_TEMPLATES[type as keyof typeof NOTIFICATION_TEMPLATES];
     const notificationData = (template as any)(payload || "");
 
-    // Fetch subscriptions — either specific user or all
+    // Fetch subscriptions — specific user or all
     let query = supabase.from("push_subscriptions").select("*");
     if (userId) query = query.eq("user_id", userId);
 
@@ -73,10 +80,7 @@ export async function POST(req: NextRequest) {
     const results = await Promise.allSettled(
       subscriptions.map((sub) =>
         webpush.sendNotification(
-          {
-            endpoint: sub.endpoint,
-            keys: { p256dh: sub.p256dh, auth: sub.auth },
-          },
+          { endpoint: sub.endpoint, keys: { p256dh: sub.p256dh, auth: sub.auth } },
           JSON.stringify(notificationData)
         )
       )
