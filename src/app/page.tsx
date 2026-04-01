@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useMemo, useRef } from "react";
 import { motion } from "framer-motion";
-import { Upload, Cpu, Sparkles } from "lucide-react";
 import outfitsData from "../../backend/outfits.json";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/context/authContext";
@@ -12,6 +11,7 @@ import OutfitCard from "@/components/OutfitCard";
 import HowItWorks from "@/components/HowItWorks";
 import { usePWAInstall } from "@/app/hooks/usePWAInstall";
 import FestivalHero from "@/components/FestivalHero";
+import DefaultHero from "@/components/DefaultHero"; // ← NEW
 
 function FeedbackForm({ darkMode }: { darkMode: boolean }) {
   const [name, setName] = useState("");
@@ -140,58 +140,6 @@ function WaitlistForm({ darkMode }: { darkMode: boolean }) {
   );
 }
 
-function StatsBar({ darkMode }: { darkMode: boolean }) {
-  const roundDown = (n: number) => Math.floor(n / 10) * 10;
-  const BASE_USERS = 150;
-  const BASE_QUIZZES = 80;
-
-  const [userCount, setUserCount] = useState<number>(roundDown(BASE_USERS));
-  const [quizCount, setQuizCount] = useState<number>(roundDown(BASE_QUIZZES));
-  const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    const fetchCounts = async () => {
-      try {
-        const [{ count: users }, { count: quizzes }] = await Promise.all([
-          supabase.from("users_profile").select("*", { count: "exact", head: true }),
-          supabase.from("quiz_result").select("*", { count: "exact", head: true }),
-        ]);
-        if (users !== null) setUserCount(roundDown((users ?? 0) + BASE_USERS));
-        if (quizzes !== null) setQuizCount(roundDown((quizzes ?? 0) + BASE_QUIZZES));
-        setLoaded(true);
-      } catch (err) { console.error("Stats fetch failed:", err); setLoaded(true); }
-    };
-    fetchCounts();
-  }, []);
-
-  const stats = [
-    { value: "Feb 10, 2026", label: "Launched", live: false },
-    { value: `${userCount}+`, label: "Users joined 🌸", live: true },
-    { value: `${quizCount}+`, label: "Quizzes taken", live: true },
-    { value: "200+", label: "Styles generated", live: false },
-  ];
-
-  return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8, duration: 0.6 }}
-      className={`flex flex-wrap justify-center gap-6 md:gap-12 mt-14 pt-10 border-t ${darkMode ? "border-neutral-800" : "border-neutral-200"}`}>
-      {stats.map((stat, i) => (
-        <div key={i} className="text-center">
-          <div className="flex items-center justify-center gap-1.5">
-            <motion.p key={stat.value} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}
-              className={`text-2xl font-bold ${darkMode ? "text-white" : "text-black"}`}>
-              {stat.value}
-            </motion.p>
-            {stat.live && (
-              <span className={`w-1.5 h-1.5 rounded-full border-2 border-black flex-shrink-0 mt-0.5 ${loaded ? "bg-green-400 animate-pulse" : "bg-yellow-400"}`} />
-            )}
-          </div>
-          <p className="text-xs text-neutral-500 mt-1 tracking-wide">{stat.label}</p>
-        </div>
-      ))}
-    </motion.div>
-  );
-}
-
 function MobileInstallBanner({ install, darkMode }: { install: () => void; darkMode: boolean }) {
   const [dismissed, setDismissed] = useState(false);
   if (dismissed) return null;
@@ -255,45 +203,8 @@ export default function Home() {
   };
   const userAvatar = user?.user_metadata?.avatar_url || null;
 
-  // ── Default hero (Eid NOOR) — shown when no festival is active ──
-  const defaultHero = (
-    <section className={`relative flex flex-col items-center justify-center text-center px-6 py-28 overflow-hidden ${darkMode ? "bg-black text-white" : "bg-white text-black"}`}>
-      <motion.div animate={{ rotate: 360 }} transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-        className="absolute top-10 right-10 w-52 h-52 rounded-full border-[3px] border-yellow-400 opacity-40"
-        style={{ borderTopColor: "transparent", borderLeftColor: "transparent" }} />
-      <div className="absolute top-20 right-20 w-40 h-40 bg-yellow-400 blur-[120px] opacity-30 rounded-full" />
-      <div className="absolute inset-0 pointer-events-none">
-        {[{ left: "20%", top: "35%", dur: 5 }, { left: "70%", top: "60%", dur: 6 }, { left: "40%", top: "80%", dur: 7 }, { left: "85%", top: "25%", dur: 6 }].map((p, i) => (
-          <motion.span key={i} className={`absolute w-[3px] h-[3px] rounded-full ${darkMode ? "bg-white" : "bg-yellow-400/70"}`}
-            style={{ left: p.left, top: p.top }} animate={{ opacity: [0, 1, 0], y: [0, 30] }} transition={{ duration: p.dur, repeat: Infinity }} />
-        ))}
-      </div>
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}
-        className="backdrop-blur-md bg-white/5 border border-yellow-400/40 px-5 py-2 rounded-full text-sm text-yellow-200 mb-8">
-        🇮🇳 India's First AI Stylist for Gen Z & Millennials
-      </motion.div>
-      <h1 className={`text-4xl md:text-6xl font-bold leading-tight max-w-3xl ${darkMode ? "text-white" : "text-black"}`}>
-        This Eid, Let Your Outfit<br />Speak
-        <span className="relative ml-3 inline-flex items-center gap-2 bg-gradient-to-r from-yellow-300 to-yellow-500 bg-clip-text text-transparent">
-          <span>NOOR</span>
-          <motion.span className="text-yellow-400 text-xl" animate={{ scale: [1, 1.4, 1], rotate: [0, 20, -20, 0] }} transition={{ duration: 2, repeat: Infinity }}>✨</motion.span>
-        </span>
-      </h1>
-      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="text-neutral-400 mt-6 max-w-xl">
-        Discover your personalized festive style powered by AI. Elevate your Eid celebration with curated elegance.
-      </motion.p>
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="flex flex-col md:flex-row gap-4 mt-10">
-        <a href="/quiz" className="relative px-8 py-3 rounded-full font-semibold inline-block bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:scale-105 transition">
-          <span className="relative z-10">Let's Style Me</span>
-          <span className="absolute inset-0 rounded-full blur-xl bg-yellow-400 opacity-40 animate-pulse" />
-        </a>
-        <a href="/outfit" className="px-8 py-3 rounded-full border border-yellow-400 text-yellow-300 hover:bg-yellow-400 hover:text-black transition inline-block">
-          Find My Personalized Fit
-        </a>
-      </motion.div>
-      <StatsBar darkMode={darkMode} />
-    </section>
-  );
+  // ── Default hero — the new visual component ──────────────────────────────
+  const defaultHero = <DefaultHero darkMode={darkMode} />;
 
   return (
     <div>
@@ -337,7 +248,7 @@ export default function Home() {
         </div>
       </header>
 
-      {/* FESTIVAL HERO */}
+      {/* FESTIVAL HERO — passes DefaultHero as the default fallback */}
       <FestivalHero darkMode={darkMode} defaultHero={defaultHero} />
 
       {/* TRENDING */}
@@ -405,19 +316,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── WHY OUTFEVIBE — reframed, no competitor mentions ── */}
+      {/* WHY OUTFEVIBE */}
       <section className={`px-6 py-24 ${darkMode ? "bg-[#0a0a0a] text-white" : "bg-neutral-50 text-black"}`}>
         <div className="max-w-5xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            className="text-center mb-16"
-          >
-            <p className="text-xs font-mono tracking-[0.25em] uppercase text-yellow-400 mb-4">
-              Made for you. Made for India.
-            </p>
+          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }} className="text-center mb-16">
+            <p className="text-xs font-mono tracking-[0.25em] uppercase text-yellow-400 mb-4">Made for you. Made for India.</p>
             <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight">
               Style that knows{" "}
               <span className="text-yellow-400">who you are.</span>
@@ -429,94 +332,32 @@ export default function Home() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             {[
-              {
-                icon: "🧬",
-                title: "Body shape analysis",
-                desc: "Classifies your body type — hourglass, pear, apple, rectangle — and recommends cuts and silhouettes that actually flatter you.",
-                tag: "AI-powered",
-              },
-              {
-                icon: "🎨",
-                title: "Skin tone matching",
-                desc: "Detects your skin tone and maps it to colours, fabrics, and palettes that complement your complexion — not just what's trending.",
-                tag: "AI-powered",
-              },
-              {
-                icon: "🇮🇳",
-                title: "India-first occasions",
-                desc: "Eid, Diwali, weddings, college fests, mehendi — we understand Indian occasions and dress you for them, not generic Western events.",
-                tag: "Unique to us",
-              },
-              {
-                icon: "🎯",
-                title: "Style persona quiz",
-                desc: "6 questions. 1 persona. Minimalist Maven, Streetwear Icon, Comfort Queen — your outfit feed is filtered entirely by who you are.",
-                tag: "Unique to us",
-              },
-              {
-                icon: "🛍️",
-                title: "Indian affiliate links",
-                desc: "Every recommendation links to Meesho, Ajio, Myntra, Flipkart, and Amazon India — not US stores that don't ship here.",
-                tag: "India-first",
-              },
-              {
-                icon: "💰",
-                title: "Budget-aware styling",
-                desc: "Low, medium, or high — your budget is a first-class filter, not an afterthought. Outfevibe never recommends what you can't afford.",
-                tag: "Practical",
-              },
+              { icon: "🧬", title: "Body shape analysis", desc: "Classifies your body type — hourglass, pear, apple, rectangle — and recommends cuts and silhouettes that actually flatter you.", tag: "AI-powered" },
+              { icon: "🎨", title: "Skin tone matching", desc: "Detects your skin tone and maps it to colours, fabrics, and palettes that complement your complexion — not just what's trending.", tag: "AI-powered" },
+              { icon: "🇮🇳", title: "India-first occasions", desc: "Eid, Diwali, weddings, college fests, mehendi — we understand Indian occasions and dress you for them, not generic Western events.", tag: "Unique to us" },
+              { icon: "🎯", title: "Style persona quiz", desc: "6 questions. 1 persona. Minimalist Maven, Streetwear Icon, Comfort Queen — your outfit feed is filtered entirely by who you are.", tag: "Unique to us" },
+              { icon: "🛍️", title: "Indian affiliate links", desc: "Every recommendation links to Meesho, Ajio, Myntra, Flipkart, and Amazon India — not US stores that don't ship here.", tag: "India-first" },
+              { icon: "💰", title: "Budget-aware styling", desc: "Low, medium, or high — your budget is a first-class filter, not an afterthought. Outfevibe never recommends what you can't afford.", tag: "Practical" },
             ].map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.08 }}
-                className={`p-6 rounded-2xl border ${
-                  darkMode
-                    ? "bg-neutral-900 border-neutral-800 hover:border-yellow-400/40"
-                    : "bg-white border-neutral-200 hover:border-yellow-400/60"
-                } transition group`}
-              >
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.08 }}
+                className={`p-6 rounded-2xl border ${darkMode ? "bg-neutral-900 border-neutral-800 hover:border-yellow-400/40" : "bg-white border-neutral-200 hover:border-yellow-400/60"} transition group`}>
                 <div className="flex items-start justify-between mb-4">
                   <span className="text-2xl">{item.icon}</span>
-                  <span
-                    className={`text-xs font-mono px-2.5 py-1 rounded-full border ${
-                      item.tag === "AI-powered"
-                        ? "text-purple-400 border-purple-400/30 bg-purple-400/10"
-                        : item.tag === "Unique to us"
-                        ? "text-yellow-400 border-yellow-400/30 bg-yellow-400/10"
-                        : item.tag === "India-first"
-                        ? "text-green-400 border-green-400/30 bg-green-400/10"
-                        : "text-blue-400 border-blue-400/30 bg-blue-400/10"
-                    }`}
-                  >
-                    {item.tag}
-                  </span>
+                  <span className={`text-xs font-mono px-2.5 py-1 rounded-full border ${
+                    item.tag === "AI-powered" ? "text-purple-400 border-purple-400/30 bg-purple-400/10"
+                    : item.tag === "Unique to us" ? "text-yellow-400 border-yellow-400/30 bg-yellow-400/10"
+                    : item.tag === "India-first" ? "text-green-400 border-green-400/30 bg-green-400/10"
+                    : "text-blue-400 border-blue-400/30 bg-blue-400/10"
+                  }`}>{item.tag}</span>
                 </div>
-                <h3
-                  className={`text-base font-bold mb-2 group-hover:text-yellow-400 transition ${
-                    darkMode ? "text-white" : "text-black"
-                  }`}
-                >
-                  {item.title}
-                </h3>
-                <p className={`text-sm leading-relaxed ${darkMode ? "text-neutral-400" : "text-neutral-600"}`}>
-                  {item.desc}
-                </p>
+                <h3 className={`text-base font-bold mb-2 group-hover:text-yellow-400 transition ${darkMode ? "text-white" : "text-black"}`}>{item.title}</h3>
+                <p className={`text-sm leading-relaxed ${darkMode ? "text-neutral-400" : "text-neutral-600"}`}>{item.desc}</p>
               </motion.div>
             ))}
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className={`mt-6 p-5 rounded-2xl border border-dashed ${
-              darkMode ? "border-neutral-700 bg-neutral-900/50" : "border-neutral-300 bg-neutral-50"
-            } text-center`}
-          >
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.5 }}
+            className={`mt-6 p-5 rounded-2xl border border-dashed ${darkMode ? "border-neutral-700 bg-neutral-900/50" : "border-neutral-300 bg-neutral-50"} text-center`}>
             <p className={`text-sm ${darkMode ? "text-neutral-400" : "text-neutral-500"}`}>
               <span className="text-yellow-400 font-semibold">Coming soon —</span>{" "}
               Virtual Wardrobe · Tailor connect · Rent &amp; donate · Sell unused clothes · Budget tracker
@@ -525,7 +366,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* TESTIMONIAL */}
+      {/* TESTIMONIALS */}
       <section className={`px-6 py-20 text-center overflow-hidden ${darkMode ? "bg-black text-white" : "bg-white text-black"}`}>
         <motion.h2 variants={fadeIn} initial="hidden" whileInView="show" viewport={{ once: true }} className="text-3xl font-bold mb-12">What Users <span className="text-yellow-400">Say</span></motion.h2>
         {!mounted ? null : (
