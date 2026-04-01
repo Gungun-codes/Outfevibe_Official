@@ -10,6 +10,7 @@ import { AnalysisScreen } from "@/components/AnalysisScreen";
 import { OutfitResultCard } from "@/components/OutfitResultCard";
 import { useAuth } from "@/context/authContext";
 import { supabase } from "@/lib/supabase";
+
 import { ColorPaletteCard } from "@/components/ColorPaletteCard";
 import { useAnalysisLimit } from "@/app/hooks/useAnalysisLimit";
 import { OutfitResult, OCCASIONS, PLATFORMS } from "@/lib/type";
@@ -52,7 +53,6 @@ function getVibesForOccasion(occasion: string, gender: string): string[] {
   if (!map) return DEFAULT_VIBES[gender as "Female" | "Male"] ?? DEFAULT_VIBES.Female;
   return map[gender as "Female" | "Male"] ?? map.Female;
 }
-
 function toGenderProp(g: string): "male" | "female" {
   return g.toLowerCase() === "male" ? "male" : "female";
 }
@@ -408,6 +408,7 @@ export default function Page() {
             pu(gender);
             genderRef.current = gender;
 
+
             // Upload prompt — NOT a chip question, never markAnswered
             await pb(
               <UploadPromptMsg
@@ -685,6 +686,7 @@ function EndCard({ onStartOver, onTryAnother, result, platform, bodyShape, skinT
   const [sharing, setSharing] = useState(false);
 
   const handleShare = async () => {
+
     setSharing(true);
     const profile = [bodyShape && `${bodyShape} body shape`, skinTone && `${skinTone} skin tone`]
       .filter(Boolean).join(" & ");
@@ -709,6 +711,7 @@ function EndCard({ onStartOver, onTryAnother, result, platform, bodyShape, skinT
                   onClick={() => { setRating(star); setFeedbackSent(true); }}
                   className="text-2xl transition-transform hover:scale-125">
                   <span style={{ color: star <= (hovered || rating) ? "#d4af7f" : "#2a2a2a" }}>★</span>
+
                 </button>
               ))}
             </div>

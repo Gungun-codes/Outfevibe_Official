@@ -340,6 +340,7 @@ export default function StyleQuizPage() {
   };
 
   const restart = () => {
+
   localStorage.removeItem("outfevibe_quiz_progress"); // ← ADD THIS LINE
   setGender(null);
   setStep(0);
@@ -598,46 +599,51 @@ export default function StyleQuizPage() {
                       if (user && user.email) {
                         const saveResult = async () => {
                           try {
-                            // Check if a record already exists with this email
-                            const { data, error: fetchError } = await supabase
+                            // ── Always upsert by user_id — single source of truth ──
+                            const { error } = await supabase
                               .from("quiz_result")
-                              .select("id")
-                              .eq("email", user.email)
-                              .single();
-
-                            if (fetchError && fetchError.code !== "PGRST116") {
-                              // PGRST116 means zero rows found, which is fine
-                              console.error("Error checking existing record:", fetchError.message);
-                            }
-
-                            if (data) {
-                              // Record exists, update it
-                              const { error: updateError } = await supabase
-                                .from("quiz_result")
-                                .update({
-                                  persona_name: persona,
-                                  gender: gender === "male" ? "Boy" : "Girl"
-                                })
-                                .eq("email", user.email);
-
-                              if (updateError) {
-                                console.error("Update failed:", updateError.message);
-                              }
-                            } else {
-                              // Record does not exist, insert new
-                              const { error: insertError } = await supabase
-                                .from("quiz_result")
-                                .insert({
-                                  user_id: user.id || null, // fallback in case user.id is somehow missing
+                              .upsert(
+                                {
+                                  user_id: user.id,
                                   persona_name: persona,
                                   email: user.email,
                                   gender: gender === "male" ? "Boy" : "Girl",
-                                });
+                                  created_at: new Date().toISOString(),
+                                },
+                                { onConflict: "user_id" } // ← always update if user_id exists
+                              );
 
-                              if (insertError) {
-                                console.error("Insert failed:", insertError.message);
-                              }
+                            if (error) {
+                              console.error("Save failed:", error.message);
                             }
+
+                            // ── Also update localStorage immediately ──
+                            localStorage.setItem("userPersona", persona);
+                            localStorage.setItem("quizGender", gender || "");
+
+                            // ── Fire notifications ──
+                            fetch("/api/push/send", {
+                              method: "POST",
+                              headers: { "Content-Type": "application/json" },
+                              body: JSON.stringify({
+                                type: "quiz_completed",
+                                payload: persona,
+                                userId: user.id,
+                              }),
+                            });
+
+                            if (user.email) {
+                              fetch("/api/notify/email", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({
+                                  type: "quiz_completed",
+                                  to: user.email,
+                                  payload: persona,
+                                }),
+                              });
+                            }
+
                           } catch (err) {
                             console.error("Failed to save quiz result:", err);
                           }

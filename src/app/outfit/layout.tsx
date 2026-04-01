@@ -1,17 +1,28 @@
-import { Metadata } from "next";
 
-export const outfitMetadata: Metadata = {
-  title: "AI Outfit Suggestions — Get Styled by AI",
-  description:
-    "Upload your photo and let Outfevibe's AI analyze your body shape, skin tone, and style preferences to recommend outfits perfectly matched to your personality and occasion.",
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title:       "Steal the Look — AI Outfit Suggestions",
+  description: "Upload your photo and get AI-powered outfit recommendations based on your body shape, skin tone, and occasion. Shop from Myntra, Amazon, Ajio, Meesho & Flipkart.",
+  alternates:  { canonical: "https://www.outfevibe.com/outfit" },
   openGraph: {
-    title: "AI Outfit Suggestions | Outfevibe",
-    description:
-      "Upload your photo and get AI-powered outfit recommendations based on your body type, skin tone, and occasion.",
-    url: "https://www.outfevibe.com/outfit",
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
+    title:       "Steal the Look — AI Outfit Suggestions | Outfevibe",
+    description: "Upload your photo → AI detects your body shape & skin tone → get personalized outfits. Shop from Indian platforms instantly.",
+    url:         "https://www.outfevibe.com/outfit",
+    images: [{
+      url:    "https://www.outfevibe.com/og-image.jpg",
+      width:  1200,
+      height: 630,
+      alt:    "Outfevibe AI Outfit Suggestions",
+    }],
   },
-  alternates: { canonical: "https://www.outfevibe.com/outfit" },
+  twitter: {
+    card:        "summary_large_image",
+    title:       "Steal the Look — AI Outfit Suggestions | Outfevibe",
+    description: "Upload photo → AI detects body shape & skin tone → get outfits. Free ✨",
+    images:      ["https://www.outfevibe.com/og-image.jpg"],
+  },
+
 };
 
 export default function OutfitLayout({ children }: { children: React.ReactNode }) {
