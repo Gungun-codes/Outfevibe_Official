@@ -1,1761 +1,2663 @@
 [
-    {
-        "id": 1,
-        "title": "A,P SUITWOMEN'S Chiffon FullStichedsalwar LEHENGA suit",
-        "gender": "female",
-        "occasion": [
-            "navratri"
-        ],
-        "mood": [
-            "bold",
-            "classic"
-        ],
-        "budget": [
-            "high"
-        ],
-        "categories": [
-            "holi_trending",
-            "ai_style"
-        ],
-        "image": "/outfits/navratri_01.jpg",
-        "affiliateLink": "https://amzn.to/4lF37M6"
-    },
-    {
-        "id": 2,
-        "title": "SHAFNUFAB Womens Net Semi Stitched LEHENGA CHOLI ready to wear lehenga choli",
-        "gender": "female",
-        "occasion": [
-            "navratri"
-        ],
-        "mood": [
-            "bold",
-            "traditional"
-        ],
-        "budget": [
-            "high"
-        ],
-        "categories": [
-            "holi_trending",
-            "ai_style"
-        ],
-        "image": "/outfits/navratri_02.jpg",
-        "affiliateLink": "https://amzn.to/4uHj48L"
-    },
-    {
-        "id": 3,
-        "title": "Miss Ethnic Hub's Traditional Anarkali Gown with Dupatta Set with Golden jari Embroidered Details, Long Sleeves",
-        "gender": "female",
-        "occasion": [
-            "navratri"
-        ],
-        "mood": [
-            "chill",
-            "bold"
-        ],
-        "budget": [
-            "medium"
-        ],
-        "categories": [
-            "holi_trending",
-            "ai_style"
-        ],
-        "image": "/outfits/navratri_03.jpg",
-        "affiliateLink": "https://amzn.to/4bDdYSq"
-    },
-    {
-        "id": 4,
-        "title": "Elegant white embroidered sharara",
-        "gender": "female",
-        "occasion": [
-            "navratri"
-        ],
-        "mood": [
-            "classic",
-            "traditional"
-        ],
-        "budget": [
-            "medium"
-        ],
-        "categories": [
-            "holi_trending",
-            "ai_style"
-        ],
-        "image": "/outfits/navratri_04.jpg",
-        "affiliateLink": "https://amzn.to/4uE4mzz"
-    },
-    {
-        "id": 5,
-        "title": "Self Design Semi Stitched Lehnga Choli",
-        "gender": "female",
-        "occasion": [
-            "navratri"
-        ],
-        "mood": [
-            "bold",
-            "chill"
-        ],
-        "budget": [
-            "low"
-        ],
-        "categories": [
-            "holi_trending",
-            "ai_style"
-        ],
-        "image": "/outfits/navratri_05.jpg",
-        "affiliateLink": "https://fktr.in/S3FJ5lr"
-    },
-    {
-        "id": 6,
-        "title": "Kalini Bandhani Printed Anarkali",
-        "gender": "female",
-        "occasion": [
-            "navratri"
-        ],
-        "mood": [
-            "bold",
-            "classic",
-            "traditional"
-        ],
-        "budget": [
-            "medium"
-        ],
-        "categories": [
-            "holi_trending",
-            "ai_style"
-        ],
-        "image": "/outfits/navratri_06.jpg",
-        "affiliateLink": "https://myntr.it/htzgZq"
-    },
-    {
-        "id": 7,
-        "title": "Women Sleeveless Ajrak Print Kurti",
-        "gender": "female",
-        "occasion": [
-            "navratri"
-        ],
-        "mood": [
-            "traditional",
-            "classic"
-        ],
-        "budget": [
-            "low"
-        ],
-        "categories": [
-            "holi_trending",
-            "ai_style"
-        ],
-        "image": "/outfits/navratri_07.jpg",
-        "affiliateLink": "https://amzn.to/4bCxwq1"
-    },
-    {
-        "id": 8,
-        "title": "Women Printed A-line dress",
-        "gender": "female",
-        "occasion": [
-            "navratri"
-        ],
-        "mood": [
-            "bold",
-            "classic"
-        ],
-        "budget": [
-            "medium"
-        ],
-        "categories": [
-            "holi_trending",
-            "ai_style"
-        ],
-        "image": "/outfits/navratri_08.jpg",
-        "affiliateLink": "https://myntr.it/YO7MVvS"
-    },
-    {
-        "id": 9,
-        "title": "Diwas By Manyavar Men's Cotton Blend Printed Sequinned kurta",
-        "gender": "male",
-        "occasion": [
-            "navratri"
-        ],
-        "mood": [
-            "bold",
-            "chill"
-        ],
-        "budget": [
-            "medium"
-        ],
-        "categories": [
-            "holi_trending",
-            "ai_style"
-        ],
-        "image": "/outfits/navratri_09.jpg",
-        "affiliateLink": "https://amzn.to/4bccKNO"
-    },
-    {
-        "id": 10,
-        "title": "Ethnic Motifs Embroidered Sequinned Cotton Silk Kurta",
-        "gender": "male",
-        "occasion": [
-            "navratri"
-        ],
-        "mood": [
-            "classic",
-            "chill"
-        ],
-        "budget": [
-            "medium"
-        ],
-        "categories": [
-            "holi_trending",
-            "ai_style"
-        ],
-        "image": "/outfits/eid_10.jpg",
-        "affiliateLink": "https://myntr.it/PhCrZKA"
-    },
-    {
-        "id": 11,
-        "title": "VASTRAMAY Men'S Black Sequins Dupatta",
-        "gender": "male",
-        "occasion": [
-            "navratri"
-        ],
-        "mood": [
-            "bold",
-            "classic"
-        ],
-        "budget": [
-            "low"
-        ],
-        "categories": [
-            "holi_trending",
-            "ai_style"
-        ],
-        "image": "/outfits/eid_11.jpg",
-        "affiliateLink": "https://amzn.to/3OUCeHZ"
-    },
-    {
-        "id": 12,
-        "title": "Cotton Rayon Shiny Thread Sequinned Long Kurta",
-        "gender": "male",
-        "occasion": [
-            "navratri"
-        ],
-        "mood": [
-            "bold",
-            "classic",
-            "chill"
-        ],
-        "budget": [
-            "low"
-        ],
-        "categories": [
-            "holi_trending",
-            "ai_style"
-        ],
-        "image": "/outfits/navratri_12.jpg",
-        "affiliateLink": "https://amzn.to/3PC86kR"
-    },
-    {
-        "id": 13,
-        "title": "ethnic printed motif kurta",
-        "gender": "male",
-        "occasion": [
-            "navratri"
-        ],
-        "mood": [
-            "chill"
-        ],
-        "budget": [
-            "low"
-        ],
-        "categories": [
-            "ai_style",
-            "holi_trending"
-        ],
-        "image": "/outfits/navratri_13.jpg",
-        "affiliateLink": "https://myntr.it/u1tu0On"
-    },
-    {
-        "id": 14,
-        "title": "ethnic printed motif kurta with dhoti pants",
-        "gender": "male",
-        "occasion": [
-            "navratri"
-        ],
-        "mood": [
-            "bold",
-            "classic"
-        ],
-        "budget": [
-            "low"
-        ],
-        "categories": [
-            "holi_trending",
-            "ai_style"
-        ],
-        "image": "/outfits/navratri_14.jpg",
-        "affiliateLink": "https://myntr.it/IRII0Bp"
-    },
-    {
-        "id": 15,
-        "title": "ethnic printed motif kurta",
-        "gender": "male",
-        "occasion": [
-            "navratri"
-        ],
-        "mood": [
-            "bold",
-            "traditional"
-        ],
-        "budget": [
-            "medium"
-        ],
-        "categories": [
-            "ai_style"
-        ],
-        "image": "/outfits/navratri_15.jpg",
-        "affiliateLink": "https://myntr.it/90r4FsL"
-    },
-    {
-        "id": 16,
-        "title": "Manyawar Men's floral vine Patterened Intricate Bordered kurta",
-        "gender": "male",
-        "occasion": [
-            "navratri"
-        ],
-        "mood": [
-            "bold",
-            "traditional"
-        ],
-        "budget": [
-            "low"
-        ],
-        "categories": [
-            "ai_style"
-        ],
-        "image": "/outfits/eid_16.jpg",
-        "affiliateLink": "https://amzn.to/4czMIX6"
-    },
-    {
-        "id": 17,
-        "title": "Women's Western High Low Knee Long One Piece Dress",
-        "gender": "female",
-        "occasion": [
-            "party",
-            "date"
-        ],
-        "mood": [
-            "classic"
-        ],
-        "budget": [
-            "medium"
-        ],
-        "persona": [
-            "edgy_trendsetter",
-            "romantic_softie"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/party_01.jpg",
-        "affiliateLink": "https://amzn.to/4tUTGvJ"
-    },
-    {
-        "id": 18,
-        "title": "Off Shoulder Women partywear Bodycon Dress with Slit on The Front",
-        "gender": "female",
-        "occasion": [
-            "party",
-            "date"
-        ],
-        "mood": [
-            "bold"
-        ],
-        "budget": [
-            "low"
-        ],
-        "persona": [
-            "edgy_trendsetter",
-            "romantic_softie"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/party_02.jpg",
-        "affiliateLink": "https://amzn.to/4tXDZE7"
-    },
-    {
-        "id": 19,
-        "title": "Women's Sleeveless Front Slit Bodycon Dress | Maxi Length | Soft Stretchable | Modern Design| Casual",
-        "gender": "female",
-        "occasion": [
-            "party"
-        ],
-        "mood": [
-            "bold",
-            "chill"
-        ],
-        "budget": [
-            "low"
-        ],
-        "persona": [
-            "edgy_trendsetter"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/party_03.jpg",
-        "affiliateLink": "https://amzn.to/4tXnnMR"
-    },
-    {
-        "id": 20,
-        "title": "Women's Sexy Red Satin Off-Shoulder Thigh Slit Prom Backless Gown Cocktail Party Dress for Women",
-        "gender": "female",
-        "occasion": [
-            "party",
-            "date"
-        ],
-        "mood": [
-            "classic"
-        ],
-        "budget": [
-            "low"
-        ],
-        "persona": [
-            "edgy_trendsetter",
-            "romantic_softie"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/party_04.jpg",
-        "affiliateLink": "https://amzn.to/4tXkUBW"
-    },
-    {
-        "id": 21,
-        "title": "SAFFE Women's Casual Evening Shimmer Glittery Sleeveless Cowl Neck Textured Bodycon Knee Length Dresses",
-        "gender": "female",
-        "occasion": [
-            "party"
-        ],
-        "mood": [
-            "chill",
-            "classic"
-        ],
-        "budget": [
-            "low"
-        ],
-        "persona": [
-            "edgy_trendsetter"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/party_05.jpg",
-        "affiliateLink": "https://amzn.to/4sdoaHV"
-    },
-    {
-        "id": 22,
-        "title": "FableStreet Satin Cowl Neck Slip Dress - Olive",
-        "gender": "female",
-        "occasion": [
-            "party"
-        ],
-        "mood": [
-            "bold",
-            "chill"
-        ],
-        "budget": [
-            "high"
-        ],
-        "persona": [
-            "edgy_trendsetter"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/party_06.jpg",
-        "affiliateLink": "https://amzn.to/4rBiKX3"
-    },
-    {
-        "id": 23,
-        "title": "ready to wear embellished bollywood satin saree (magenta)",
-        "gender": "female",
-        "occasion": [
-            "party"
-        ],
-        "mood": [
-            "traditional"
-        ],
-        "budget": [
-            "high"
-        ],
-        "persona": [
-            "edgy_trendsetter"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/party_07.jpg",
-        "affiliateLink": "https://fktr.in/fVtXzNp"
-    },
-    {
-        "id": 24,
-        "title": "ready to wear bollywood chiffon sarre (green)",
-        "gender": "female",
-        "occasion": [
-            "party"
-        ],
-        "mood": [
-            "traditional"
-        ],
-        "budget": [
-            "low"
-        ],
-        "persona": [
-            "edgy_trendsetter"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/party_08.jpg",
-        "affiliateLink": "https://fktr.in/Wkr8Tai"
-    },
-    {
-        "id": 25,
-        "title": "Womens Striped Shirt | Stylish Casual Shirt for Women | Trendy Button Down Top for Office",
-        "gender": "female",
-        "occasion": [
-            "college"
-        ],
-        "mood": [
-            "chill"
-        ],
-        "budget": [
-            "low"
-        ],
-        "persona": [
-            "playful_creative",
-            "minimalist_maven",
-            "comfort_queen"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit",
-            "general_trending"
-        ],
-        "image": "/outfits/college_01.jpg",
-        "affiliateLink": "https://amzn.to/4aBPTfp"
-    },
-    {
-        "id": 26,
-        "title": "Sweetheart Neck Cotton Crop Regular Top",
-        "gender": "female",
-        "occasion": [
-            "college"
-        ],
-        "mood": [
-            "chill"
-        ],
-        "budget": [
-            "low"
-        ],
-        "persona": [
-            "playful_creative",
-            "minimalist_maven",
-            "comfort_queen"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/college_02.jpg",
-        "affiliateLink": "https://myntr.it/0oSa4Q8"
-    },
-    {
-        "id": 27,
-        "title": "GoSriKi Women Women Kurti",
-        "gender": "female",
-        "occasion": [
-            "college"
-        ],
-        "mood": [
-            "traditional"
-        ],
-        "budget": [
-            "medium"
-        ],
-        "persona": [
-            "playful_creative",
-            "minimalist_maven",
-            "comfort_queen"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/college_03.jpg",
-        "affiliateLink": "https://amzn.to/4sc36S2"
-    },
-    {
-        "id": 28,
-        "title": "Womens Rayon Full Sleeve Square Neck Printed Short Kurti Stylish Ethnic & Casual Wear Top for Office, College & Daily Use",
-        "gender": "female",
-        "occasion": [
-            "college"
-        ],
-        "mood": [
-            "traditional"
-        ],
-        "budget": [
-            "low"
-        ],
-        "persona": [
-            "playful_creative",
-            "minimalist_maven",
-            "comfort_queen"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/college_04.jpg",
-        "affiliateLink": "https://amzn.to/40vHZOF"
-    },
-    {
-        "id": 29,
-        "title": "Secret of Fashion Trendy Flared Sleeve Unique top for Girls & Women | Polyester Fabric | Stylish Long Sleeve Casual Wear",
-        "gender": "female",
-        "occasion": [
-            "college"
-        ],
-        "mood": [
-            "bold"
-        ],
-        "budget": [
-            "low"
-        ],
-        "persona": [
-            "playful_creative",
-            "minimalist_maven",
-            "comfort_queen"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit",
-            "general_trending"
-        ],
-        "image": "/outfits/college_05.jpg",
-        "affiliateLink": "https://amzn.to/4sbXU0j"
-    },
-    {
-        "id": 30,
-        "title": "Women Shirt||Women Relaxed Fit Vertical Striped Spread Collar Cotton Casual Shirt ",
-        "gender": "female",
-        "occasion": [
-            "college"
-        ],
-        "mood": [
-            "bold"
-        ],
-        "budget": [
-            "medium"
-        ],
-        "persona": [
-            "playful_creative",
-            "minimalist_maven",
-            "comfort_queen"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/college_06.jpg",
-        "affiliateLink": "https://amzn.to/4lfS24h"
-    },
-    {
-        "id": 31,
-        "title": "Women's Puff Sleeve Textured Top, Black, Square Neck, Western Style",
-        "gender": "female",
-        "occasion": [
-            "college"
-        ],
-        "mood": [
-            "classic"
-        ],
-        "budget": [
-            "low"
-        ],
-        "persona": [
-            "playful_creative",
-            "minimalist_maven",
-            "comfort_queen"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/college_07.jpg",
-        "affiliateLink": "https://amzn.to/4r0wLwG"
-    },
-    {
-        "id": 32,
-        "title": "Gufrina Elegant Women's Two-Piece Dress Set with Crop Top and High-Waist Skirt for Casual",
-        "gender": "female",
-        "occasion": [
-            "college"
-        ],
-        "mood": [
-            "classic"
-        ],
-        "budget": [
-            "high"
-        ],
-        "persona": [
-            "playful_creative",
-            "minimalist_maven",
-            "comfort_queen"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/college_08.jpg",
-        "affiliateLink": "https://amzn.to/47bNMN3"
-    },
-    {
-        "id": 33,
-        "title": "Combo of Men’s Casual Cotton Blend Shirt || Long Sleeve Button Down with Spread Collar | Lightweight Breathable Fabric | Stylish Solid Shirt for Beach, Office & Everyday Wear",
-        "gender": "male",
-        "occasion": [
-            "college"
-        ],
-        "mood": [
-            "classic"
-        ],
-        "budget": [
-            "low"
-        ],
-        "persona": [
-            "casual_cool"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/college_09.jpg",
-        "affiliateLink": "https://amzn.to/4qWvp5M"
-    },
-    {
-        "id": 34,
-        "title": "Trillion Men's Textured Fabric Solid Color Basic Half-Open Collar T-Shirt, Fall Long Sleeve Men Shirt | Tshirt for Men",
-        "gender": "male",
-        "occasion": [
-            "college"
-        ],
-        "mood": [
-            "classic"
-        ],
-        "budget": [
-            "medium"
-        ],
-        "persona": [
-            "casual_cool"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/college_10.jpg",
-        "affiliateLink": "https://amzn.to/3MH2o05"
-    },
-    {
-        "id": 35,
-        "title": "PROSHARX Quarter Zip Style Sweatshirt | Soft & Warm Fleece Sweatshirt Hoodie with Zip",
-        "gender": "male",
-        "occasion": [
-            "college"
-        ],
-        "mood": [
-            "chill"
-        ],
-        "budget": [
-            "high"
-        ],
-        "persona": [
-            "casual_cool"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/college_11.jpg",
-        "affiliateLink": "https://amzn.to/3OxkWR3"
-    },
-    {
-        "id": 36,
-        "title": "Oversized Anime Back Printed Off-White Cotton T-Shirt for Men",
-        "gender": "male",
-        "occasion": [
-            "college"
-        ],
-        "mood": [
-            "chill"
-        ],
-        "budget": [
-            "low"
-        ],
-        "persona": [
-            "casual_cool"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/college_12.jpg",
-        "affiliateLink": "https://amzn.to/4qVR0eA"
-    },
-    {
-        "id": 37,
-        "title": "JVX Men Casual Shirt|| Shirt for Men|| Men Stylish Shirt || Mens Shirt || Oversized Shirt for Men",
-        "gender": "male",
-        "occasion": [
-            "college"
-        ],
-        "mood": [
-            "bold"
-        ],
-        "budget": [
-            "low"
-        ],
-        "persona": [
-            "casual_cool"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/college_13.jpg",
-        "affiliateLink": "https://amzn.to/4tXzERw"
-    },
-    {
-        "id": 38,
-        "title": "Noble Monk Solid Polo Neck Tshirt | Collar Tshirts | Half Sleeves | Plain-Regular Fit Textured Tshirt for Man",
-        "gender": "male",
-        "occasion": [
-            "college",
-            "party"
-        ],
-        "mood": [
-            "bold"
-        ],
-        "budget": [
-            "medium"
-        ],
-        "persona": [
-            "casual_cool"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/college_14.jpg",
-        "affiliateLink": "https://amzn.to/4bbGg7m"
-    },
-    {
-        "id": 39,
-        "title": "Bellstone Men's Cotton Blend Solid Regular Kurta",
-        "gender": "male",
-        "occasion": [
-            "college"
-        ],
-        "mood": [
-            "traditional"
-        ],
-        "budget": [
-            "low"
-        ],
-        "persona": [
-            "casual_cool"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/college_15.jpg",
-        "affiliateLink": "https://amzn.to/3ODivMG"
-    },
-    {
-        "id": 40,
-        "title": "TOPLOT Premium Linen Printed Kurta Shirt for Men | Casual",
-        "gender": "male",
-        "occasion": [
-            "college"
-        ],
-        "mood": [
-            "traditional"
-        ],
-        "budget": [
-            "high"
-        ],
-        "persona": [
-            "casual_cool"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/college_16.jpg",
-        "affiliateLink": "https://amzn.to/4tVKY0v"
-    },
-    {
-        "id": 41,
-        "title": "GRECIILOOKS Men's Formal Button Down Shirt – Slim Fit Polycotton Shirts for Men | Textured Full Sleeve| Business & Meeting Ready ",
-        "gender": "male",
-        "occasion": [
-            "party"
-        ],
-        "mood": [
-            "chill"
-        ],
-        "budget": [
-            "medium"
-        ],
-        "persona": [
-            "streetwear_icon"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/party_09.jpg",
-        "affiliateLink": "https://amzn.to/4aNj91y"
-    },
-    {
-        "id": 42,
-        "title": "GRECIILOOKS Men's Formal Button Down Shirt – Slim Fit Shirts for Men | Textured Long Sleeve Polycotton| Business & Meeting Ready",
-        "gender": "male",
-        "occasion": [
-            "party",
-            "date"
-        ],
-        "mood": [
-            "bold"
-        ],
-        "budget": [
-            "medium"
-        ],
-        "persona": [
-            "streetwear_icon"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit",
-            "general_trending"
-        ],
-        "image": "/outfits/party_10.jpg",
-        "affiliateLink": "https://amzn.to/4s5e0Jc"
-    },
-    {
-        "id": 43,
-        "title": "Noble Monk Men's Relax Fit Hooded Shirt || Casual Wear for Men || Full Sleeve Shirts || Stylish Shirt for Men",
-        "gender": "male",
-        "occasion": [
-            "party"
-        ],
-        "mood": [
-            "chill"
-        ],
-        "budget": [
-            "high"
-        ],
-        "persona": [
-            "streetwear_icon"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit",
-            "general_trending"
-        ],
-        "image": "/outfits/party_11.jpg",
-        "affiliateLink": "https://amzn.to/4aXo8gj"
-    },
-    {
-        "id": 44,
-        "title": "DEELMO Men's Regular Fit Button Down Dress Shirts Textured Long Sleeve Casual Hawaiian Shirt",
-        "gender": "male",
-        "occasion": [
-            "party"
-        ],
-        "mood": [
-            "classic"
-        ],
-        "budget": [
-            "medium"
-        ],
-        "persona": [
-            "streetwear_icon"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/party_12.jpg",
-        "affiliateLink": "https://amzn.to/4kWW0ys"
-    },
-    {
-        "id": 45,
-        "title": "GRECIILOOKS Men's Formal Button Down Shirt – Slim Fit Polycotton Shirts for Men | Textured Full Sleeve| Business & Meeting Ready ",
-        "gender": "male",
-        "occasion": [
-            "party",
-            "date"
-        ],
-        "mood": [
-            "classic"
-        ],
-        "budget": [
-            "high"
-        ],
-        "persona": [
-            "streetwear_icon",
-            "casual_cool"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit",
-            "general_trending"
-        ],
-        "image": "/outfits/party_13.jpg",
-        "affiliateLink": "https://myntr.it/2guT947"
-    },
-    {
-        "id": 46,
-        "title": "AMRIT TOP WEAR",
-        "gender": "male",
-        "occasion": [
-            "party"
-        ],
-        "mood": [
-            "traditional"
-        ],
-        "budget": [
-            "high"
-        ],
-        "persona": [
-            "streetwear_icon"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/party_14.jpg",
-        "affiliateLink": "https://myntr.it/r0Q1QMI"
-    },
-    {
-        "id": 47,
-        "title": "Men Ethnic Motifs Embroidered Regular Thread Work Kurta with Patiala",
-        "gender": "male",
-        "occasion": [
-            "party"
-        ],
-        "mood": [
-            "traditional"
-        ],
-        "budget": [
-            "high"
-        ],
-        "persona": [
-            "streetwear_icon"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/party_15.jpg",
-        "affiliateLink": "https://myntr.it/VcPf5M5"
-    },
-    {
-        "id": 48,
-        "title": "Men's Solid Linen Cotton Shirt | Casual | Plain | Full Sleeve | Summer-Regular Fit| Men Stylish Shirt | Everyday Formal Wear",
-        "gender": "male",
-        "occasion": [
-            "date"
-        ],
-        "mood": [
-            "chill"
-        ],
-        "budget": [
-            "medium"
-        ],
-        "persona": [
-            "streetwear_icon"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/date_01.jpg",
-        "affiliateLink": "https://amzn.to/4aE3vqA"
-    },
-    {
-        "id": 49,
-        "title": "SMOWKLY Men’s Collar Chain Cotton Fleece Sweatshirt | Men High Neck Sweatshirt | Breathable,Half Zipper & Full Sleeves All Day Wear Sweaters | Warm Hoodie for Gym, Travel & Casual Winter Wear",
-        "gender": "male",
-        "occasion": [
-            "date"
-        ],
-        "mood": [
-            "chill"
-        ],
-        "budget": [
-            "medium"
-        ],
-        "persona": [
-            "minimalist_king",
-            "modern_gentlemen"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit",
-            "general_trending"
-        ],
-        "image": "/outfits/date_02.jpg",
-        "affiliateLink": "https://amzn.to/4kW9SsJ"
-    },
-    {
-        "id": 50,
-        "title": "Men's Woolen Full Sleeve Collar Polo Knitted Sweater for Men,Winter Wear Sweater for Men.",
-        "gender": "male",
-        "occasion": [
-            "date"
-        ],
-        "mood": [
-            "classic"
-        ],
-        "budget": [
-            "medium"
-        ],
-        "persona": [
-            "minimalist_king",
-            "modern_gentlemen"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/date_03.jpg",
-        "affiliateLink": "https://amzn.to/4r0FkaO"
-    },
-    {
-        "id": 51,
-        "title": "IndoPrimo Men’s Striped Shirt | Premium Slim Fit Full Sleeve Formal Casual Shirt | Button-Down Cotton Shirt for Office",
-        "gender": "male",
-        "occasion": [
-            "date"
-        ],
-        "mood": [
-            "bold"
-        ],
-        "budget": [
-            "low"
-        ],
-        "persona": [
-            "minimalist_king",
-            "modern_gentlemen"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/date_04.jpg",
-        "affiliateLink": "https://amzn.to/4rBvzka"
-    },
-    {
-        "id": 52,
-        "title": "WINTAGE Men's Polyester Cotton Two Piece Suit",
-        "gender": "male",
-        "occasion": [
-            "date",
-            "wedding"
-        ],
-        "mood": [
-            "traditional"
-        ],
-        "budget": [
-            "high"
-        ],
-        "persona": [
-            "minimalist_king",
-            "modern_gentlemen"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/date_05.jpg",
-        "affiliateLink": "https://amzn.to/3MvvfED"
-    },
-    {
-        "id": 53,
-        "title": "Men's Blazer, Cotton Blend, Slim Fit, Single Button, Notch Lapel, Long Sleeve, Casual Formal",
-        "gender": "male",
-        "occasion": [
-            "date",
-            "wedding"
-        ],
-        "mood": [
-            "traditional"
-        ],
-        "budget": [
-            "high"
-        ],
-        "persona": [
-            "minimalist_king",
-            "modern_gentlemen"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/date_06.jpg",
-        "affiliateLink": "https://amzn.to/4s4r6GK"
-    },
-    {
-        "id": 54,
-        "title": "KATECLO Women's Sleeveless Bodycon Dress - Sexy Black Mini Dress with Square Neckline and Backless Design for Party, Night Out, and Cocktail Events",
-        "gender": "female",
-        "occasion": [
-            "date",
-            "party"
-        ],
-        "mood": [
-            "bold"
-        ],
-        "budget": [
-            "low"
-        ],
-        "persona": [
-            "romantic_softie"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit",
-            "general_trending"
-        ],
-        "image": "/outfits/date_07.jpg",
-        "affiliateLink": "https://amzn.to/4cgiTum"
-    },
-    {
-        "id": 55,
-        "title": "Leriya Fashion Co-ord Set for Women Stylish | Summer Night Suit For Women | Textured Pyjama Set For Woman Travel Beach & Holiday Look | Oversized Loose Fit Trendy Top & Shorts for Summer Day Vacation",
-        "gender": "female",
-        "occasion": [
-            "date"
-        ],
-        "mood": [
-            "chill"
-        ],
-        "budget": [
-            "medium"
-        ],
-        "persona": [
-            "romantic_softie"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit",
-            "general_trending"
-        ],
-        "image": "/outfits/date_08.jpg",
-        "affiliateLink": "https://amzn.to/4l2l0EC"
-    },
-    {
-        "id": 56,
-        "title": "TOPLOT Jumpsuit for Women || Corset for women || Co ord Western",
-        "gender": "female",
-        "occasion": [
-            "date",
-            "party"
-        ],
-        "mood": [
-            "chill"
-        ],
-        "budget": [
-            "medium"
-        ],
-        "persona": [
-            "romantic_softie"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/date_09.jpg",
-        "affiliateLink": "https://amzn.to/3OEqPvG"
-    },
-    {
-        "id": 57,
-        "title": "Shasmi Girl's & Women's Solid Color V-Neck A-Line Maxi Dress for Women | New Year Party Outfit | Waist Cinched Puff Sleeve Western | Elegant Casual Wear",
-        "gender": "female",
-        "occasion": [
-            "date"
-        ],
-        "mood": [
-            "traditional"
-        ],
-        "budget": [
-            "medium"
-        ],
-        "persona": [
-            "romantic_softie"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/date_10.jpg",
-        "affiliateLink": "https://amzn.to/4rFgMVT"
-    },
-    {
-        "id": 58,
-        "title": "LITZO Dress for Women || Western Dresses for Women || One Piece Maxi Dress",
-        "gender": "female",
-        "occasion": [
-            "date"
-        ],
-        "mood": [
-            "traditional"
-        ],
-        "budget": [
-            "high"
-        ],
-        "persona": [
-            "romantic_softie"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/date_11.jpg",
-        "affiliateLink": "https://amzn.to/3Oyu8Vi"
-    },
-    {
-        "id": 59,
-        "title": "Lehenga Choli Indo-Western Draped Set For Womens And Girls Trending Digital Print Heavy Pure Organza digital printed 8mtr flair lehenga Lehenga Blouse Wedding Party Latest Off White",
-        "gender": "female",
-        "occasion": [
-            "wedding"
-        ],
-        "mood": [
-            "chill"
-        ],
-        "budget": [
-            "high"
-        ],
-        "persona": [
-            "romantic_softie",
-            "minimalist_maven"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/wedding_01.jpg",
-        "affiliateLink": " https://amzn.to/4kX53iH"
-    },
-    {
-        "id": 60,
-        "title": "Party Top Palazzo and Dupatta Set with Elegant Embroidery, Stylish Detailing, and Contemporary Design | Natural Crap Fabric | Perfect for Weddings, Parties and Special Occasions",
-        "gender": "female",
-        "occasion": [
-            "wedding"
-        ],
-        "mood": [
-            "chill"
-        ],
-        "budget": [
-            "medium"
-        ],
-        "persona": [
-            "romantic_softie",
-            "minimalist_maven"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/wedding_02.jpg",
-        "affiliateLink": "https://amzn.to/3MKeTIi"
-    },
-    {
-        "id": 61,
-        "title": "WOMEN'S Georgette Stitched Dhoti-suit",
-        "gender": "female",
-        "occasion": [
-            "wedding"
-        ],
-        "mood": [
-            "bold"
-        ],
-        "budget": [
-            "medium"
-        ],
-        "persona": [
-            "romantic_softie",
-            "minimalist_maven"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/wedding_03.jpg",
-        "affiliateLink": "https://amzn.to/40smJJI"
-    },
-    {
-        "id": 62,
-        "title": "Georgette Sequence Lucknowi Embroidery Work Semi stitched Lehenga choli set for women",
-        "gender": "female",
-        "occasion": [
-            "wedding"
-        ],
-        "mood": [
-            "bold"
-        ],
-        "budget": [
-            "high"
-        ],
-        "persona": [
-            "romantic_softie",
-            "minimalist_maven"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/wedding_04.jpg",
-        "affiliateLink": "https://amzn.to/4kYhjjc"
-    },
-    {
-        "id": 63,
-        "title": "Hevi Enterprise Women’s Sky Blue Designer Fandy Silk Palazzo Set with Sequins Work & Dupatta | kurta&pant With Dupatta",
-        "gender": "female",
-        "occasion": [
-            "wedding"
-        ],
-        "mood": [
-            "classy"
-        ],
-        "budget": [
-            "medium"
-        ],
-        "persona": [
-            "romantic_softie",
-            "minimalist_maven"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/wedding_05.jpg",
-        "affiliateLink": "https://amzn.to/40wCgYY"
-    },
-    {
-        "id": 64,
-        "title": "A,P SUITWOMEN'S Chiffon FullStichedsalwar LEHENGA suit",
-        "gender": "female",
-        "occasion": [
-            "wedding"
-        ],
-        "mood": [
-            "classy"
-        ],
-        "budget": [
-            "high"
-        ],
-        "persona": [
-            "romantic_softie",
-            "minimalist_maven"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/wedding_06.jpg",
-        "affiliateLink": "https://amzn.to/4aIpqLO"
-    },
-    {
-        "id": 65,
-        "title": "SHAFNUFAB Womens Net Semi Stitched LEHENGA CHOLI ready to wear lehenga choli",
-        "gender": "female",
-        "occasion": [
-            "wedding"
-        ],
-        "mood": [
-            "traditional"
-        ],
-        "budget": [
-            "medium"
-        ],
-        "persona": [
-            "romantic_softie",
-            "minimalist_maven"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/wedding_07.jpg",
-        "affiliateLink": "https://amzn.to/4012Glt"
-    },
-    {
-        "id": 66,
-        "title": "Miss Ethnic Hub's Traditional Anarkali Gown with Dupatta Set with Golden jari Embroidered Details, Long Sleeves",
-        "gender": "female",
-        "occasion": [
-            "wedding"
-        ],
-        "mood": [
-            "traditional"
-        ],
-        "budget": [
-            "medium"
-        ],
-        "persona": [
-            "romantic_softie",
-            "minimalist_maven"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/wedding_08.jpg",
-        "affiliateLink": "https://amzn.to/3OB3OKg"
-    },
-    {
-        "id": 67,
-        "title": "KISAH Mens Jacket Sherwani Trouser Set|Blended Fabric Embellished Pattern Indo-Western Set for Men|Regular Fit Mandarin Collar Long Sleeves",
-        "gender": "male",
-        "occasion": [
-            "wedding"
-        ],
-        "mood": [
-            "bold"
-        ],
-        "budget": [
-            "high"
-        ],
-        "persona": [
-            "modern_gentlemen"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/wedding_09.jpg",
-        "affiliateLink": "https://amzn.to/40wa0pn"
-    },
-    {
-        "id": 68,
-        "title": "VASTRAMAY Men'S Black Sequins Dupatta | Wedding & Festive Ethnic Wear | Ideal For Traditional, Haldi, Sangeet & Reception Functions",
-        "gender": "male",
-        "occasion": [
-            "wedding"
-        ],
-        "mood": [
-            "chill"
-        ],
-        "budget": [
-            "medium"
-        ],
-        "persona": [
-            "modern_gentlemen"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/wedding_10.jpg",
-        "affiliateLink": "https://amzn.to/4tUFHGi"
-    },
-    {
-        "id": 69,
-        "title": "Manyavar Men's Floral Vine Patterned Intricate Bordered Shawl",
-        "gender": "male",
-        "occasion": [
-            "wedding"
-        ],
-        "mood": [
-            "chill"
-        ],
-        "budget": [
-            "medium"
-        ],
-        "persona": [
-            "modern_gentlemen"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/wedding_11.jpg",
-        "affiliateLink": "https://amzn.to/4r4q3Wl"
-    },
-    {
-        "id": 70,
-        "title": "WINTAGE Men's Embroidered Velvet Bandhgala",
-        "gender": "male",
-        "occasion": [
-            "wedding"
-        ],
-        "mood": [
-            "bold"
-        ],
-        "budget": [
-            "high"
-        ],
-        "persona": [
-            "modern_gentlemen"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/wedding_12.jpg",
-        "affiliateLink": "https://amzn.to/3MwNjhH"
-    },
-    {
-        "id": 71,
-        "title": "WINTAGE Men's Embroidered Velvet Bandhgala",
-        "gender": "male",
-        "occasion": [
-            "wedding"
-        ],
-        "mood": [
-            "classic",
-            "traditional"
-        ],
-        "budget": [
-            "medium"
-        ],
-        "persona": [
-            "modern_gentlemen"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/wedding_13.jpg",
-        "affiliateLink": "https://amzn.to/3OLdf9O"
-    },
-    {
-        "id": 72,
-        "title": "VASTRAMAY Men's Chanderi Kurta Set with Cream Pant - Premium Wedding",
-        "gender": "male",
-        "occasion": [
-            "wedding"
-        ],
-        "mood": [
-            "classic"
-        ],
-        "budget": [
-            "medium"
-        ],
-        "persona": [
-            "modern_gentlemen"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/wedding_14.jpg",
-        "affiliateLink": "https://amzn.to/3OLdf9O"
-    },
-    {
-        "id": 73,
-        "title": "BK&FASHION Men's Embroidered Nehru Jacket, Cotton Blend, Mandarin Collar, Regular Fit, Standard Length",
-        "gender": "male",
-        "occasion": [
-            "wedding"
-        ],
-        "mood": [
-            "classic",
-            "traditional"
-        ],
-        "budget": [
-            "low"
-        ],
-        "persona": [
-            "modern_gentlemen"
-        ],
-        "categories": [
-            "persona_trending",
-            "ai_style",
-            "quiz_outfit"
-        ],
-        "image": "/outfits/wedding_15.jpg",
-        "affiliateLink": "https://amzn.to/4rxAvXm"
-    }
+  {
+    "id": 1,
+    "title": "A,P SUITWOMEN Chiffon Lehenga Suit",
+    "gender": "female",
+    "occasions": [
+      "navratri",
+      "festive",
+      "wedding"
+    ],
+    "mood": [
+      "bold",
+      "classic"
+    ],
+    "budget": "high",
+    "persona": [
+      "classic_ethnic",
+      "boho"
+    ],
+    "body_shapes": [
+      "pear",
+      "hourglass",
+      "rectangle",
+      "apple"
+    ],
+    "skin_tones": [
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 1,
+    "categories": [
+      "holi_trending",
+      "ai_style"
+    ],
+    "image": "/outfits/navratri_01.jpg",
+    "affiliateLink": "https://amzn.to/4lF37M6"
+  },
+  {
+    "id": 2,
+    "title": "SHAFNUFAB Net Semi Stitched Lehenga Choli",
+    "gender": "female",
+    "occasions": [
+      "navratri",
+      "festive",
+      "wedding"
+    ],
+    "mood": [
+      "bold",
+      "traditional"
+    ],
+    "budget": "high",
+    "persona": [
+      "classic_ethnic"
+    ],
+    "body_shapes": [
+      "hourglass",
+      "pear",
+      "rectangle"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky"
+    ],
+    "priority": 1,
+    "categories": [
+      "holi_trending",
+      "ai_style"
+    ],
+    "image": "/outfits/navratri_02.jpg",
+    "affiliateLink": "https://amzn.to/4uHj48L"
+  },
+  {
+    "id": 3,
+    "title": "Miss Ethnic Hub Traditional Anarkali Gown with Dupatta",
+    "gender": "female",
+    "occasions": [
+      "navratri",
+      "festive",
+      "wedding"
+    ],
+    "mood": [
+      "chill",
+      "bold"
+    ],
+    "budget": "medium",
+    "persona": [
+      "boho",
+      "classic_ethnic"
+    ],
+    "body_shapes": [
+      "pear",
+      "apple",
+      "rectangle",
+      "hourglass"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 1,
+    "categories": [
+      "holi_trending",
+      "ai_style"
+    ],
+    "image": "/outfits/navratri_03.jpg",
+    "affiliateLink": "https://amzn.to/4bDdYSq"
+  },
+  {
+    "id": 4,
+    "title": "Elegant White Embroidered Sharara",
+    "gender": "female",
+    "occasions": [
+      "navratri",
+      "festive"
+    ],
+    "mood": [
+      "classic",
+      "traditional"
+    ],
+    "budget": "medium",
+    "persona": [
+      "minimalist",
+      "classic_ethnic"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "hourglass",
+      "inverted_triangle"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish"
+    ],
+    "priority": 2,
+    "categories": [
+      "holi_trending",
+      "ai_style"
+    ],
+    "image": "/outfits/navratri_04.jpg",
+    "affiliateLink": "https://amzn.to/4uE4mzz"
+  },
+  {
+    "id": 5,
+    "title": "Self Design Semi Stitched Lehenga Choli",
+    "gender": "female",
+    "occasions": [
+      "navratri",
+      "festive"
+    ],
+    "mood": [
+      "bold",
+      "chill"
+    ],
+    "budget": "low",
+    "persona": [
+      "trendy",
+      "boho"
+    ],
+    "body_shapes": [
+      "hourglass",
+      "pear",
+      "rectangle"
+    ],
+    "skin_tones": [
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 2,
+    "categories": [
+      "holi_trending",
+      "ai_style"
+    ],
+    "image": "/outfits/navratri_05.jpg",
+    "affiliateLink": "https://fktr.in/S3FJ5lr"
+  },
+  {
+    "id": 6,
+    "title": "Kalini Bandhani Printed Anarkali",
+    "gender": "female",
+    "occasions": [
+      "navratri",
+      "festive",
+      "casual"
+    ],
+    "mood": [
+      "bold",
+      "classic",
+      "traditional"
+    ],
+    "budget": "medium",
+    "persona": [
+      "boho",
+      "classic_ethnic"
+    ],
+    "body_shapes": [
+      "pear",
+      "apple",
+      "rectangle",
+      "hourglass"
+    ],
+    "skin_tones": [
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 1,
+    "categories": [
+      "holi_trending",
+      "ai_style"
+    ],
+    "image": "/outfits/navratri_06.jpg",
+    "affiliateLink": "https://myntr.it/htzgZq"
+  },
+  {
+    "id": 7,
+    "title": "Women Sleeveless Ajrak Print Kurti",
+    "gender": "female",
+    "occasions": [
+      "navratri",
+      "college",
+      "casual"
+    ],
+    "mood": [
+      "traditional",
+      "classic"
+    ],
+    "budget": "low",
+    "persona": [
+      "boho",
+      "minimalist"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "pear",
+      "hourglass",
+      "apple"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 2,
+    "categories": [
+      "holi_trending",
+      "ai_style"
+    ],
+    "image": "/outfits/navratri_07.jpg",
+    "affiliateLink": "https://amzn.to/4bCxwq1"
+  },
+  {
+    "id": 8,
+    "title": "Women Printed A-line Dress",
+    "gender": "female",
+    "occasions": [
+      "navratri",
+      "festive",
+      "casual"
+    ],
+    "mood": [
+      "bold",
+      "classic"
+    ],
+    "budget": "medium",
+    "persona": [
+      "trendy",
+      "classic_ethnic"
+    ],
+    "body_shapes": [
+      "pear",
+      "apple",
+      "rectangle",
+      "hourglass"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 1,
+    "categories": [
+      "holi_trending",
+      "ai_style"
+    ],
+    "image": "/outfits/navratri_08.jpg",
+    "affiliateLink": "https://myntr.it/YO7MVvS"
+  },
+  {
+    "id": 9,
+    "title": "Diwas By Manyavar Men Cotton Blend Printed Sequinned Kurta",
+    "gender": "male",
+    "occasions": [
+      "navratri",
+      "festive",
+      "party"
+    ],
+    "mood": [
+      "bold",
+      "chill"
+    ],
+    "budget": "medium",
+    "persona": [
+      "classic_ethnic",
+      "trendy"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "athletic",
+      "inverted_triangle"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky"
+    ],
+    "priority": 1,
+    "categories": [
+      "holi_trending",
+      "ai_style"
+    ],
+    "image": "/outfits/navratri_09.jpg",
+    "affiliateLink": "https://amzn.to/4bccKNO"
+  },
+  {
+    "id": 10,
+    "title": "Ethnic Motifs Embroidered Sequinned Cotton Silk Kurta",
+    "gender": "male",
+    "occasions": [
+      "navratri",
+      "festive",
+      "wedding"
+    ],
+    "mood": [
+      "classic",
+      "chill"
+    ],
+    "budget": "medium",
+    "persona": [
+      "classic_ethnic"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "athletic",
+      "inverted_triangle",
+      "lean"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 1,
+    "categories": [
+      "holi_trending",
+      "ai_style"
+    ],
+    "image": "/outfits/eid_10.jpg",
+    "affiliateLink": "https://myntr.it/PhCrZKA"
+  },
+  {
+    "id": 11,
+    "title": "VASTRAMAY Men Black Sequins Dupatta",
+    "gender": "male",
+    "occasions": [
+      "navratri",
+      "festive",
+      "party"
+    ],
+    "mood": [
+      "bold",
+      "classic"
+    ],
+    "budget": "low",
+    "persona": [
+      "trendy",
+      "classic_ethnic"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "athletic",
+      "lean"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 2,
+    "categories": [
+      "holi_trending",
+      "ai_style"
+    ],
+    "image": "/outfits/eid_11.jpg",
+    "affiliateLink": "https://amzn.to/3OUCeHZ"
+  },
+  {
+    "id": 12,
+    "title": "Cotton Rayon Shiny Thread Sequinned Long Kurta",
+    "gender": "male",
+    "occasions": [
+      "navratri",
+      "festive",
+      "party"
+    ],
+    "mood": [
+      "bold",
+      "classic",
+      "chill"
+    ],
+    "budget": "low",
+    "persona": [
+      "classic_ethnic",
+      "trendy"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "lean",
+      "athletic"
+    ],
+    "skin_tones": [
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 2,
+    "categories": [
+      "holi_trending",
+      "ai_style"
+    ],
+    "image": "/outfits/navratri_12.jpg",
+    "affiliateLink": "https://amzn.to/3PC86kR"
+  },
+  {
+    "id": 13,
+    "title": "Ethnic Printed Motif Kurta",
+    "gender": "male",
+    "occasions": [
+      "navratri",
+      "college",
+      "casual"
+    ],
+    "mood": [
+      "chill"
+    ],
+    "budget": "low",
+    "persona": [
+      "boho",
+      "minimalist"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "lean",
+      "athletic",
+      "inverted_triangle"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 2,
+    "categories": [
+      "ai_style",
+      "holi_trending"
+    ],
+    "image": "/outfits/navratri_13.jpg",
+    "affiliateLink": "https://myntr.it/u1tu0On"
+  },
+  {
+    "id": 14,
+    "title": "Ethnic Printed Motif Kurta with Dhoti Pants",
+    "gender": "male",
+    "occasions": [
+      "navratri",
+      "festive",
+      "wedding"
+    ],
+    "mood": [
+      "bold",
+      "classic"
+    ],
+    "budget": "low",
+    "persona": [
+      "classic_ethnic"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "lean",
+      "athletic"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 1,
+    "categories": [
+      "holi_trending",
+      "ai_style"
+    ],
+    "image": "/outfits/navratri_14.jpg",
+    "affiliateLink": "https://myntr.it/IRII0Bp"
+  },
+  {
+    "id": 15,
+    "title": "Ethnic Printed Motif Kurta",
+    "gender": "male",
+    "occasions": [
+      "navratri",
+      "festive"
+    ],
+    "mood": [
+      "bold",
+      "traditional"
+    ],
+    "budget": "medium",
+    "persona": [
+      "classic_ethnic"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "athletic",
+      "inverted_triangle"
+    ],
+    "skin_tones": [
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 2,
+    "categories": [
+      "ai_style"
+    ],
+    "image": "/outfits/navratri_15.jpg",
+    "affiliateLink": "https://myntr.it/90r4FsL"
+  },
+  {
+    "id": 16,
+    "title": "Manyavar Men Floral Vine Patterned Bordered Kurta",
+    "gender": "male",
+    "occasions": [
+      "navratri",
+      "festive",
+      "wedding"
+    ],
+    "mood": [
+      "bold",
+      "traditional"
+    ],
+    "budget": "low",
+    "persona": [
+      "classic_ethnic"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "athletic",
+      "lean",
+      "inverted_triangle"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky"
+    ],
+    "priority": 1,
+    "categories": [
+      "ai_style"
+    ],
+    "image": "/outfits/eid_16.jpg",
+    "affiliateLink": "https://amzn.to/4czMIX6"
+  },
+  {
+    "id": 17,
+    "title": "Women Western High Low Knee Long One Piece Dress",
+    "gender": "female",
+    "occasions": [
+      "party",
+      "date"
+    ],
+    "mood": [
+      "classic"
+    ],
+    "budget": "medium",
+    "persona": [
+      "trendy",
+      "romantic"
+    ],
+    "body_shapes": [
+      "hourglass",
+      "rectangle",
+      "inverted_triangle"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/party_01.jpg",
+    "affiliateLink": "https://amzn.to/4tUTGvJ"
+  },
+  {
+    "id": 18,
+    "title": "Off Shoulder Bodycon Dress with Slit",
+    "gender": "female",
+    "occasions": [
+      "party",
+      "date"
+    ],
+    "mood": [
+      "bold"
+    ],
+    "budget": "low",
+    "persona": [
+      "trendy",
+      "romantic"
+    ],
+    "body_shapes": [
+      "hourglass",
+      "inverted_triangle",
+      "rectangle"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/party_02.jpg",
+    "affiliateLink": "https://amzn.to/4tXDZE7"
+  },
+  {
+    "id": 19,
+    "title": "Sleeveless Front Slit Bodycon Maxi Dress",
+    "gender": "female",
+    "occasions": [
+      "party"
+    ],
+    "mood": [
+      "bold",
+      "chill"
+    ],
+    "budget": "low",
+    "persona": [
+      "trendy"
+    ],
+    "body_shapes": [
+      "hourglass",
+      "inverted_triangle"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 2,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/party_03.jpg",
+    "affiliateLink": "https://amzn.to/4tXnnMR"
+  },
+  {
+    "id": 20,
+    "title": "Red Satin Off-Shoulder Thigh Slit Prom Gown",
+    "gender": "female",
+    "occasions": [
+      "party",
+      "date"
+    ],
+    "mood": [
+      "classic"
+    ],
+    "budget": "low",
+    "persona": [
+      "trendy",
+      "romantic"
+    ],
+    "body_shapes": [
+      "hourglass",
+      "pear",
+      "rectangle"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/party_04.jpg",
+    "affiliateLink": "https://amzn.to/4tXkUBW"
+  },
+  {
+    "id": 21,
+    "title": "Shimmer Glittery Cowl Neck Bodycon Dress",
+    "gender": "female",
+    "occasions": [
+      "party"
+    ],
+    "mood": [
+      "chill",
+      "classic"
+    ],
+    "budget": "low",
+    "persona": [
+      "trendy",
+      "minimalist"
+    ],
+    "body_shapes": [
+      "hourglass",
+      "rectangle",
+      "inverted_triangle"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky"
+    ],
+    "priority": 2,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/party_05.jpg",
+    "affiliateLink": "https://amzn.to/4sdoaHV"
+  },
+  {
+    "id": 22,
+    "title": "FableStreet Satin Cowl Neck Slip Dress - Olive",
+    "gender": "female",
+    "occasions": [
+      "party",
+      "date"
+    ],
+    "mood": [
+      "bold",
+      "chill"
+    ],
+    "budget": "high",
+    "persona": [
+      "minimalist",
+      "trendy"
+    ],
+    "body_shapes": [
+      "hourglass",
+      "rectangle",
+      "inverted_triangle"
+    ],
+    "skin_tones": [
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/party_06.jpg",
+    "affiliateLink": "https://amzn.to/4rBiKX3"
+  },
+  {
+    "id": 23,
+    "title": "Ready to Wear Embellished Bollywood Satin Saree (Magenta)",
+    "gender": "female",
+    "occasions": [
+      "party",
+      "wedding",
+      "festive"
+    ],
+    "mood": [
+      "traditional"
+    ],
+    "budget": "high",
+    "persona": [
+      "classic_ethnic"
+    ],
+    "body_shapes": [
+      "pear",
+      "hourglass",
+      "rectangle",
+      "apple"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish"
+    ],
+    "priority": 2,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/party_07.jpg",
+    "affiliateLink": "https://fktr.in/fVtXzNp"
+  },
+  {
+    "id": 24,
+    "title": "Ready to Wear Bollywood Chiffon Saree (Green)",
+    "gender": "female",
+    "occasions": [
+      "party",
+      "festive"
+    ],
+    "mood": [
+      "traditional"
+    ],
+    "budget": "low",
+    "persona": [
+      "classic_ethnic",
+      "boho"
+    ],
+    "body_shapes": [
+      "pear",
+      "hourglass",
+      "rectangle",
+      "apple"
+    ],
+    "skin_tones": [
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 2,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/party_08.jpg",
+    "affiliateLink": "https://fktr.in/Wkr8Tai"
+  },
+  {
+    "id": 25,
+    "title": "Womens Striped Shirt - Casual Trendy Button Down Top",
+    "gender": "female",
+    "occasions": [
+      "college",
+      "work",
+      "casual"
+    ],
+    "mood": [
+      "chill"
+    ],
+    "budget": "low",
+    "persona": [
+      "minimalist",
+      "trendy"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "inverted_triangle",
+      "hourglass"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit",
+      "general_trending"
+    ],
+    "image": "/outfits/college_01.jpg",
+    "affiliateLink": "https://amzn.to/4aBPTfp"
+  },
+  {
+    "id": 26,
+    "title": "Sweetheart Neck Cotton Crop Top",
+    "gender": "female",
+    "occasions": [
+      "college",
+      "casual",
+      "date"
+    ],
+    "mood": [
+      "chill"
+    ],
+    "budget": "low",
+    "persona": [
+      "trendy",
+      "minimalist"
+    ],
+    "body_shapes": [
+      "hourglass",
+      "inverted_triangle",
+      "rectangle"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/college_02.jpg",
+    "affiliateLink": "https://myntr.it/0oSa4Q8"
+  },
+  {
+    "id": 27,
+    "title": "GoSriKi Women Kurti",
+    "gender": "female",
+    "occasions": [
+      "college",
+      "work",
+      "casual"
+    ],
+    "mood": [
+      "traditional"
+    ],
+    "budget": "medium",
+    "persona": [
+      "boho",
+      "classic_ethnic"
+    ],
+    "body_shapes": [
+      "pear",
+      "apple",
+      "rectangle",
+      "hourglass"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 2,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/college_03.jpg",
+    "affiliateLink": "https://amzn.to/4sc36S2"
+  },
+  {
+    "id": 28,
+    "title": "Rayon Full Sleeve Square Neck Printed Short Kurti",
+    "gender": "female",
+    "occasions": [
+      "college",
+      "work",
+      "casual"
+    ],
+    "mood": [
+      "traditional"
+    ],
+    "budget": "low",
+    "persona": [
+      "boho",
+      "minimalist"
+    ],
+    "body_shapes": [
+      "pear",
+      "rectangle",
+      "hourglass",
+      "apple"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/college_04.jpg",
+    "affiliateLink": "https://amzn.to/40vHZOF"
+  },
+  {
+    "id": 29,
+    "title": "Trendy Flared Sleeve Unique Top",
+    "gender": "female",
+    "occasions": [
+      "college",
+      "casual",
+      "date"
+    ],
+    "mood": [
+      "bold"
+    ],
+    "budget": "low",
+    "persona": [
+      "trendy",
+      "boho"
+    ],
+    "body_shapes": [
+      "pear",
+      "apple",
+      "rectangle"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit",
+      "general_trending"
+    ],
+    "image": "/outfits/college_05.jpg",
+    "affiliateLink": "https://amzn.to/4sbXU0j"
+  },
+  {
+    "id": 30,
+    "title": "Women Relaxed Fit Vertical Striped Cotton Casual Shirt",
+    "gender": "female",
+    "occasions": [
+      "college",
+      "casual",
+      "work"
+    ],
+    "mood": [
+      "bold"
+    ],
+    "budget": "medium",
+    "persona": [
+      "minimalist",
+      "trendy"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "inverted_triangle",
+      "hourglass"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 2,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/college_06.jpg",
+    "affiliateLink": "https://amzn.to/4lfS24h"
+  },
+  {
+    "id": 31,
+    "title": "Women Puff Sleeve Textured Black Square Neck Top",
+    "gender": "female",
+    "occasions": [
+      "college",
+      "date",
+      "casual"
+    ],
+    "mood": [
+      "classic"
+    ],
+    "budget": "low",
+    "persona": [
+      "trendy",
+      "minimalist"
+    ],
+    "body_shapes": [
+      "hourglass",
+      "inverted_triangle",
+      "rectangle"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/college_07.jpg",
+    "affiliateLink": "https://amzn.to/4r0wLwG"
+  },
+  {
+    "id": 32,
+    "title": "Elegant Two-Piece Crop Top and High-Waist Skirt Set",
+    "gender": "female",
+    "occasions": [
+      "college",
+      "date",
+      "casual"
+    ],
+    "mood": [
+      "classic"
+    ],
+    "budget": "high",
+    "persona": [
+      "trendy",
+      "romantic"
+    ],
+    "body_shapes": [
+      "hourglass",
+      "rectangle",
+      "inverted_triangle"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky"
+    ],
+    "priority": 2,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/college_08.jpg",
+    "affiliateLink": "https://amzn.to/47bNMN3"
+  },
+  {
+    "id": 33,
+    "title": "Men Casual Cotton Blend Long Sleeve Shirt",
+    "gender": "male",
+    "occasions": [
+      "college",
+      "casual",
+      "work"
+    ],
+    "mood": [
+      "classic"
+    ],
+    "budget": "low",
+    "persona": [
+      "minimalist",
+      "casual_cool"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "athletic",
+      "lean",
+      "inverted_triangle"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/college_09.jpg",
+    "affiliateLink": "https://amzn.to/4qWvp5M"
+  },
+  {
+    "id": 34,
+    "title": "Men Textured Fabric Solid Half-Open Collar Long Sleeve Shirt",
+    "gender": "male",
+    "occasions": [
+      "college",
+      "casual",
+      "date"
+    ],
+    "mood": [
+      "classic"
+    ],
+    "budget": "medium",
+    "persona": [
+      "minimalist",
+      "casual_cool"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "athletic",
+      "lean"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/college_10.jpg",
+    "affiliateLink": "https://amzn.to/3MH2o05"
+  },
+  {
+    "id": 35,
+    "title": "PROSHARX Quarter Zip Fleece Sweatshirt Hoodie",
+    "gender": "male",
+    "occasions": [
+      "college",
+      "casual"
+    ],
+    "mood": [
+      "chill"
+    ],
+    "budget": "high",
+    "persona": [
+      "casual_cool",
+      "streetwear"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "athletic",
+      "lean",
+      "inverted_triangle"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 2,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/college_11.jpg",
+    "affiliateLink": "https://amzn.to/3OxkWR3"
+  },
+  {
+    "id": 36,
+    "title": "Oversized Anime Back Printed Cotton T-Shirt",
+    "gender": "male",
+    "occasions": [
+      "college",
+      "casual"
+    ],
+    "mood": [
+      "chill"
+    ],
+    "budget": "low",
+    "persona": [
+      "casual_cool",
+      "streetwear"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "lean",
+      "athletic"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 2,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/college_12.jpg",
+    "affiliateLink": "https://amzn.to/4qVR0eA"
+  },
+  {
+    "id": 37,
+    "title": "Men Oversized Casual Shirt",
+    "gender": "male",
+    "occasions": [
+      "college",
+      "casual",
+      "party"
+    ],
+    "mood": [
+      "bold"
+    ],
+    "budget": "low",
+    "persona": [
+      "streetwear",
+      "casual_cool"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "lean",
+      "athletic",
+      "inverted_triangle"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/college_13.jpg",
+    "affiliateLink": "https://amzn.to/4tXzERw"
+  },
+  {
+    "id": 38,
+    "title": "Noble Monk Solid Polo Neck Textured Tshirt",
+    "gender": "male",
+    "occasions": [
+      "college",
+      "party",
+      "casual"
+    ],
+    "mood": [
+      "bold"
+    ],
+    "budget": "medium",
+    "persona": [
+      "casual_cool",
+      "minimalist"
+    ],
+    "body_shapes": [
+      "athletic",
+      "rectangle",
+      "inverted_triangle"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/college_14.jpg",
+    "affiliateLink": "https://amzn.to/4bbGg7m"
+  },
+  {
+    "id": 39,
+    "title": "Bellstone Men Cotton Blend Solid Regular Kurta",
+    "gender": "male",
+    "occasions": [
+      "college",
+      "casual",
+      "festive"
+    ],
+    "mood": [
+      "traditional"
+    ],
+    "budget": "low",
+    "persona": [
+      "classic_ethnic",
+      "minimalist"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "lean",
+      "athletic"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 2,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/college_15.jpg",
+    "affiliateLink": "https://amzn.to/3ODivMG"
+  },
+  {
+    "id": 40,
+    "title": "TOPLOT Premium Linen Printed Kurta Shirt",
+    "gender": "male",
+    "occasions": [
+      "college",
+      "casual",
+      "festive"
+    ],
+    "mood": [
+      "traditional"
+    ],
+    "budget": "high",
+    "persona": [
+      "classic_ethnic",
+      "boho"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "lean",
+      "athletic",
+      "inverted_triangle"
+    ],
+    "skin_tones": [
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/college_16.jpg",
+    "affiliateLink": "https://amzn.to/4tVKY0v"
+  },
+  {
+    "id": 41,
+    "title": "GRECIILOOKS Men Slim Fit Polycotton Full Sleeve Formal Shirt",
+    "gender": "male",
+    "occasions": [
+      "party",
+      "work",
+      "date"
+    ],
+    "mood": [
+      "chill"
+    ],
+    "budget": "medium",
+    "persona": [
+      "minimalist",
+      "casual_cool"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "athletic",
+      "lean"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky"
+    ],
+    "priority": 2,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/party_09.jpg",
+    "affiliateLink": "https://amzn.to/4aNj91y"
+  },
+  {
+    "id": 42,
+    "title": "GRECIILOOKS Men Slim Fit Textured Long Sleeve Shirt",
+    "gender": "male",
+    "occasions": [
+      "party",
+      "date",
+      "work"
+    ],
+    "mood": [
+      "bold"
+    ],
+    "budget": "medium",
+    "persona": [
+      "minimalist",
+      "casual_cool"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "athletic",
+      "inverted_triangle"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit",
+      "general_trending"
+    ],
+    "image": "/outfits/party_10.jpg",
+    "affiliateLink": "https://amzn.to/4s5e0Jc"
+  },
+  {
+    "id": 43,
+    "title": "Noble Monk Relax Fit Hooded Full Sleeve Shirt",
+    "gender": "male",
+    "occasions": [
+      "party",
+      "casual",
+      "college"
+    ],
+    "mood": [
+      "chill"
+    ],
+    "budget": "high",
+    "persona": [
+      "streetwear",
+      "casual_cool"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "lean",
+      "athletic"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 2,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit",
+      "general_trending"
+    ],
+    "image": "/outfits/party_11.jpg",
+    "affiliateLink": "https://amzn.to/4aXo8gj"
+  },
+  {
+    "id": 44,
+    "title": "DEELMO Men Regular Fit Hawaiian Button Down Shirt",
+    "gender": "male",
+    "occasions": [
+      "party",
+      "casual",
+      "date"
+    ],
+    "mood": [
+      "classic"
+    ],
+    "budget": "medium",
+    "persona": [
+      "boho",
+      "casual_cool"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "athletic",
+      "lean",
+      "inverted_triangle"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/party_12.jpg",
+    "affiliateLink": "https://amzn.to/4kWW0ys"
+  },
+  {
+    "id": 45,
+    "title": "GRECIILOOKS Men Slim Fit Polycotton Full Sleeve Formal Shirt",
+    "gender": "male",
+    "occasions": [
+      "party",
+      "date",
+      "work"
+    ],
+    "mood": [
+      "classic"
+    ],
+    "budget": "high",
+    "persona": [
+      "minimalist",
+      "casual_cool"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "athletic",
+      "inverted_triangle"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit",
+      "general_trending"
+    ],
+    "image": "/outfits/party_13.jpg",
+    "affiliateLink": "https://myntr.it/2guT947"
+  },
+  {
+    "id": 46,
+    "title": "AMRIT TOP WEAR Men Ethnic",
+    "gender": "male",
+    "occasions": [
+      "party",
+      "festive",
+      "wedding"
+    ],
+    "mood": [
+      "traditional"
+    ],
+    "budget": "high",
+    "persona": [
+      "classic_ethnic"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "athletic",
+      "inverted_triangle"
+    ],
+    "skin_tones": [
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 2,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/party_14.jpg",
+    "affiliateLink": "https://myntr.it/r0Q1QMI"
+  },
+  {
+    "id": 47,
+    "title": "Men Ethnic Motifs Embroidered Kurta with Patiala",
+    "gender": "male",
+    "occasions": [
+      "party",
+      "festive",
+      "wedding"
+    ],
+    "mood": [
+      "traditional"
+    ],
+    "budget": "high",
+    "persona": [
+      "classic_ethnic"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "lean",
+      "athletic"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/party_15.jpg",
+    "affiliateLink": "https://myntr.it/VcPf5M5"
+  },
+  {
+    "id": 48,
+    "title": "Men Solid Linen Cotton Full Sleeve Casual Shirt",
+    "gender": "male",
+    "occasions": [
+      "date",
+      "casual",
+      "college"
+    ],
+    "mood": [
+      "chill"
+    ],
+    "budget": "medium",
+    "persona": [
+      "minimalist",
+      "casual_cool"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "lean",
+      "athletic",
+      "inverted_triangle"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/date_01.jpg",
+    "affiliateLink": "https://amzn.to/4aE3vqA"
+  },
+  {
+    "id": 49,
+    "title": "SMOWKLY Men Collar Chain Cotton Fleece Half Zip Sweatshirt",
+    "gender": "male",
+    "occasions": [
+      "date",
+      "casual",
+      "college"
+    ],
+    "mood": [
+      "chill"
+    ],
+    "budget": "medium",
+    "persona": [
+      "minimalist",
+      "streetwear"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "athletic",
+      "lean"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit",
+      "general_trending"
+    ],
+    "image": "/outfits/date_02.jpg",
+    "affiliateLink": "https://amzn.to/4kW9SsJ"
+  },
+  {
+    "id": 50,
+    "title": "Men Woolen Collar Polo Knitted Sweater",
+    "gender": "male",
+    "occasions": [
+      "date",
+      "casual",
+      "college"
+    ],
+    "mood": [
+      "classic"
+    ],
+    "budget": "medium",
+    "persona": [
+      "minimalist",
+      "casual_cool"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "athletic",
+      "lean",
+      "inverted_triangle"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky"
+    ],
+    "priority": 2,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/date_03.jpg",
+    "affiliateLink": "https://amzn.to/4r0FkaO"
+  },
+  {
+    "id": 51,
+    "title": "IndoPrimo Men Striped Slim Fit Full Sleeve Formal Shirt",
+    "gender": "male",
+    "occasions": [
+      "date",
+      "work",
+      "college"
+    ],
+    "mood": [
+      "bold"
+    ],
+    "budget": "low",
+    "persona": [
+      "minimalist",
+      "casual_cool"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "athletic",
+      "lean"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 2,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/date_04.jpg",
+    "affiliateLink": "https://amzn.to/4rBvzka"
+  },
+  {
+    "id": 52,
+    "title": "WINTAGE Men Polyester Cotton Two Piece Suit",
+    "gender": "male",
+    "occasions": [
+      "date",
+      "wedding",
+      "party"
+    ],
+    "mood": [
+      "traditional"
+    ],
+    "budget": "high",
+    "persona": [
+      "minimalist",
+      "classic_ethnic"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "athletic",
+      "inverted_triangle"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/date_05.jpg",
+    "affiliateLink": "https://amzn.to/3MvvfED"
+  },
+  {
+    "id": 53,
+    "title": "Men Cotton Blend Slim Fit Single Button Blazer",
+    "gender": "male",
+    "occasions": [
+      "date",
+      "wedding",
+      "work"
+    ],
+    "mood": [
+      "traditional"
+    ],
+    "budget": "high",
+    "persona": [
+      "minimalist",
+      "classic_ethnic"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "athletic",
+      "inverted_triangle",
+      "lean"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/date_06.jpg",
+    "affiliateLink": "https://amzn.to/4s4r6GK"
+  },
+  {
+    "id": 54,
+    "title": "KATECLO Women Sleeveless Backless Bodycon Black Mini Dress",
+    "gender": "female",
+    "occasions": [
+      "date",
+      "party"
+    ],
+    "mood": [
+      "bold"
+    ],
+    "budget": "low",
+    "persona": [
+      "trendy",
+      "romantic"
+    ],
+    "body_shapes": [
+      "hourglass",
+      "inverted_triangle",
+      "rectangle"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit",
+      "general_trending"
+    ],
+    "image": "/outfits/date_07.jpg",
+    "affiliateLink": "https://amzn.to/4cgiTum"
+  },
+  {
+    "id": 55,
+    "title": "Leriya Fashion Co-ord Oversized Top and Shorts Set",
+    "gender": "female",
+    "occasions": [
+      "date",
+      "casual"
+    ],
+    "mood": [
+      "chill"
+    ],
+    "budget": "medium",
+    "persona": [
+      "romantic",
+      "minimalist"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "hourglass",
+      "pear",
+      "apple"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit",
+      "general_trending"
+    ],
+    "image": "/outfits/date_08.jpg",
+    "affiliateLink": "https://amzn.to/4l2l0EC"
+  },
+  {
+    "id": 56,
+    "title": "TOPLOT Jumpsuit Corset Co-ord Western",
+    "gender": "female",
+    "occasions": [
+      "date",
+      "party"
+    ],
+    "mood": [
+      "chill"
+    ],
+    "budget": "medium",
+    "persona": [
+      "trendy",
+      "romantic"
+    ],
+    "body_shapes": [
+      "hourglass",
+      "inverted_triangle",
+      "rectangle"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/date_09.jpg",
+    "affiliateLink": "https://amzn.to/3OEqPvG"
+  },
+  {
+    "id": 57,
+    "title": "Solid Color V-Neck A-Line Maxi Dress with Puff Sleeves",
+    "gender": "female",
+    "occasions": [
+      "date",
+      "casual",
+      "party"
+    ],
+    "mood": [
+      "traditional"
+    ],
+    "budget": "medium",
+    "persona": [
+      "romantic",
+      "boho"
+    ],
+    "body_shapes": [
+      "pear",
+      "hourglass",
+      "rectangle",
+      "apple"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/date_10.jpg",
+    "affiliateLink": "https://amzn.to/4rFgMVT"
+  },
+  {
+    "id": 58,
+    "title": "LITZO One Piece Maxi Dress",
+    "gender": "female",
+    "occasions": [
+      "date",
+      "casual",
+      "party"
+    ],
+    "mood": [
+      "traditional"
+    ],
+    "budget": "high",
+    "persona": [
+      "romantic",
+      "classic_ethnic"
+    ],
+    "body_shapes": [
+      "pear",
+      "hourglass",
+      "rectangle",
+      "apple"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky"
+    ],
+    "priority": 2,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/date_11.jpg",
+    "affiliateLink": "https://amzn.to/3Oyu8Vi"
+  },
+  {
+    "id": 59,
+    "title": "Heavy Pure Organza Printed Indo-Western Lehenga",
+    "gender": "female",
+    "occasions": [
+      "wedding",
+      "festive",
+      "party"
+    ],
+    "mood": [
+      "chill"
+    ],
+    "budget": "high",
+    "persona": [
+      "romantic",
+      "minimalist"
+    ],
+    "body_shapes": [
+      "pear",
+      "hourglass",
+      "rectangle"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/wedding_01.jpg",
+    "affiliateLink": "https://amzn.to/4kX53iH"
+  },
+  {
+    "id": 60,
+    "title": "Party Top Palazzo and Dupatta Set with Embroidery",
+    "gender": "female",
+    "occasions": [
+      "wedding",
+      "festive",
+      "party"
+    ],
+    "mood": [
+      "chill"
+    ],
+    "budget": "medium",
+    "persona": [
+      "romantic",
+      "minimalist"
+    ],
+    "body_shapes": [
+      "pear",
+      "hourglass",
+      "rectangle",
+      "apple"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/wedding_02.jpg",
+    "affiliateLink": "https://amzn.to/3MKeTIi"
+  },
+  {
+    "id": 61,
+    "title": "Women Georgette Stitched Dhoti Suit",
+    "gender": "female",
+    "occasions": [
+      "wedding",
+      "festive"
+    ],
+    "mood": [
+      "bold"
+    ],
+    "budget": "medium",
+    "persona": [
+      "classic_ethnic",
+      "trendy"
+    ],
+    "body_shapes": [
+      "hourglass",
+      "pear",
+      "rectangle"
+    ],
+    "skin_tones": [
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 2,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/wedding_03.jpg",
+    "affiliateLink": "https://amzn.to/40smJJI"
+  },
+  {
+    "id": 62,
+    "title": "Georgette Sequence Lucknowi Embroidery Lehenga Choli Set",
+    "gender": "female",
+    "occasions": [
+      "wedding",
+      "festive",
+      "party"
+    ],
+    "mood": [
+      "bold"
+    ],
+    "budget": "high",
+    "persona": [
+      "classic_ethnic"
+    ],
+    "body_shapes": [
+      "hourglass",
+      "pear",
+      "rectangle"
+    ],
+    "skin_tones": [
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/wedding_04.jpg",
+    "affiliateLink": "https://amzn.to/4kYhjjc"
+  },
+  {
+    "id": 63,
+    "title": "Sky Blue Designer Silk Palazzo Set with Sequins and Dupatta",
+    "gender": "female",
+    "occasions": [
+      "wedding",
+      "festive"
+    ],
+    "mood": [
+      "classy"
+    ],
+    "budget": "medium",
+    "persona": [
+      "romantic",
+      "minimalist"
+    ],
+    "body_shapes": [
+      "pear",
+      "hourglass",
+      "rectangle",
+      "apple"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish"
+    ],
+    "priority": 2,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/wedding_05.jpg",
+    "affiliateLink": "https://amzn.to/40wCgYY"
+  },
+  {
+    "id": 64,
+    "title": "AP SUIT Women Chiffon Full Stitched Lehenga Suit",
+    "gender": "female",
+    "occasions": [
+      "wedding",
+      "festive"
+    ],
+    "mood": [
+      "classy"
+    ],
+    "budget": "high",
+    "persona": [
+      "classic_ethnic",
+      "romantic"
+    ],
+    "body_shapes": [
+      "pear",
+      "hourglass",
+      "rectangle",
+      "apple"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/wedding_06.jpg",
+    "affiliateLink": "https://amzn.to/4aIpqLO"
+  },
+  {
+    "id": 65,
+    "title": "SHAFNUFAB Women Net Semi Stitched Lehenga Choli",
+    "gender": "female",
+    "occasions": [
+      "wedding",
+      "festive"
+    ],
+    "mood": [
+      "traditional"
+    ],
+    "budget": "medium",
+    "persona": [
+      "classic_ethnic"
+    ],
+    "body_shapes": [
+      "hourglass",
+      "pear",
+      "rectangle"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky"
+    ],
+    "priority": 2,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/wedding_07.jpg",
+    "affiliateLink": "https://amzn.to/4012Glt"
+  },
+  {
+    "id": 66,
+    "title": "Miss Ethnic Hub Anarkali Gown with Dupatta Gold Embroidered",
+    "gender": "female",
+    "occasions": [
+      "wedding",
+      "festive",
+      "party"
+    ],
+    "mood": [
+      "traditional"
+    ],
+    "budget": "medium",
+    "persona": [
+      "classic_ethnic",
+      "boho"
+    ],
+    "body_shapes": [
+      "pear",
+      "apple",
+      "rectangle",
+      "hourglass"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/wedding_08.jpg",
+    "affiliateLink": "https://amzn.to/3OB3OKg"
+  },
+  {
+    "id": 67,
+    "title": "KISAH Men Jacket Sherwani Trouser Indo-Western Set",
+    "gender": "male",
+    "occasions": [
+      "wedding",
+      "party",
+      "festive"
+    ],
+    "mood": [
+      "bold"
+    ],
+    "budget": "high",
+    "persona": [
+      "classic_ethnic",
+      "minimalist"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "athletic",
+      "inverted_triangle"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/wedding_09.jpg",
+    "affiliateLink": "https://amzn.to/40wa0pn"
+  },
+  {
+    "id": 68,
+    "title": "VASTRAMAY Men Black Sequins Dupatta Wedding Festive",
+    "gender": "male",
+    "occasions": [
+      "wedding",
+      "festive",
+      "party"
+    ],
+    "mood": [
+      "chill"
+    ],
+    "budget": "medium",
+    "persona": [
+      "classic_ethnic",
+      "trendy"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "athletic",
+      "lean"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 2,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/wedding_10.jpg",
+    "affiliateLink": "https://amzn.to/4tUFHGi"
+  },
+  {
+    "id": 69,
+    "title": "Manyavar Men Floral Vine Patterned Bordered Shawl",
+    "gender": "male",
+    "occasions": [
+      "wedding",
+      "festive"
+    ],
+    "mood": [
+      "chill"
+    ],
+    "budget": "medium",
+    "persona": [
+      "classic_ethnic"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "athletic",
+      "lean",
+      "inverted_triangle"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky"
+    ],
+    "priority": 2,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/wedding_11.jpg",
+    "affiliateLink": "https://amzn.to/4r4q3Wl"
+  },
+  {
+    "id": 70,
+    "title": "WINTAGE Men Embroidered Velvet Bandhgala",
+    "gender": "male",
+    "occasions": [
+      "wedding",
+      "party",
+      "festive"
+    ],
+    "mood": [
+      "bold"
+    ],
+    "budget": "high",
+    "persona": [
+      "classic_ethnic",
+      "minimalist"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "athletic",
+      "inverted_triangle"
+    ],
+    "skin_tones": [
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/wedding_12.jpg",
+    "affiliateLink": "https://amzn.to/3MwNjhH"
+  },
+  {
+    "id": 71,
+    "title": "WINTAGE Men Embroidered Velvet Bandhgala Classic",
+    "gender": "male",
+    "occasions": [
+      "wedding",
+      "festive"
+    ],
+    "mood": [
+      "classic",
+      "traditional"
+    ],
+    "budget": "medium",
+    "persona": [
+      "classic_ethnic"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "athletic",
+      "lean"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky"
+    ],
+    "priority": 2,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/wedding_13.jpg",
+    "affiliateLink": "https://amzn.to/3OLdf9O"
+  },
+  {
+    "id": 72,
+    "title": "VASTRAMAY Men Chanderi Kurta Set with Cream Pant Wedding",
+    "gender": "male",
+    "occasions": [
+      "wedding",
+      "festive",
+      "party"
+    ],
+    "mood": [
+      "classic"
+    ],
+    "budget": "medium",
+    "persona": [
+      "classic_ethnic",
+      "minimalist"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "lean",
+      "athletic"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/wedding_14.jpg",
+    "affiliateLink": "https://amzn.to/3OLdf9O"
+  },
+  {
+    "id": 73,
+    "title": "BK&FASHION Men Embroidered Nehru Jacket Cotton Blend",
+    "gender": "male",
+    "occasions": [
+      "wedding",
+      "festive",
+      "party"
+    ],
+    "mood": [
+      "classic",
+      "traditional"
+    ],
+    "budget": "low",
+    "persona": [
+      "classic_ethnic"
+    ],
+    "body_shapes": [
+      "rectangle",
+      "lean",
+      "athletic",
+      "inverted_triangle"
+    ],
+    "skin_tones": [
+      "fair",
+      "wheatish",
+      "dusky",
+      "deep"
+    ],
+    "priority": 1,
+    "categories": [
+      "persona_trending",
+      "ai_style",
+      "quiz_outfit"
+    ],
+    "image": "/outfits/wedding_15.jpg",
+    "affiliateLink": "https://amzn.to/4rxAvXm"
+  }
 ]

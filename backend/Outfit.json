@@ -1,19 +1,19 @@
 {
   "outfits": [
-
     {
       "id": "FK_001",
       "website": "Flipkart",
       "gender": "Female",
-      "occasion": "College",
+      "occasions": ["college", "casual"],
       "vibe": "Casual Cool",
-      "items": {
-        "top": 1,
-        "top_inner": 2,
-        "bottom": 3,
-        "shoes": 4
-      },
+      "moods": ["casual_cool", "minimal"],
+      "persona": "Classic",
+      "body_shapes": ["rectangle", "hourglass", "inverted_triangle"],
+      "skin_tones": ["fair", "wheatish", "dusky"],
+      "items": { "top": 1, "top_inner": 2, "bottom": 3, "shoes": 4 },
       "total_price": 1601,
+      "budget_range": "medium",
+      "priority": 1,
       "why_this_outfit": [
         "Clean and minimal aesthetic",
         "Comfortable for daily college wear",
@@ -24,15 +24,16 @@
       "id": "FK_002",
       "website": "Flipkart",
       "gender": "Female",
-      "occasion": "College",
+      "occasions": ["college", "casual"],
       "vibe": "Street Style",
-      "items": {
-        "top": 5,
-        "bottom": 6,
-        "bag": 7,
-        "shoes": 8
-      },
+      "moods": ["street_style", "bold"],
+      "persona": "Trendy",
+      "body_shapes": ["rectangle", "pear", "apple"],
+      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
+      "items": { "top": 5, "bottom": 6, "bag": 7, "shoes": 8 },
       "total_price": 1577,
+      "budget_range": "medium",
+      "priority": 1,
       "why_this_outfit": [
         "Oversized graphic tee gives an effortless urban feel",
         "Loose jeans add a cool relaxed silhouette",
@@ -43,15 +44,16 @@
       "id": "FK_003",
       "website": "Flipkart",
       "gender": "Female",
-      "occasion": "College",
+      "occasions": ["college", "work", "casual"],
       "vibe": "Minimal",
-      "items": {
-        "top": 9,
-        "bottom": 10,
-        "shoes": 11,
-        "bag": 12
-      },
+      "moods": ["minimal", "classic"],
+      "persona": "Minimalist",
+      "body_shapes": ["rectangle", "hourglass", "inverted_triangle", "pear"],
+      "skin_tones": ["fair", "wheatish", "dusky"],
+      "items": { "top": 9, "bottom": 10, "shoes": 11, "bag": 12 },
       "total_price": 1808,
+      "budget_range": "medium",
+      "priority": 2,
       "why_this_outfit": [
         "Polo tee and high-waisted trousers keep it clean and put-together",
         "Neutral palette works for all skin tones",
@@ -62,35 +64,36 @@
       "id": "FK_004",
       "website": "Flipkart",
       "gender": "Female",
-      "occasion": "College",
+      "occasions": ["college", "casual", "festive"],
       "vibe": "Boho",
-      "items": {
-        "top": 13,
-        "bottom": 14,
-        "bag": 15,
-        "shoes": 16
-      },
+      "moods": ["boho", "ethnic_chic"],
+      "persona": "Boho",
+      "body_shapes": ["pear", "rectangle", "hourglass"],
+      "skin_tones": ["wheatish", "dusky", "deep"],
+      "items": { "top": 13, "bottom": 14, "bag": 15, "shoes": 16 },
       "total_price": 1085,
+      "budget_range": "low",
+      "priority": 1,
       "why_this_outfit": [
         "Straight kurti with jeans is a classic boho-meets-casual combo",
         "Jute tote adds earthy texture",
         "Flat sandals keep the look grounded and comfortable"
       ]
     },
-
     {
       "id": "FK_005",
       "website": "Flipkart",
       "gender": "Female",
-      "occasion": "Work",
+      "occasions": ["work", "formal"],
       "vibe": "Power Dressing",
-      "items": {
-        "top": 1,
-        "bottom": 17,
-        "top_outer": 18,
-        "accessory": 19
-      },
+      "moods": ["power_dressing", "classic"],
+      "persona": "Classic",
+      "body_shapes": ["rectangle", "inverted_triangle", "hourglass"],
+      "skin_tones": ["fair", "wheatish", "dusky"],
+      "items": { "top": 1, "bottom": 17, "top_outer": 18, "accessory": 19 },
       "total_price": 1772,
+      "budget_range": "medium",
+      "priority": 1,
       "why_this_outfit": [
         "Blazer over a classic shirt radiates authority",
         "Black trousers create a sharp, professional silhouette",
@@ -101,15 +104,16 @@
       "id": "FK_006",
       "website": "Flipkart",
       "gender": "Female",
-      "occasion": "Work",
+      "occasions": ["work", "formal"],
       "vibe": "Classic",
-      "items": {
-        "top": 20,
-        "bottom": 21,
-        "shoes": 22,
-        "bag": 23
-      },
+      "moods": ["classic", "minimal"],
+      "persona": "Classic",
+      "body_shapes": ["rectangle", "hourglass", "inverted_triangle"],
+      "skin_tones": ["fair", "wheatish", "dusky"],
+      "items": { "top": 20, "bottom": 21, "shoes": 22, "bag": 23 },
       "total_price": 1757,
+      "budget_range": "medium",
+      "priority": 1,
       "why_this_outfit": [
         "Navy shirt and beige trousers is a timeless work pairing",
         "Heel sandals elevate the formality",
@@ -120,15 +124,16 @@
       "id": "FK_007",
       "website": "Flipkart",
       "gender": "Female",
-      "occasion": "Work",
+      "occasions": ["work", "casual"],
       "vibe": "Minimal",
-      "items": {
-        "top": 24,
-        "bottom": 25,
-        "shoes": 22,
-        "accessory": 19
-      },
+      "moods": ["minimal", "power_dressing"],
+      "persona": "Minimalist",
+      "body_shapes": ["rectangle", "inverted_triangle", "hourglass"],
+      "skin_tones": ["fair", "wheatish", "dusky"],
+      "items": { "top": 24, "bottom": 25, "shoes": 22, "accessory": 19 },
       "total_price": 1674,
+      "budget_range": "medium",
+      "priority": 2,
       "why_this_outfit": [
         "Waistcoat adds structure without being overly formal",
         "Navy trousers keep the palette clean and professional",
@@ -139,35 +144,36 @@
       "id": "FK_008",
       "website": "Flipkart",
       "gender": "Female",
-      "occasion": "Work",
+      "occasions": ["work", "college", "casual"],
       "vibe": "Smart Casual",
-      "items": {
-        "top": 26,
-        "bag": 27,
-        "shoes": 29,
-        "accessory": 28
-      },
+      "moods": ["smart_casual", "ethnic_chic"],
+      "persona": "Boho",
+      "body_shapes": ["pear", "rectangle", "hourglass", "apple"],
+      "skin_tones": ["wheatish", "dusky", "deep"],
+      "items": { "top": 26, "bag": 27, "shoes": 29, "accessory": 28 },
       "total_price": 1628,
+      "budget_range": "medium",
+      "priority": 1,
       "why_this_outfit": [
         "Kurta set strikes the perfect smart-casual balance",
         "Mojari jutis add an Indian aesthetic that works beautifully in offices",
         "Jhumka earrings add personality without overwhelming"
       ]
     },
-
     {
       "id": "FK_009",
       "website": "Flipkart",
       "gender": "Female",
-      "occasion": "Date",
+      "occasions": ["date", "party"],
       "vibe": "Romantic",
-      "items": {
-        "dress": 30,
-        "bag": 32,
-        "shoes": 31,
-        "accessory": 33
-      },
+      "moods": ["romantic", "chic"],
+      "persona": "Classic",
+      "body_shapes": ["hourglass", "pear", "rectangle"],
+      "skin_tones": ["fair", "wheatish", "dusky"],
+      "items": { "dress": 30, "bag": 32, "shoes": 31, "accessory": 33 },
       "total_price": 1768,
+      "budget_range": "medium",
+      "priority": 1,
       "why_this_outfit": [
         "Flowy maroon midi dress is effortlessly romantic",
         "Cherry heels add height and drama",
@@ -178,14 +184,16 @@
       "id": "FK_010",
       "website": "Flipkart",
       "gender": "Female",
-      "occasion": "Date",
+      "occasions": ["date", "casual", "college"],
       "vibe": "Minimal",
-      "items": {
-        "dress": 34,
-        "shoes": 16,
-        "accessory": 35
-      },
+      "moods": ["minimal", "romantic"],
+      "persona": "Minimalist",
+      "body_shapes": ["rectangle", "hourglass", "inverted_triangle"],
+      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
+      "items": { "dress": 34, "shoes": 16, "accessory": 35 },
       "total_price": 680,
+      "budget_range": "low",
+      "priority": 2,
       "why_this_outfit": [
         "Orange-pink midi is understated yet striking",
         "Flat sandals keep the look relaxed and date-ready",
@@ -196,15 +204,16 @@
       "id": "FK_011",
       "website": "Flipkart",
       "gender": "Female",
-      "occasion": "Date",
+      "occasions": ["date", "party", "casual"],
       "vibe": "Chic",
-      "items": {
-        "top": 36,
-        "bottom": 39,
-        "shoes": 38,
-        "accessory": 37
-      },
+      "moods": ["chic", "classic"],
+      "persona": "Classic",
+      "body_shapes": ["hourglass", "pear", "rectangle"],
+      "skin_tones": ["fair", "wheatish", "dusky"],
+      "items": { "top": 36, "bottom": 39, "shoes": 38, "accessory": 37 },
       "total_price": 1686,
+      "budget_range": "medium",
+      "priority": 1,
       "why_this_outfit": [
         "Full sleeve top paired with high rise jeans looks polished",
         "Maroon block heels add a bold yet classic accent",
@@ -215,35 +224,36 @@
       "id": "FK_012",
       "website": "Flipkart",
       "gender": "Female",
-      "occasion": "Date",
+      "occasions": ["date", "casual", "college"],
       "vibe": "Trendy",
-      "items": {
-        "top": 40,
-        "bottom": 42,
-        "shoes": 41,
-        "bag": 32
-      },
+      "moods": ["trendy", "street_style"],
+      "persona": "Trendy",
+      "body_shapes": ["rectangle", "hourglass", "inverted_triangle"],
+      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
+      "items": { "top": 40, "bottom": 42, "shoes": 41, "bag": 32 },
       "total_price": 1281,
+      "budget_range": "low",
+      "priority": 1,
       "why_this_outfit": [
         "Sleeveless brown top is a contemporary trendy pick",
         "High rise denim jeans are a wardrobe staple",
         "Patent leather flats give a fashion-forward edge"
       ]
     },
-
     {
       "id": "FK_013",
       "website": "Flipkart",
       "gender": "Female",
-      "occasion": "Party",
+      "occasions": ["party", "date"],
       "vibe": "Edgy",
-      "items": {
-        "dress": 43,
-        "shoes": 46,
-        "accessory": 44,
-        "bag": 32
-      },
+      "moods": ["edgy", "bold"],
+      "persona": "Trendy",
+      "body_shapes": ["hourglass", "rectangle", "inverted_triangle"],
+      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
+      "items": { "dress": 43, "shoes": 46, "accessory": 44, "bag": 32 },
       "total_price": 1005,
+      "budget_range": "low",
+      "priority": 1,
       "why_this_outfit": [
         "Bodycon mini dress commands attention",
         "Butterfly chain necklace adds an edgy attitude",
@@ -254,15 +264,16 @@
       "id": "FK_014",
       "website": "Flipkart",
       "gender": "Female",
-      "occasion": "Party",
+      "occasions": ["party", "date"],
       "vibe": "Glam",
-      "items": {
-        "dress": 45,
-        "shoes": 46,
-        "accessory": 47,
-        "bag": 32
-      },
+      "moods": ["glam", "chic"],
+      "persona": "Classic",
+      "body_shapes": ["hourglass", "rectangle", "pear"],
+      "skin_tones": ["fair", "wheatish", "dusky"],
+      "items": { "dress": 45, "shoes": 46, "accessory": 47, "bag": 32 },
       "total_price": 1571,
+      "budget_range": "medium",
+      "priority": 1,
       "why_this_outfit": [
         "Bodycon dress is the ultimate party statement",
         "Pearl choker adds a glamorous touch",
@@ -273,15 +284,16 @@
       "id": "FK_015",
       "website": "Flipkart",
       "gender": "Female",
-      "occasion": "Party",
+      "occasions": ["party", "date", "casual"],
       "vibe": "Chic",
-      "items": {
-        "dress": 48,
-        "shoes": 41,
-        "accessory": 47,
-        "bag": 32
-      },
+      "moods": ["chic", "minimal"],
+      "persona": "Minimalist",
+      "body_shapes": ["hourglass", "rectangle", "inverted_triangle"],
+      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
+      "items": { "dress": 48, "shoes": 41, "accessory": 47, "bag": 32 },
       "total_price": 928,
+      "budget_range": "low",
+      "priority": 2,
       "why_this_outfit": [
         "Multicolor bodycon is playful yet polished",
         "Patent flats keep it chic without trying too hard",
@@ -292,33 +304,36 @@
       "id": "FK_016",
       "website": "Flipkart",
       "gender": "Female",
-      "occasion": "Party",
+      "occasions": ["party", "wedding"],
       "vibe": "Bold",
-      "items": {
-        "dress": 49,
-        "shoes": 50,
-        "bag": 51
-      },
+      "moods": ["bold", "glam"],
+      "persona": "Trendy",
+      "body_shapes": ["hourglass", "rectangle", "pear"],
+      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
+      "items": { "dress": 49, "shoes": 50, "bag": 51 },
       "total_price": 1697,
+      "budget_range": "medium",
+      "priority": 1,
       "why_this_outfit": [
         "Satin gown makes a dramatic bold entrance",
         "Crystal heels add sparkle and height",
         "Fabric clutch keeps the look refined and complete"
       ]
     },
-
     {
       "id": "FK_017",
       "website": "Flipkart",
       "gender": "Female",
-      "occasion": "Wedding",
+      "occasions": ["wedding", "festive"],
       "vibe": "Ethnic Chic",
-      "items": {
-        "dress": 52,
-        "shoes": 53,
-        "accessory": 54
-      },
+      "moods": ["ethnic_chic", "glam"],
+      "persona": "Boho",
+      "body_shapes": ["hourglass", "pear", "rectangle", "apple"],
+      "skin_tones": ["wheatish", "dusky", "deep"],
+      "items": { "dress": 52, "shoes": 53, "accessory": 54 },
       "total_price": 3110,
+      "budget_range": "high",
+      "priority": 1,
       "why_this_outfit": [
         "Silk sharara is a contemporary ethnic showstopper",
         "Gold jewel set adds richness to the occasion",
@@ -329,14 +344,16 @@
       "id": "FK_018",
       "website": "Flipkart",
       "gender": "Female",
-      "occasion": "Wedding",
+      "occasions": ["wedding", "festive"],
       "vibe": "Traditional",
-      "items": {
-        "dress": 55,
-        "shoes": 53,
-        "accessory": 56
-      },
+      "moods": ["traditional", "ethnic_chic"],
+      "persona": "Classic",
+      "body_shapes": ["pear", "hourglass", "rectangle", "apple"],
+      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
+      "items": { "dress": 55, "shoes": 53, "accessory": 56 },
       "total_price": 1531,
+      "budget_range": "medium",
+      "priority": 2,
       "why_this_outfit": [
         "Anarkali suit is a timeless traditional choice",
         "Gold jewel set completes the traditional aesthetic",
@@ -347,14 +364,16 @@
       "id": "FK_019",
       "website": "Flipkart",
       "gender": "Female",
-      "occasion": "Wedding",
+      "occasions": ["wedding", "festive", "party"],
       "vibe": "Glam",
-      "items": {
-        "dress": 57,
-        "shoes": 53,
-        "accessory": 58
-      },
+      "moods": ["glam", "ethnic_chic"],
+      "persona": "Classic",
+      "body_shapes": ["hourglass", "pear", "rectangle"],
+      "skin_tones": ["fair", "wheatish", "dusky"],
+      "items": { "dress": 57, "shoes": 53, "accessory": 58 },
       "total_price": 1810,
+      "budget_range": "medium",
+      "priority": 1,
       "why_this_outfit": [
         "Lehenga choli is the ultimate wedding glam outfit",
         "Kundan jewel set adds a regal sparkle",
@@ -365,33 +384,36 @@
       "id": "FK_020",
       "website": "Flipkart",
       "gender": "Female",
-      "occasion": "Wedding",
+      "occasions": ["wedding", "festive"],
       "vibe": "Regal",
-      "items": {
-        "dress": 59,
-        "shoes": 60,
-        "accessory": 61
-      },
+      "moods": ["regal", "traditional"],
+      "persona": "Classic",
+      "body_shapes": ["hourglass", "pear", "rectangle", "apple"],
+      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
+      "items": { "dress": 59, "shoes": 60, "accessory": 61 },
       "total_price": 1085,
+      "budget_range": "low",
+      "priority": 2,
       "why_this_outfit": [
         "Organza saree drapes beautifully for a royal look",
         "Jewel set adds the right amount of grandeur",
         "Heel sandals keep the footing elegant"
       ]
     },
-
     {
       "id": "FK_021",
       "website": "Flipkart",
       "gender": "Female",
-      "occasion": "Festive",
+      "occasions": ["festive", "college", "casual"],
       "vibe": "Ethnic Chic",
-      "items": {
-        "dress": 62,
-        "shoes": 41,
-        "accessory": 63
-      },
+      "moods": ["ethnic_chic", "boho"],
+      "persona": "Boho",
+      "body_shapes": ["pear", "apple", "rectangle", "hourglass"],
+      "skin_tones": ["wheatish", "dusky", "deep"],
+      "items": { "dress": 62, "shoes": 41, "accessory": 63 },
       "total_price": 976,
+      "budget_range": "low",
+      "priority": 1,
       "why_this_outfit": [
         "Anarkali suit is festive-perfect without being overdressed",
         "Oxidised jhumkas add handcrafted charm",
@@ -402,14 +424,16 @@
       "id": "FK_022",
       "website": "Flipkart",
       "gender": "Female",
-      "occasion": "Festive",
+      "occasions": ["festive", "wedding"],
       "vibe": "Traditional",
-      "items": {
-        "dress": 64,
-        "shoes": 53,
-        "accessory": 54
-      },
+      "moods": ["traditional", "regal"],
+      "persona": "Classic",
+      "body_shapes": ["pear", "hourglass", "rectangle"],
+      "skin_tones": ["fair", "wheatish", "dusky"],
+      "items": { "dress": 64, "shoes": 53, "accessory": 54 },
       "total_price": 2237,
+      "budget_range": "high",
+      "priority": 1,
       "why_this_outfit": [
         "Silk blend suit is rich and festive-appropriate",
         "Gold jewel set elevates the traditional look",
@@ -420,14 +444,16 @@
       "id": "FK_023",
       "website": "Flipkart",
       "gender": "Female",
-      "occasion": "Festive",
+      "occasions": ["festive", "work", "casual"],
       "vibe": "Minimal",
-      "items": {
-        "dress": 65,
-        "shoes": 53,
-        "accessory": 56
-      },
+      "moods": ["minimal", "ethnic_chic"],
+      "persona": "Minimalist",
+      "body_shapes": ["rectangle", "pear", "hourglass", "apple"],
+      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
+      "items": { "dress": 65, "shoes": 53, "accessory": 56 },
       "total_price": 1363,
+      "budget_range": "medium",
+      "priority": 2,
       "why_this_outfit": [
         "Rayon suit is lightweight and elegant for day festivities",
         "Simple gold jewel set keeps the minimal vibe intact",
@@ -438,14 +464,16 @@
       "id": "FK_024",
       "website": "Flipkart",
       "gender": "Female",
-      "occasion": "Festive",
+      "occasions": ["festive", "party", "wedding"],
       "vibe": "Glam",
-      "items": {
-        "dress": 66,
-        "shoes": 53,
-        "accessory": 28
-      },
+      "moods": ["glam", "ethnic_chic"],
+      "persona": "Trendy",
+      "body_shapes": ["hourglass", "pear", "rectangle"],
+      "skin_tones": ["wheatish", "dusky", "deep"],
+      "items": { "dress": 66, "shoes": 53, "accessory": 28 },
       "total_price": 1356,
+      "budget_range": "medium",
+      "priority": 1,
       "why_this_outfit": [
         "Embroidered rayon suit catches the festive light beautifully",
         "Oxidised jhumkas add an artisanal glam touch",
@@ -453,57 +481,60 @@
       ]
     },
 
-
     {
       "id": "MH_001",
       "website": "Meesho",
       "gender": "Female",
-      "occasion": "College",
+      "occasions": ["college", "casual", "festive"],
       "vibe": "Boho",
-      "items": {
-        "top": 67,
-        "bottom": 68,
-        "shoes": 69,
-        "accessory": 70
-      },
+      "moods": ["boho", "ethnic_chic"],
+      "persona": "Boho",
+      "body_shapes": ["pear", "rectangle", "hourglass"],
+      "skin_tones": ["wheatish", "dusky", "deep"],
+      "items": { "top": 67, "bottom": 68, "shoes": 69, "accessory": 70 },
       "total_price": 1523,
+      "budget_range": "medium",
+      "priority": 1,
       "why_this_outfit": [
         "Flared sleeve piko top gives an effortless boho vibe",
-        "Bootcut jeans balance the flare of the top",
-        "Block heels add height while staying ethnic-inspired"
+        "Bootcut jeans balance the flare of the top perfectly",
+        "Block heels add height while keeping the ethnic-inspired feel"
       ]
     },
     {
       "id": "MH_002",
       "website": "Meesho",
       "gender": "Female",
-      "occasion": "College",
+      "occasions": ["college", "work", "casual"],
       "vibe": "Minimal",
-      "items": {
-        "top": 71,
-        "shoes": 72,
-        "accessory": 73
-      },
+      "moods": ["minimal", "ethnic_chic"],
+      "persona": "Minimalist",
+      "body_shapes": ["rectangle", "pear", "hourglass", "apple"],
+      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
+      "items": { "top": 71, "shoes": 72, "accessory": 73 },
       "total_price": 582,
+      "budget_range": "low",
+      "priority": 1,
       "why_this_outfit": [
-        "Full sleeve kurti is minimal and graceful",
-        "Mojdhi shoes add an ethnic minimal touch",
-        "Delicate bracelets complete the understated look"
+        "Full sleeve kurti is minimal and graceful for everyday wear",
+        "Mojdhi shoes add a subtle ethnic minimal touch",
+        "Delicate bracelets complete the understated look beautifully"
       ]
     },
     {
       "id": "MH_003",
       "website": "Meesho",
       "gender": "Female",
-      "occasion": "College",
+      "occasions": ["college", "casual"],
       "vibe": "Casual Cool",
-      "items": {
-        "top": 74,
-        "bottom": 75,
-        "shoes": 76,
-        "accessory": 77
-      },
+      "moods": ["casual_cool", "trendy"],
+      "persona": "Trendy",
+      "body_shapes": ["rectangle", "hourglass", "inverted_triangle"],
+      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
+      "items": { "top": 74, "bottom": 75, "shoes": 76, "accessory": 77 },
       "total_price": 1003,
+      "budget_range": "low",
+      "priority": 1,
       "why_this_outfit": [
         "Ribbed cutout top is casual-cool without being basic",
         "Straight fit jeans are a reliable everyday pairing",
@@ -514,37 +545,39 @@
       "id": "MH_004",
       "website": "Meesho",
       "gender": "Female",
-      "occasion": "College",
+      "occasions": ["college", "casual"],
       "vibe": "Street Style",
-      "items": {
-        "top": 78,
-        "bottom": 79,
-        "shoes": 76,
-        "accessory": 80
-      },
+      "moods": ["street_style", "bold"],
+      "persona": "Trendy",
+      "body_shapes": ["rectangle", "hourglass", "pear", "inverted_triangle"],
+      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
+      "items": { "top": 78, "bottom": 79, "shoes": 76, "accessory": 80 },
       "total_price": 924,
+      "budget_range": "low",
+      "priority": 2,
       "why_this_outfit": [
-        "V-neck black top is a street style staple",
-        "High waisted jeans define the silhouette",
-        "Sneakers and a necklace add personality to the look"
+        "V-neck black top is a street style staple that never fails",
+        "High waisted jeans define the waist and lengthen the legs",
+        "Sneakers and a gold necklace add personality to the look"
       ]
     },
-
     {
       "id": "MH_005",
       "website": "Meesho",
       "gender": "Female",
-      "occasion": "Festive",
+      "occasions": ["festive", "wedding"],
       "vibe": "Ethnic Chic",
-      "items": {
-        "top": 81,
-        "shoes": 82,
-        "accessory": 83
-      },
+      "moods": ["ethnic_chic", "traditional"],
+      "persona": "Boho",
+      "body_shapes": ["pear", "hourglass", "rectangle", "apple"],
+      "skin_tones": ["wheatish", "dusky", "deep"],
+      "items": { "top": 81, "shoes": 82, "accessory": 83 },
       "total_price": 1492,
+      "budget_range": "medium",
+      "priority": 1,
       "why_this_outfit": [
-        "Embroidered silk kurti is festive-ready and elegant",
-        "Mojdhi shoes add an ethnic flair",
+        "Embroidered silk kurti is festive-ready and beautifully elegant",
+        "Mojdhi shoes add a perfect ethnic flair to the ensemble",
         "Teardrop stone jewellery elevates the ethnic chic aesthetic"
       ]
     },
@@ -552,55 +585,59 @@
       "id": "MH_006",
       "website": "Meesho",
       "gender": "Female",
-      "occasion": "Festive",
+      "occasions": ["festive", "wedding", "casual"],
       "vibe": "Traditional",
-      "items": {
-        "dress": 84,
-        "shoes": 87,
-        "neckpiece": 85,
-        "accessory": 86
-      },
+      "moods": ["traditional", "regal"],
+      "persona": "Classic",
+      "body_shapes": ["pear", "hourglass", "rectangle", "apple"],
+      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
+      "items": { "dress": 84, "shoes": 87, "neckpiece": 85, "accessory": 86 },
       "total_price": 1550,
+      "budget_range": "medium",
+      "priority": 1,
       "why_this_outfit": [
-        "Georgette kurta set is a traditional festive classic",
-        "Golden heels add a celebratory shimmer",
-        "Pendant necklace and kashmiri bangles complete the look"
+        "Georgette kurta set is a traditional festive classic loved by all",
+        "Golden heels add a celebratory shimmer to the outfit",
+        "Pendant necklace and Kashmiri bangles complete the look"
       ]
     },
     {
       "id": "MH_007",
       "website": "Meesho",
       "gender": "Female",
-      "occasion": "Festive",
+      "occasions": ["festive", "party", "wedding"],
       "vibe": "Glam",
-      "items": {
-        "dress": 88,
-        "shoes": 87,
-        "neckpiece": 89
-      },
+      "moods": ["glam", "bold"],
+      "persona": "Trendy",
+      "body_shapes": ["hourglass", "pear", "rectangle"],
+      "skin_tones": ["fair", "wheatish", "dusky"],
+      "items": { "dress": 88, "shoes": 87, "neckpiece": 89 },
       "total_price": 2448,
+      "budget_range": "high",
+      "priority": 1,
       "why_this_outfit": [
-        "Silk gown with dupatta is glamorous and show-stopping",
-        "Gold plated necklace adds festive sparkle",
-        "Golden heels tie the glam look together perfectly"
+        "Silk gown with dupatta is glamorous and truly show-stopping",
+        "Gold plated necklace adds festive sparkle and elegance",
+        "Golden heels tie the entire glam look together perfectly"
       ]
     },
     {
       "id": "MH_008",
       "website": "Meesho",
       "gender": "Female",
-      "occasion": "Festive",
+      "occasions": ["festive", "casual", "work"],
       "vibe": "Minimal",
-      "items": {
-        "dress": 90,
-        "shoes": 87,
-        "neckpiece": 89,
-        "accessory": 86
-      },
+      "moods": ["minimal", "ethnic_chic"],
+      "persona": "Minimalist",
+      "body_shapes": ["rectangle", "pear", "hourglass", "apple"],
+      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
+      "items": { "dress": 90, "shoes": 87, "neckpiece": 89, "accessory": 86 },
       "total_price": 2118,
+      "budget_range": "high",
+      "priority": 2,
       "why_this_outfit": [
-        "Silk kurti and palazzo is minimal yet festive",
-        "Simple necklace keeps the look clean",
+        "Silk kurti and palazzo is minimal yet unmistakably festive",
+        "Simple necklace keeps the look clean and not overdone",
         "Golden heels add just the right amount of celebration"
       ]
     },
@@ -608,281 +645,413 @@
       "id": "MH_009",
       "website": "Meesho",
       "gender": "Female",
-      "occasion": "Date",
+      "occasions": ["date", "casual", "college"],
       "vibe": "Minimal",
-      "items": {
-        "dress": 91,
-        "shoes": 92,
-        "bag": 93,
-        "neckpiece": 94
-      },
+      "moods": ["minimal", "chic"],
+      "persona": "Minimalist",
+      "body_shapes": ["hourglass", "rectangle", "inverted_triangle"],
+      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
+      "items": { "dress": 91, "shoes": 92, "bag": 93, "neckpiece": 94 },
       "total_price": 1191,
+      "budget_range": "low",
+      "priority": 1,
       "why_this_outfit": [
-        ""
+        "Clean bodycon dress is effortless and minimal for a date",
+        "Pointed heel adds a sharp feminine edge",
+        "Chain handbag and bracelet tie the minimal look together"
       ]
     },
     {
       "id": "MH_010",
       "website": "Meesho",
       "gender": "Female",
-      "occasion": "Date",
+      "occasions": ["date", "party", "casual"],
       "vibe": "Trendy",
-      "items": {
-        "dress": 94,
-        "shoes": 95,
-        "bag": 96
-      },
+      "moods": ["trendy", "chic"],
+      "persona": "Trendy",
+      "body_shapes": ["hourglass", "rectangle", "inverted_triangle"],
+      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
+      "items": { "dress": 94, "shoes": 95, "bag": 96 },
       "total_price": 1120,
+      "budget_range": "low",
+      "priority": 1,
       "why_this_outfit": [
-        ""
+        "Co-ord set is a trendy and put-together date look",
+        "Black heel adds sophistication to the trendy outfit",
+        "Structured handbag completes the polished ensemble"
       ]
     },
     {
       "id": "MH_011",
       "website": "Meesho",
       "gender": "Female",
-      "occasion": "Date",
+      "occasions": ["date", "party"],
       "vibe": "Chic",
-      "items": {
-        "dress": 97,
-        "shoes": 92,
-        "neckpiece": 85
-      },
+      "moods": ["chic", "romantic"],
+      "persona": "Classic",
+      "body_shapes": ["hourglass", "pear", "rectangle"],
+      "skin_tones": ["fair", "wheatish", "dusky"],
+      "items": { "dress": 97, "shoes": 92, "neckpiece": 85 },
       "total_price": 1019,
+      "budget_range": "low",
+      "priority": 2,
       "why_this_outfit": [
-        ""
+        "Bodycon dress in a rich fabric feels effortlessly chic",
+        "Pointed heel elevates the look from casual to polished",
+        "Pendant necklace adds a delicate finishing touch"
       ]
     },
     {
       "id": "MH_012",
       "website": "Meesho",
       "gender": "Female",
-      "occasion": "Date",
+      "occasions": ["date", "casual"],
       "vibe": "Romantic",
-      "items": {
-        "dress": 98,
-        "shoes": 99,
-        "neckpiece": 85
-      },
+      "moods": ["romantic", "minimal"],
+      "persona": "Classic",
+      "body_shapes": ["hourglass", "pear", "rectangle"],
+      "skin_tones": ["fair", "wheatish", "dusky"],
+      "items": { "dress": 98, "shoes": 99, "neckpiece": 85 },
       "total_price": 443,
+      "budget_range": "low",
+      "priority": 2,
       "why_this_outfit": [
-        ""
+        "Soft bodycon dress in a feminine silhouette is perfectly romantic",
+        "White flat sandals keep the look sweet and approachable",
+        "Pendant necklace adds understated charm to the outfit"
       ]
     },
     {
       "id": "MH_013",
       "website": "Meesho",
       "gender": "Female",
-      "occasion": "Party",
+      "occasions": ["party", "date"],
       "vibe": "Chic",
-      "items": {
-        "dress": 100,
-        "shoes": 99,
-        "accessory": 101,
-        "neckpiece": 85
-      },
+      "moods": ["chic", "glam"],
+      "persona": "Classic",
+      "body_shapes": ["hourglass", "rectangle", "pear"],
+      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
+      "items": { "dress": 100, "shoes": 99, "accessory": 101, "neckpiece": 85 },
       "total_price": 790,
+      "budget_range": "low",
+      "priority": 1,
       "why_this_outfit": [
-        ""
+        "Bodycon party dress is sleek and effortlessly chic",
+        "Korean stud earrings add a trendy minimalist touch",
+        "White flats balance the look with a modern contrast"
       ]
     },
     {
       "id": "MH_014",
       "website": "Meesho",
       "gender": "Female",
-      "occasion": "Party",
+      "occasions": ["party", "date"],
       "vibe": "Edgy",
-      "items": {
-        "dress": 100,
-        "shoes": 92,
-        "bag": 93,
-        "neckpiece": 85
-      },
+      "moods": ["edgy", "bold"],
+      "persona": "Trendy",
+      "body_shapes": ["hourglass", "inverted_triangle", "rectangle"],
+      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
+      "items": { "dress": 100, "shoes": 92, "bag": 93, "neckpiece": 85 },
       "total_price": 1244,
+      "budget_range": "low",
+      "priority": 2,
       "why_this_outfit": [
-        ""
+        "Net bodycon brings drama and an edgy texture to the party",
+        "Pointed heel sharpens the look with attitude",
+        "Chain bag and pendant necklace add confident edge"
       ]
     },
     {
       "id": "MH_015",
       "website": "Meesho",
       "gender": "Female",
-      "occasion": "Party",
+      "occasions": ["party", "date", "casual"],
       "vibe": "Chic",
-      "items": {
-        "dress": 103,
-        "shoes": 92,
-        "accessory": 104
-      },
+      "moods": ["chic", "minimal"],
+      "persona": "Minimalist",
+      "body_shapes": ["hourglass", "rectangle", "inverted_triangle"],
+      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
+      "items": { "dress": 103, "shoes": 92, "accessory": 104 },
       "total_price": 742,
+      "budget_range": "low",
+      "priority": 3,
       "why_this_outfit": [
-        ""
+        "Clean bodycon in Lycra is comfortable yet party-ready",
+        "Pointed heel adds instant polish to the simple dress",
+        "Flower stone earrings add a feminine, chic pop"
       ]
     },
     {
       "id": "MH_016",
       "website": "Meesho",
       "gender": "Female",
-      "occasion": "Party",
+      "occasions": ["party", "date"],
       "vibe": "Bold",
-      "items": {
-        "dress": 104,
-        "shoes": 95,
-        "neckpiece": 85,
-        "bag": 92
-      },
+      "moods": ["bold", "edgy"],
+      "persona": "Trendy",
+      "body_shapes": ["hourglass", "rectangle", "inverted_triangle"],
+      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
+      "items": { "dress": 105, "shoes": 95, "neckpiece": 85 },
       "total_price": 996,
+      "budget_range": "low",
+      "priority": 2,
       "why_this_outfit": [
-        ""
+        "Bold bodycon dress makes an unforgettable entrance",
+        "Black heel adds height and sharpens the bold look",
+        "Pendant necklace keeps the accessories from competing"
       ]
     },
     {
       "id": "MH_017",
       "website": "Meesho",
       "gender": "Female",
-      "occasion": "Party",
+      "occasions": ["party", "date"],
       "vibe": "Glam",
-      "items": {
-        "dress": 106,
-        "shoes": 99,
-        "neckpiece": 85
-      },
+      "moods": ["glam", "chic"],
+      "persona": "Trendy",
+      "body_shapes": ["hourglass", "pear", "rectangle"],
+      "skin_tones": ["fair", "wheatish", "dusky"],
+      "items": { "dress": 106, "shoes": 99, "neckpiece": 85 },
       "total_price": 569,
+      "budget_range": "low",
+      "priority": 1,
       "why_this_outfit": [
-        ""
+        "Yellow bodycon dress is eye-catching and full of energy",
+        "White flat sandals create a fresh, modern contrast",
+        "Simple pendant keeps the accessories clean and glam"
       ]
     },
     {
       "id": "MH_018",
       "website": "Meesho",
       "gender": "Female",
-      "occasion": "Work",
+      "occasions": ["work", "formal"],
       "vibe": "Power Dressing",
-      "items": {
-        "dress": 107,
-        "shoes": 95,
-        "bag": 108
-      },
+      "moods": ["power_dressing", "chic"],
+      "persona": "Classic",
+      "body_shapes": ["rectangle", "inverted_triangle", "hourglass"],
+      "skin_tones": ["fair", "wheatish", "dusky"],
+      "items": { "dress": 107, "shoes": 95, "bag": 108 },
       "total_price": 1147,
+      "budget_range": "low",
+      "priority": 1,
       "why_this_outfit": [
-        ""
+        "Lycra co-ord set in a structured silhouette commands respect",
+        "Black heel adds authority and professional height",
+        "Leather shoulder bag completes the powerful work look"
       ]
     },
     {
       "id": "MH_019",
       "website": "Meesho",
       "gender": "Female",
-      "occasion": "Work",
+      "occasions": ["work", "college", "casual"],
       "vibe": "Minimal",
-      "items": {
-        "top": 109,
-        "bottom": 110,
-        "shoes": 112,
-        "bag": 111
-      },
+      "moods": ["minimal", "classic"],
+      "persona": "Minimalist",
+      "body_shapes": ["rectangle", "hourglass", "inverted_triangle"],
+      "skin_tones": ["fair", "wheatish", "dusky"],
+      "items": { "top": 109, "bottom": 110, "shoes": 112, "bag": 111 },
       "total_price": 1286,
+      "budget_range": "low",
+      "priority": 1,
       "why_this_outfit": [
-        ""
+        "Waistcoat and black trousers create a sharp, minimal work look",
+        "White patent sandals add a clean modern touch",
+        "White handbag ties the monochromatic minimal palette together"
       ]
     },
     {
       "id": "MH_020",
       "website": "Meesho",
       "gender": "Female",
-      "occasion": "Work",
-      "vibe": "Minimal",
-      "items": {
-        "top": 113,
-        "bottom": 110,
-        "shoes": 112,
-        "accessory": 114
-      },
+      "occasions": ["work", "casual"],
+      "vibe": "Smart Casual",
+      "moods": ["smart_casual", "minimal"],
+      "persona": "Minimalist",
+      "body_shapes": ["rectangle", "hourglass", "pear"],
+      "skin_tones": ["fair", "wheatish", "dusky"],
+      "items": { "top": 113, "bottom": 110, "shoes": 112, "accessory": 114 },
       "total_price": 862,
+      "budget_range": "low",
+      "priority": 2,
       "why_this_outfit": [
-        ""
-      ]
-    },
-    {
-      "id": "MH_020",
-      "website": "Meesho",
-      "gender": "Female",
-      "occasion": "Work",
-      "vibe": "Classic",
-      "items": {
-        "top": 115,
-        "bottom": 110,
-        "shoes": 112,
-        "accessory": 114
-      },
-      "total_price": 810,
-      "why_this_outfit": [
-        ""
+        "White shirt top and black trousers is a fail-proof work combo",
+        "White sandals keep the look fresh and modern",
+        "Formal watch adds a refined, professional finishing touch"
       ]
     },
     {
       "id": "MH_021",
       "website": "Meesho",
       "gender": "Female",
-      "occasion": "Wedding",
-      "vibe": "Traditional",
-      "items": {
-        "dress": 116,
-        "shoes": 118,
-        "accessory": 117
-      },
-      "total_price": 1944,
+      "occasions": ["work", "casual"],
+      "vibe": "Classic",
+      "moods": ["classic", "minimal"],
+      "persona": "Classic",
+      "body_shapes": ["rectangle", "hourglass", "inverted_triangle"],
+      "skin_tones": ["fair", "wheatish", "dusky"],
+      "items": { "top": 115, "bottom": 110, "shoes": 112, "accessory": 114 },
+      "total_price": 810,
+      "budget_range": "low",
+      "priority": 3,
       "why_this_outfit": [
-        ""
+        "Formal shirt and black trousers is a timeless classic work outfit",
+        "White patent sandals add a contemporary twist to the classic look",
+        "Leather watch accessory completes the put-together professional vibe"
       ]
     },
     {
       "id": "MH_022",
       "website": "Meesho",
       "gender": "Female",
-      "occasion": "Wedding",
-      "vibe": "Glam",
-      "items": {
-        "dress": 119,
-        "shoes": 118,
-        "accessory": 89
-      },
-      "total_price": 1835,
+      "occasions": ["wedding", "festive"],
+      "vibe": "Traditional",
+      "moods": ["traditional", "regal"],
+      "persona": "Classic",
+      "body_shapes": ["pear", "hourglass", "rectangle", "apple"],
+      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
+      "items": { "dress": 116, "shoes": 118, "accessory": 117 },
+      "total_price": 1944,
+      "budget_range": "medium",
+      "priority": 1,
       "why_this_outfit": [
-        ""
+        "Orange lehenga is vibrant and perfect for a traditional wedding",
+        "Choker jewellery set frames the face beautifully",
+        "Transparent white heel adds a modern touch to the traditional look"
       ]
     },
     {
       "id": "MH_023",
       "website": "Meesho",
       "gender": "Female",
-      "occasion": "Wedding",
-      "vibe": "Regal",
-      "items": {
-        "dress": 120,
-        "shoes": 87,
-        "bag": 121
-      },
-      "total_price": 1085,
+      "occasions": ["wedding", "festive", "party"],
+      "vibe": "Glam",
+      "moods": ["glam", "regal"],
+      "persona": "Classic",
+      "body_shapes": ["hourglass", "pear", "rectangle"],
+      "skin_tones": ["fair", "wheatish", "dusky"],
+      "items": { "dress": 119, "shoes": 118, "accessory": 89 },
+      "total_price": 1835,
+      "budget_range": "medium",
+      "priority": 1,
       "why_this_outfit": [
-        ""
+        "Organza sharara is lightweight and absolutely stunning",
+        "Gold plated necklace set adds a glamorous shine",
+        "Transparent white heel keeps the look ethereal and modern"
       ]
     },
     {
       "id": "MH_024",
       "website": "Meesho",
       "gender": "Female",
-      "occasion": "Wedding",
+      "occasions": ["wedding", "festive"],
+      "vibe": "Regal",
+      "moods": ["regal", "traditional"],
+      "persona": "Classic",
+      "body_shapes": ["pear", "hourglass", "rectangle", "apple"],
+      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
+      "items": { "dress": 120, "shoes": 87, "bag": 121 },
+      "total_price": 1085,
+      "budget_range": "low",
+      "priority": 2,
+      "why_this_outfit": [
+        "Silk lehenga choli exudes regality at an accessible price",
+        "Golden heels add celebratory shimmer to the ensemble",
+        "Potli bag adds a charming traditional accessory touch"
+      ]
+    },
+    {
+      "id": "MH_025",
+      "website": "Meesho",
+      "gender": "Female",
+      "occasions": ["wedding", "festive"],
       "vibe": "Ethnic Chic",
-      "items": {
-        "dress": 123,
-        "shoes": 87,
-        "neckpiece": 89
-      },
+      "moods": ["ethnic_chic", "glam"],
+      "persona": "Boho",
+      "body_shapes": ["hourglass", "pear", "rectangle"],
+      "skin_tones": ["wheatish", "dusky", "deep"],
+      "items": { "dress": 122, "shoes": 87, "neckpiece": 89 },
       "total_price": 1436,
+      "budget_range": "medium",
+      "priority": 1,
+      "why_this_outfit": [
+        "Georgette lehenga choli is a modern ethnic chic statement",
+        "Gold plated necklace set adds festive warmth and sparkle",
+        "Golden heels complete the look with a celebratory finish"
+      ]
+    },
+    {
+      "id": "MY_001",
+      "website": "Myntra",
+      "gender": "Female",
+      "occasions": ["Party"],
+      "vibe": "edgy",
+      "moods": [""],
+      "persona": "",
+      "body_shapes": ["", "", ""],
+      "skin_tones": ["", "", ""],
+      "items": { "dress": 123, "shoes": 125, "accessory": 124 },
+      "total_price": 1143,
+      "budget_range": "medium",
+      "priority": "-",
+      "why_this_outfit": [
+        ""
+      ]
+    },
+    {
+      "id": "MY_002",
+      "website": "Myntra",
+      "gender": "Female",
+      "occasions": ["Party"],
+      "vibe": "Bold",
+      "moods": [""],
+      "persona": "",
+      "body_shapes": ["", "", ""],
+      "skin_tones": ["", "", ""],
+      "items": { "dress": 126, "shoes": 128, "accessory": 127 },
+      "total_price": 1695,
+      "budget_range": "medium",
+      "priority": "-",
+      "why_this_outfit": [
+        ""
+      ]
+    },
+    {
+      "id": "MY_003",
+      "website": "Myntra",
+      "gender": "Female",
+      "occasions": ["Party"],
+      "vibe": "Chic",
+      "moods": [""],
+      "persona": "",
+      "body_shapes": ["", "", ""],
+      "skin_tones": ["", "", ""],
+      "items": { "dress": 129, "shoes": 130, "accessory": 124 },
+      "total_price": 2656,
+      "budget_range": "medium",
+      "priority": "-",
+      "why_this_outfit": [
+        ""
+      ]
+    },
+    {
+      "id": "MY_004",
+      "website": "Myntra",
+      "gender": "Female",
+      "occasions": ["Party"],
+      "vibe": "Glam",
+      "moods": [""],
+      "persona": "",
+      "body_shapes": ["", "", ""],
+      "skin_tones": ["", "", ""],
+      "items": { "dress": 131, "shoes": 125, "accessory": 127 },
+      "total_price": 1692,
+      "budget_range": "medium",
+      "priority": "-",
       "why_this_outfit": [
         ""
       ]
     }
-
   ]
 }
