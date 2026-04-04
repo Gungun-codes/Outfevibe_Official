@@ -21,11 +21,13 @@
       "pear",
       "hourglass",
       "rectangle",
-      "apple"
+      "apple",
+      "inverted_triangle"
     ],
     "skin_tones": [
       "wheatish",
       "dusky",
+      "tan",
       "deep"
     ],
     "priority": 1,
@@ -133,7 +135,8 @@
     ],
     "skin_tones": [
       "fair",
-      "wheatish"
+      "wheatish",
+      "tan"
     ],
     "priority": 2,
     "categories": [

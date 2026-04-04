@@ -33,49 +33,49 @@ app.add_middleware(
 # client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY", ""))
 
 
-class AnalyzeReq(BaseModel):
-    image_base64: str
-    media_type: str = "image/jpeg"
+# class AnalyzeReq(BaseModel):
+#     image_base64: str
+#     media_type: str = "image/jpeg"
 
 
-@app.post("/api/analyze")
-async def analyze(req: AnalyzeReq):
-    prompt = """Analyze this person's photo. Respond ONLY with JSON (no markdown):
-{
-  "body_shape": "<Hourglass|Pear|Apple|Rectangle|Inverted Triangle>",
-  "skin_tone": "<Fair|Light|Medium|Tan|Deep|Dark>",
-  "body_shape_reason": "<one sentence>",
-  "skin_tone_reason": "<one sentence>"
-}"""
-    try:
-        msg = client.messages.create(
-            model="claude-opus-4-5", max_tokens=256,
-            messages=[{"role": "user", "content": [
-                {"type": "image", "source": {"type": "base64", "media_type": req.media_type, "data": req.image_base64}},
-                {"type": "text", "text": prompt},
-            ]}],
-        )
-        raw = msg.content[0].text.strip().strip("```json").strip("```").strip()
-        data = json.loads(raw)
-        SHAPES = ["Hourglass","Pear","Apple","Rectangle","Inverted Triangle"]
-        TONES  = ["Fair","Light","Medium","Tan","Deep","Dark"]
-        return JSONResponse({"success": True,
-            "body_shape": data.get("body_shape") if data.get("body_shape") in SHAPES else "Rectangle",
-            "skin_tone":  data.get("skin_tone")  if data.get("skin_tone")  in TONES  else "Medium",
-            "body_shape_reason": data.get("body_shape_reason",""),
-            "skin_tone_reason":  data.get("skin_tone_reason",""),
-        })
-    except Exception as e:
-        return JSONResponse({"success": False, "error": str(e)}, status_code=500)
+# @app.post("/api/analyze")
+# async def analyze(req: AnalyzeReq):
+#     prompt = """Analyze this person's photo. Respond ONLY with JSON (no markdown):
+# {
+#   "body_shape": "<Hourglass|Pear|Apple|Rectangle|Inverted Triangle>",
+#   "skin_tone": "<Fair|Light|Medium|Tan|Deep|Dark>",
+#   "body_shape_reason": "<one sentence>",
+#   "skin_tone_reason": "<one sentence>"
+# }"""
+#     try:
+#         msg = client.messages.create(
+#             model="claude-opus-4-5", max_tokens=256,
+#             messages=[{"role": "user", "content": [
+#                 {"type": "image", "source": {"type": "base64", "media_type": req.media_type, "data": req.image_base64}},
+#                 {"type": "text", "text": prompt},
+#             ]}],
+#         )
+#         raw = msg.content[0].text.strip().strip("```json").strip("```").strip()
+#         data = json.loads(raw)
+#         SHAPES = ["Hourglass","Pear","Apple","Rectangle","Inverted Triangle"]
+#         TONES  = ["Fair","Light","Medium","Tan","Deep","Dark"]
+#         return JSONResponse({"success": True,
+#             "body_shape": data.get("body_shape") if data.get("body_shape") in SHAPES else "Rectangle",
+#             "skin_tone":  data.get("skin_tone")  if data.get("skin_tone")  in TONES  else "Medium",
+#             "body_shape_reason": data.get("body_shape_reason",""),
+#             "skin_tone_reason":  data.get("skin_tone_reason",""),
+#         })
+#     except Exception as e:
+#         return JSONResponse({"success": False, "error": str(e)}, status_code=500)
 
 
-class OutfitReq(BaseModel):
-    gender: str = "Female"
-    occasion: str = "College"
-    vibe: str = "Classic"
-    platform: Optional[str] = None
-    body_shape: Optional[str] = None
-    skin_tone: Optional[str] = None
+# class OutfitReq(BaseModel):
+#     gender: str = "Female"
+#     occasion: str = "College"
+#     vibe: str = "Classic"
+#     platform: Optional[str] = None
+#     body_shape: Optional[str] = None
+#     skin_tone: Optional[str] = None
 
 
 # Import the same outfit DB from a shared JSON or inline a subset
