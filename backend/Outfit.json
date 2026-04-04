@@ -1,113 +1,888 @@
 {
   "outfits": [
+
     {
-      "id": "outfit_001",
-      "title": "Minimal College Look",
-      "occasion": "college",
-      "mood": "minimal",
-
+      "id": "FK_001",
+      "website": "Flipkart",
+      "gender": "Female",
+      "occasion": "College",
+      "vibe": "Casual Cool",
       "items": {
-        "top": "top-001",
-        "bottom": "bottom-001",
-        "shoes": "shoes-001",
-        "accessories": ["accessory-001"]
+        "top": 1,
+        "top_inner": 2,
+        "bottom": 3,
+        "shoes": 4
       },
-
-      "total_price": 1523,
-
+      "total_price": 1601,
       "why_this_outfit": [
         "Clean and minimal aesthetic",
         "Comfortable for daily college wear",
-        "Balanced silhouette with bootcut jeans"
+        "Balanced silhouette with straight-cut trousers"
+      ]
+    },
+    {
+      "id": "FK_002",
+      "website": "Flipkart",
+      "gender": "Female",
+      "occasion": "College",
+      "vibe": "Street Style",
+      "items": {
+        "top": 5,
+        "bottom": 6,
+        "bag": 7,
+        "shoes": 8
+      },
+      "total_price": 1577,
+      "why_this_outfit": [
+        "Oversized graphic tee gives an effortless urban feel",
+        "Loose jeans add a cool relaxed silhouette",
+        "Black sneakers and tote complete the street-ready look"
+      ]
+    },
+    {
+      "id": "FK_003",
+      "website": "Flipkart",
+      "gender": "Female",
+      "occasion": "College",
+      "vibe": "Minimal",
+      "items": {
+        "top": 9,
+        "bottom": 10,
+        "shoes": 11,
+        "bag": 12
+      },
+      "total_price": 1808,
+      "why_this_outfit": [
+        "Polo tee and high-waisted trousers keep it clean and put-together",
+        "Neutral palette works for all skin tones",
+        "Bellies sandal adds a feminine touch without fuss"
+      ]
+    },
+    {
+      "id": "FK_004",
+      "website": "Flipkart",
+      "gender": "Female",
+      "occasion": "College",
+      "vibe": "Boho",
+      "items": {
+        "top": 13,
+        "bottom": 14,
+        "bag": 15,
+        "shoes": 16
+      },
+      "total_price": 1085,
+      "why_this_outfit": [
+        "Straight kurti with jeans is a classic boho-meets-casual combo",
+        "Jute tote adds earthy texture",
+        "Flat sandals keep the look grounded and comfortable"
       ]
     },
 
     {
-      "id": "outfit_002",
-      "title": "Ethnic College Look",
-      "occasion": "college",
-      "mood": "ethnic",
-
+      "id": "FK_005",
+      "website": "Flipkart",
+      "gender": "Female",
+      "occasion": "Work",
+      "vibe": "Power Dressing",
       "items": {
-        "top": "top-002",
-        "bottom": null,
-        "shoes": "shoes-002",
-        "accessories": ["accessory-002"]
+        "top": 1,
+        "bottom": 17,
+        "top_outer": 18,
+        "accessory": 19
       },
+      "total_price": 1772,
+      "why_this_outfit": [
+        "Blazer over a classic shirt radiates authority",
+        "Black trousers create a sharp, professional silhouette",
+        "Rectangle watch adds a polished finishing touch"
+      ]
+    },
+    {
+      "id": "FK_006",
+      "website": "Flipkart",
+      "gender": "Female",
+      "occasion": "Work",
+      "vibe": "Classic",
+      "items": {
+        "top": 20,
+        "bottom": 21,
+        "shoes": 22,
+        "bag": 23
+      },
+      "total_price": 1757,
+      "why_this_outfit": [
+        "Navy shirt and beige trousers is a timeless work pairing",
+        "Heel sandals elevate the formality",
+        "Structured sling bag completes the polished look"
+      ]
+    },
+    {
+      "id": "FK_007",
+      "website": "Flipkart",
+      "gender": "Female",
+      "occasion": "Work",
+      "vibe": "Minimal",
+      "items": {
+        "top": 24,
+        "bottom": 25,
+        "shoes": 22,
+        "accessory": 19
+      },
+      "total_price": 1674,
+      "why_this_outfit": [
+        "Waistcoat adds structure without being overly formal",
+        "Navy trousers keep the palette clean and professional",
+        "Watch accessory ties the minimal look together"
+      ]
+    },
+    {
+      "id": "FK_008",
+      "website": "Flipkart",
+      "gender": "Female",
+      "occasion": "Work",
+      "vibe": "Smart Casual",
+      "items": {
+        "top": 26,
+        "bag": 27,
+        "shoes": 29,
+        "accessory": 28
+      },
+      "total_price": 1628,
+      "why_this_outfit": [
+        "Kurta set strikes the perfect smart-casual balance",
+        "Mojari jutis add an Indian aesthetic that works beautifully in offices",
+        "Jhumka earrings add personality without overwhelming"
+      ]
+    },
 
+    {
+      "id": "FK_009",
+      "website": "Flipkart",
+      "gender": "Female",
+      "occasion": "Date",
+      "vibe": "Romantic",
+      "items": {
+        "dress": 30,
+        "bag": 32,
+        "shoes": 31,
+        "accessory": 33
+      },
+      "total_price": 1768,
+      "why_this_outfit": [
+        "Flowy maroon midi dress is effortlessly romantic",
+        "Cherry heels add height and drama",
+        "Gold jewel set adds warmth to the whole look"
+      ]
+    },
+    {
+      "id": "FK_010",
+      "website": "Flipkart",
+      "gender": "Female",
+      "occasion": "Date",
+      "vibe": "Minimal",
+      "items": {
+        "dress": 34,
+        "shoes": 16,
+        "accessory": 35
+      },
+      "total_price": 680,
+      "why_this_outfit": [
+        "Orange-pink midi is understated yet striking",
+        "Flat sandals keep the look relaxed and date-ready",
+        "Pearl earrings add a delicate finishing touch"
+      ]
+    },
+    {
+      "id": "FK_011",
+      "website": "Flipkart",
+      "gender": "Female",
+      "occasion": "Date",
+      "vibe": "Chic",
+      "items": {
+        "top": 36,
+        "bottom": 39,
+        "shoes": 38,
+        "accessory": 37
+      },
+      "total_price": 1686,
+      "why_this_outfit": [
+        "Full sleeve top paired with high rise jeans looks polished",
+        "Maroon block heels add a bold yet classic accent",
+        "Pearl necklace keeps the look refined and chic"
+      ]
+    },
+    {
+      "id": "FK_012",
+      "website": "Flipkart",
+      "gender": "Female",
+      "occasion": "Date",
+      "vibe": "Trendy",
+      "items": {
+        "top": 40,
+        "bottom": 42,
+        "shoes": 41,
+        "bag": 32
+      },
+      "total_price": 1281,
+      "why_this_outfit": [
+        "Sleeveless brown top is a contemporary trendy pick",
+        "High rise denim jeans are a wardrobe staple",
+        "Patent leather flats give a fashion-forward edge"
+      ]
+    },
+
+    {
+      "id": "FK_013",
+      "website": "Flipkart",
+      "gender": "Female",
+      "occasion": "Party",
+      "vibe": "Edgy",
+      "items": {
+        "dress": 43,
+        "shoes": 46,
+        "accessory": 44,
+        "bag": 32
+      },
+      "total_price": 1005,
+      "why_this_outfit": [
+        "Bodycon mini dress commands attention",
+        "Butterfly chain necklace adds an edgy attitude",
+        "Wine heels complete the bold party look"
+      ]
+    },
+    {
+      "id": "FK_014",
+      "website": "Flipkart",
+      "gender": "Female",
+      "occasion": "Party",
+      "vibe": "Glam",
+      "items": {
+        "dress": 45,
+        "shoes": 46,
+        "accessory": 47,
+        "bag": 32
+      },
+      "total_price": 1571,
+      "why_this_outfit": [
+        "Bodycon dress is the ultimate party statement",
+        "Pearl choker adds a glamorous touch",
+        "Wine pointed heels tie the glam look together"
+      ]
+    },
+    {
+      "id": "FK_015",
+      "website": "Flipkart",
+      "gender": "Female",
+      "occasion": "Party",
+      "vibe": "Chic",
+      "items": {
+        "dress": 48,
+        "shoes": 41,
+        "accessory": 47,
+        "bag": 32
+      },
+      "total_price": 928,
+      "why_this_outfit": [
+        "Multicolor bodycon is playful yet polished",
+        "Patent flats keep it chic without trying too hard",
+        "Pearl choker adds an understated luxe feel"
+      ]
+    },
+    {
+      "id": "FK_016",
+      "website": "Flipkart",
+      "gender": "Female",
+      "occasion": "Party",
+      "vibe": "Bold",
+      "items": {
+        "dress": 49,
+        "shoes": 50,
+        "bag": 51
+      },
+      "total_price": 1697,
+      "why_this_outfit": [
+        "Satin gown makes a dramatic bold entrance",
+        "Crystal heels add sparkle and height",
+        "Fabric clutch keeps the look refined and complete"
+      ]
+    },
+
+    {
+      "id": "FK_017",
+      "website": "Flipkart",
+      "gender": "Female",
+      "occasion": "Wedding",
+      "vibe": "Ethnic Chic",
+      "items": {
+        "dress": 52,
+        "shoes": 53,
+        "accessory": 54
+      },
+      "total_price": 3110,
+      "why_this_outfit": [
+        "Silk sharara is a contemporary ethnic showstopper",
+        "Gold jewel set adds richness to the occasion",
+        "Heel sandals complete the ethnic chic look"
+      ]
+    },
+    {
+      "id": "FK_018",
+      "website": "Flipkart",
+      "gender": "Female",
+      "occasion": "Wedding",
+      "vibe": "Traditional",
+      "items": {
+        "dress": 55,
+        "shoes": 53,
+        "accessory": 56
+      },
+      "total_price": 1531,
+      "why_this_outfit": [
+        "Anarkali suit is a timeless traditional choice",
+        "Gold jewel set completes the traditional aesthetic",
+        "Heel sandals add the right amount of elegance"
+      ]
+    },
+    {
+      "id": "FK_019",
+      "website": "Flipkart",
+      "gender": "Female",
+      "occasion": "Wedding",
+      "vibe": "Glam",
+      "items": {
+        "dress": 57,
+        "shoes": 53,
+        "accessory": 58
+      },
+      "total_price": 1810,
+      "why_this_outfit": [
+        "Lehenga choli is the ultimate wedding glam outfit",
+        "Kundan jewel set adds a regal sparkle",
+        "Heel sandals complete the bridal-adjacent look"
+      ]
+    },
+    {
+      "id": "FK_020",
+      "website": "Flipkart",
+      "gender": "Female",
+      "occasion": "Wedding",
+      "vibe": "Regal",
+      "items": {
+        "dress": 59,
+        "shoes": 60,
+        "accessory": 61
+      },
+      "total_price": 1085,
+      "why_this_outfit": [
+        "Organza saree drapes beautifully for a royal look",
+        "Jewel set adds the right amount of grandeur",
+        "Heel sandals keep the footing elegant"
+      ]
+    },
+
+    {
+      "id": "FK_021",
+      "website": "Flipkart",
+      "gender": "Female",
+      "occasion": "Festive",
+      "vibe": "Ethnic Chic",
+      "items": {
+        "dress": 62,
+        "shoes": 41,
+        "accessory": 63
+      },
+      "total_price": 976,
+      "why_this_outfit": [
+        "Anarkali suit is festive-perfect without being overdressed",
+        "Oxidised jhumkas add handcrafted charm",
+        "Patent flats keep it comfortable through long celebrations"
+      ]
+    },
+    {
+      "id": "FK_022",
+      "website": "Flipkart",
+      "gender": "Female",
+      "occasion": "Festive",
+      "vibe": "Traditional",
+      "items": {
+        "dress": 64,
+        "shoes": 53,
+        "accessory": 54
+      },
+      "total_price": 2237,
+      "why_this_outfit": [
+        "Silk blend suit is rich and festive-appropriate",
+        "Gold jewel set elevates the traditional look",
+        "Heel sandals add grace to the ensemble"
+      ]
+    },
+    {
+      "id": "FK_023",
+      "website": "Flipkart",
+      "gender": "Female",
+      "occasion": "Festive",
+      "vibe": "Minimal",
+      "items": {
+        "dress": 65,
+        "shoes": 53,
+        "accessory": 56
+      },
+      "total_price": 1363,
+      "why_this_outfit": [
+        "Rayon suit is lightweight and elegant for day festivities",
+        "Simple gold jewel set keeps the minimal vibe intact",
+        "Heel sandals add a touch of festivity"
+      ]
+    },
+    {
+      "id": "FK_024",
+      "website": "Flipkart",
+      "gender": "Female",
+      "occasion": "Festive",
+      "vibe": "Glam",
+      "items": {
+        "dress": 66,
+        "shoes": 53,
+        "accessory": 28
+      },
+      "total_price": 1356,
+      "why_this_outfit": [
+        "Embroidered rayon suit catches the festive light beautifully",
+        "Oxidised jhumkas add an artisanal glam touch",
+        "Heel sandals keep the festive look complete"
+      ]
+    },
+
+
+    {
+      "id": "MH_001",
+      "website": "Meesho",
+      "gender": "Female",
+      "occasion": "College",
+      "vibe": "Boho",
+      "items": {
+        "top": 67,
+        "bottom": 68,
+        "shoes": 69,
+        "accessory": 70
+      },
+      "total_price": 1523,
+      "why_this_outfit": [
+        "Flared sleeve piko top gives an effortless boho vibe",
+        "Bootcut jeans balance the flare of the top",
+        "Block heels add height while staying ethnic-inspired"
+      ]
+    },
+    {
+      "id": "MH_002",
+      "website": "Meesho",
+      "gender": "Female",
+      "occasion": "College",
+      "vibe": "Minimal",
+      "items": {
+        "top": 71,
+        "shoes": 72,
+        "accessory": 73
+      },
       "total_price": 582,
-
       "why_this_outfit": [
-        "Traditional yet comfortable",
-        "Perfect for ethnic days in college",
-        "Lightweight and breathable fabrics"
+        "Full sleeve kurti is minimal and graceful",
+        "Mojdhi shoes add an ethnic minimal touch",
+        "Delicate bracelets complete the understated look"
       ]
     },
-
     {
-      "id": "outfit_003",
-      "title": "Edgy College Look",
-      "occasion": "college",
-      "mood": "edgy",
-
+      "id": "MH_003",
+      "website": "Meesho",
+      "gender": "Female",
+      "occasion": "College",
+      "vibe": "Casual Cool",
       "items": {
-        "top": "top-003",
-        "bottom": "bottom-003",
-        "shoes": "shoes-003",
-        "accessories": ["accessory-003"]
+        "top": 74,
+        "bottom": 75,
+        "shoes": 76,
+        "accessory": 77
       },
-
       "total_price": 1003,
-
       "why_this_outfit": [
-        "Bold and confident styling",
-        "Ribbed top adds texture",
-        "Sneakers give a cool street vibe"
+        "Ribbed cutout top is casual-cool without being basic",
+        "Straight fit jeans are a reliable everyday pairing",
+        "Canvas sneakers complete the relaxed-cool look"
       ]
     },
-
     {
-      "id": "outfit_004",
-      "title": "Chic College Look",
-      "occasion": "college",
-      "mood": "chic",
-
+      "id": "MH_004",
+      "website": "Meesho",
+      "gender": "Female",
+      "occasion": "College",
+      "vibe": "Street Style",
       "items": {
-        "top": "top-004",
-        "bottom": "bottom-004",
-        "shoes": "shoes-004",
-        "accessories": ["accessory-004"]
+        "top": 78,
+        "bottom": 79,
+        "shoes": 76,
+        "accessory": 80
       },
-
       "total_price": 924,
-
       "why_this_outfit": [
-        "Stylish and polished appearance",
-        "Black top gives elegant touch",
-        "Perfect for semi-formal college days"
+        "V-neck black top is a street style staple",
+        "High waisted jeans define the silhouette",
+        "Sneakers and a necklace add personality to the look"
       ]
     },
 
     {
-      "id": "outfit_005",
-      "title": "Festival Ethnic Look",
-      "occasion": "festival",
-      "mood": "ethnic",
-
+      "id": "MH_005",
+      "website": "Meesho",
+      "gender": "Female",
+      "occasion": "Festive",
+      "vibe": "Ethnic Chic",
       "items": {
-        "top": "top-005",
-        "bottom": null,
-        "shoes": null,
-        "accessories": []
+        "top": 81,
+        "shoes": 82,
+        "accessory": 83
       },
-
-      "total_price": 1212,
-
+      "total_price": 1492,
       "why_this_outfit": [
-        "Rich festive fabric",
-        "Perfect for traditional occasions",
-        "Elegant embroidered design"
+        "Embroidered silk kurti is festive-ready and elegant",
+        "Mojdhi shoes add an ethnic flair",
+        "Teardrop stone jewellery elevates the ethnic chic aesthetic"
+      ]
+    },
+    {
+      "id": "MH_006",
+      "website": "Meesho",
+      "gender": "Female",
+      "occasion": "Festive",
+      "vibe": "Traditional",
+      "items": {
+        "dress": 84,
+        "shoes": 87,
+        "neckpiece": 85,
+        "accessory": 86
+      },
+      "total_price": 1550,
+      "why_this_outfit": [
+        "Georgette kurta set is a traditional festive classic",
+        "Golden heels add a celebratory shimmer",
+        "Pendant necklace and kashmiri bangles complete the look"
+      ]
+    },
+    {
+      "id": "MH_007",
+      "website": "Meesho",
+      "gender": "Female",
+      "occasion": "Festive",
+      "vibe": "Glam",
+      "items": {
+        "dress": 88,
+        "shoes": 87,
+        "neckpiece": 89
+      },
+      "total_price": 2448,
+      "why_this_outfit": [
+        "Silk gown with dupatta is glamorous and show-stopping",
+        "Gold plated necklace adds festive sparkle",
+        "Golden heels tie the glam look together perfectly"
+      ]
+    },
+    {
+      "id": "MH_008",
+      "website": "Meesho",
+      "gender": "Female",
+      "occasion": "Festive",
+      "vibe": "Minimal",
+      "items": {
+        "dress": 90,
+        "shoes": 87,
+        "neckpiece": 89,
+        "accessory": 86
+      },
+      "total_price": 2118,
+      "why_this_outfit": [
+        "Silk kurti and palazzo is minimal yet festive",
+        "Simple necklace keeps the look clean",
+        "Golden heels add just the right amount of celebration"
+      ]
+    },
+    {
+      "id": "MH_009",
+      "website": "Meesho",
+      "gender": "Female",
+      "occasion": "Date",
+      "vibe": "Minimal",
+      "items": {
+        "dress": 91,
+        "shoes": 92,
+        "bag": 93,
+        "neckpiece": 94
+      },
+      "total_price": 1191,
+      "why_this_outfit": [
+        ""
+      ]
+    },
+    {
+      "id": "MH_010",
+      "website": "Meesho",
+      "gender": "Female",
+      "occasion": "Date",
+      "vibe": "Trendy",
+      "items": {
+        "dress": 94,
+        "shoes": 95,
+        "bag": 96
+      },
+      "total_price": 1120,
+      "why_this_outfit": [
+        ""
+      ]
+    },
+    {
+      "id": "MH_011",
+      "website": "Meesho",
+      "gender": "Female",
+      "occasion": "Date",
+      "vibe": "Chic",
+      "items": {
+        "dress": 97,
+        "shoes": 92,
+        "neckpiece": 85
+      },
+      "total_price": 1019,
+      "why_this_outfit": [
+        ""
+      ]
+    },
+    {
+      "id": "MH_012",
+      "website": "Meesho",
+      "gender": "Female",
+      "occasion": "Date",
+      "vibe": "Romantic",
+      "items": {
+        "dress": 98,
+        "shoes": 99,
+        "neckpiece": 85
+      },
+      "total_price": 443,
+      "why_this_outfit": [
+        ""
+      ]
+    },
+    {
+      "id": "MH_013",
+      "website": "Meesho",
+      "gender": "Female",
+      "occasion": "Party",
+      "vibe": "Chic",
+      "items": {
+        "dress": 100,
+        "shoes": 99,
+        "accessory": 101,
+        "neckpiece": 85
+      },
+      "total_price": 790,
+      "why_this_outfit": [
+        ""
+      ]
+    },
+    {
+      "id": "MH_014",
+      "website": "Meesho",
+      "gender": "Female",
+      "occasion": "Party",
+      "vibe": "Edgy",
+      "items": {
+        "dress": 100,
+        "shoes": 92,
+        "bag": 93,
+        "neckpiece": 85
+      },
+      "total_price": 1244,
+      "why_this_outfit": [
+        ""
+      ]
+    },
+    {
+      "id": "MH_015",
+      "website": "Meesho",
+      "gender": "Female",
+      "occasion": "Party",
+      "vibe": "Chic",
+      "items": {
+        "dress": 103,
+        "shoes": 92,
+        "accessory": 104
+      },
+      "total_price": 742,
+      "why_this_outfit": [
+        ""
+      ]
+    },
+    {
+      "id": "MH_016",
+      "website": "Meesho",
+      "gender": "Female",
+      "occasion": "Party",
+      "vibe": "Bold",
+      "items": {
+        "dress": 104,
+        "shoes": 95,
+        "neckpiece": 85,
+        "bag": 92
+      },
+      "total_price": 996,
+      "why_this_outfit": [
+        ""
+      ]
+    },
+    {
+      "id": "MH_017",
+      "website": "Meesho",
+      "gender": "Female",
+      "occasion": "Party",
+      "vibe": "Glam",
+      "items": {
+        "dress": 106,
+        "shoes": 99,
+        "neckpiece": 85
+      },
+      "total_price": 569,
+      "why_this_outfit": [
+        ""
+      ]
+    },
+    {
+      "id": "MH_018",
+      "website": "Meesho",
+      "gender": "Female",
+      "occasion": "Work",
+      "vibe": "Power Dressing",
+      "items": {
+        "dress": 107,
+        "shoes": 95,
+        "bag": 108
+      },
+      "total_price": 1147,
+      "why_this_outfit": [
+        ""
+      ]
+    },
+    {
+      "id": "MH_019",
+      "website": "Meesho",
+      "gender": "Female",
+      "occasion": "Work",
+      "vibe": "Minimal",
+      "items": {
+        "top": 109,
+        "bottom": 110,
+        "shoes": 112,
+        "bag": 111
+      },
+      "total_price": 1286,
+      "why_this_outfit": [
+        ""
+      ]
+    },
+    {
+      "id": "MH_020",
+      "website": "Meesho",
+      "gender": "Female",
+      "occasion": "Work",
+      "vibe": "Minimal",
+      "items": {
+        "top": 113,
+        "bottom": 110,
+        "shoes": 112,
+        "accessory": 114
+      },
+      "total_price": 862,
+      "why_this_outfit": [
+        ""
+      ]
+    },
+    {
+      "id": "MH_020",
+      "website": "Meesho",
+      "gender": "Female",
+      "occasion": "Work",
+      "vibe": "Classic",
+      "items": {
+        "top": 115,
+        "bottom": 110,
+        "shoes": 112,
+        "accessory": 114
+      },
+      "total_price": 810,
+      "why_this_outfit": [
+        ""
+      ]
+    },
+    {
+      "id": "MH_021",
+      "website": "Meesho",
+      "gender": "Female",
+      "occasion": "Wedding",
+      "vibe": "Traditional",
+      "items": {
+        "dress": 116,
+        "shoes": 118,
+        "accessory": 117
+      },
+      "total_price": 1944,
+      "why_this_outfit": [
+        ""
+      ]
+    },
+    {
+      "id": "MH_022",
+      "website": "Meesho",
+      "gender": "Female",
+      "occasion": "Wedding",
+      "vibe": "Glam",
+      "items": {
+        "dress": 119,
+        "shoes": 118,
+        "accessory": 89
+      },
+      "total_price": 1835,
+      "why_this_outfit": [
+        ""
+      ]
+    },
+    {
+      "id": "MH_023",
+      "website": "Meesho",
+      "gender": "Female",
+      "occasion": "Wedding",
+      "vibe": "Regal",
+      "items": {
+        "dress": 120,
+        "shoes": 87,
+        "bag": 121
+      },
+      "total_price": 1085,
+      "why_this_outfit": [
+        ""
+      ]
+    },
+    {
+      "id": "MH_024",
+      "website": "Meesho",
+      "gender": "Female",
+      "occasion": "Wedding",
+      "vibe": "Ethnic Chic",
+      "items": {
+        "dress": 123,
+        "shoes": 87,
+        "neckpiece": 89
+      },
+      "total_price": 1436,
+      "why_this_outfit": [
+        ""
       ]
     }
+
   ]
 }

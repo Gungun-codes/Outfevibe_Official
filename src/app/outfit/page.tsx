@@ -10,49 +10,44 @@ import { AnalysisScreen } from "@/components/AnalysisScreen";
 import { OutfitResultCard } from "@/components/OutfitResultCard";
 import { useAuth } from "@/context/authContext";
 import { supabase } from "@/lib/supabase";
-
 import { ColorPaletteCard } from "@/components/ColorPaletteCard";
 import { useAnalysisLimit } from "@/app/hooks/useAnalysisLimit";
 import { OutfitResult, OCCASIONS, PLATFORMS } from "@/lib/type";
 
-// ── Occasion-aware Vibes ──────────────────────────────────────────────────────
+// ── 6 occasions × 4 moods per gender ─────────────────────────────────────────
 const OCCASION_VIBES: Record<string, { Female: string[]; Male: string[] }> = {
   College: {
-    Female: ["Casual Cool", "Preppy", "Street Style", "Boho", "Minimal", "Trendy"],
-    Male:   ["Street Style", "Casual Cool", "Minimal", "Preppy", "Sporty", "Trendy"],
-  },
-  Party: {
-    Female: ["Glam", "Edgy", "Trendy", "Bold", "Romantic", "Chic"],
-    Male:   ["Edgy", "Bold", "Smart Casual", "Trendy", "Minimal", "Classic"],
-  },
-  Date: {
-    Female: ["Romantic", "Chic", "Minimal", "Boho", "Trendy", "Soft Glam"],
-    Male:   ["Smart Casual", "Classic", "Minimal", "Trendy", "Romantic", "Edgy"],
-  },
-  Festive: {
-    Female: ["Traditional", "Ethnic Chic", "Boho", "Glam", "Bold", "Minimal"],
-    Male:   ["Traditional", "Ethnic Smart", "Classic", "Bold", "Festive Formal", "Minimal"],
-  },
-  Wedding: {
-    Female: ["Glam", "Traditional", "Ethnic Chic", "Romantic", "Bold", "Regal"],
-    Male:   ["Traditional", "Regal", "Festive Formal", "Classic", "Ethnic Smart", "Bold"],
+    Female: ["Casual Cool", "Street Style", "Minimal", "Boho"],
+    Male:   ["Street Style", "Casual Cool", "Minimal", "Sporty"],
   },
   Work: {
-    Female: ["Power Dressing", "Smart Casual", "Minimal", "Classic", "Chic", "Business Formal"],
-    Male:   ["Business Formal", "Smart Casual", "Classic", "Minimal", "Power Dressing", "Corporate Chic"],
+    Female: ["Power Dressing", "Smart Casual", "Minimal", "Classic"],
+    Male:   ["Business Formal", "Smart Casual", "Classic", "Minimal"],
   },
-};
-
-const DEFAULT_VIBES = {
-  Female: ["Classic", "Boho", "Trendy", "Minimal", "Edgy", "Romantic", "Street Style", "Smart Casual"],
-  Male:   ["Classic", "Street Style", "Minimal", "Trendy", "Edgy", "Smart Casual"],
+  Date: {
+    Female: ["Romantic", "Chic", "Minimal", "Trendy"],
+    Male:   ["Smart Casual", "Classic", "Minimal", "Trendy"],
+  },
+  Party: {
+    Female: ["Glam", "Edgy", "Bold", "Chic"],
+    Male:   ["Edgy", "Bold", "Smart Casual", "Trendy"],
+  },
+  Wedding: {
+    Female: ["Glam", "Traditional", "Ethnic Chic", "Regal"],
+    Male:   ["Traditional", "Regal", "Festive Formal", "Ethnic Smart"],
+  },
+  Festive: {
+    Female: ["Traditional", "Ethnic Chic", "Glam", "Minimal"],
+    Male:   ["Traditional", "Ethnic Smart", "Classic", "Bold"],
+  },
 };
 
 function getVibesForOccasion(occasion: string, gender: string): string[] {
   const map = OCCASION_VIBES[occasion];
-  if (!map) return DEFAULT_VIBES[gender as "Female" | "Male"] ?? DEFAULT_VIBES.Female;
+  if (!map) return ["Classic", "Minimal", "Trendy", "Bold"];
   return map[gender as "Female" | "Male"] ?? map.Female;
 }
+
 function toGenderProp(g: string): "male" | "female" {
   return g.toLowerCase() === "male" ? "male" : "female";
 }
@@ -62,14 +57,6 @@ interface Msg {
   id:        string;
   role:      "bot" | "user";
   content:   React.ReactNode;
-  /**
-   * answered = true  → chips inside this bubble hide, replaced by a badge.
-   *                    The question text and any non-chip content stays visible.
-   * answered = false → everything shows normally.
-   *
-   * IMPORTANT: Never set answered=true on analysis, palette, upload-prompt,
-   * or result messages — only on plain chip-question bubbles.
-   */
   answered?: boolean;
 }
 
@@ -101,12 +88,6 @@ export default function Page() {
     setTimeout(() => bottomRef.current?.scrollIntoView({ behavior: "smooth" }), 80);
   }, [msgs, typing, analysing]);
 
-  /**
-   * markAnswered — call ONLY on chip-question bot messages.
-   * This hides the chips and shows a selection badge instead.
-   * The question text itself stays visible.
-   * Do NOT call this on analysis / palette / result / upload messages.
-   */
   const markAnswered = useCallback((msgId: string) => {
     setMsgs((p) => p.map((m) => m.id === msgId ? { ...m, answered: true } : m));
   }, []);
@@ -141,40 +122,36 @@ export default function Page() {
     gender: string,
   ) => {
     const flow = async () => {
-      // ── Occasion question (chip-question → markAnswered when answered) ──
       const occBotId = await pb(
         <div>
           <p className="mb-3">What&apos;s the occasion? 🎉</p>
           <ChipSelector
             options={OCCASIONS}
             onSelect={async (occ) => {
-              markAnswered(occBotId);          // ✅ hide occasion chips, keep question
+              markAnswered(occBotId);
               pu(occ);
               occasionRef.current = occ;
 
               const vibes = getVibesForOccasion(occ, gender);
 
-              // ── Vibe question ──────────────────────────────────────────
               const vibeBotId = await pb(
                 <div>
                   <p className="mb-3">Love it! What&apos;s your vibe? ✨</p>
                   <ChipSelector
                     options={vibes}
                     onSelect={async (vibe) => {
-                      markAnswered(vibeBotId); // ✅ hide vibe chips, keep question
+                      markAnswered(vibeBotId);
                       pu(vibe);
 
-                      // ── Platform question ───────────────────────────────
                       const platBotId = await pb(
                         <div>
                           <p className="mb-3">Where would you like to shop? 🛍️</p>
                           <ChipSelector
                             options={PLATFORMS}
                             onSelect={async (platform) => {
-                              markAnswered(platBotId); // ✅ hide platform chips, keep question
+                              markAnswered(platBotId);
                               pu(platform);
 
-                              // ── Fetching message (no chips → no markAnswered needed) ──
                               await pb(
                                 <div>
                                   <p className="font-semibold">Finding your perfect outfit! ✨</p>
@@ -229,7 +206,6 @@ export default function Page() {
                                   )
                                 );
 
-                                // EndCard has no chips → no markAnswered needed
                                 await pb(
                                   <EndCard
                                     onStartOver={handleStartOver}
@@ -277,7 +253,7 @@ export default function Page() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [markAnswered]);
 
-  // ── Boot ───────────────────────────────────────────────────────────────────
+  // ── Boot ──────────────────────────────────────────────────────────────────
   const boot = useCallback(async (pb: typeof pushBot, pu: typeof pushUser) => {
     if (user) {
       try {
@@ -297,7 +273,6 @@ export default function Page() {
         if (profile?.body_shape && profile?.skin_tone) {
           analysisRef.current = { body_shape: profile.body_shape, skin_tone: profile.skin_tone };
 
-          // Welcome card — no chips, no markAnswered needed
           await pb(
             <div>
               <p className="font-bold text-white mb-1 text-base">Welcome back, {firstName}! 👋</p>
@@ -311,14 +286,11 @@ export default function Page() {
             800
           );
 
-          // ReturningUserPrompt — has internal buttons (not ChipSelector chips)
-          // so we don't need markAnswered; ReturningUserPrompt disables itself internally
           const retBotId = await pb(
             <ReturningUserPrompt
               bodyShape={profile.body_shape}
               skinTone={profile.skin_tone}
               onUseProfile={() => {
-                // No markAnswered here — ReturningUserPrompt manages its own disabled state
                 pu("Use my saved profile ✓");
                 const askGender = async () => {
                   const gBotId = await pb(
@@ -327,7 +299,7 @@ export default function Page() {
                       <ChipSelector
                         options={["Female", "Male"]}
                         onSelect={(g) => {
-                          markAnswered(gBotId); // ✅ chip question
+                          markAnswered(gBotId);
                           pu(g);
                           genderRef.current = g;
                           runOutfitFlow(pb, pu, g);
@@ -350,11 +322,10 @@ export default function Page() {
                     <ChipSelector
                       options={["Female", "Male"]}
                       onSelect={async (g) => {
-                        markAnswered(gBotId); // ✅ chip question
+                        markAnswered(gBotId);
                         pu(g);
                         genderRef.current = g;
 
-                        // Upload prompt — NOT a chip question, no markAnswered
                         await pb(
                           <UploadPromptMsg
                             onCamera={() => camRef.current?.click()}
@@ -376,15 +347,12 @@ export default function Page() {
             />,
             600
           );
-          // Note: retBotId is obtained but we don't call markAnswered on it —
-          // ReturningUserPrompt disables its own buttons internally.
           void retBotId;
           return;
         }
       } catch { /* fall through */ }
     }
 
-    // ── Fresh user greeting — no chips, no markAnswered ────────────────────
     await pb(
       <div>
         <p className="font-bold text-white mb-1 text-base">Hey! I&apos;m your AI Stylist 👋</p>
@@ -397,19 +365,16 @@ export default function Page() {
       900
     );
 
-    // ── Gender question — chip question → markAnswered ─────────────────────
     const gBotId = await pb(
       <div>
         <p className="font-semibold text-white mb-3">First — who are we styling today? 👗</p>
         <ChipSelector
           options={["Female", "Male"]}
           onSelect={async (gender) => {
-            markAnswered(gBotId); // ✅ chip question
+            markAnswered(gBotId);
             pu(gender);
             genderRef.current = gender;
 
-
-            // Upload prompt — NOT a chip question, never markAnswered
             await pb(
               <UploadPromptMsg
                 onCamera={() => camRef.current?.click()}
@@ -430,7 +395,7 @@ export default function Page() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, runOutfitFlow, markAnswered]);
 
-  // ── Start over ─────────────────────────────────────────────────────────────
+  // ── Start over ────────────────────────────────────────────────────────────
   const handleStartOver = useCallback(async () => {
     const { allowed, used, limit } = await checkLimit();
     if (!allowed) {
@@ -446,14 +411,14 @@ export default function Page() {
     setTimeout(() => boot(pushBot, pushUser), 120);
   }, [boot, pushBot, pushUser, checkLimit, user]);
 
-  // ── One-time init ──────────────────────────────────────────────────────────
+  // ── One-time init ─────────────────────────────────────────────────────────
   useEffect(() => {
     if (_booted) return;
     _booted = true;
     boot(pushBot, pushUser);
   }, [boot, pushBot, pushUser]);
 
-  // ── File upload ────────────────────────────────────────────────────────────
+  // ── File upload ───────────────────────────────────────────────────────────
   const handleFile = useCallback((file: File) => {
     const pb = pushBotRef.current!;
     const pu = pushUserRef.current!;
@@ -473,7 +438,6 @@ export default function Page() {
       }
 
       if (!user) {
-        // Sign-in prompt — no chips, no markAnswered
         await pb(
           <div className="space-y-3">
             <p className="font-semibold text-white">Great photo! 📸</p>
@@ -504,8 +468,7 @@ export default function Page() {
     reader.readAsDataURL(file);
   }, [checkLimit, user]);
 
-  // ── onAnalysisDone ─────────────────────────────────────────────────────────
-  // Analysis result + palette are NEVER marked as answered — they stay fully visible.
+  // ── onAnalysisDone ────────────────────────────────────────────────────────
   const onAnalysisDone = useCallback(async (result: {
     body_shape: string;
     skin_tone:  string;
@@ -521,9 +484,6 @@ export default function Page() {
     const genderProp = toGenderProp(gender);
     analysisRef.current = { body_shape: shape, skin_tone: tone };
 
-    // Analysis editor bubble — contains AnalysisEditor (not a ChipSelector).
-    // We use a ref trick to call markAnswered on it after the user confirms,
-    // but ONLY to hide the editor buttons — the analysis summary stays visible.
     const analysisBotId = await pb(
       <div>
         <p className="mb-1 text-sm font-medium">Here&apos;s what I found! ✨</p>
@@ -532,29 +492,23 @@ export default function Page() {
           bodyShape={shape}
           skinTone={tone}
           onConfirm={async (s, t) => {
-            // We mark this bubble answered so the editor's confirm button hides —
-            // but AnalysisEditor should show a confirmed state, not disappear.
             markAnswered(analysisBotId);
             analysisRef.current = { body_shape: s, skin_tone: t };
             pu(`${s} · ${t} skin ✓`);
             await incrementUsage();
 
-            // Color palette — NOT marked answered, stays fully visible forever
             const paletteBotId = await pb(
               <ColorPaletteCard
                 bodyShape={s}
                 skinTone={t}
                 gender={genderProp}
                 onContinue={() => {
-                  // We don't markAnswered the palette bubble —
-                  // it stays visible in the chat history.
                   analysisRef.current = { body_shape: s, skin_tone: t };
                   runOutfitFlow(pb, pu, gender);
                 }}
               />,
               500
             );
-            // Intentionally unused — palette never gets markAnswered
             void paletteBotId;
           }}
         />
@@ -563,13 +517,12 @@ export default function Page() {
     );
   }, [incrementUsage, runOutfitFlow, markAnswered]);
 
-  // ── onAnalysisError ────────────────────────────────────────────────────────
+  // ── onAnalysisError ───────────────────────────────────────────────────────
   const onAnalysisError = useCallback(async (message: string) => {
     setAnalysing(false);
     const pb = pushBotRef.current!;
     const pu = pushUserRef.current!;
 
-    // Error card — no chips, no markAnswered
     await pb(
       <div className="rounded-2xl border border-red-900/40 bg-red-950/30 p-4">
         <p className="text-sm font-bold text-red-400 mb-1">📷 Oops!</p>
@@ -594,7 +547,7 @@ export default function Page() {
     );
   }, [runOutfitFlow]);
 
-  // ── Render ─────────────────────────────────────────────────────────────────
+  // ── Render ────────────────────────────────────────────────────────────────
   return (
     <div className="flex flex-col w-full max-w-lg mx-auto relative"
       style={{ minHeight: "100dvh", background: "#0a0a0a" }}>
@@ -653,7 +606,7 @@ export default function Page() {
   );
 }
 
-// ── LimitCard ──────────────────────────────────────────────────────────────────
+// ── LimitCard ─────────────────────────────────────────────────────────────────
 function LimitCard({ used, limit, user }: { used: number; limit: number; user: any }) {
   return (
     <div className="rounded-2xl border border-[#d4af7f]/20 bg-[#1a1400] p-4 space-y-3">
@@ -675,7 +628,7 @@ function LimitCard({ used, limit, user }: { used: number; limit: number; user: a
   );
 }
 
-// ── EndCard ────────────────────────────────────────────────────────────────────
+// ── EndCard ───────────────────────────────────────────────────────────────────
 function EndCard({ onStartOver, onTryAnother, result, platform, bodyShape, skinTone }: {
   onStartOver: () => void; onTryAnother: () => void;
   result: OutfitResult; platform: string; bodyShape: string; skinTone: string;
@@ -686,7 +639,6 @@ function EndCard({ onStartOver, onTryAnother, result, platform, bodyShape, skinT
   const [sharing, setSharing] = useState(false);
 
   const handleShare = async () => {
-
     setSharing(true);
     const profile = [bodyShape && `${bodyShape} body shape`, skinTone && `${skinTone} skin tone`]
       .filter(Boolean).join(" & ");
@@ -711,7 +663,6 @@ function EndCard({ onStartOver, onTryAnother, result, platform, bodyShape, skinT
                   onClick={() => { setRating(star); setFeedbackSent(true); }}
                   className="text-2xl transition-transform hover:scale-125">
                   <span style={{ color: star <= (hovered || rating) ? "#d4af7f" : "#2a2a2a" }}>★</span>
-
                 </button>
               ))}
             </div>
@@ -746,7 +697,7 @@ function EndCard({ onStartOver, onTryAnother, result, platform, bodyShape, skinT
   );
 }
 
-// ── ReturningUserPrompt ────────────────────────────────────────────────────────
+// ── ReturningUserPrompt ───────────────────────────────────────────────────────
 function ReturningUserPrompt({ bodyShape, skinTone, onUseProfile, onStyleSomeoneElse }: {
   bodyShape: string; skinTone: string;
   onUseProfile: () => void; onStyleSomeoneElse: () => void;
@@ -779,7 +730,7 @@ function ReturningUserPrompt({ bodyShape, skinTone, onUseProfile, onStyleSomeone
   );
 }
 
-// ── UploadPromptMsg ────────────────────────────────────────────────────────────
+// ── UploadPromptMsg ───────────────────────────────────────────────────────────
 function UploadPromptMsg({ onCamera, onUpload, onSkip }: {
   onCamera: () => void; onUpload: () => void; onSkip: () => void;
 }) {
