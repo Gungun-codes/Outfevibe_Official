@@ -15,6 +15,7 @@ import { supabase } from "@/lib/supabase";
 import { ColorPaletteCard } from "@/components/ColorPaletteCard";
 import { useAnalysisLimit } from "@/app/hooks/useAnalysisLimit";
 import { OutfitResult, OCCASIONS } from "@/lib/type";
+import outfitsData from "../../../backend/outfits.json"; // ← same path as home page.tsx
 
 // ── Occasion vibes map ────────────────────────────────────────────────────────
 const OCCASION_VIBES: Record<string, { Female: string[]; Male: string[] }> = {
@@ -102,13 +103,15 @@ let _n = 0;
 const uid = () => `m${++_n}_${Date.now()}`;
 let _booted = false;
 
+// ── Pre-cast JSON at module level (zero runtime cost) ─────────────────────────
+const ALL_OUTFITS = outfitsData as unknown as SimpleOutfit[];
+
 // ── Page ──────────────────────────────────────────────────────────────────────
 export default function Page() {
-  const [msgs,          setMsgs]         = useState<Msg[]>([]);
-  const [typing,        setTyping]        = useState(false);
-  const [analysing,     setAnalysing]     = useState(false);
+  const [msgs,          setMsgs]     = useState<Msg[]>([]);
+  const [typing,        setTyping]   = useState(false);
+  const [analysing,     setAnalysing] = useState(false);
   const [analyseImgUrl, setAnalyseImgUrl] = useState("");
-  const [allOutfits,    setAllOutfits]    = useState<SimpleOutfit[]>([]);
 
   const bottomRef   = useRef<HTMLDivElement>(null);
   const fileRef     = useRef<HTMLInputElement>(null);
@@ -116,7 +119,6 @@ export default function Page() {
   const genderRef   = useRef("");
   const occasionRef = useRef("");
   const analysisRef = useRef<{ body_shape: string; skin_tone: string } | null>(null);
-  const outfitsRef  = useRef<SimpleOutfit[]>([]);
 
   const pushBotRef  = useRef<((c: React.ReactNode, d?: number) => Promise<string>) | null>(null);
   const pushUserRef = useRef<((c: React.ReactNode) => void) | null>(null);
@@ -124,17 +126,6 @@ export default function Page() {
   const auth = useAuth();
   const user = auth?.user ?? null;
   const { checkLimit, incrementUsage } = useAnalysisLimit(user?.id);
-
-  // Keep outfitsRef in sync so callbacks always see latest data
-  useEffect(() => { outfitsRef.current = allOutfits; }, [allOutfits]);
-
-  // Load outfits.json
-  useEffect(() => {
-    fetch("/outfits.json")
-      .then((r) => r.json())
-      .then((d: SimpleOutfit[]) => setAllOutfits(d))
-      .catch(() => {});
-  }, []);
 
   useEffect(() => {
     setTimeout(() => bottomRef.current?.scrollIntoView({ behavior: "smooth" }), 80);
@@ -168,7 +159,7 @@ export default function Page() {
     gender: string, bs: string, st: string,
   ) => {
     const run = async () => {
-      const quick = filterQuick(outfitsRef.current, gender, bs, st);
+      const quick = filterQuick(ALL_OUTFITS, gender, bs, st);
       await pb(
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
           <p className="text-sm font-semibold text-white mb-1">Quick picks for you! 🛍️</p>
@@ -235,7 +226,7 @@ export default function Page() {
                         }]);
 
                         await new Promise((r) => setTimeout(r, 900));
-                        const refined = filterRefined(outfitsRef.current, gender, occ, bs, st, budgetRange.label);
+                        const refined = filterRefined(ALL_OUTFITS, gender, occ, bs, st, budgetRange.label);
 
                         setMsgs((p) => p.map((m) =>
                           m.id === loadId
@@ -243,7 +234,7 @@ export default function Page() {
                             : m
                         ));
 
-                        // Try item-level API too (optional)
+                        // Item-level 4-card breakdown from outfit.json + items.json
                         try {
                           const res = await fetch("/api/outfits", {
                             method: "POST",
@@ -254,11 +245,17 @@ export default function Page() {
                             const data: OutfitResult & { success: boolean } = await res.json();
                             if (data.success) {
                               await pb(
-                                <div>
-                                  <p className="text-xs text-neutral-500 mb-2">🔍 Item-level breakdown:</p>
-                                  <OutfitResultCard result={data} platform="Curated" />
+                                <div className="space-y-2">
+                                  <div className="flex items-center gap-2">
+                                    <div className="h-px flex-1 bg-neutral-800" />
+                                    <p className="text-[10px] font-semibold text-neutral-600 uppercase tracking-widest whitespace-nowrap">
+                                      Shop the items
+                                    </p>
+                                    <div className="h-px flex-1 bg-neutral-800" />
+                                  </div>
+                                  <OutfitResultCard result={data} platform={data.items?.[0]?.platform ?? "Curated"} />
                                 </div>,
-                                400
+                                500
                               );
                             }
                           }
@@ -470,9 +467,9 @@ export default function Page() {
     setAnalysing(false);
     const pb = pushBotRef.current!;
     const pu = pushUserRef.current!;
-    const shape = result.body_shape;
-    const tone  = result.skin_tone;
-    const gender = genderRef.current || "Female";
+    const shape      = result.body_shape;
+    const tone       = result.skin_tone;
+    const gender     = genderRef.current || "Female";
     const genderProp = toGenderProp(gender);
     analysisRef.current = { body_shape: shape, skin_tone: tone };
 
@@ -493,7 +490,7 @@ export default function Page() {
               gender={genderProp}
               onContinue={async () => {
                 markAnswered(palId);
-                // ── Show quick outfits from outfits.json right after color tips ──
+                // ── Quick outfits right after color tips ──────────────────
                 showQuickOutfits(pb, pu, gender, s, t);
               }}
             />, 500
@@ -633,7 +630,7 @@ function EndCard({ onStartOver, onTryAnother, bodyShape, skinTone }: {
           </div>
         ) : (
           <div className="flex items-center gap-2">
-            <span className="text-[#d4af7f]">{"★".repeat(rating)}{"☆".repeat(5-rating)}</span>
+            <span className="text-[#d4af7f]">{"★".repeat(rating)}{"☆".repeat(5 - rating)}</span>
             <p className="text-xs text-neutral-400 ml-1">Thanks! 🙏</p>
           </div>
         )}
@@ -692,7 +689,9 @@ function ReturningUserPrompt({ bodyShape, skinTone, onUseProfile, onStyleSomeone
   );
 }
 
-function UploadPromptMsg({ onCamera, onUpload, onSkip }: { onCamera: () => void; onUpload: () => void; onSkip: () => void }) {
+function UploadPromptMsg({ onCamera, onUpload, onSkip }: {
+  onCamera: () => void; onUpload: () => void; onSkip: () => void;
+}) {
   return (
     <div>
       <p className="mb-3 text-sm leading-relaxed text-neutral-200">
