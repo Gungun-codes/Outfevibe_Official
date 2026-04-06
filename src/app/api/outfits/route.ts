@@ -7,8 +7,6 @@ interface Item {
   id: number;
   type: string;
   title: string;
-  occasion: string;
-  mood: string;
   website: string;
   price: number;
   review: number;
@@ -25,33 +23,36 @@ interface Outfit {
   occasions: string[];
   vibe: string;
   moods: string[];
-  persona: string;
   body_shapes: string[];
   skin_tones: string[];
-  items: Record<string, number>;
-  total_price: number;
+  items: Record<string, number>; // { "top": 1, "bottom": 3, "shoes": 4 }
   budget_range: string;
   priority: number | string;
   why_this_outfit: string[];
 }
 
-// ── Load JSON files ───────────────────────────────────────────────────────────
+// ── Load files ────────────────────────────────────────────────────────────────
 function loadOutfits(): Outfit[] {
   const p = path.join(process.cwd(), "backend", "outfit.json");
   const raw = JSON.parse(fs.readFileSync(p, "utf-8"));
-  return raw.outfits ?? raw;
+  // outfit.json has { "outfits": [...] }
+  const arr = raw.outfits ?? raw;
+  console.log(`[outfit.json] loaded ${arr.length} outfits`);
+  return arr;
 }
 
 function loadItems(): Map<number, Item> {
   const p = path.join(process.cwd(), "backend", "items.json");
   const raw = JSON.parse(fs.readFileSync(p, "utf-8"));
+  // items.json has { "items": [...] }
   const arr: Item[] = raw.items ?? raw;
   const map = new Map<number, Item>();
-  arr.forEach((i) => map.set(i.id, i));
+  arr.forEach((i) => map.set(Number(i.id), i));
+  console.log(`[items.json] loaded ${map.size} items`);
   return map;
 }
 
-// ── Vibe → mood matcher ───────────────────────────────────────────────────────
+// ── Vibe → moods ──────────────────────────────────────────────────────────────
 const VIBE_TO_MOOD: Record<string, string[]> = {
   "Casual Cool":    ["casual_cool"],
   "Street Style":   ["street_style"],
@@ -70,32 +71,33 @@ const VIBE_TO_MOOD: Record<string, string[]> = {
   "Ethnic Chic":    ["ethnic_chic"],
   Regal:            ["regal"],
   Sporty:           ["sporty"],
-  "Business Formal":["classic", "power_dressing"],
-  "Ethnic Smart":   ["ethnic_chic", "smart_casual"],
-  "Festive Formal": ["traditional", "glam"],
+  "Business Formal":["classic","power_dressing"],
+  "Ethnic Smart":   ["ethnic_chic","smart_casual"],
+  "Festive Formal": ["traditional","glam"],
 };
 
-// ── Category display order for 4-card layout ─────────────────────────────────
-const CATEGORY_ORDER = ["top", "top_outer", "top_inner", "bottom", "dress", "shoes", "heel", "accessory", "neckpiece", "bag", "Handbag"];
+// ── Item display order ────────────────────────────────────────────────────────
+const TYPE_ORDER = ["top","top_outer","top_inner","bottom","dress","shoes","heel","accessory","neckpiece","bag","Handbag"];
+
+function formatType(type: string): string {
+  const map: Record<string,string> = {
+    top:"Top", top_inner:"Inner", top_outer:"Jacket",
+    bottom:"Bottom", dress:"Dress", shoes:"Shoes",
+    heel:"Heels", accessory:"Accessory", neckpiece:"Neckpiece",
+    bag:"Bag", Handbag:"Bag",
+  };
+  return map[type] ?? type.charAt(0).toUpperCase() + type.slice(1);
+}
 
 // ── Score outfit ──────────────────────────────────────────────────────────────
-function scoreOutfit(
-  o: Outfit, occasionKey: string, moodKeys: string[],
-  bs: string, st: string, budget: string
-): number {
+function score(o: Outfit, occ: string, moods: string[], bs: string, st: string, budget: string): number {
   let s = 0;
-  // Occasion match
-  if (o.occasions?.some((x) => x.toLowerCase() === occasionKey)) s += 4;
-  // Mood/vibe match
-  if (moodKeys.some((m) => o.moods?.includes(m))) s += 2;
-  if (o.vibe?.toLowerCase() === moodKeys[0]?.toLowerCase()) s += 1;
-  // Body shape match
-  if (bs && o.body_shapes?.some((b) => b.toLowerCase() === bs.toLowerCase())) s += 3;
-  // Skin tone match
-  if (st && o.skin_tones?.some((x) => x.toLowerCase() === st.toLowerCase())) s += 2;
-  // Budget match
-  if (budget && o.budget_range === budget) s += 1;
-  // Priority boost
+  if (o.occasions?.some(x => x.toLowerCase() === occ)) s += 5;
+  if (moods.some(m => o.moods?.includes(m)))            s += 2;
+  if (o.vibe?.toLowerCase() === moods[0])               s += 1;
+  if (bs && o.body_shapes?.some(b => b.toLowerCase() === bs.toLowerCase())) s += 3;
+  if (st && o.skin_tones?.some(x => x.toLowerCase() === st.toLowerCase()))  s += 2;
+  if (budget && o.budget_range === budget)               s += 1;
   const p = Number(o.priority);
   s += isNaN(p) ? 0 : p === 1 ? 2 : p === 2 ? 1 : 0;
   return s;
@@ -104,60 +106,62 @@ function scoreOutfit(
 // ── POST ──────────────────────────────────────────────────────────────────────
 export async function POST(req: NextRequest) {
   try {
-    const { gender, occasion, vibe, body_shape, skin_tone, budget } = await req.json();
+    const body = await req.json();
+    const { gender, occasion, vibe, body_shape, skin_tone, budget } = body;
+
+    console.log("[/api/outfits] request:", { gender, occasion, vibe, body_shape, skin_tone, budget });
 
     const outfits  = loadOutfits();
     const itemsMap = loadItems();
 
-    const genderKey   = (gender  as string)?.toLowerCase() ?? "female";
-    const occasionKey = (occasion as string)?.toLowerCase() ?? "college";
-    const moodKeys    = VIBE_TO_MOOD[vibe as string] ?? [(vibe as string)?.toLowerCase() ?? "classic"];
-    const bs          = (body_shape as string) ?? "";
-    const st          = (skin_tone  as string) ?? "";
-    const budgetLabel = (budget     as string) ?? "";
+    const genderKey = (gender as string)?.toLowerCase() ?? "female";
+    const occKey    = (occasion as string)?.toLowerCase() ?? "college";
+    const moodKeys  = VIBE_TO_MOOD[vibe as string] ?? [(vibe as string)?.toLowerCase() ?? "classic"];
+    const bs        = (body_shape as string) ?? "";
+    const st        = (skin_tone  as string) ?? "";
+    const budgetKey = (budget     as string) ?? "";
 
-    // Filter by gender
-    const byGender = outfits.filter(
-      (o) => o.gender?.toLowerCase() === genderKey
-    );
+    // 1. Filter by gender
+    const byGender = outfits.filter(o => o.gender?.toLowerCase() === genderKey);
+    console.log(`[/api/outfits] by gender (${genderKey}): ${byGender.length}`);
 
     if (byGender.length === 0) {
-      return NextResponse.json({ success: false, error: "No outfits for this gender" }, { status: 404 });
+      return NextResponse.json({ success: false, error: `No outfits for gender: ${genderKey}` }, { status: 404 });
     }
 
-    // Score and sort
+    // 2. Score and sort
     const scored = byGender
-      .map((o) => ({ ...o, _score: scoreOutfit(o, occasionKey, moodKeys, bs, st, budgetLabel) }))
-      .sort((a, b) => b._score - a._score);
+      .map(o => ({ ...o, _s: score(o, occKey, moodKeys, bs, st, budgetKey) }))
+      .sort((a, b) => b._s - a._s);
 
-    // Pick best outfit — if top score is 0, pick random from gender
-    const best = scored[0]._score > 0
-      ? scored[0]
-      : { ...byGender[Math.floor(Math.random() * byGender.length)], _score: 0 };
+    console.log(`[/api/outfits] top scores: ${scored.slice(0,3).map(o => `${o.id}(${o._s})`).join(", ")}`);
 
-    // ── Resolve items ─────────────────────────────────────────────────────────
-    const itemEntries = Object.entries(best.items);
+    // 3. Pick best — if no score, pick first gender match
+    const best = scored[0];
+    console.log(`[/api/outfits] selected outfit: ${best.id}, items:`, best.items);
 
-    // Sort by display category order
-    itemEntries.sort(([typeA], [typeB]) => {
-      const ai = CATEGORY_ORDER.indexOf(typeA);
-      const bi = CATEGORY_ORDER.indexOf(typeB);
-      return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
-    });
+    // 4. Collect all items from this outfit
+    const itemEntries = Object.entries(best.items)
+      .sort(([a],[b]) => {
+        const ai = TYPE_ORDER.indexOf(a), bi = TYPE_ORDER.indexOf(b);
+        return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+      })
+      .slice(0, 4); // max 4 cards
 
-    // Take up to 4 items
-    const resolved = itemEntries
-      .slice(0, 4)
+    const resolvedItems = itemEntries
       .map(([type, itemId]) => {
         const item = itemsMap.get(Number(itemId));
-        if (!item) return null;
+        if (!item) {
+          console.warn(`[/api/outfits] item id ${itemId} not found in items.json`);
+          return null;
+        }
         return {
           id:            item.id,
           name:          item.title,
           image:         item.image,
           affiliateLink: item.affiliate_link,
           platform:      item.website,
-          category:      formatCategory(type),
+          category:      formatType(type),
           tags:          [item.fabric, item.quality].filter(Boolean).slice(0, 2),
           rating:        item.review ?? 4.0,
           price:         `₹${item.price?.toLocaleString("en-IN") ?? "–"}`,
@@ -165,28 +169,27 @@ export async function POST(req: NextRequest) {
       })
       .filter(Boolean);
 
-    if (resolved.length === 0) {
-      return NextResponse.json(
-        { success: false, error: "Items not found for this outfit" },
-        { status: 404 }
-      );
+    console.log(`[/api/outfits] resolved ${resolvedItems.length} items`);
+
+    if (resolvedItems.length === 0) {
+      return NextResponse.json({ success: false, error: "Items not found for outfit " + best.id }, { status: 404 });
     }
 
-    const platform = resolved[0]?.platform ?? best.website ?? "Curated";
+    const platform = resolvedItems[0]?.platform ?? best.website ?? "Curated";
 
     return NextResponse.json({
       success:         true,
       look_name:       `${vibe} ${occasion} Look`,
-      look_reason:     buildLookReason(bs, st, occasion as string, vibe as string),
+      look_reason:     buildReason(bs, st, occasion as string, vibe as string),
       tags:            [vibe, occasion, bs].filter(Boolean),
       platform,
-      items:           resolved,
+      items:           resolvedItems,
       why_this_outfit: best.why_this_outfit ?? [],
     });
 
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : String(e);
-    console.error("[/api/outfits] error:", msg);
+    console.error("[/api/outfits] CRASH:", msg);
     return NextResponse.json({ success: false, error: msg }, { status: 500 });
   }
 }
@@ -195,49 +198,28 @@ export async function POST(req: NextRequest) {
 export async function GET() {
   try {
     return NextResponse.json(loadOutfits());
-  } catch (error) {
-    console.error("Error reading outfit.json:", error);
-    return NextResponse.json({ error: "Failed to load outfits" }, { status: 500 });
+  } catch (e) {
+    return NextResponse.json({ error: "Failed to load outfit.json" }, { status: 500 });
   }
 }
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
-function formatCategory(type: string): string {
-  const map: Record<string, string> = {
-    top:       "Top",
-    top_inner: "Inner",
-    top_outer: "Jacket / Outer",
-    bottom:    "Bottom",
-    dress:     "Dress",
-    shoes:     "Shoes",
-    heel:      "Heels",
-    accessory: "Accessory",
-    neckpiece: "Neckpiece",
-    bag:       "Bag",
-    Handbag:   "Bag",
+// ── Helper ────────────────────────────────────────────────────────────────────
+function buildReason(bs: string, st: string, occasion: string, vibe: string): string {
+  const shape: Record<string,string> = {
+    Hourglass: "These pieces highlight your balanced proportions beautifully.",
+    Pear: "These outfits balance your silhouette by adding volume on top.",
+    Apple: "These looks create a defined waistline that flatters your shape.",
+    Rectangle: "These styles add curves and dimension to your frame.",
+    "Inverted Triangle": "These picks add fullness at the bottom to balance your shoulders.",
   };
-  return map[type] ?? type.charAt(0).toUpperCase() + type.slice(1);
-}
-
-function buildLookReason(bs: string, st: string, occasion: string, vibe: string): string {
-  const shapeAdvice: Record<string, string> = {
-    Hourglass:           "These pieces highlight your balanced proportions beautifully.",
-    Pear:                "These outfits balance your silhouette by adding volume on top.",
-    Apple:               "These looks draw the eye upward and create a defined waistline.",
-    Rectangle:           "These styles add curves and dimension to your frame.",
-    "Inverted Triangle": "These picks add fullness and flow at the bottom to balance your shoulders.",
+  const tone: Record<string,string> = {
+    Fair: "The lighter and jewel tones complement your fair complexion perfectly.",
+    Wheatish: "These warm tones complement your wheatish skin beautifully.",
+    Dusky: "These vibrant shades look stunning against your dusky complexion.",
+    Tan: "These earthy tones are a stunning match for your warm tan skin.",
+    Deep: "These bold shades create a striking contrast against your deep complexion.",
   };
-  const toneAdvice: Record<string, string> = {
-    Fair:     "The lighter and jewel tones complement your fair complexion perfectly.",
-    Light:    "These warm hues beautifully enhance your light skin tone.",
-    Medium:   "The rich colours work wonderfully with your medium complexion.",
-    Tan:      "These earthy tones are a stunning match for your warm tan skin.",
-    Wheatish: "These warm and rich tones complement your wheatish skin beautifully.",
-    Dusky:    "These vibrant shades look stunning against your dusky complexion.",
-    Deep:     "These bold shades create a striking contrast against your deep complexion.",
-    Dark:     "These vivid colours look absolutely stunning on your skin tone.",
-  };
-  const shape = shapeAdvice[bs] ?? "Carefully selected to flatter your unique shape.";
-  const tone  = toneAdvice[st]  ?? "The colour palette complements your skin tone.";
-  return `${shape} ${tone} Perfect for ${occasion?.toLowerCase()} with a ${vibe?.toLowerCase()} vibe.`;
+  const s = shape[bs] ?? "Carefully selected to flatter your unique shape.";
+  const t = tone[st]  ?? "The colour palette complements your skin tone.";
+  return `${s} ${t} Perfect for ${occasion?.toLowerCase()} with a ${vibe?.toLowerCase()} vibe.`;
 }

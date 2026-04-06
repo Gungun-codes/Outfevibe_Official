@@ -30,7 +30,7 @@
       "tan",
       "deep"
     ],
-    "priority": 1,
+    "priority": 3,
     "categories": [
       "holi_trending",
       "ai_style"
@@ -65,7 +65,7 @@
       "wheatish",
       "dusky"
     ],
-    "priority": 1,
+    "priority": 3,
     "categories": [
       "holi_trending",
       "ai_style"
@@ -103,7 +103,7 @@
       "dusky",
       "deep"
     ],
-    "priority": 1,
+    "priority": 3,
     "categories": [
       "holi_trending",
       "ai_style"
@@ -138,7 +138,7 @@
       "wheatish",
       "tan"
     ],
-    "priority": 2,
+    "priority": 3,
     "categories": [
       "holi_trending",
       "ai_style"
@@ -173,7 +173,7 @@
       "dusky",
       "deep"
     ],
-    "priority": 2,
+    "priority": 3,
     "categories": [
       "holi_trending",
       "ai_style"
@@ -211,7 +211,7 @@
       "dusky",
       "deep"
     ],
-    "priority": 1,
+    "priority": 3,
     "categories": [
       "holi_trending",
       "ai_style"
@@ -287,7 +287,7 @@
       "dusky",
       "deep"
     ],
-    "priority": 1,
+    "priority": 3,
     "categories": [
       "holi_trending",
       "ai_style"
@@ -323,7 +323,7 @@
       "wheatish",
       "dusky"
     ],
-    "priority": 1,
+    "priority": 3,
     "categories": [
       "holi_trending",
       "ai_style"
@@ -360,7 +360,7 @@
       "dusky",
       "deep"
     ],
-    "priority": 1,
+    "priority": 3,
     "categories": [
       "holi_trending",
       "ai_style"
@@ -397,7 +397,7 @@
       "dusky",
       "deep"
     ],
-    "priority": 2,
+    "priority": 3,
     "categories": [
       "holi_trending",
       "ai_style"
@@ -434,7 +434,7 @@
       "dusky",
       "deep"
     ],
-    "priority": 2,
+    "priority": 3,
     "categories": [
       "holi_trending",
       "ai_style"
@@ -507,7 +507,7 @@
       "dusky",
       "deep"
     ],
-    "priority": 1,
+    "priority": 3,
     "categories": [
       "holi_trending",
       "ai_style"
@@ -541,7 +541,7 @@
       "dusky",
       "deep"
     ],
-    "priority": 2,
+    "priority": 3,
     "categories": [
       "ai_style"
     ],
@@ -576,7 +576,7 @@
       "wheatish",
       "dusky"
     ],
-    "priority": 1,
+    "priority": 3,
     "categories": [
       "ai_style"
     ],
@@ -609,7 +609,7 @@
       "wheatish",
       "dusky"
     ],
-    "priority": 1,
+    "priority": 2,
     "categories": [
       "persona_trending",
       "ai_style",
@@ -645,7 +645,7 @@
       "dusky",
       "deep"
     ],
-    "priority": 1,
+    "priority": 2,
     "categories": [
       "persona_trending",
       "ai_style",
@@ -713,7 +713,7 @@
       "fair",
       "wheatish"
     ],
-    "priority": 1,
+    "priority": 2,
     "categories": [
       "persona_trending",
       "ai_style",
@@ -784,7 +784,7 @@
       "dusky",
       "deep"
     ],
-    "priority": 1,
+    "priority": 2,
     "categories": [
       "persona_trending",
       "ai_style",
@@ -819,7 +819,7 @@
       "fair",
       "wheatish"
     ],
-    "priority": 2,
+    "priority": 3,
     "categories": [
       "persona_trending",
       "ai_style",
@@ -855,7 +855,7 @@
       "dusky",
       "deep"
     ],
-    "priority": 2,
+    "priority": 3,
     "categories": [
       "persona_trending",
       "ai_style",
@@ -968,7 +968,7 @@
       "dusky",
       "deep"
     ],
-    "priority": 2,
+    "priority": 1,
     "categories": [
       "persona_trending",
       "ai_style",
@@ -1081,7 +1081,7 @@
       "dusky",
       "deep"
     ],
-    "priority": 2,
+    "priority": 1,
     "categories": [
       "persona_trending",
       "ai_style",
@@ -1154,7 +1154,7 @@
       "wheatish",
       "dusky"
     ],
-    "priority": 2,
+    "priority": 1,
     "categories": [
       "persona_trending",
       "ai_style",
@@ -1266,7 +1266,7 @@
       "dusky",
       "deep"
     ],
-    "priority": 2,
+    "priority": 1,
     "categories": [
       "persona_trending",
       "ai_style",
@@ -1302,7 +1302,7 @@
       "dusky",
       "deep"
     ],
-    "priority": 2,
+    "priority": 1,
     "categories": [
       "persona_trending",
       "ai_style",
@@ -1414,7 +1414,7 @@
       "dusky",
       "deep"
     ],
-    "priority": 2,
+    "priority": 1,
     "categories": [
       "persona_trending",
       "ai_style",
@@ -1524,7 +1524,7 @@
       "dusky",
       "deep"
     ],
-    "priority": 1,
+    "priority": 2,
     "categories": [
       "persona_trending",
       "ai_style",
@@ -1601,7 +1601,7 @@
       "dusky",
       "deep"
     ],
-    "priority": 1,
+    "priority": 2,
     "categories": [
       "persona_trending",
       "ai_style",
@@ -1637,7 +1637,7 @@
       "wheatish",
       "dusky"
     ],
-    "priority": 1,
+    "priority": 2,
     "categories": [
       "persona_trending",
       "ai_style",
@@ -1673,7 +1673,7 @@
       "dusky",
       "deep"
     ],
-    "priority": 2,
+    "priority": 3,
     "categories": [
       "persona_trending",
       "ai_style",
@@ -1708,7 +1708,7 @@
       "wheatish",
       "dusky"
     ],
-    "priority": 1,
+    "priority": 3,
     "categories": [
       "persona_trending",
       "ai_style",
@@ -1894,7 +1894,7 @@
       "wheatish",
       "dusky"
     ],
-    "priority": 1,
+    "priority": 2,
     "categories": [
       "persona_trending",
       "ai_style",
@@ -1931,7 +1931,7 @@
       "wheatish",
       "dusky"
     ],
-    "priority": 1,
+    "priority": 2,
     "categories": [
       "persona_trending",
       "ai_style",
@@ -2151,7 +2151,7 @@
       "fair",
       "wheatish"
     ],
-    "priority": 1,
+    "priority": 3,
     "categories": [
       "persona_trending",
       "ai_style",
@@ -2188,7 +2188,7 @@
       "wheatish",
       "dusky"
     ],
-    "priority": 1,
+    "priority": 3,
     "categories": [
       "persona_trending",
       "ai_style",
@@ -2223,7 +2223,7 @@
       "dusky",
       "deep"
     ],
-    "priority": 2,
+    "priority": 3,
     "categories": [
       "persona_trending",
       "ai_style",
@@ -2258,7 +2258,7 @@
       "dusky",
       "deep"
     ],
-    "priority": 1,
+    "priority": 3,
     "categories": [
       "persona_trending",
       "ai_style",
@@ -2293,7 +2293,7 @@
       "fair",
       "wheatish"
     ],
-    "priority": 2,
+    "priority": 3,
     "categories": [
       "persona_trending",
       "ai_style",
@@ -2329,7 +2329,7 @@
       "wheatish",
       "dusky"
     ],
-    "priority": 1,
+    "priority": 3,
     "categories": [
       "persona_trending",
       "ai_style",
@@ -2363,7 +2363,7 @@
       "wheatish",
       "dusky"
     ],
-    "priority": 2,
+    "priority": 3,
     "categories": [
       "persona_trending",
       "ai_style",
@@ -2401,7 +2401,7 @@
       "dusky",
       "deep"
     ],
-    "priority": 1,
+    "priority": 3,
     "categories": [
       "persona_trending",
       "ai_style",
@@ -2437,7 +2437,7 @@
       "wheatish",
       "dusky"
     ],
-    "priority": 1,
+    "priority": 3,
     "categories": [
       "persona_trending",
       "ai_style",
@@ -2474,7 +2474,7 @@
       "dusky",
       "deep"
     ],
-    "priority": 2,
+    "priority": 3,
     "categories": [
       "persona_trending",
       "ai_style",
@@ -2509,7 +2509,7 @@
       "wheatish",
       "dusky"
     ],
-    "priority": 2,
+    "priority": 3,
     "categories": [
       "persona_trending",
       "ai_style",
@@ -2545,7 +2545,7 @@
       "dusky",
       "deep"
     ],
-    "priority": 1,
+    "priority": 3,
     "categories": [
       "persona_trending",
       "ai_style",
@@ -2580,7 +2580,7 @@
       "wheatish",
       "dusky"
     ],
-    "priority": 2,
+    "priority": 3,
     "categories": [
       "persona_trending",
       "ai_style",
@@ -2616,7 +2616,7 @@
       "wheatish",
       "dusky"
     ],
-    "priority": 1,
+    "priority": 3,
     "categories": [
       "persona_trending",
       "ai_style",
@@ -2654,7 +2654,7 @@
       "dusky",
       "deep"
     ],
-    "priority": 1,
+    "priority": 3,
     "categories": [
       "persona_trending",
       "ai_style",

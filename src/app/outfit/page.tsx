@@ -8,14 +8,13 @@ import { ChipSelector } from "@/components/ChipSelector";
 import { BudgetSlider } from "@/components/BudgetSlider";
 import { AnalysisEditor } from "@/components/AnalysisEditor";
 import { AnalysisScreen } from "@/components/AnalysisScreen";
-import { OutfitResultCard } from "@/components/OutfitResultCard";
-import { OutfitResultCard2 } from "@/components/OutfitResultCard2";
 import { useAuth } from "@/context/authContext";
 import { supabase } from "@/lib/supabase";
 import { ColorPaletteCard } from "@/components/ColorPaletteCard";
 import { useAnalysisLimit } from "@/app/hooks/useAnalysisLimit";
-import { OutfitResult, OCCASIONS } from "@/lib/type";
-import outfitsData from "../../../backend/outfits.json"; // ← same path as home page.tsx
+import { OCCASIONS } from "@/lib/type";
+import outfitsData from "../../../backend/outfit.json";
+import itemsData from "../../../backend/item.json";
 
 // ── Occasion vibes map ────────────────────────────────────────────────────────
 const OCCASION_VIBES: Record<string, { Female: string[]; Male: string[] }> = {
@@ -37,58 +36,325 @@ function toGenderProp(g: string): "male" | "female" {
   return g.toLowerCase() === "male" ? "male" : "female";
 }
 
-// ── SimpleOutfit type (outfits.json) ──────────────────────────────────────────
-interface SimpleOutfit {
-  id: number;
-  title: string;
+// ── JSON types ────────────────────────────────────────────────────────────────
+interface OutfitJson {
+  id: string;
+  website: string;
   gender: string;
   occasions: string[];
-  mood: string[];
-  budget: string;
-  persona: string[];
+  vibe: string;
+  moods: string[];
+  persona: string;
   body_shapes: string[];
   skin_tones: string[];
-  image: string;
-  affiliateLink: string;
-  categories?: string[];
-  priority?: number;
+  items: Record<string, number>;
+  total_price: number;
+  budget_range: string;
+  priority: number | string;
+  why_this_outfit: string[];
 }
 
-// ── Filtering helpers ─────────────────────────────────────────────────────────
-function scoreOutfit(o: SimpleOutfit, bs: string, st: string) {
+interface ItemJson {
+  id: number;
+  type: string;
+  title: string;
+  occasion: string;
+  mood: string;
+  website: string;
+  price: number;
+  review: number;
+  fabric: string;
+  quality: string;
+  image: string;
+  affiliate_link: string;
+}
+
+// ── Pre-cast JSON ─────────────────────────────────────────────────────────────
+const ALL_OUTFITS = (outfitsData as any).outfits as OutfitJson[];
+const ALL_ITEMS   = (itemsData  as any).items   as ItemJson[];
+
+// ── Item lookup by ID ─────────────────────────────────────────────────────────
+function getItemById(id: number): ItemJson | undefined {
+  return ALL_ITEMS.find((i) => i.id === id);
+}
+
+function getItemsForOutfit(outfit: OutfitJson): ItemJson[] {
+  return Object.values(outfit.items)
+    .map((id) => getItemById(id))
+    .filter((i): i is ItemJson => !!i);
+}
+
+// ── Score & filter outfits ────────────────────────────────────────────────────
+function scoreOutfit(o: OutfitJson, bs: string, st: string): number {
   let s = 0;
   if (bs && o.body_shapes?.some((b) => b.toLowerCase() === bs.toLowerCase())) s += 3;
   if (st && o.skin_tones?.some((x) => x.toLowerCase() === st.toLowerCase()))  s += 2;
-  s += (o.priority === 1 ? 2 : o.priority === 2 ? 1 : 0);
+  const p = typeof o.priority === "number" ? o.priority : 99;
+  s += p === 1 ? 2 : p === 2 ? 1 : 0;
   return s;
 }
 
-function filterQuick(all: SimpleOutfit[], gender: string, bs: string, st: string): SimpleOutfit[] {
-  const g = gender.toLowerCase();
-  const scored = all
-    .filter((o) => o.gender === g)
-    .map((o) => ({ ...o, _s: scoreOutfit(o, bs, st) }))
-    .sort((a, b) => b._s - a._s);
-  const top6 = scored.slice(0, 6).sort(() => Math.random() - 0.5);
-  return top6.slice(0, 2);
-}
-
-function filterRefined(
-  all: SimpleOutfit[], gender: string, occasion: string,
-  bs: string, st: string, budgetLabel: string
-): SimpleOutfit[] {
+function filterOutfits(
+  gender: string,
+  occasion: string,
+  vibe: string,
+  bs: string,
+  st: string,
+  budgetLabel: string,
+): OutfitJson[] {
   const g   = gender.toLowerCase();
   const occ = occasion.toLowerCase();
-  const scored = all
-    .filter((o) =>
-      o.gender === g &&
-      o.occasions?.some((x) => x.toLowerCase() === occ) &&
-      (!budgetLabel || o.budget === budgetLabel)
-    )
-    .map((o) => ({ ...o, _s: scoreOutfit(o, bs, st) }))
+  const v   = vibe.toLowerCase();
+
+  const scored = ALL_OUTFITS
+    .filter((o) => {
+      const gMatch  = o.gender?.toLowerCase() === g;
+      const occMatch = o.occasions?.some((x) => x.toLowerCase() === occ);
+      const budMatch = !budgetLabel || o.budget_range === budgetLabel;
+      return gMatch && occMatch && budMatch;
+    })
+    .map((o) => ({ ...o, _s: scoreOutfit(o, bs, st) + (o.vibe?.toLowerCase() === v ? 2 : 0) }))
     .sort((a, b) => b._s - a._s);
-  const top8 = scored.slice(0, 8).sort(() => Math.random() - 0.5);
-  return top8.slice(0, 2);
+
+  // Return top 2 outfits (each will show their items in a grid)
+  return scored.slice(0, 2);
+}
+
+// ── Outfit Items Grid Card ────────────────────────────────────────────────────
+import { ExternalLink, ShoppingBag, Heart, Bookmark } from "lucide-react";
+
+function StarRating({ rating }: { rating: number }) {
+  return (
+    <div className="flex items-center gap-0.5">
+      {[1,2,3,4,5].map((i) => (
+        <span key={i} className={`text-xs ${i <= Math.round(rating) ? "text-amber-400" : "text-neutral-700"}`}>★</span>
+      ))}
+      <span className="text-xs text-neutral-500 ml-1">{rating?.toFixed(1)}</span>
+    </div>
+  );
+}
+
+function ItemCard({ item, index }: { item: ItemJson; index: number }) {
+  const [liked, setLiked] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const color = "#d4af7f";
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.07 }}
+      className="bg-[#111111] rounded-2xl border border-neutral-800 overflow-hidden shadow-sm hover:shadow-md hover:border-neutral-700 transition-all"
+    >
+      {/* Image */}
+      <div className="relative w-full overflow-hidden bg-neutral-900" style={{ aspectRatio: "3/4" }}>
+        {item.image ? (
+          <img
+            src={item.image}
+            alt={item.title}
+            className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
+            onError={(e) => {
+              (e.target as HTMLImageElement).style.display = "none";
+            }}
+          />
+        ) : (
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-1" style={{ background: `${color}10` }}>
+            <ShoppingBag className="w-8 h-8" style={{ color }} />
+            <span className="text-xs font-medium capitalize" style={{ color }}>{item.type}</span>
+          </div>
+        )}
+
+        {/* Like + Save */}
+        <div className="absolute top-2 right-2 flex flex-col gap-1.5">
+          <motion.button
+            whileTap={{ scale: 0.8 }}
+            onClick={() => setLiked((p) => !p)}
+            className="w-7 h-7 rounded-full flex items-center justify-center shadow-md"
+            style={{
+              background: liked ? "rgba(239,68,68,0.9)" : "rgba(0,0,0,0.6)",
+              backdropFilter: "blur(8px)",
+              border: liked ? "1px solid rgba(239,68,68,0.5)" : "1px solid rgba(255,255,255,0.1)",
+            }}
+          >
+            <Heart className="w-3.5 h-3.5" fill={liked ? "#fff" : "none"} stroke="#fff" />
+          </motion.button>
+          <motion.button
+            whileTap={{ scale: 0.8 }}
+            onClick={() => setSaved((p) => !p)}
+            className="w-7 h-7 rounded-full flex items-center justify-center shadow-md"
+            style={{
+              background: saved ? "rgba(212,175,127,0.9)" : "rgba(0,0,0,0.6)",
+              backdropFilter: "blur(8px)",
+              border: saved ? "1px solid rgba(212,175,127,0.5)" : "1px solid rgba(255,255,255,0.1)",
+            }}
+          >
+            <Bookmark className="w-3.5 h-3.5" fill={saved ? "#000" : "none"} stroke={saved ? "#000" : "#fff"} />
+          </motion.button>
+        </div>
+
+        {/* Category badge */}
+        <div className="absolute bottom-2 left-2 text-white text-xs font-bold px-2 py-0.5 rounded-full capitalize"
+          style={{ background: color }}>
+          {item.type}
+        </div>
+      </div>
+
+      <div className="p-3 bg-[#111111]">
+        <p className="text-xs font-semibold text-neutral-200 leading-tight mb-2 line-clamp-2">{item.title}</p>
+        <StarRating rating={item.review} />
+        <div className="flex items-center justify-between mt-2">
+          <span className="text-xs font-bold text-neutral-300">₹{item.price?.toLocaleString("en-IN")}</span>
+          <a
+            href={item.affiliate_link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs font-semibold px-3 py-1.5 rounded-full flex items-center gap-1 hover:opacity-90 transition-opacity active:scale-95 text-black"
+            style={{ background: `linear-gradient(135deg,${color},#b8860b)` }}
+          >
+            Buy <ExternalLink className="w-3 h-3" />
+          </a>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+function OutfitItemsGrid({
+  outfit,
+  occasion,
+  outfitIndex,
+}: {
+  outfit: OutfitJson;
+  occasion: string;
+  outfitIndex: number;
+}) {
+  const items = getItemsForOutfit(outfit);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: outfitIndex * 0.2 }}
+      className="w-full space-y-3 mb-4"
+    >
+      {/* Outfit header */}
+      <div className="bg-[#111111] rounded-2xl border border-neutral-800 p-3">
+        <div className="flex items-center justify-between mb-1">
+          <p className="text-xs font-bold text-white capitalize">{outfit.vibe} Look ✨</p>
+          <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold capitalize"
+            style={{ background: "#d4af7f18", color: "#d4af7f" }}>
+            {outfit.budget_range} budget
+          </span>
+        </div>
+        <p className="text-[10px] text-neutral-500 capitalize">{outfit.website} · {occasion}</p>
+        {outfit.why_this_outfit?.[0] && (
+          <p className="text-[10px] text-neutral-400 mt-1 italic">"{outfit.why_this_outfit[0]}"</p>
+        )}
+      </div>
+
+      {/* Items grid — 2 columns */}
+      <div className="grid grid-cols-2 gap-2.5">
+        {items.map((item, i) => (
+          <ItemCard key={`${outfit.id}-${item.id}-${i}`} item={item} index={i} />
+        ))}
+      </div>
+
+      {items.length === 0 && (
+        <p className="text-xs text-neutral-500 text-center py-4">No items found for this outfit.</p>
+      )}
+    </motion.div>
+  );
+}
+
+// ── Manual body/skin clarification card (for skip-image users) ────────────────
+const BODY_SHAPES  = ["Hourglass","Rectangle","Pear","Apple","Inverted Triangle"];
+const SKIN_TONES   = ["Fair","Wheatish","Dusky","Deep"];
+
+function ManualClarificationCard({
+  onConfirm,
+}: {
+  onConfirm: (bodyShape: string, skinTone: string) => void;
+}) {
+  const [selectedShape, setSelectedShape] = useState("");
+  const [selectedTone,  setSelectedTone]  = useState("");
+  const [submitted,     setSubmitted]     = useState(false);
+
+  const handleConfirm = () => {
+    if (!selectedShape || !selectedTone) return;
+    setSubmitted(true);
+    onConfirm(selectedShape, selectedTone);
+  };
+
+  return (
+    <div className="rounded-2xl border border-neutral-800 bg-[#111111] p-4 space-y-4">
+      <div>
+        <p className="text-sm font-bold text-white mb-1">Help us style you better 👗</p>
+        <p className="text-xs text-neutral-400 leading-relaxed">
+          Please input your body shape and skin tone so that we can give you better outfit recommendations.
+        </p>
+      </div>
+
+      {/* Body shape */}
+      <div>
+        <p className="text-xs font-semibold text-[#d4af7f] mb-2 uppercase tracking-wider">Body Shape</p>
+        <div className="flex flex-wrap gap-2">
+          {BODY_SHAPES.map((shape) => (
+            <button
+              key={shape}
+              disabled={submitted}
+              onClick={() => setSelectedShape(shape)}
+              className="px-3 py-1.5 rounded-full text-xs font-semibold border transition-all"
+              style={{
+                background: selectedShape === shape ? "linear-gradient(135deg,#d4af7f,#b8860b)" : "#1a1a1a",
+                color:      selectedShape === shape ? "#000" : "#d4af7f",
+                border:     selectedShape === shape ? "1px solid transparent" : "1px solid #d4af7f40",
+              }}
+            >
+              {shape}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Skin tone */}
+      <div>
+        <p className="text-xs font-semibold text-[#d4af7f] mb-2 uppercase tracking-wider">Skin Tone</p>
+        <div className="flex flex-wrap gap-2">
+          {SKIN_TONES.map((tone) => (
+            <button
+              key={tone}
+              disabled={submitted}
+              onClick={() => setSelectedTone(tone)}
+              className="px-3 py-1.5 rounded-full text-xs font-semibold border transition-all"
+              style={{
+                background: selectedTone === tone ? "linear-gradient(135deg,#d4af7f,#b8860b)" : "#1a1a1a",
+                color:      selectedTone === tone ? "#000" : "#d4af7f",
+                border:     selectedTone === tone ? "1px solid transparent" : "1px solid #d4af7f40",
+              }}
+            >
+              {tone}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Confirm */}
+      {!submitted && (
+        <button
+          onClick={handleConfirm}
+          disabled={!selectedShape || !selectedTone}
+          className="w-full py-2.5 rounded-full text-sm font-bold text-black transition-all disabled:opacity-40"
+          style={{ background: "linear-gradient(135deg,#d4af7f,#b8860b)" }}
+        >
+          Confirm ✓
+        </button>
+      )}
+
+      {submitted && (
+        <p className="text-xs text-[#d4af7f] text-center">✓ Saved! Finding your color palette…</p>
+      )}
+    </div>
+  );
 }
 
 // ── Message type ──────────────────────────────────────────────────────────────
@@ -103,9 +369,6 @@ let _n = 0;
 const uid = () => `m${++_n}_${Date.now()}`;
 let _booted = false;
 
-// ── Pre-cast JSON at module level (zero runtime cost) ─────────────────────────
-const ALL_OUTFITS = outfitsData as unknown as SimpleOutfit[];
-
 // ── Page ──────────────────────────────────────────────────────────────────────
 export default function Page() {
   const [msgs,          setMsgs]     = useState<Msg[]>([]);
@@ -117,7 +380,6 @@ export default function Page() {
   const fileRef     = useRef<HTMLInputElement>(null);
   const camRef      = useRef<HTMLInputElement>(null);
   const genderRef   = useRef("");
-  const occasionRef = useRef("");
   const analysisRef = useRef<{ body_shape: string; skin_tone: string } | null>(null);
 
   const pushBotRef  = useRef<((c: React.ReactNode, d?: number) => Promise<string>) | null>(null);
@@ -153,32 +415,7 @@ export default function Page() {
   useEffect(() => { pushBotRef.current  = pushBot;  }, [pushBot]);
   useEffect(() => { pushUserRef.current = pushUser; }, [pushUser]);
 
-  // ── Quick outfit flow (after color tips, no occasion asked) ───────────────
-  const showQuickOutfits = useCallback((
-    pb: typeof pushBot, pu: typeof pushUser,
-    gender: string, bs: string, st: string,
-  ) => {
-    const run = async () => {
-      const quick = filterQuick(ALL_OUTFITS, gender, bs, st);
-      await pb(
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
-          <p className="text-sm font-semibold text-white mb-1">Quick picks for you! 🛍️</p>
-          <p className="text-xs text-neutral-500 mb-3">Based on your body shape &amp; skin tone</p>
-          <OutfitResultCard2
-            outfits={quick}
-            bodyShape={bs}
-            skinTone={st}
-            onGetRefined={() => runOccasionFlow(pb, pu, gender, bs, st)}
-          />
-        </motion.div>,
-        600
-      );
-    };
-    run();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // ── Occasion → vibe → budget → refined outfits ────────────────────────────
+  // ── Occasion → vibe → budget → outfit items grid ─────────────────────────
   const runOccasionFlow = useCallback((
     pb: typeof pushBot, pu: typeof pushUser,
     gender: string, bs: string, st: string,
@@ -190,7 +427,6 @@ export default function Page() {
           <ChipSelector options={OCCASIONS} onSelect={async (occ) => {
             markAnswered(occId);
             pu(occ);
-            occasionRef.current = occ;
 
             const vibeId = await pb(
               <div>
@@ -214,7 +450,7 @@ export default function Page() {
                             <div className="bg-[#111111] rounded-2xl p-6 flex flex-col items-center gap-3 border border-neutral-800">
                               <div className="w-8 h-8 rounded-full animate-spin"
                                 style={{ border: "3px solid #d4af7f", borderTopColor: "transparent" }} />
-                              <p className="text-sm font-semibold text-[#d4af7f]">Finding {occ} outfits...</p>
+                              <p className="text-sm font-semibold text-[#d4af7f]">Finding {occ} outfits…</p>
                               <div className="flex gap-1">
                                 {[0,1,2].map((i) => (
                                   <span key={i} className="w-1.5 h-1.5 rounded-full bg-[#d4af7f] animate-bounce"
@@ -225,41 +461,50 @@ export default function Page() {
                           ),
                         }]);
 
-                        await new Promise((r) => setTimeout(r, 900));
-                        const refined = filterRefined(ALL_OUTFITS, gender, occ, bs, st, budgetRange.label);
+                        // Short delay to show spinner, then replace with items grid
+                        await new Promise((r) => setTimeout(r, 1200));
+
+                        const matched = filterOutfits(gender, occ, vibe, bs, st, budgetRange.label);
 
                         setMsgs((p) => p.map((m) =>
                           m.id === loadId
-                            ? { ...m, content: <OutfitResultCard2 outfits={refined} occasion={occ} bodyShape={bs} skinTone={st} /> }
+                            ? {
+                                ...m,
+                                content: (
+                                  <motion.div
+                                    initial={{ opacity: 0, y: 8 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="w-full space-y-2"
+                                  >
+                                    <div className="flex items-center justify-between mb-1">
+                                      <p className="text-xs font-bold text-white">
+                                        {occ} Picks ✨
+                                      </p>
+                                      <span className="text-[10px] px-2 py-1 rounded-full font-semibold"
+                                        style={{ background: "#d4af7f18", color: "#d4af7f" }}>
+                                        {matched.length} look{matched.length !== 1 ? "s" : ""}
+                                      </span>
+                                    </div>
+                                    {matched.length > 0 ? (
+                                      matched.map((outfit, idx) => (
+                                        <OutfitItemsGrid
+                                          key={outfit.id}
+                                          outfit={outfit}
+                                          occasion={occ}
+                                          outfitIndex={idx}
+                                        />
+                                      ))
+                                    ) : (
+                                      <div className="rounded-2xl border border-neutral-800 bg-[#111111] p-4 text-center">
+                                        <p className="text-sm text-neutral-400">No outfits found for your selection yet.</p>
+                                        <p className="text-xs text-neutral-600 mt-1">We&apos;re adding more daily! 🛍️</p>
+                                      </div>
+                                    )}
+                                  </motion.div>
+                                ),
+                              }
                             : m
                         ));
-
-                        // Item-level 4-card breakdown from outfit.json + items.json
-                        try {
-                          const res = await fetch("/api/outfits", {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ gender, occasion: occ, vibe, body_shape: bs, skin_tone: st, budget: budgetRange.label }),
-                          });
-                          if (res.ok) {
-                            const data: OutfitResult & { success: boolean } = await res.json();
-                            if (data.success) {
-                              await pb(
-                                <div className="space-y-2">
-                                  <div className="flex items-center gap-2">
-                                    <div className="h-px flex-1 bg-neutral-800" />
-                                    <p className="text-[10px] font-semibold text-neutral-600 uppercase tracking-widest whitespace-nowrap">
-                                      Shop the items
-                                    </p>
-                                    <div className="h-px flex-1 bg-neutral-800" />
-                                  </div>
-                                  <OutfitResultCard result={data} platform={data.items?.[0]?.platform ?? "Curated"} />
-                                </div>,
-                                500
-                              );
-                            }
-                          }
-                        } catch { /* API optional */ }
 
                         await pb(
                           <EndCard
@@ -290,6 +535,64 @@ export default function Page() {
     run();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [markAnswered]);
+
+  // ── After analysis / manual clarification: show color palette then occasion flow ──
+  const runPostClarification = useCallback(async (
+    pb: typeof pushBot, pu: typeof pushUser,
+    gender: string, bs: string, st: string,
+    genderProp: "male" | "female",
+  ) => {
+    const palId = await pb(
+      <ColorPaletteCard
+        bodyShape={bs}
+        skinTone={st}
+        gender={genderProp}
+        onContinue={async () => {
+          markAnswered(palId);
+          runOccasionFlow(pb, pu, gender, bs, st);
+        }}
+      />, 500
+    );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [markAnswered, runOccasionFlow]);
+
+  // ── Skip image → manual clarification card ────────────────────────────────
+  const runManualClarification = useCallback(async (
+    pb: typeof pushBot, pu: typeof pushUser,
+    gender: string,
+  ) => {
+    const clarId = await pb(
+      <ManualClarificationCard
+        onConfirm={async (bs, st) => {
+          markAnswered(clarId);
+          pu(`${bs} · ${st} skin ✓`);
+          analysisRef.current = { body_shape: bs, skin_tone: st };
+          const genderProp = toGenderProp(gender);
+          await runPostClarification(pb, pu, gender, bs, st, genderProp);
+        }}
+      />,
+      600
+    );
+
+    // Also offer skip inside clarification
+    await pb(
+      <div>
+        <button
+          onClick={async () => {
+            // Skip clarification too → go straight to occasion (no color palette)
+            pu("Skip body & skin info");
+            await pb("No problem! Let's find outfits for you 🛍️", 400);
+            runOccasionFlow(pb, pu, gender, "", "");
+          }}
+          className="text-xs text-neutral-600 hover:text-neutral-400 transition-colors underline-offset-2 hover:underline"
+        >
+          ▷ Skip this too
+        </button>
+      </div>,
+      300
+    );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [markAnswered, runOccasionFlow, runPostClarification]);
 
   // ── Boot ──────────────────────────────────────────────────────────────────
   const boot = useCallback(async (pb: typeof pushBot, pu: typeof pushUser) => {
@@ -357,7 +660,7 @@ export default function Page() {
                           onSkip={async () => {
                             pu("Skip photo");
                             await pb("No worries! 😊", 400);
-                            runOccasionFlow(pb, pu, g, "", "");
+                            runManualClarification(pb, pu, g);
                           }}
                         />, 600
                       );
@@ -396,8 +699,9 @@ export default function Page() {
               onUpload={() => fileRef.current?.click()}
               onSkip={async () => {
                 pu("Skip photo");
-                await pb("No worries! I'll still find amazing outfits for you 😊", 500);
-                runOccasionFlow(pb, pu, gender, "", "");
+                await pb("No worries! 😊", 500);
+                // → manual clarification (with its own inner skip → straight to occasion)
+                runManualClarification(pb, pu, gender);
               }}
             />, 800
           );
@@ -405,7 +709,7 @@ export default function Page() {
       </div>, 1000
     );
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, markAnswered, runOccasionFlow]);
+  }, [user, markAnswered, runOccasionFlow, runManualClarification]);
 
   // ── Start over ────────────────────────────────────────────────────────────
   const handleStartOver = useCallback(async () => {
@@ -413,7 +717,6 @@ export default function Page() {
     if (!allowed) { await pushBot(<LimitCard used={used} limit={limit} user={user} />, 300); return; }
     _n = 0;
     genderRef.current   = "";
-    occasionRef.current = "";
     analysisRef.current = null;
     setAnalysing(false);
     setMsgs([]);
@@ -482,23 +785,11 @@ export default function Page() {
           analysisRef.current = { body_shape: s, skin_tone: t };
           pu(`${s} · ${t} skin ✓`);
           await incrementUsage();
-
-          const palId = await pb(
-            <ColorPaletteCard
-              bodyShape={s}
-              skinTone={t}
-              gender={genderProp}
-              onContinue={async () => {
-                markAnswered(palId);
-                // ── Quick outfits right after color tips ──────────────────
-                showQuickOutfits(pb, pu, gender, s, t);
-              }}
-            />, 500
-          );
+          await runPostClarification(pb, pu, gender, s, t, genderProp);
         }} />
       </div>, 600
     );
-  }, [incrementUsage, markAnswered, showQuickOutfits]);
+  }, [incrementUsage, markAnswered, runPostClarification]);
 
   // ── Analysis error ────────────────────────────────────────────────────────
   const onAnalysisError = useCallback(async (message: string) => {
@@ -517,14 +808,14 @@ export default function Page() {
           <button onClick={async () => {
             pu("I'll skip the photo");
             await pb("No worries! 😊", 400);
-            runOccasionFlow(pb, pu, genderRef.current, "", "");
+            runManualClarification(pb, pu, genderRef.current);
           }} className="flex items-center gap-1.5 bg-[#111111] border border-neutral-800 text-neutral-400 rounded-full px-4 py-2 text-xs font-semibold hover:bg-[#1a1a1a] transition">
             ▷ Skip and continue
           </button>
         </div>
       </div>, 400
     );
-  }, [runOccasionFlow]);
+  }, [runManualClarification]);
 
   // ── Render ────────────────────────────────────────────────────────────────
   return (
