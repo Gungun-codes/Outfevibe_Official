@@ -1,312 +1,442 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useAuth } from "@/context/authContext";
-import { supabase } from "@/lib/supabase";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { Check, Bookmark } from "lucide-react";
+import { ChevronRight, Sparkles } from "lucide-react";
 
-// ── Color recommendations by skin tone ───────────────────────────────────────
-const SKIN_TONE_COLORS: Record<string, Array<{ name: string; hex: string; why: string }>> = {
-  Fair: [
-    { name: "Dusty Rose",    hex: "#C19A9A", why: "Soft warmth" },
-    { name: "Powder Blue",   hex: "#B0C4DE", why: "Cool contrast" },
-    { name: "Sage Green",    hex: "#87A878", why: "Natural glow" },
-    { name: "Lavender",      hex: "#B57BCA", why: "Dreamy tone" },
-    { name: "Ivory",         hex: "#FFFFF0", why: "Luminous" },
-    { name: "Berry",         hex: "#8B2252", why: "Bold pop" },
-  ],
-  Light: [
-    { name: "Coral",         hex: "#FF6B6B", why: "Warm flush" },
-    { name: "Sky Blue",      hex: "#87CEEB", why: "Fresh contrast" },
-    { name: "Mint",          hex: "#98D8C8", why: "Cool glow" },
-    { name: "Blush Pink",    hex: "#FFB6C1", why: "Soft femininity" },
-    { name: "Champagne",     hex: "#F7E7CE", why: "Subtle radiance" },
-    { name: "Teal",          hex: "#008080", why: "Rich depth" },
-  ],
-  Medium: [
-    { name: "Rust",          hex: "#B7410E", why: "Earthy warmth" },
-    { name: "Olive",         hex: "#808000", why: "Natural match" },
-    { name: "Burnt Orange",  hex: "#CC5500", why: "Bold warmth" },
-    { name: "Mustard",       hex: "#FFDB58", why: "Golden glow" },
-    { name: "Terracotta",    hex: "#C66A53", why: "Earthy depth" },
-    { name: "Forest Green",  hex: "#228B22", why: "Rich contrast" },
-  ],
-  Tan: [
-    { name: "Gold",          hex: "#FFD700", why: "Stunning contrast" },
-    { name: "Deep Coral",    hex: "#FF4500", why: "Vibrant pop" },
-    { name: "Cobalt Blue",   hex: "#0047AB", why: "Bold statement" },
-    { name: "Ivory White",   hex: "#FFFFF0", why: "Clean contrast" },
-    { name: "Copper",        hex: "#B87333", why: "Warm harmony" },
-    { name: "Emerald",       hex: "#50C878", why: "Jewel tone glow" },
-  ],
-  Deep: [
-    { name: "Fuchsia",       hex: "#FF00FF", why: "Electric pop" },
-    { name: "Royal Blue",    hex: "#4169E1", why: "Rich contrast" },
-    { name: "Orange",        hex: "#FF8C00", why: "Bold warmth" },
-    { name: "Bright White",  hex: "#FFFFFF", why: "Crisp contrast" },
-    { name: "Gold",          hex: "#FFD700", why: "Luxe glow" },
-    { name: "Red",           hex: "#CC0000", why: "Powerful statement" },
-  ],
-  Dark: [
-    { name: "Electric Blue", hex: "#0000FF", why: "Vivid contrast" },
-    { name: "Hot Pink",      hex: "#FF69B4", why: "Striking pop" },
-    { name: "Bright Yellow", hex: "#FFFF00", why: "Bold brightness" },
-    { name: "Pure White",    hex: "#FFFFFF", why: "Maximum contrast" },
-    { name: "Bright Red",    hex: "#FF0000", why: "Bold power" },
-    { name: "Lime Green",    hex: "#00FF00", why: "Vivid freshness" },
-  ],
-};
+// ── Types ─────────────────────────────────────────────────────────────────────
+type Gender = "male" | "female";
 
-// ── Style tips by body shape — WOMEN ─────────────────────────────────────────
-const BODY_SHAPE_TIPS_FEMALE: Record<string, {
-  tip: string;
-  avoid: string;
-  outfits: string[];
-}> = {
-  Hourglass: {
-    tip:     "Fitted silhouettes, wrap dresses, belted kurtas that highlight your waist.",
-    avoid:   "Boxy or shapeless cuts that hide your natural curves.",
-    outfits: ["Wrap dress", "Belted anarkali", "Bodycon co-ord set", "Fitted salwar suit", "Peplum top + straight jeans"],
-  },
-  Pear: {
-    tip:     "Bold tops, off-shoulder styles, A-line lehengas, palazzo pants that balance proportions.",
-    avoid:   "Tight bottoms, pencil skirts, or anything that adds volume to hips.",
-    outfits: ["A-line lehenga", "Off-shoulder top + palazzo", "Flared skirt + embellished blouse", "Boat neck kurti + churidar", "Ruffled top + wide-leg trousers"],
-  },
-  Apple: {
-    tip:     "Empire waists, V-neck kurtis, flowy anarkalis, straight-leg trousers that elongate.",
-    avoid:   "Tight waistbands, cropped tops, or clingy fabric around the midsection.",
-    outfits: ["Empire waist anarkali", "V-neck flowy kurti", "Straight-cut salwar suit", "Longline blazer + trousers", "Wrap top + palazzo"],
-  },
-  Rectangle: {
-    tip:     "Peplum kurtis, ruffled dupattas, layered outfits, and cinched waist belts to create curves.",
-    avoid:   "Straight cuts with no definition — always add structure and shape.",
-    outfits: ["Peplum kurti + fitted pants", "Layered lehenga", "Ruffled saree drape", "Tiered skirt + fitted top", "Belted shrug + flared dress"],
-  },
-  "Inverted Triangle": {
-    tip:     "Flared lehengas, wide-leg pants, A-line kurtas to balance broader shoulders.",
-    avoid:   "Boat necks, shoulder pads, or anything that widens the upper body further.",
-    outfits: ["A-line flared lehenga", "Wide-leg palazzo + simple top", "V-neck kurta + churidar", "Fit & flare dress", "Straight-cut salwar"],
-  },
-};
-
-// ── Style tips by body shape — MEN ───────────────────────────────────────────
-const BODY_SHAPE_TIPS_MALE: Record<string, {
-  tip: string;
-  avoid: string;
-  outfits: string[];
-}> = {
-  Athletic: {
-    tip:     "Fitted shirts, structured blazers, slim-fit trousers that showcase your build.",
-    avoid:   "Oversized or boxy fits that hide your physique.",
-    outfits: ["Slim-fit kurta + churidar", "Fitted bandhgala", "Structured sherwani", "Slim chinos + fitted shirt", "Tailored blazer + trousers"],
-  },
-  Slim: {
-    tip:     "Layered outfits, structured sherwanis, slim-fit kurtas with jackets that add visual bulk.",
-    avoid:   "Ultra-tight fits that emphasise leanness; pure vertical stripes.",
-    outfits: ["Layered nehru jacket + kurta", "Slim-fit kurta + jacket", "Structured sherwani", "Chinos + textured shirt", "Double-breasted bandhgala"],
-  },
-  Rectangle: {
-    tip:     "Structured sherwanis, well-tailored kurtas, layered ensembles that create shape.",
-    avoid:   "Completely straight-cut outfits with no dimension.",
-    outfits: ["Structured sherwani set", "Nehru jacket + kurta pajama", "Tailored suit", "Kurta + fitted joggers", "Textured blazer + trousers"],
-  },
-  Oval: {
-    tip:     "Longline kurtas, vertical patterns, dark solid tones and straight-cut trousers that elongate.",
-    avoid:   "Tight waistbands, horizontal stripes, or anything that draws attention to the midsection.",
-    outfits: ["Longline straight kurta + churidar", "Dark solid sherwani", "Straight-cut kurta pajama", "Vertical print shirt + straight trousers", "Nehru collar shirt + flat-front pants"],
-  },
-  "Inverted Triangle": {
-    tip:     "Straight-cut trousers, slim-fit bottoms, simple kurtas that balance broader shoulders.",
-    avoid:   "Wide lapels, bold shoulder detailing, or bulky upper layers.",
-    outfits: ["Slim-fit kurta + straight pajama", "Simple bandhgala", "Flat-front trousers + plain shirt", "Straight sherwani + no embellishment at shoulders", "Chinos + crew-neck tee"],
-  },
-};
-
-// ── Fallback body shapes if analyser returns something unexpected ─────────────
-const FEMALE_SHAPE_KEYS = Object.keys(BODY_SHAPE_TIPS_FEMALE);
-const MALE_SHAPE_KEYS   = Object.keys(BODY_SHAPE_TIPS_MALE);
-
-function resolveShape(shape: string, gender: "male" | "female"): string {
-  if (gender === "female") {
-    return FEMALE_SHAPE_KEYS.includes(shape) ? shape : "Rectangle";
-  }
-  // Male shapes may come in as "Rectangle", "Athletic", "Slim", "Oval" etc.
-  // Also gracefully map female shape names that might slip through
-  const map: Record<string, string> = {
-    Hourglass:           "Athletic",
-    Pear:                "Oval",
-    Apple:               "Oval",
-    "Inverted Triangle": "Inverted Triangle",
-  };
-  if (MALE_SHAPE_KEYS.includes(shape)) return shape;
-  return map[shape] ?? "Rectangle";
+interface PaletteColor {
+  hex: string;
+  name: string;
+  desc: string;
 }
 
-interface Props {
+interface StyleGuide {
+  dos: string[];
+  donts: string[];
+  western: string[];
+  indian: string[];
+}
+
+// ── Color palettes per skin tone ──────────────────────────────────────────────
+const SKIN_PALETTES: Record<string, PaletteColor[]> = {
+  Fair: [
+    { hex: "#E8C5B8", name: "Nude Blush",    desc: "Your natural tone" },
+    { hex: "#7EC8E3", name: "Sky Blue",       desc: "Cool contrast"     },
+    { hex: "#C8A2C8", name: "Lilac",          desc: "Soft romance"      },
+    { hex: "#F4A7B9", name: "Rose Pink",      desc: "Fresh flush"       },
+    { hex: "#90EE90", name: "Sage Green",     desc: "Earthy calm"       },
+    { hex: "#FFD700", name: "Butter Gold",    desc: "Warm glow"         },
+  ],
+  Light: [
+    { hex: "#F5CBA7", name: "Peach",          desc: "Warm glow"         },
+    { hex: "#AED6F1", name: "Cornflower",     desc: "Cool lift"         },
+    { hex: "#A8D8EA", name: "Ice Blue",       desc: "Crisp contrast"    },
+    { hex: "#F9E4B7", name: "Champagne",      desc: "Subtle radiance"   },
+    { hex: "#D7BDE2", name: "Wisteria",       desc: "Dreamy depth"      },
+    { hex: "#82E0AA", name: "Mint",           desc: "Fresh energy"      },
+  ],
+  Medium: [
+    { hex: "#F08080", name: "Coral",          desc: "Warm flush"        },
+    { hex: "#87CEEB", name: "Sky Blue",       desc: "Fresh contrast"    },
+    { hex: "#98FFD5", name: "Mint",           desc: "Cool glow"         },
+    { hex: "#FFB6C1", name: "Blush Pink",     desc: "Soft femininity"   },
+    { hex: "#F5E6C8", name: "Champagne",      desc: "Subtle radiance"   },
+    { hex: "#008080", name: "Teal",           desc: "Rich depth"        },
+  ],
+  Tan: [
+    { hex: "#E74C3C", name: "Brick Red",      desc: "Bold contrast"     },
+    { hex: "#F39C12", name: "Amber",          desc: "Sun-kissed glow"   },
+    { hex: "#1ABC9C", name: "Turquoise",      desc: "Fresh pop"         },
+    { hex: "#F9CA24", name: "Marigold",       desc: "Festive warmth"    },
+    { hex: "#6C5CE7", name: "Royal Purple",   desc: "Regal depth"       },
+    { hex: "#FDCB6E", name: "Golden Yellow",  desc: "Natural radiance"  },
+  ],
+  Wheatish: [
+    { hex: "#C0392B", name: "Deep Red",       desc: "Power contrast"    },
+    { hex: "#D4AF37", name: "Gold",           desc: "Heritage warmth"   },
+    { hex: "#27AE60", name: "Forest Green",   desc: "Earthy richness"   },
+    { hex: "#E67E22", name: "Burnt Orange",   desc: "Autumn glow"       },
+    { hex: "#8E44AD", name: "Aubergine",      desc: "Luxe depth"        },
+    { hex: "#2ECC71", name: "Emerald",        desc: "Fresh lift"        },
+  ],
+  Dusky: [
+    { hex: "#FF6B6B", name: "Poppy",          desc: "Vivid contrast"    },
+    { hex: "#FFE66D", name: "Sunflower",      desc: "Bright lift"       },
+    { hex: "#4ECDC4", name: "Aqua",           desc: "Cool freshness"    },
+    { hex: "#FF8B94", name: "Flamingo",       desc: "Warm pop"          },
+    { hex: "#A8E6CF", name: "Pale Mint",      desc: "Light contrast"    },
+    { hex: "#C3A6FF", name: "Soft Violet",    desc: "Dreamy tone"       },
+  ],
+  Deep: [
+    { hex: "#FFFFFF", name: "Pure White",     desc: "Crisp contrast"    },
+    { hex: "#FFD700", name: "Gold",           desc: "Radiant warmth"    },
+    { hex: "#FF4500", name: "Vermillion",     desc: "Bold statement"    },
+    { hex: "#00CED1", name: "Dark Turquoise", desc: "Vivid freshness"   },
+    { hex: "#FF69B4", name: "Hot Pink",       desc: "Electric pop"      },
+    { hex: "#7CFC00", name: "Lime",           desc: "Electric lift"     },
+  ],
+  Dark: [
+    { hex: "#FFFACD", name: "Lemon Chiffon",  desc: "Bright pop"        },
+    { hex: "#FF6347", name: "Tomato",         desc: "Vivid warmth"      },
+    { hex: "#00FA9A", name: "Spring Green",   desc: "Bold lift"         },
+    { hex: "#FF1493", name: "Deep Pink",      desc: "Electric glow"     },
+    { hex: "#FFD700", name: "Gold",           desc: "Luminous warmth"   },
+    { hex: "#00BFFF", name: "Deep Sky Blue",  desc: "Cool contrast"     },
+  ],
+};
+
+// ── Style tips per body shape — MIXED Indian + Western ───────────────────────
+const BODY_STYLE_GUIDES: Record<string, Record<Gender, StyleGuide>> = {
+  Hourglass: {
+    female: {
+      dos: [
+        "Wrap dresses and belted silhouettes that trace your waist",
+        "Fitted kurtas with churidar or straight-cut pants",
+        "Body-con co-ords, mermaid cuts, and tucked-in blouses",
+      ],
+      donts: [
+        "Boxy, shapeless tops that hide your natural waist",
+        "Heavily embellished dupattas that add bulk at the hips",
+      ],
+      western: ["Wrap midi dress", "Belted blazer + straight jeans", "Bodycon co-ord set", "Crop top + high-waist trousers"],
+      indian:  ["Anarkali suit", "Saree with fitted blouse", "Sharara set", "Embroidered fitted kurta + churidar"],
+    },
+    male: {
+      dos: [
+        "Fitted shirts and tapered trousers that follow your frame",
+        "Structured sherwanis that define the shoulder-to-waist line",
+      ],
+      donts: [
+        "Oversized kurtas that mask your proportions",
+        "Drop-crotch or extremely baggy bottoms",
+      ],
+      western: ["Fitted Oxford shirt + chinos", "Structured blazer", "Slim-fit suit", "Tapered joggers + polo"],
+      indian:  ["Fitted bandhgala", "Slim sherwani", "Tailored kurta + churidar", "Modi jacket + kurta"],
+    },
+  },
+
+  Rectangle: {
+    female: {
+      dos: [
+        "Ruffles, peplums, and tiered skirts to create curves",
+        "Lehengas with flared skirts and embellished blouses",
+        "Belted outfits, wrap tops, and colour-blocked looks",
+      ],
+      donts: [
+        "Straight-cut kurtas with no shaping or cinching",
+        "Boxy, flat-front trousers worn without a statement belt",
+      ],
+      western: ["Peplum top + flared skirt", "Colour-block dress", "Ruffled blouse + wide-leg pants", "Wrap dress"],
+      indian:  ["Lehenga choli", "Peplum kurta + palazzo", "Anarkali with flared hem", "Embellished A-line kurta"],
+    },
+    male: {
+      dos: [
+        "Layered outfits — jackets and waistcoats add dimension",
+        "Structured nehru jackets over kurtas for definition",
+      ],
+      donts: [
+        "Plain, single-layer outfits with no visual interest",
+        "Baggy fits that make the frame look even more linear",
+      ],
+      western: ["Layered jacket + tee + chinos", "Bomber over fitted shirt", "Structured blazer", "Waistcoat + shirt"],
+      indian:  ["Nehru jacket + kurta + churidar", "Indo-western jacket set", "Layered sherwani", "Embroidered kurta + dhoti"],
+    },
+  },
+
+  Pear: {
+    female: {
+      dos: [
+        "Bold tops, off-shoulder styles, and embellished blouses",
+        "A-line lehengas, flared skirts, and palazzo pants",
+        "Boat-neck and statement-shoulder tops to draw the eye up",
+      ],
+      donts: [
+        "Tight pencil skirts or anything that clings to the hips",
+        "Heavily embellished bottoms — they amplify width",
+      ],
+      western: ["Off-shoulder top + palazzo", "A-line midi skirt", "Ruffled shoulder blouse + straight jeans", "Wrap top + flared pants"],
+      indian:  ["Anarkali suit", "Embellished blouse + A-line lehenga", "Flared skirt + boat-neck kurti", "Sharara with detailed dupatta at shoulder"],
+    },
+    male: {
+      dos: [
+        "Bold upper-body prints and structured shoulders",
+        "Kurtas with embroidery on the chest and shoulders",
+      ],
+      donts: [
+        "Tight bottoms that emphasise wider hips",
+        "Plain tops with loud printed trousers",
+      ],
+      western: ["Graphic tee + straight-fit pants", "Structured jacket + plain chinos", "Bold stripe shirt + dark jeans"],
+      indian:  ["Embroidered chest kurta + straight pyjama", "Nehru jacket + plain kurta", "Printed kurta + solid dhoti-pants"],
+    },
+  },
+
+  Apple: {
+    female: {
+      dos: [
+        "Empire-waist dresses and A-line silhouettes",
+        "Long flowy kaftans, anarkalis, and drape sarees",
+        "V-necks and deep scoop necks to elongate the torso",
+      ],
+      donts: [
+        "Tight-fitting tops that define the midsection",
+        "Cropped tops or high-waisted styles that cut at the widest point",
+      ],
+      western: ["Empire-waist maxi", "Flowy tunic + wide-leg pants", "Wrap dress", "V-neck blouse + straight trousers"],
+      indian:  ["Anarkali suit", "Long kaftan kurta", "Drape saree (Nivi style)", "Floor-length churidar + tunic"],
+    },
+    male: {
+      dos: [
+        "Vertical-stripe shirts and monochrome outfits to elongate",
+        "Long kurtas that skim the waist without clinging",
+      ],
+      donts: [
+        "Horizontal stripes or bulky fabrics across the torso",
+        "Cropped jackets that end at the widest point",
+      ],
+      western: ["Monochrome shirt + trousers", "Vertical-stripe Oxford + chinos", "Long cardigan over tee", "Slim blazer"],
+      indian:  ["Long straight-cut kurta + churidar", "Bandi jacket over solid kurta", "Printed long kurta + pajama"],
+    },
+  },
+
+  "Inverted Triangle": {
+    female: {
+      dos: [
+        "Full skirts, wide-leg pants, and ruffled hemlines",
+        "Lehengas with heavy embellishment on the skirt",
+        "Simple tops that don't add shoulder width",
+      ],
+      donts: [
+        "Off-shoulder or puffed-sleeve tops that widen the shoulder",
+        "Strapless and halter necks that emphasise the upper body",
+      ],
+      western: ["Simple tee + flared maxi skirt", "Scoop-neck top + wide-leg palazzo", "A-line skirt co-ord", "Plain blouse + ruffled midi"],
+      indian:  ["Plain blouse + heavy lehenga skirt", "Simple top + gharara", "Minimal kurta + flared palazzo", "Embellished bottom anarkali"],
+    },
+    male: {
+      dos: [
+        "Straight or relaxed-fit trousers to balance the upper body",
+        "Minimal-shoulder kurtas and simple shirts",
+      ],
+      donts: [
+        "Padded or structured blazers that add shoulder bulk",
+        "Tapered trousers that make the top look even heavier",
+      ],
+      western: ["Plain tee + relaxed chinos", "Simple shirt + straight-cut pants", "Minimal hoodie + wide-leg trousers"],
+      indian:  ["Simple kurta + straight pyjama", "Long plain kurta + wide dhoti", "Minimal bandhgala + straight pants"],
+    },
+  },
+};
+
+// ── Fallback guide ────────────────────────────────────────────────────────────
+const DEFAULT_GUIDE: StyleGuide = {
+  dos:     ["Well-fitted silhouettes that suit your proportions", "Mix of Indian and western staples"],
+  donts:   ["Ill-fitting or overly baggy clothes", "Clashing prints without a colour anchor"],
+  western: ["Straight-fit jeans + tucked shirt", "Midi dress", "Co-ord set", "Tailored blazer"],
+  indian:  ["Straight-cut kurta + churidar", "Saree / lehenga", "Anarkali suit", "Nehru jacket set"],
+};
+
+// ── Tab pill ──────────────────────────────────────────────────────────────────
+function TabPill({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className="px-4 py-1.5 rounded-full text-xs font-bold transition-all duration-200 relative"
+      style={{
+        background: active ? "linear-gradient(135deg,#d4af7f,#b8860b)" : "#1a1a1a",
+        color:      active ? "#000" : "#888",
+        border:     active ? "1px solid transparent" : "1px solid #2a2a2a",
+      }}
+    >
+      {label}
+    </button>
+  );
+}
+
+// ── Outfit chip ───────────────────────────────────────────────────────────────
+function OutfitChip({ label, delay }: { label: string; delay: number }) {
+  return (
+    <motion.span
+      initial={{ opacity: 0, scale: 0.88 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ delay, type: "spring", stiffness: 320, damping: 24 }}
+      className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border transition-all duration-150 hover:border-[#d4af7f]/60 cursor-default"
+      style={{ background: "#111111", borderColor: "#2a2a2a", color: "#c9b896" }}
+    >
+      {label}
+    </motion.span>
+  );
+}
+
+// ── Main component ────────────────────────────────────────────────────────────
+interface ColorPaletteCardProps {
   bodyShape: string;
   skinTone:  string;
-  gender?:   "male" | "female";   // default: "female"
+  gender:    Gender;
   onContinue: () => void;
 }
 
-export function ColorPaletteCard({ bodyShape, skinTone, gender = "female", onContinue }: Props) {
-  const { user }                = useAuth();
-  const [saved,   setSaved]     = useState(false);
-  const [saving,  setSaving]    = useState(false);
+export function ColorPaletteCard({ bodyShape, skinTone, gender, onContinue }: ColorPaletteCardProps) {
+  const [selectedColor, setSelectedColor] = useState<number | null>(null);
+  const [outfitTab,     setOutfitTab]     = useState<"western" | "indian">("western");
+  const [clicked,       setClicked]       = useState(false);
 
-  const isMale      = gender === "male";
-  const resolvedShape = resolveShape(bodyShape, gender);
+  const palette = SKIN_PALETTES[skinTone] ?? SKIN_PALETTES["Medium"];
+  const guide   = BODY_STYLE_GUIDES[bodyShape]?.[gender] ?? DEFAULT_GUIDE;
 
-  const colors     = SKIN_TONE_COLORS[skinTone] ?? SKIN_TONE_COLORS["Medium"];
-  const shapeTips  = isMale
-    ? (BODY_SHAPE_TIPS_MALE[resolvedShape]   ?? BODY_SHAPE_TIPS_MALE["Rectangle"])
-    : (BODY_SHAPE_TIPS_FEMALE[resolvedShape] ?? BODY_SHAPE_TIPS_FEMALE["Rectangle"]);
-
-  const handleSave = async () => {
-    if (!user || saved) return;
-    setSaving(true);
-    try {
-      await supabase
-        .from("users_profile")
-        .update({
-          body_shape:    resolvedShape,
-          skin_tone:     skinTone,
-          color_palette: colors.map((c) => c.name),
-        })
-        .eq("id", user.id);
-      setSaved(true);
-    } catch (e) {
-      console.error("Save failed:", e);
-    } finally {
-      setSaving(false);
-    }
+  const handleContinue = () => {
+    if (clicked) return;
+    setClicked(true);
+    onContinue();
   };
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 16, scale: 0.97 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ type: "spring", stiffness: 280, damping: 26 }}
-      className="rounded-2xl border border-neutral-800 overflow-hidden bg-[#111111] mt-2"
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ type: "spring", stiffness: 260, damping: 24 }}
+      className="space-y-4 w-full"
     >
-      {/* Header */}
-      <div
-        className="px-4 py-3 border-b border-neutral-800"
-        style={{ background: "linear-gradient(135deg,#1a1500,#111111)" }}
-      >
-        <p className="text-xs font-bold text-[#d4af7f] uppercase tracking-wider">
-          🎨 Your Colour Palette
-        </p>
-        <p className="text-xs text-neutral-500 mt-0.5">
-          Curated for {resolvedShape} · {skinTone} skin · {isMale ? "Men" : "Women"}
-        </p>
+
+      {/* ── Header ── */}
+      <div className="flex items-center gap-2">
+        <Sparkles className="w-4 h-4" style={{ color: "#d4af7f" }} />
+        <p className="text-sm font-bold text-white">Your Style Profile</p>
       </div>
 
-      <div className="p-4 space-y-5">
+      {/* ── Colour palette ── */}
+      <div className="bg-[#111111] rounded-2xl border border-neutral-800 p-4">
+        <p className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-3">
+          Flattering colours for {skinTone} skin
+        </p>
+        <div className="grid grid-cols-3 gap-2.5">
+          {palette.map((c, i) => (
+            <motion.button
+              key={c.name}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: i * 0.06, type: "spring", stiffness: 300, damping: 22 }}
+              onClick={() => setSelectedColor(i === selectedColor ? null : i)}
+              className="rounded-xl overflow-hidden border-2 transition-all duration-200 focus:outline-none"
+              style={{
+                borderColor: selectedColor === i ? "#d4af7f" : "transparent",
+                transform:   selectedColor === i ? "scale(1.04)" : "scale(1)",
+              }}
+            >
+              {/* Swatch */}
+              <div style={{ background: c.hex, height: "52px" }} />
+              {/* Label */}
+              <div className="bg-[#161616] px-2 py-1.5 text-left">
+                <p className="text-[11px] font-bold text-neutral-200 leading-tight">{c.name}</p>
+                <p className="text-[9px] text-neutral-500 leading-tight">{c.desc}</p>
+              </div>
+            </motion.button>
+          ))}
+        </div>
+      </div>
 
-        {/* Color swatches */}
-        <div>
-          <p className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-3">
-            Colours that will make you glow ✨
+      {/* ── Style tips ── */}
+      <div className="bg-[#111111] rounded-2xl border border-neutral-800 p-4 space-y-3">
+        <p className="text-[10px] font-bold text-[#d4af7f] uppercase tracking-widest">
+          Style tips for {bodyShape}
+        </p>
+
+        {/* Do's */}
+        <div className="space-y-1.5">
+          {guide.dos.map((tip, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 + i * 0.07 }}
+              className="flex items-start gap-2.5"
+            >
+              <span className="mt-0.5 w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{ background: "rgba(74,222,128,0.12)" }}>
+                <svg width="9" height="9" viewBox="0 0 9 9">
+                  <polyline points="1.5,4.5 3.5,6.5 7.5,2" stroke="#4ade80" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </span>
+              <p className="text-xs text-neutral-300 leading-relaxed">{tip}</p>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Don'ts */}
+        <div className="space-y-1.5 pt-1 border-t border-neutral-800/70">
+          {guide.donts.map((tip, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.25 + i * 0.07 }}
+              className="flex items-start gap-2.5"
+            >
+              <span className="mt-0.5 w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{ background: "rgba(248,113,113,0.12)" }}>
+                <svg width="9" height="9" viewBox="0 0 9 9">
+                  <line x1="2" y1="2" x2="7" y2="7" stroke="#f87171" strokeWidth="1.5" strokeLinecap="round"/>
+                  <line x1="7" y1="2" x2="2" y2="7" stroke="#f87171" strokeWidth="1.5" strokeLinecap="round"/>
+                </svg>
+              </span>
+              <p className="text-xs text-neutral-400 leading-relaxed">{tip}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Recommended outfits — TABBED Indian + Western ── */}
+      <div className="bg-[#111111] rounded-2xl border border-neutral-800 p-4">
+        <div className="flex items-center justify-between mb-3">
+          <p className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest">
+            Recommended outfits
           </p>
-          <div className="grid grid-cols-3 gap-2">
-            {colors.map((color, i) => (
-              <motion.div
-                key={color.name}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: i * 0.06 }}
-                className="rounded-xl overflow-hidden border border-neutral-800"
-              >
-                <div
-                  className="h-14 w-full"
-                  style={{
-                    background: color.hex,
-                    border: color.hex === "#FFFFFF" || color.hex === "#FFFFF0" || color.hex === "#FFFF00" ? "1px solid #333" : "none",
-                  }}
-                />
-                <div className="px-2 py-1.5 bg-[#1a1a1a]">
-                  <p className="text-[11px] font-semibold text-white leading-tight truncate">{color.name}</p>
-                  <p className="text-[10px] text-neutral-600 truncate">{color.why}</p>
-                </div>
-              </motion.div>
-            ))}
+          <div className="flex gap-1.5">
+            <TabPill label="Western"  active={outfitTab === "western"} onClick={() => setOutfitTab("western")} />
+            <TabPill label="Indian"   active={outfitTab === "indian"}  onClick={() => setOutfitTab("indian")}  />
           </div>
         </div>
 
-        {/* Style tips */}
-        <div className="rounded-xl border border-neutral-800 bg-[#1a1a1a] p-3 space-y-3">
-          <p className="text-xs font-bold text-[#d4af7f] uppercase tracking-wider">
-            Style Tips for {resolvedShape} {isMale ? "Men" : ""}
-          </p>
-          <div className="space-y-1.5">
-            <div className="flex gap-2">
-              <span className="text-green-400 text-xs mt-0.5 flex-shrink-0">✓</span>
-              <p className="text-xs text-neutral-300 leading-relaxed">{shapeTips.tip}</p>
-            </div>
-            <div className="flex gap-2">
-              <span className="text-red-400 text-xs mt-0.5 flex-shrink-0">✕</span>
-              <p className="text-xs text-neutral-500 leading-relaxed">{shapeTips.avoid}</p>
-            </div>
-          </div>
-
-          {/* Outfit recommendations */}
-          <div>
-            <p className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-2 mt-1">
-              {isMale ? "👔" : "👗"} Recommended Outfits
-            </p>
-            <div className="flex flex-wrap gap-1.5">
-              {shapeTips.outfits.map((outfit, i) => (
-                <motion.span
-                  key={outfit}
-                  initial={{ opacity: 0, scale: 0.85 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.2 + i * 0.05 }}
-                  className="text-[11px] px-2.5 py-1 rounded-full border border-neutral-700 text-neutral-300"
-                  style={{ background: "#111111" }}
-                >
-                  {outfit}
-                </motion.span>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Save to profile */}
-        {user && (
-          <motion.button
-            onClick={handleSave}
-            disabled={saved || saving}
-            whileTap={{ scale: 0.97 }}
-            className="w-full rounded-xl py-2.5 text-xs font-bold flex items-center justify-center gap-2 transition-all border"
-            style={
-              saved
-                ? { background: "#1a1a1a", borderColor: "#2a2a2a", color: "#d4af7f" }
-                : { background: "linear-gradient(135deg,#d4af7f,#b8860b)", borderColor: "transparent", color: "#000" }
-            }
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={outfitTab}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.18 }}
+            className="flex flex-wrap gap-2"
           >
-            {saved ? (
-              <><Check className="w-3.5 h-3.5" /> Saved to your profile ✓</>
-            ) : saving ? (
-              "Saving…"
-            ) : (
-              <><Bookmark className="w-3.5 h-3.5" /> Save to Profile</>
-            )}
-          </motion.button>
-        )}
-
-        {/* Continue button */}
-        <button
-          onClick={onContinue}
-          className="w-full rounded-xl py-3 text-sm font-bold text-black transition-all"
-          style={{ background: "linear-gradient(135deg,#d4af7f,#b8860b)" }}
-        >
-          Find My Outfits →
-        </button>
-
+            {guide[outfitTab].map((outfit, i) => (
+              <OutfitChip key={outfit} label={outfit} delay={i * 0.055} />
+            ))}
+          </motion.div>
+        </AnimatePresence>
       </div>
+
+      {/* ── CTA ── */}
+      <motion.button
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.45 }}
+        onClick={handleContinue}
+        disabled={clicked}
+        className="w-full py-3.5 rounded-full font-bold text-sm text-black relative overflow-hidden transition-opacity disabled:opacity-60"
+        style={{ background: "linear-gradient(135deg,#d4af7f,#b8860b)" }}
+        whileTap={{ scale: 0.98 }}
+      >
+        <span className="relative z-10">Find My Outfits →</span>
+        {/* shimmer */}
+        <motion.span
+          className="absolute inset-y-0 w-1/3 skew-x-[-15deg]"
+          style={{ background: "linear-gradient(90deg,transparent,rgba(255,255,255,0.22),transparent)" }}
+          animate={{ left: ["-40%", "130%"] }}
+          transition={{ duration: 1.8, repeat: Infinity, repeatDelay: 2.2, ease: "linear" }}
+        />
+      </motion.button>
+
     </motion.div>
   );
 }
