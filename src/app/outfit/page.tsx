@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Camera, Upload, RotateCcw } from "lucide-react";
+import { Camera, Upload, RotateCcw, Sparkles } from "lucide-react";
 import { ChatBubble, TypingIndicator } from "@/components/ChatBubble";
 import { ChipSelector } from "@/components/ChipSelector";
 import { BudgetSlider } from "@/components/BudgetSlider";
@@ -15,6 +15,33 @@ import { useAnalysisLimit } from "@/app/hooks/useAnalysisLimit";
 import { OCCASIONS } from "@/lib/type";
 import outfitsData from "../../../backend/outfit.json";
 import itemsData from "../../../backend/item.json";
+import { ExternalLink, ShoppingBag, Heart, Bookmark } from "lucide-react";
+
+// ── Compliments ────────────────────────────────────────────────────────────────
+const FEMALE_COMPLIMENTS = [
+  "👑 Queen is about to slay this look!",
+  "✨ She's not just wearing it — she's owning it!",
+  "💅 This fit was made for you, bestie!",
+  "🔥 Your outfit era starts NOW!",
+  "💫 Heads will turn, hearts will stop!",
+  "🌟 Serving looks and taking names!",
+  "💖 You're about to be everyone's fashion inspo!",
+];
+
+const MALE_COMPLIMENTS = [
+  "👑 King is about to rock this look!",
+  "🔥 Bro, you're gonna be the most stylish in the room!",
+  "⚡ Clean fit, clean confidence — let's go!",
+  "💪 This look hits different on you, king!",
+  "🕶️ Style unlocked. You're built different.",
+  "🚀 Drip level: maximum. Go get 'em!",
+  "😤 No cap, this fit goes crazy hard!",
+];
+
+function getCompliment(gender: string): string {
+  const list = gender.toLowerCase() === "male" ? MALE_COMPLIMENTS : FEMALE_COMPLIMENTS;
+  return list[Math.floor(Math.random() * list.length)];
+}
 
 // ── Occasion vibes map ────────────────────────────────────────────────────────
 const OCCASION_VIBES: Record<string, { Female: string[]; Male: string[] }> = {
@@ -24,6 +51,20 @@ const OCCASION_VIBES: Record<string, { Female: string[]; Male: string[] }> = {
   Party:    { Female: ["Glam","Edgy","Bold","Chic"],                          Male: ["Edgy","Bold","Smart Casual","Trendy"] },
   Wedding:  { Female: ["Glam","Traditional","Ethnic Chic","Regal"],           Male: ["Traditional","Regal","Festive Formal","Ethnic Smart"] },
   Festive:  { Female: ["Traditional","Ethnic Chic","Glam","Minimal"],         Male: ["Traditional","Ethnic Smart","Classic","Bold"] },
+};
+
+// ── Persona → vibe mapping ────────────────────────────────────────────────────
+const PERSONA_VIBE_MAP: Record<string, string> = {
+  "Minimalist Maven": "Minimal",
+  "Minimalist King":  "Minimal",
+  "Edgy Trendsetter": "Edgy",
+  "Streetwear Icon":  "Street Style",
+  "Romantic Softie":  "Romantic",
+  "Playful Creative": "Bold",
+  "Comfort Queen":    "Casual Cool",
+  "Casual Cool":      "Casual Cool",
+  "Modern Gentleman": "Smart Casual",
+  "Athleisure Pro":   "Sporty",
 };
 
 function getVibes(occasion: string, gender: string): string[] {
@@ -69,11 +110,9 @@ interface ItemJson {
   affiliate_link: string;
 }
 
-// ── Pre-cast JSON ─────────────────────────────────────────────────────────────
 const ALL_OUTFITS = (outfitsData as any).outfits as OutfitJson[];
 const ALL_ITEMS   = (itemsData  as any).items   as ItemJson[];
 
-// ── Item lookup by ID ─────────────────────────────────────────────────────────
 function getItemById(id: number): ItemJson | undefined {
   return ALL_ITEMS.find((i) => i.id === id);
 }
@@ -84,7 +123,6 @@ function getItemsForOutfit(outfit: OutfitJson): ItemJson[] {
     .filter((i): i is ItemJson => !!i);
 }
 
-// ── Score & filter outfits ────────────────────────────────────────────────────
 function scoreOutfit(o: OutfitJson, bs: string, st: string): number {
   let s = 0;
   if (bs && o.body_shapes?.some((b) => b.toLowerCase() === bs.toLowerCase())) s += 3;
@@ -106,23 +144,19 @@ function filterOutfits(
   const occ = occasion.toLowerCase();
   const v   = vibe.toLowerCase();
 
-  const scored = ALL_OUTFITS
+  return ALL_OUTFITS
     .filter((o) => {
-      const gMatch  = o.gender?.toLowerCase() === g;
+      const gMatch   = o.gender?.toLowerCase() === g;
       const occMatch = o.occasions?.some((x) => x.toLowerCase() === occ);
-      const budMatch = !budgetLabel || o.budget_range === budgetLabel;
+      const budMatch = !budgetLabel || o.budget_range?.toLowerCase() === budgetLabel.toLowerCase();
       return gMatch && occMatch && budMatch;
     })
     .map((o) => ({ ...o, _s: scoreOutfit(o, bs, st) + (o.vibe?.toLowerCase() === v ? 2 : 0) }))
-    .sort((a, b) => b._s - a._s);
-
-  // Return top 2 outfits (each will show their items in a grid)
-  return scored.slice(0, 2);
+    .sort((a, b) => b._s - a._s)
+    .slice(0, 2);
 }
 
-// ── Outfit Items Grid Card ────────────────────────────────────────────────────
-import { ExternalLink, ShoppingBag, Heart, Bookmark } from "lucide-react";
-
+// ── Star rating ───────────────────────────────────────────────────────────────
 function StarRating({ rating }: { rating: number }) {
   return (
     <div className="flex items-center gap-0.5">
@@ -134,38 +168,53 @@ function StarRating({ rating }: { rating: number }) {
   );
 }
 
+// ── Item card — IMAGE FIX: removed imgLoaded opacity trick ────────────────────
 function ItemCard({ item, index }: { item: ItemJson; index: number }) {
-  const [liked, setLiked] = useState(false);
-  const [saved, setSaved] = useState(false);
+  const [liked,    setLiked]    = useState(false);
+  const [saved,    setSaved]    = useState(false);
+  const [imgError, setImgError] = useState(false);
   const color = "#d4af7f";
+
+  const rawImg = item.image?.trim() ?? "";
+  // Only accept absolute URLs or Next.js public-folder paths starting with "/"
+  const imgSrc = rawImg.startsWith("http") || rawImg.startsWith("/") ? rawImg : null;
+  // Show image only when we have a src AND it hasn't errored
+  const showImg = !!imgSrc && !imgError;
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.07 }}
-      className="bg-[#111111] rounded-2xl border border-neutral-800 overflow-hidden shadow-sm hover:shadow-md hover:border-neutral-700 transition-all"
+      className="bg-[#111111] rounded-2xl border border-neutral-800 overflow-hidden hover:border-neutral-700 transition-all"
     >
-      {/* Image */}
-      <div className="relative w-full overflow-hidden bg-neutral-900" style={{ aspectRatio: "3/4" }}>
-        {item.image ? (
+      {/* Image container */}
+      <div className="relative w-full bg-neutral-900" style={{ aspectRatio: "3/4" }}>
+        {showImg ? (
+          // ── Real product image ──────────────────────────────────────────────
+          // KEY FIX: No opacity fade trick. Image is visible immediately.
+          // Only fall back on actual network/404 errors via onError.
           <img
-            src={item.image}
+            src={imgSrc}
             alt={item.title}
-            className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
-            onError={(e) => {
-              (e.target as HTMLImageElement).style.display = "none";
-            }}
+            loading="eager"
+            decoding="async"
+            onError={() => setImgError(true)}
+            className="absolute inset-0 w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
           />
         ) : (
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-1" style={{ background: `${color}10` }}>
+          // ── Fallback placeholder ────────────────────────────────────────────
+          <div
+            className="absolute inset-0 flex flex-col items-center justify-center gap-1"
+            style={{ background: `${color}10` }}
+          >
             <ShoppingBag className="w-8 h-8" style={{ color }} />
             <span className="text-xs font-medium capitalize" style={{ color }}>{item.type}</span>
           </div>
         )}
 
-        {/* Like + Save */}
-        <div className="absolute top-2 right-2 flex flex-col gap-1.5">
+        {/* Like + Save buttons */}
+        <div className="absolute top-2 right-2 flex flex-col gap-1.5 z-10">
           <motion.button
             whileTap={{ scale: 0.8 }}
             onClick={() => setLiked((p) => !p)}
@@ -193,13 +242,15 @@ function ItemCard({ item, index }: { item: ItemJson; index: number }) {
         </div>
 
         {/* Category badge */}
-        <div className="absolute bottom-2 left-2 text-white text-xs font-bold px-2 py-0.5 rounded-full capitalize"
-          style={{ background: color }}>
+        <div
+          className="absolute bottom-2 left-2 z-10 text-white text-xs font-bold px-2 py-0.5 rounded-full capitalize"
+          style={{ background: color }}
+        >
           {item.type}
         </div>
       </div>
 
-      <div className="p-3 bg-[#111111]">
+      <div className="p-3">
         <p className="text-xs font-semibold text-neutral-200 leading-tight mb-2 line-clamp-2">{item.title}</p>
         <StarRating rating={item.review} />
         <div className="flex items-center justify-between mt-2">
@@ -219,17 +270,10 @@ function ItemCard({ item, index }: { item: ItemJson; index: number }) {
   );
 }
 
-function OutfitItemsGrid({
-  outfit,
-  occasion,
-  outfitIndex,
-}: {
-  outfit: OutfitJson;
-  occasion: string;
-  outfitIndex: number;
+function OutfitItemsGrid({ outfit, occasion, outfitIndex }: {
+  outfit: OutfitJson; occasion: string; outfitIndex: number;
 }) {
   const items = getItemsForOutfit(outfit);
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -237,12 +281,13 @@ function OutfitItemsGrid({
       transition={{ delay: outfitIndex * 0.2 }}
       className="w-full space-y-3 mb-4"
     >
-      {/* Outfit header */}
       <div className="bg-[#111111] rounded-2xl border border-neutral-800 p-3">
         <div className="flex items-center justify-between mb-1">
           <p className="text-xs font-bold text-white capitalize">{outfit.vibe} Look ✨</p>
-          <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold capitalize"
-            style={{ background: "#d4af7f18", color: "#d4af7f" }}>
+          <span
+            className="text-[10px] px-2 py-0.5 rounded-full font-semibold capitalize"
+            style={{ background: "#d4af7f18", color: "#d4af7f" }}
+          >
             {outfit.budget_range} budget
           </span>
         </div>
@@ -251,14 +296,11 @@ function OutfitItemsGrid({
           <p className="text-[10px] text-neutral-400 mt-1 italic">"{outfit.why_this_outfit[0]}"</p>
         )}
       </div>
-
-      {/* Items grid — 2 columns */}
       <div className="grid grid-cols-2 gap-2.5">
         {items.map((item, i) => (
           <ItemCard key={`${outfit.id}-${item.id}-${i}`} item={item} index={i} />
         ))}
       </div>
-
       {items.length === 0 && (
         <p className="text-xs text-neutral-500 text-center py-4">No items found for this outfit.</p>
       )}
@@ -266,35 +308,95 @@ function OutfitItemsGrid({
   );
 }
 
-// ── Manual body/skin clarification card (for skip-image users) ────────────────
-const BODY_SHAPES  = ["Hourglass","Rectangle","Pear","Apple","Inverted Triangle"];
-const SKIN_TONES   = ["Fair","Wheatish","Dusky","Deep"];
+// ── Compliment Banner ─────────────────────────────────────────────────────────
+function ComplimentBanner({ gender, occasion }: { gender: string; occasion: string }) {
+  const compliment = getCompliment(gender);
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.92, y: 8 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ type: "spring", stiffness: 300, damping: 22 }}
+      className="rounded-2xl p-4 text-center border relative overflow-hidden"
+      style={{ background: "linear-gradient(135deg,#1a1200,#111111)", borderColor: "#d4af7f30" }}
+    >
+      {/* Subtle shimmer */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: "linear-gradient(105deg, transparent 40%, rgba(212,175,127,0.06) 50%, transparent 60%)",
+        }}
+        animate={{ x: ["-100%", "200%"] }}
+        transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 3, ease: "linear" }}
+      />
+      <p className="text-base font-bold relative z-10" style={{ color: "#d4af7f" }}>
+        {compliment}
+      </p>
+      <p className="text-xs text-neutral-500 mt-1 relative z-10">
+        Your curated {occasion.toLowerCase()} picks are ready ✨
+      </p>
+    </motion.div>
+  );
+}
 
-function ManualClarificationCard({
-  onConfirm,
-}: {
-  onConfirm: (bodyShape: string, skinTone: string) => void;
-}) {
+// ── Persona banner ────────────────────────────────────────────────────────────
+function PersonaBanner({ persona, onDismiss }: { persona: string | null; onDismiss: () => void }) {
+  if (persona) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl border mb-3"
+        style={{ background: "#d4af7f0d", borderColor: "#d4af7f30" }}
+      >
+        <Sparkles className="w-3.5 h-3.5 flex-shrink-0" style={{ color: "#d4af7f" }} />
+        <p className="text-xs text-neutral-400 flex-1 leading-relaxed">
+          Styling based on your <span style={{ color: "#d4af7f" }} className="font-semibold">{persona}</span> persona
+        </p>
+        <button onClick={onDismiss} className="text-neutral-700 hover:text-neutral-500 text-xs">✕</button>
+      </motion.div>
+    );
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -8 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="flex items-start gap-2.5 px-3 py-2.5 rounded-xl border mb-3"
+      style={{ background: "#1a1a1a", borderColor: "#2a2a2a" }}
+    >
+      <span className="text-sm flex-shrink-0 mt-0.5">✨</span>
+      <div className="flex-1 min-w-0">
+        <p className="text-xs text-neutral-400 leading-relaxed">
+          Take our quick{" "}
+          <a href="/quiz" className="font-semibold underline underline-offset-2" style={{ color: "#d4af7f" }}>
+            Style Quiz
+          </a>
+          {" "}to unlock recommendations tuned to your persona.
+        </p>
+      </div>
+      <button onClick={onDismiss} className="text-neutral-700 hover:text-neutral-500 text-xs flex-shrink-0">✕</button>
+    </motion.div>
+  );
+}
+
+// ── Manual clarification ──────────────────────────────────────────────────────
+const BODY_SHAPES = ["Hourglass","Rectangle","Pear","Apple","Inverted Triangle"];
+const SKIN_TONES  = ["Fair","Wheatish","Dusky","Deep"];
+
+function ManualClarificationCard({ onConfirm }: { onConfirm: (bs: string, st: string) => void }) {
   const [selectedShape, setSelectedShape] = useState("");
   const [selectedTone,  setSelectedTone]  = useState("");
   const [submitted,     setSubmitted]     = useState(false);
-
-  const handleConfirm = () => {
-    if (!selectedShape || !selectedTone) return;
-    setSubmitted(true);
-    onConfirm(selectedShape, selectedTone);
-  };
 
   return (
     <div className="rounded-2xl border border-neutral-800 bg-[#111111] p-4 space-y-4">
       <div>
         <p className="text-sm font-bold text-white mb-1">Help us style you better 👗</p>
         <p className="text-xs text-neutral-400 leading-relaxed">
-          Please input your body shape and skin tone so that we can give you better outfit recommendations.
+          Share your body shape and skin tone for better outfit recommendations.
         </p>
       </div>
 
-      {/* Body shape */}
       <div>
         <p className="text-xs font-semibold text-[#d4af7f] mb-2 uppercase tracking-wider">Body Shape</p>
         <div className="flex flex-wrap gap-2">
@@ -316,7 +418,6 @@ function ManualClarificationCard({
         </div>
       </div>
 
-      {/* Skin tone */}
       <div>
         <p className="text-xs font-semibold text-[#d4af7f] mb-2 uppercase tracking-wider">Skin Tone</p>
         <div className="flex flex-wrap gap-2">
@@ -338,20 +439,21 @@ function ManualClarificationCard({
         </div>
       </div>
 
-      {/* Confirm */}
-      {!submitted && (
+      {!submitted ? (
         <button
-          onClick={handleConfirm}
+          onClick={() => {
+            if (!selectedShape || !selectedTone) return;
+            setSubmitted(true);
+            onConfirm(selectedShape, selectedTone);
+          }}
           disabled={!selectedShape || !selectedTone}
           className="w-full py-2.5 rounded-full text-sm font-bold text-black transition-all disabled:opacity-40"
           style={{ background: "linear-gradient(135deg,#d4af7f,#b8860b)" }}
         >
           Confirm ✓
         </button>
-      )}
-
-      {submitted && (
-        <p className="text-xs text-[#d4af7f] text-center">✓ Saved! Finding your color palette…</p>
+      ) : (
+        <p className="text-xs text-[#d4af7f] text-center">✓ Saved! Finding your colour palette…</p>
       )}
     </div>
   );
@@ -359,10 +461,7 @@ function ManualClarificationCard({
 
 // ── Message type ──────────────────────────────────────────────────────────────
 interface Msg {
-  id:        string;
-  role:      "bot" | "user";
-  content:   React.ReactNode;
-  answered?: boolean;
+  id: string; role: "bot" | "user"; content: React.ReactNode; answered?: boolean;
 }
 
 let _n = 0;
@@ -371,23 +470,44 @@ let _booted = false;
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 export default function Page() {
-  const [msgs,          setMsgs]     = useState<Msg[]>([]);
-  const [typing,        setTyping]   = useState(false);
-  const [analysing,     setAnalysing] = useState(false);
-  const [analyseImgUrl, setAnalyseImgUrl] = useState("");
+  const [msgs,           setMsgs]          = useState<Msg[]>([]);
+  const [typing,         setTyping]         = useState(false);
+  const [analysing,      setAnalysing]      = useState(false);
+  const [analyseImgUrl,  setAnalyseImgUrl]  = useState("");
+  const [persona,        setPersona]        = useState<string | null>(null);
+  const [showBanner,     setShowBanner]     = useState(true);
 
   const bottomRef   = useRef<HTMLDivElement>(null);
   const fileRef     = useRef<HTMLInputElement>(null);
   const camRef      = useRef<HTMLInputElement>(null);
   const genderRef   = useRef("");
   const analysisRef = useRef<{ body_shape: string; skin_tone: string } | null>(null);
-
   const pushBotRef  = useRef<((c: React.ReactNode, d?: number) => Promise<string>) | null>(null);
   const pushUserRef = useRef<((c: React.ReactNode) => void) | null>(null);
 
   const auth = useAuth();
   const user = auth?.user ?? null;
   const { checkLimit, incrementUsage } = useAnalysisLimit(user?.id);
+
+  // ── Load persona ──────────────────────────────────────────────────────────
+  useEffect(() => {
+    const local = localStorage.getItem("userPersona");
+    if (local) { setPersona(local); return; }
+
+    if (user?.id) {
+      supabase
+        .from("quiz_result")
+        .select("persona_name")
+        .eq("user_id", user.id)
+        .single()
+        .then(({ data }) => {
+          if (data?.persona_name) {
+            setPersona(data.persona_name);
+            localStorage.setItem("userPersona", data.persona_name);
+          }
+        });
+    }
+  }, [user?.id]);
 
   useEffect(() => {
     setTimeout(() => bottomRef.current?.scrollIntoView({ behavior: "smooth" }), 80);
@@ -415,10 +535,11 @@ export default function Page() {
   useEffect(() => { pushBotRef.current  = pushBot;  }, [pushBot]);
   useEffect(() => { pushUserRef.current = pushUser; }, [pushUser]);
 
-  // ── Occasion → vibe → budget → outfit items grid ─────────────────────────
+  // ── Occasion flow ─────────────────────────────────────────────────────────
   const runOccasionFlow = useCallback((
     pb: typeof pushBot, pu: typeof pushUser,
     gender: string, bs: string, st: string,
+    preselectedPersona?: string | null,
   ) => {
     const run = async () => {
       const occId = await pb(
@@ -428,10 +549,19 @@ export default function Page() {
             markAnswered(occId);
             pu(occ);
 
+            const personaVibe = preselectedPersona ? PERSONA_VIBE_MAP[preselectedPersona] : null;
+            const vibeOptions = getVibes(occ, gender);
+            const defaultVibe = personaVibe && vibeOptions.includes(personaVibe) ? personaVibe : null;
+
             const vibeId = await pb(
               <div>
-                <p className="mb-3 font-semibold">What&apos;s your vibe? ✨</p>
-                <ChipSelector options={getVibes(occ, gender)} onSelect={async (vibe) => {
+                <p className="mb-2 font-semibold">What&apos;s your vibe? ✨</p>
+                {defaultVibe && (
+                  <p className="text-[11px] text-[#d4af7f] mb-2.5">
+                    ✦ Suggested for your <span className="font-bold">{preselectedPersona}</span> persona
+                  </p>
+                )}
+                <ChipSelector options={vibeOptions} onSelect={async (vibe) => {
                   markAnswered(vibeId);
                   pu(vibe);
 
@@ -440,70 +570,69 @@ export default function Page() {
                       <p className="mb-3 font-semibold">What&apos;s your budget? 💰</p>
                       <BudgetSlider occasion={occ} onConfirm={async (budgetRange) => {
                         markAnswered(budId);
-                        pu(`Up to ₹${budgetRange.max.toLocaleString("en-IN")}`);
+                        pu(`${budgetRange.label} · up to ₹${budgetRange.max.toLocaleString("en-IN")}`);
 
-                        // Loading spinner
+                        // ── Loading spinner ──────────────────────────────────
                         const loadId = uid();
                         setMsgs((p) => [...p, {
                           id: loadId, role: "bot",
                           content: (
                             <div className="bg-[#111111] rounded-2xl p-6 flex flex-col items-center gap-3 border border-neutral-800">
-                              <div className="w-8 h-8 rounded-full animate-spin"
-                                style={{ border: "3px solid #d4af7f", borderTopColor: "transparent" }} />
-                              <p className="text-sm font-semibold text-[#d4af7f]">Finding {occ} outfits…</p>
+                              <div
+                                className="w-8 h-8 rounded-full animate-spin"
+                                style={{ border: "3px solid #d4af7f", borderTopColor: "transparent" }}
+                              />
+                              <p className="text-sm font-semibold text-[#d4af7f]">Curating {occ} picks…</p>
                               <div className="flex gap-1">
                                 {[0,1,2].map((i) => (
-                                  <span key={i} className="w-1.5 h-1.5 rounded-full bg-[#d4af7f] animate-bounce"
-                                    style={{ animationDelay: `${i * 0.15}s` }} />
+                                  <span
+                                    key={i}
+                                    className="w-1.5 h-1.5 rounded-full bg-[#d4af7f] animate-bounce"
+                                    style={{ animationDelay: `${i * 0.15}s` }}
+                                  />
                                 ))}
                               </div>
                             </div>
                           ),
                         }]);
 
-                        // Short delay to show spinner, then replace with items grid
                         await new Promise((r) => setTimeout(r, 1200));
 
-                        const matched = filterOutfits(gender, occ, vibe, bs, st, budgetRange.label);
+                        // ── Show compliment BEFORE outfits ───────────────────
+                        await pb(
+                          <ComplimentBanner gender={gender} occasion={occ} />,
+                          300
+                        );
+
+                        const matched = filterOutfits(gender, occ, vibe, bs, st, budgetRange.jsonKey);
 
                         setMsgs((p) => p.map((m) =>
-                          m.id === loadId
-                            ? {
-                                ...m,
-                                content: (
-                                  <motion.div
-                                    initial={{ opacity: 0, y: 8 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    className="w-full space-y-2"
+                          m.id === loadId ? {
+                            ...m,
+                            content: (
+                              <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="w-full space-y-2">
+                                <div className="flex items-center justify-between mb-1">
+                                  <p className="text-xs font-bold text-white">{occ} Picks ✨</p>
+                                  <span
+                                    className="text-[10px] px-2 py-1 rounded-full font-semibold"
+                                    style={{ background: "#d4af7f18", color: "#d4af7f" }}
                                   >
-                                    <div className="flex items-center justify-between mb-1">
-                                      <p className="text-xs font-bold text-white">
-                                        {occ} Picks ✨
-                                      </p>
-                                      <span className="text-[10px] px-2 py-1 rounded-full font-semibold"
-                                        style={{ background: "#d4af7f18", color: "#d4af7f" }}>
-                                        {matched.length} look{matched.length !== 1 ? "s" : ""}
-                                      </span>
+                                    {matched.length} look{matched.length !== 1 ? "s" : ""}
+                                  </span>
+                                </div>
+                                {matched.length > 0
+                                  ? matched.map((outfit, idx) => (
+                                      <OutfitItemsGrid key={outfit.id} outfit={outfit} occasion={occ} outfitIndex={idx} />
+                                    ))
+                                  : (
+                                    <div className="rounded-2xl border border-neutral-800 bg-[#111111] p-4 text-center">
+                                      <p className="text-sm text-neutral-400">No outfits found for your selection yet.</p>
+                                      <p className="text-xs text-neutral-600 mt-1">We&apos;re adding more daily! 🛍️</p>
                                     </div>
-                                    {matched.length > 0 ? (
-                                      matched.map((outfit, idx) => (
-                                        <OutfitItemsGrid
-                                          key={outfit.id}
-                                          outfit={outfit}
-                                          occasion={occ}
-                                          outfitIndex={idx}
-                                        />
-                                      ))
-                                    ) : (
-                                      <div className="rounded-2xl border border-neutral-800 bg-[#111111] p-4 text-center">
-                                        <p className="text-sm text-neutral-400">No outfits found for your selection yet.</p>
-                                        <p className="text-xs text-neutral-600 mt-1">We&apos;re adding more daily! 🛍️</p>
-                                      </div>
-                                    )}
-                                  </motion.div>
-                                ),
-                              }
-                            : m
+                                  )}
+                              </motion.div>
+                            ),
+                          } : m
                         ));
 
                         await pb(
@@ -512,31 +641,26 @@ export default function Page() {
                             onTryAnother={async () => {
                               const { allowed, used, limit } = await checkLimit();
                               if (!allowed) { await pb(<LimitCard used={used} limit={limit} user={user} />, 300); return; }
-                              runOccasionFlow(pb, pu, gender, bs, st);
+                              runOccasionFlow(pb, pu, gender, bs, st, preselectedPersona);
                             }}
                             bodyShape={bs}
                             skinTone={st}
-                          />,
-                          700
+                          />, 700
                         );
                       }} />
-                    </div>,
-                    600
+                    </div>, 600
                   );
                 }} />
-              </div>,
-              600
+              </div>, 600
             );
           }} />
-        </div>,
-        500
+        </div>, 500
       );
     };
     run();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [markAnswered]);
 
-  // ── After analysis / manual clarification: show color palette then occasion flow ──
   const runPostClarification = useCallback(async (
     pb: typeof pushBot, pu: typeof pushUser,
     gender: string, bs: string, st: string,
@@ -549,14 +673,13 @@ export default function Page() {
         gender={genderProp}
         onContinue={async () => {
           markAnswered(palId);
-          runOccasionFlow(pb, pu, gender, bs, st);
+          runOccasionFlow(pb, pu, gender, bs, st, persona);
         }}
       />, 500
     );
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [markAnswered, runOccasionFlow]);
+  }, [markAnswered, runOccasionFlow, persona]);
 
-  // ── Skip image → manual clarification card ────────────────────────────────
   const runManualClarification = useCallback(async (
     pb: typeof pushBot, pu: typeof pushUser,
     gender: string,
@@ -567,32 +690,26 @@ export default function Page() {
           markAnswered(clarId);
           pu(`${bs} · ${st} skin ✓`);
           analysisRef.current = { body_shape: bs, skin_tone: st };
-          const genderProp = toGenderProp(gender);
-          await runPostClarification(pb, pu, gender, bs, st, genderProp);
+          await runPostClarification(pb, pu, gender, bs, st, toGenderProp(gender));
         }}
-      />,
-      600
+      />, 600
     );
 
-    // Also offer skip inside clarification
     await pb(
-      <div>
-        <button
-          onClick={async () => {
-            // Skip clarification too → go straight to occasion (no color palette)
-            pu("Skip body & skin info");
-            await pb("No problem! Let's find outfits for you 🛍️", 400);
-            runOccasionFlow(pb, pu, gender, "", "");
-          }}
-          className="text-xs text-neutral-600 hover:text-neutral-400 transition-colors underline-offset-2 hover:underline"
-        >
-          ▷ Skip this too
-        </button>
-      </div>,
+      <button
+        onClick={async () => {
+          pu("Skip body & skin info");
+          await pb("No problem! Let&apos;s find outfits for you 🛍️", 400);
+          runOccasionFlow(pb, pu, gender, "", "", persona);
+        }}
+        className="text-xs text-neutral-600 hover:text-neutral-400 transition-colors underline-offset-2 hover:underline"
+      >
+        ▷ Skip this too
+      </button>,
       300
     );
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [markAnswered, runOccasionFlow, runPostClarification]);
+  }, [markAnswered, runOccasionFlow, runPostClarification, persona]);
 
   // ── Boot ──────────────────────────────────────────────────────────────────
   const boot = useCallback(async (pb: typeof pushBot, pu: typeof pushUser) => {
@@ -618,6 +735,12 @@ export default function Page() {
                 <span className="text-[#d4af7f] text-xs font-bold">{profile.body_shape}</span>
                 <span className="text-neutral-700">·</span>
                 <span className="text-[#d4af7f] text-xs font-bold">{profile.skin_tone} skin</span>
+                {persona && (
+                  <>
+                    <span className="text-neutral-700">·</span>
+                    <span className="text-[#d4af7f] text-xs font-bold">{persona}</span>
+                  </>
+                )}
               </div>
             </div>, 800
           );
@@ -636,7 +759,7 @@ export default function Page() {
                         markAnswered(gId);
                         pu(g);
                         genderRef.current = g;
-                        runOccasionFlow(pb, pu, g, profile.body_shape, profile.skin_tone);
+                        runOccasionFlow(pb, pu, g, profile.body_shape, profile.skin_tone, persona);
                       }} />
                     </div>, 400
                   );
@@ -682,7 +805,15 @@ export default function Page() {
           I&apos;ll help you find the perfect outfit tailored just for you.
           I can analyse your body type &amp; skin tone for better recommendations.
         </p>
-        <p className="text-[#d4af7f] text-xs mt-2 font-medium">Let&apos;s get started!</p>
+        {persona && (
+          <div className="mt-2 flex items-center gap-1.5">
+            <Sparkles className="w-3 h-3" style={{ color: "#d4af7f" }} />
+            <p className="text-[#d4af7f] text-xs font-medium">Styling as: {persona}</p>
+          </div>
+        )}
+        {!persona && (
+          <p className="text-[#d4af7f] text-xs mt-2 font-medium">Let&apos;s get started!</p>
+        )}
       </div>, 900
     );
 
@@ -700,7 +831,6 @@ export default function Page() {
               onSkip={async () => {
                 pu("Skip photo");
                 await pb("No worries! 😊", 500);
-                // → manual clarification (with its own inner skip → straight to occasion)
                 runManualClarification(pb, pu, gender);
               }}
             />, 800
@@ -709,9 +839,8 @@ export default function Page() {
       </div>, 1000
     );
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, markAnswered, runOccasionFlow, runManualClarification]);
+  }, [user, markAnswered, runOccasionFlow, runManualClarification, persona]);
 
-  // ── Start over ────────────────────────────────────────────────────────────
   const handleStartOver = useCallback(async () => {
     const { allowed, used, limit } = await checkLimit();
     if (!allowed) { await pushBot(<LimitCard used={used} limit={limit} user={user} />, 300); return; }
@@ -723,14 +852,12 @@ export default function Page() {
     setTimeout(() => boot(pushBot, pushUser), 120);
   }, [boot, pushBot, pushUser, checkLimit, user]);
 
-  // ── Init ──────────────────────────────────────────────────────────────────
   useEffect(() => {
     if (_booted) return;
     _booted = true;
     boot(pushBot, pushUser);
   }, [boot, pushBot, pushUser]);
 
-  // ── File upload ───────────────────────────────────────────────────────────
   const handleFile = useCallback((file: File) => {
     const pb = pushBotRef.current!;
     const pu = pushUserRef.current!;
@@ -751,8 +878,10 @@ export default function Page() {
               <a href="/signup" className="flex items-center gap-1.5 px-4 py-2.5 rounded-full text-sm font-semibold text-[#d4af7f] border border-[#d4af7f]/30 bg-[#1a1a1a]">
                 Create Account</a>
             </div>
-            <button onClick={() => { setAnalyseImgUrl(url); setAnalysing(true); }}
-              className="text-xs text-neutral-600 hover:text-neutral-400 transition-colors underline-offset-2 hover:underline block">
+            <button
+              onClick={() => { setAnalyseImgUrl(url); setAnalysing(true); }}
+              className="text-xs text-neutral-600 hover:text-neutral-400 transition-colors underline-offset-2 hover:underline block"
+            >
               ▷ Continue without account
             </button>
           </div>, 600
@@ -765,7 +894,6 @@ export default function Page() {
     reader.readAsDataURL(file);
   }, [checkLimit, user]);
 
-  // ── Analysis done ─────────────────────────────────────────────────────────
   const onAnalysisDone = useCallback(async (result: { body_shape: string; skin_tone: string; person_detected: boolean }) => {
     setAnalysing(false);
     const pb = pushBotRef.current!;
@@ -791,7 +919,6 @@ export default function Page() {
     );
   }, [incrementUsage, markAnswered, runPostClarification]);
 
-  // ── Analysis error ────────────────────────────────────────────────────────
   const onAnalysisError = useCallback(async (message: string) => {
     setAnalysing(false);
     const pb = pushBotRef.current!;
@@ -801,15 +928,20 @@ export default function Page() {
         <p className="text-sm font-bold text-red-400 mb-1">📷 Oops!</p>
         <p className="text-sm text-red-300/80 leading-relaxed">{message}</p>
         <div className="flex gap-2 mt-3 flex-wrap">
-          <button onClick={() => fileRef.current?.click()}
-            className="flex items-center gap-1.5 bg-[#111111] border border-red-800/50 text-red-400 rounded-full px-4 py-2 text-xs font-semibold hover:bg-red-950/30 transition">
+          <button
+            onClick={() => fileRef.current?.click()}
+            className="flex items-center gap-1.5 bg-[#111111] border border-red-800/50 text-red-400 rounded-full px-4 py-2 text-xs font-semibold hover:bg-red-950/30 transition"
+          >
             📁 Try another photo
           </button>
-          <button onClick={async () => {
-            pu("I'll skip the photo");
-            await pb("No worries! 😊", 400);
-            runManualClarification(pb, pu, genderRef.current);
-          }} className="flex items-center gap-1.5 bg-[#111111] border border-neutral-800 text-neutral-400 rounded-full px-4 py-2 text-xs font-semibold hover:bg-[#1a1a1a] transition">
+          <button
+            onClick={async () => {
+              pu("I'll skip the photo");
+              await pb("No worries! 😊", 400);
+              runManualClarification(pb, pu, genderRef.current);
+            }}
+            className="flex items-center gap-1.5 bg-[#111111] border border-neutral-800 text-neutral-400 rounded-full px-4 py-2 text-xs font-semibold hover:bg-[#1a1a1a] transition"
+          >
             ▷ Skip and continue
           </button>
         </div>
@@ -820,7 +952,7 @@ export default function Page() {
   // ── Render ────────────────────────────────────────────────────────────────
   return (
     <div className="flex flex-col w-full max-w-lg mx-auto relative" style={{ minHeight: "100dvh", background: "#0a0a0a" }}>
-      <header className="flex items-center justify-center px-4 py-4 bg-[#0a0a0a] z-10 border-b border-neutral-800 sticky top-0">
+      <header className="flex items-center justify-center px-4 py-4 bg-[#0a0a0a] z-50 border-b border-neutral-800 sticky top-0">
         <h1 className="text-2xl font-bold tracking-tight text-white">
           Steal the{" "}
           <span className="italic" style={{
@@ -830,10 +962,21 @@ export default function Page() {
         </h1>
       </header>
 
-      <main className="flex-1 overflow-y-auto px-4 py-6" style={{ scrollbarWidth: "none", background: "#0a0a0a", minHeight: "0" }}>
+      <main className="flex-1 overflow-y-auto px-4 py-4" style={{ scrollbarWidth: "none", background: "#0a0a0a", minHeight: "0" }}>
+        <AnimatePresence>
+          {showBanner && (
+            <PersonaBanner persona={persona} onDismiss={() => setShowBanner(false)} />
+          )}
+        </AnimatePresence>
+
         <AnimatePresence initial={false}>
           {msgs.map((m) => (
-            <motion.div key={m.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25, ease: "easeOut" }}>
+            <motion.div
+              key={m.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+            >
               <ChatBubble role={m.role} answered={m.answered}>{m.content}</ChatBubble>
             </motion.div>
           ))}
@@ -847,7 +990,8 @@ export default function Page() {
           <motion.div
             initial={{ opacity: 0, y: 60 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 40 }}
             transition={{ type: "spring", stiffness: 280, damping: 26 }}
-            className="absolute inset-0 z-20 bg-[#0a0a0a]/95 backdrop-blur-sm flex items-center justify-center px-6">
+            className="absolute inset-0 z-20 bg-[#0a0a0a]/95 backdrop-blur-sm flex items-center justify-center px-6"
+          >
             <div className="w-full max-w-sm">
               <AnalysisScreen imageUrl={analyseImgUrl} onDone={onAnalysisDone} onError={onAnalysisError} durationMs={6000} />
             </div>
@@ -886,66 +1030,138 @@ function LimitCard({ used, limit, user }: { used: number; limit: number; user: a
 function EndCard({ onStartOver, onTryAnother, bodyShape, skinTone }: {
   onStartOver: () => void; onTryAnother: () => void; bodyShape: string; skinTone: string;
 }) {
-  const [feedbackSent, setFeedbackSent] = useState(false);
-  const [rating,  setRating]  = useState(0);
-  const [hovered, setHovered] = useState(0);
-  const [sharing, setSharing] = useState(false);
+  const [rating,    setRating]    = useState(0);
+  const [hovered,   setHovered]   = useState(0);
+  const [submitted, setSubmitted] = useState(false);
+  const [sharing,   setSharing]   = useState(false);
+
+  const STAR_LABELS = ["", "Not great", "Okay", "Good", "Loved it", "Perfect! ✨"];
+
+  const handleRate = (star: number) => {
+    if (submitted) return;
+    setRating(star);
+    setSubmitted(true);
+  };
 
   const handleShare = async () => {
     setSharing(true);
     const profile = [bodyShape && `${bodyShape} body shape`, skinTone && `${skinTone} skin tone`].filter(Boolean).join(" & ");
-    const text = `✨ ${profile} — check yours!\n\nI used Outfevibe's AI Stylist 🛍️\n\noutfevibe.com/outfit`;
+    const text = `✨ ${profile} — check yours!\n\nI used Outfevibe\'s AI Stylist 🛍️\n\noutfevibe.com/outfit`;
     try {
       if (navigator.share) await navigator.share({ title: "My Outfevibe Style", text, url: "https://www.outfevibe.com/outfit" });
-      else { await navigator.clipboard.writeText(text); alert("Copied! 📋"); }
+      else { await navigator.clipboard.writeText(text); }
     } catch {}
     setSharing(false);
   };
 
   return (
-    <div className="space-y-4">
-      <p className="text-neutral-200 font-semibold text-sm">Hope you love this look! 🛍️</p>
-      <div className="rounded-2xl border border-neutral-800 bg-[#111111] p-4">
-        {!feedbackSent ? (
-          <div>
-            <p className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-3">Rate this recommendation</p>
-            <div className="flex gap-1">
+    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-3">
+      {/* Rating card */}
+      <div className="rounded-2xl border border-neutral-800 bg-[#111111] overflow-hidden">
+        {!submitted ? (
+          <div className="p-4">
+            <p className="text-sm font-bold text-white mb-0.5">Did this look work for you?</p>
+            <p className="text-xs text-neutral-500 mb-4">Your feedback helps us style you better next time.</p>
+            <div className="flex items-center gap-2 mb-2">
               {[1,2,3,4,5].map((star) => (
-                <button key={star} onMouseEnter={() => setHovered(star)} onMouseLeave={() => setHovered(0)}
-                  onClick={() => { setRating(star); setFeedbackSent(true); }}
-                  className="text-2xl transition-transform hover:scale-125">
-                  <span style={{ color: star <= (hovered || rating) ? "#d4af7f" : "#2a2a2a" }}>★</span>
-                </button>
+                <motion.button
+                  key={star}
+                  whileHover={{ scale: 1.2 }}
+                  whileTap={{ scale: 0.9 }}
+                  onMouseEnter={() => setHovered(star)}
+                  onMouseLeave={() => setHovered(0)}
+                  onClick={() => handleRate(star)}
+                  className="text-3xl leading-none transition-all duration-100"
+                  style={{ color: star <= (hovered || rating) ? "#d4af7f" : "#2a2a2a", filter: star <= (hovered || rating) ? "drop-shadow(0 0 6px #d4af7f60)" : "none" }}
+                >
+                  ★
+                </motion.button>
               ))}
             </div>
+            {hovered > 0 && (
+              <motion.p
+                key={hovered}
+                initial={{ opacity: 0, y: 3 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-xs font-semibold"
+                style={{ color: "#d4af7f" }}
+              >
+                {STAR_LABELS[hovered]}
+              </motion.p>
+            )}
           </div>
         ) : (
-          <div className="flex items-center gap-2">
-            <span className="text-[#d4af7f]">{"★".repeat(rating)}{"☆".repeat(5 - rating)}</span>
-            <p className="text-xs text-neutral-400 ml-1">Thanks! 🙏</p>
-          </div>
+          <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} className="p-4 flex items-center gap-3">
+            <div className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: "#d4af7f18" }}>
+              <span className="text-lg">🙏</span>
+            </div>
+            <div>
+              <p className="text-sm font-bold text-white">Thanks for rating!</p>
+              <div className="flex gap-0.5 mt-0.5">
+                {[1,2,3,4,5].map((s) => (
+                  <span key={s} className="text-sm" style={{ color: s <= rating ? "#d4af7f" : "#2a2a2a" }}>★</span>
+                ))}
+              </div>
+            </div>
+          </motion.div>
         )}
       </div>
-      <div className="flex flex-wrap gap-2">
-        <button onClick={onTryAnother}
-          className="flex items-center gap-1.5 rounded-full px-4 py-2.5 text-sm font-bold text-black"
-          style={{ background: "linear-gradient(135deg,#d4af7f,#b8860b)" }}>
-          <RotateCcw className="w-4 h-4" /> Try Another Style
-        </button>
-        <button onClick={handleShare} disabled={sharing}
-          className="flex items-center gap-1.5 bg-[#1a1a1a] hover:bg-[#222] border border-[#d4af7f]/30 text-[#d4af7f] rounded-full px-4 py-2.5 text-sm font-semibold transition-all">
-          📤 {sharing ? "Sharing..." : "Share My Style"}
-        </button>
-        <a href="/#feedback"
-          className="flex items-center gap-1.5 bg-[#1a1a1a] hover:bg-[#222] border border-neutral-800 text-neutral-400 hover:text-neutral-200 rounded-full px-4 py-2.5 text-sm font-semibold transition-all">
-          💬 Give Feedback
+
+      {/* Primary action */}
+      <motion.button
+        onClick={onTryAnother}
+        whileTap={{ scale: 0.97 }}
+        className="w-full py-3.5 rounded-2xl text-sm font-bold text-black relative overflow-hidden"
+        style={{ background: "linear-gradient(135deg,#d4af7f,#b8860b)" }}
+      >
+        <span className="relative z-10 flex items-center justify-center gap-2">
+          <RotateCcw className="w-4 h-4" /> Explore Another Style
+        </span>
+        <motion.span
+          className="absolute inset-y-0 w-1/3 skew-x-[-15deg] pointer-events-none"
+          style={{ background: "linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent)" }}
+          animate={{ left: ["-40%", "130%"] }}
+          transition={{ duration: 2, repeat: Infinity, repeatDelay: 3, ease: "linear" }}
+        />
+      </motion.button>
+
+      {/* Secondary row */}
+      <div className="grid grid-cols-2 gap-2">
+        <motion.button
+          onClick={handleShare}
+          disabled={sharing}
+          whileTap={{ scale: 0.97 }}
+          className="flex items-center justify-center gap-2 py-3 rounded-2xl border text-sm font-semibold transition-all"
+          style={{ background: "#111111", borderColor: "#d4af7f40", color: "#d4af7f" }}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+          </svg>
+          {sharing ? "Sharing…" : "Share Look"}
+        </motion.button>
+
+        <a
+          href="/#feedback"
+          className="flex items-center justify-center gap-2 py-3 rounded-2xl border text-sm font-semibold transition-all"
+          style={{ background: "#111111", borderColor: "#2a2a2a", color: "#888" }}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          Feedback
         </a>
-        <button onClick={onStartOver}
-          className="flex items-center gap-1.5 text-xs text-neutral-600 hover:text-neutral-400 transition-colors w-full mt-1">
-          <RotateCcw className="w-3 h-3" /> Start completely over
-        </button>
       </div>
-    </div>
+
+      {/* Start over */}
+      <button
+        onClick={onStartOver}
+        className="w-full flex items-center justify-center gap-1.5 py-2 text-xs text-neutral-700 hover:text-neutral-500 transition-colors"
+      >
+        <RotateCcw className="w-3 h-3" />
+        Start completely over
+      </button>
+    </motion.div>
   );
 }
 
@@ -957,18 +1173,24 @@ function ReturningUserPrompt({ bodyShape, skinTone, onUseProfile, onStyleSomeone
     <div className="space-y-3">
       <p className="text-sm text-neutral-300">What would you like to do?</p>
       <div className="flex flex-col gap-2">
-        <button onClick={() => { setChosen("profile"); onUseProfile(); }} disabled={!!chosen}
+        <button
+          onClick={() => { setChosen("profile"); onUseProfile(); }}
+          disabled={!!chosen}
           className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-black text-left"
-          style={{ background: "linear-gradient(135deg,#d4af7f,#b8860b)", opacity: chosen && chosen !== "profile" ? 0.4 : 1 }}>
+          style={{ background: "linear-gradient(135deg,#d4af7f,#b8860b)", opacity: chosen && chosen !== "profile" ? 0.4 : 1 }}
+        >
           <span className="text-lg">⚡</span>
           <div>
             <p className="text-black">Use my saved profile</p>
             <p className="text-[11px] font-normal opacity-70">{bodyShape} · {skinTone} skin</p>
           </div>
         </button>
-        <button onClick={() => { setChosen("else"); onStyleSomeoneElse(); }} disabled={!!chosen}
+        <button
+          onClick={() => { setChosen("else"); onStyleSomeoneElse(); }}
+          disabled={!!chosen}
           className="flex items-center gap-3 rounded-xl border border-neutral-800 bg-[#1a1a1a] px-4 py-3 text-sm font-semibold text-neutral-300 text-left hover:bg-[#222]"
-          style={{ opacity: chosen && chosen !== "else" ? 0.4 : 1 }}>
+          style={{ opacity: chosen && chosen !== "else" ? 0.4 : 1 }}
+        >
           <span className="text-lg">👥</span>
           <div>
             <p>Style someone else</p>
@@ -996,17 +1218,23 @@ function UploadPromptMsg({ onCamera, onUpload, onSkip }: {
         </p>
       </div>
       <div className="flex gap-2 flex-wrap">
-        <button onClick={onCamera}
-          className="flex items-center gap-2 bg-[#1a1a1a] hover:bg-[#222] border border-[#d4af7f]/30 text-[#d4af7f] rounded-full px-4 py-2.5 text-sm font-semibold transition-all">
+        <button
+          onClick={onCamera}
+          className="flex items-center gap-2 bg-[#1a1a1a] hover:bg-[#222] border border-[#d4af7f]/30 text-[#d4af7f] rounded-full px-4 py-2.5 text-sm font-semibold transition-all"
+        >
           <Camera className="w-4 h-4 text-pink-500" /> Take Photo
         </button>
-        <button onClick={onUpload}
-          className="flex items-center gap-2 bg-[#1a1a1a] hover:bg-[#222] border border-[#d4af7f]/30 text-[#d4af7f] rounded-full px-4 py-2.5 text-sm font-semibold transition-all">
+        <button
+          onClick={onUpload}
+          className="flex items-center gap-2 bg-[#1a1a1a] hover:bg-[#222] border border-[#d4af7f]/30 text-[#d4af7f] rounded-full px-4 py-2.5 text-sm font-semibold transition-all"
+        >
           <Upload className="w-4 h-4 text-purple-500" /> Upload
         </button>
       </div>
-      <button onClick={onSkip}
-        className="mt-3 flex items-center gap-1.5 text-xs text-neutral-600 hover:text-neutral-400 transition-colors underline-offset-2 hover:underline">
+      <button
+        onClick={onSkip}
+        className="mt-3 flex items-center gap-1.5 text-xs text-neutral-600 hover:text-neutral-400 transition-colors underline-offset-2 hover:underline"
+      >
         ▷ Skip for now
       </button>
     </div>

@@ -1,133 +1,138 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 
-const OCCASION_RANGES: Record<string, { min: number; max: number }> = {
-  College:  { min: 500,  max: 4000  },
-  Work:     { min: 800,  max: 5000  },
-  Date:     { min: 500,  max: 5000  },
-  Party:    { min: 1000, max: 6000  },
-  Wedding:  { min: 2000, max: 10000 },
-  Festive:  { min: 1000, max: 8000  },
+// ── Budget tiers per occasion ─────────────────────────────────────────────────
+// jsonKey MUST match outfit.json's budget_range field exactly: "low" | "medium" | "high"
+const OCCASION_TIERS: Record<string, { label: string; jsonKey: string; min: number; max: number; description: string }[]> = {
+  College: [
+    { label: "Budget",    jsonKey: "low",    min: 300,   max: 1500,  description: "Thrift-smart & trendy"   },
+    { label: "Mid Range", jsonKey: "medium", min: 1500,  max: 4000,  description: "Stylish without stress"  },
+    { label: "Premium",   jsonKey: "high",   min: 4000,  max: 6000,  description: "Investment pieces"       },
+  ],
+  Work: [
+    { label: "Budget",    jsonKey: "low",    min: 500,   max: 1500,  description: "Polished on a budget"    },
+    { label: "Mid Range", jsonKey: "medium", min: 1500,  max: 4000,  description: "Professional & sharp"    },
+    { label: "Premium",   jsonKey: "high",   min: 4000,  max: 10000, description: "Power dressing"          },
+  ],
+  Date: [
+    { label: "Budget",    jsonKey: "low",    min: 300,   max: 1500,  description: "Effortlessly charming"   },
+    { label: "Mid Range", jsonKey: "medium", min: 1500,  max: 4000,  description: "Impressive & stylish"    },
+    { label: "Premium",   jsonKey: "high",   min: 4000,  max: 12000, description: "Unforgettable look"      },
+  ],
+  Party: [
+    { label: "Budget",    jsonKey: "low",    min: 300,   max: 1500,  description: "Fun & fierce"            },
+    { label: "Mid Range", jsonKey: "medium", min: 1500,  max: 5000,  description: "Turn heads"              },
+    { label: "Premium",   jsonKey: "high",   min: 5000,  max: 15000, description: "Full glam mode"          },
+  ],
+  Wedding: [
+    { label: "Budget",    jsonKey: "low",    min: 500,   max: 1500,  description: "Celebration-ready"       },
+    { label: "Mid Range", jsonKey: "medium", min: 1500,  max: 5000,  description: "Graceful & festive"      },
+    { label: "Premium",   jsonKey: "high",   min: 5000,  max: 30000, description: "Showstopper"             },
+  ],
+  Festive: [
+    { label: "Budget",    jsonKey: "low",    min: 300,   max: 1500,  description: "Ethnic & vibrant"        },
+    { label: "Mid Range", jsonKey: "medium", min: 1500,  max: 4000,  description: "Rich & traditional"      },
+    { label: "Premium",   jsonKey: "high",   min: 4000,  max: 20000, description: "Grand & regal"           },
+  ],
 };
 
-const DEFAULT_RANGE = { min: 500, max: 8000 };
+const DEFAULT_TIERS = OCCASION_TIERS["College"];
 
-function formatPrice(val: number) {
-  if (val >= 1000) return `₹${(val / 1000).toFixed(val % 1000 === 0 ? 0 : 1)}k`;
-  return `₹${val}`;
+interface BudgetResult {
+  label: string;   // display: "Budget" | "Mid Range" | "Premium"
+  jsonKey: string; // JSON value: "low" | "medium" | "high"
+  min: number;
+  max: number;
 }
 
 interface BudgetSliderProps {
-  occasion: string;
-  onConfirm: (range: { min: number; max: number; label: string }) => void;
+  occasion?: string;
+  onConfirm: (result: BudgetResult) => void;
 }
 
-export function BudgetSlider({ occasion, onConfirm }: BudgetSliderProps) {
-  const range = OCCASION_RANGES[occasion] ?? DEFAULT_RANGE;
-  const [value, setValue] = useState(Math.round((range.min + range.max) / 2));
-  const [confirmed, setConfirmed] = useState(false);
+export function BudgetSlider({ occasion = "College", onConfirm }: BudgetSliderProps) {
+  const tiers = OCCASION_TIERS[occasion] ?? DEFAULT_TIERS;
+  const [selectedTier, setSelectedTier] = useState(1); // default Mid Range
+  const [confirmed,    setConfirmed]    = useState(false);
 
-  const pct = ((value - range.min) / (range.max - range.min)) * 100;
+  const tier = tiers[selectedTier];
 
-  const getBudgetLabel = (v: number): string => {
-    const third = (range.max - range.min) / 3;
-    if (v <= range.min + third) return "low";
-    if (v <= range.min + third * 2) return "medium";
-    return "high";
-  };
+  const fmt = (n: number) =>
+    n >= 1000 ? `₹${(n / 1000).toFixed(n % 1000 === 0 ? 0 : 1)}k` : `₹${n}`;
 
-  const getTierLabel = (v: number) => {
-    const label = getBudgetLabel(v);
-    if (label === "low")    return { text: "Budget Friendly 💚", color: "#4ade80" };
-    if (label === "medium") return { text: "Mid Range ✨",        color: "#d4af7f" };
-    return                         { text: "Premium 💎",          color: "#a78bfa" };
-  };
-
-  const tier = getTierLabel(value);
-
-  if (confirmed) {
-    return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="mt-2 inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold border"
-        style={{ background: "#1a1a00", borderColor: "#d4af7f40", color: "#d4af7f" }}
-      >
-        <span>💰</span>
-        <span>Up to {formatPrice(value)}</span>
-        <span className="w-4 h-4 rounded-full flex items-center justify-center text-black text-[10px]"
-          style={{ background: "linear-gradient(135deg,#d4af7f,#b8860b)" }}>✓</span>
-      </motion.div>
-    );
-  }
+  const handleConfirm = useCallback(() => {
+    if (confirmed) return;
+    setConfirmed(true);
+    onConfirm({ label: tier.label, jsonKey: tier.jsonKey, min: tier.min, max: tier.max });
+  }, [confirmed, tier, onConfirm]);
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      className="mt-3 space-y-4"
+      className="space-y-4"
     >
-      {/* Tier label */}
-      <div className="flex items-center justify-between">
-        <span className="text-xs font-semibold" style={{ color: tier.color }}>
-          {tier.text}
-        </span>
-        <span className="text-sm font-bold text-white">
-          {formatPrice(range.min)} – {formatPrice(value)}
-        </span>
+      {/* Tier selector */}
+      <div className="grid grid-cols-3 gap-2">
+        {tiers.map((t, i) => {
+          const active = selectedTier === i;
+          return (
+            <motion.button
+              key={t.label}
+              onClick={() => !confirmed && setSelectedTier(i)}
+              disabled={confirmed}
+              whileTap={{ scale: 0.96 }}
+              className="flex flex-col items-center py-3 px-2 rounded-xl border-2 transition-all duration-200 text-center"
+              style={{
+                background:   active ? "linear-gradient(135deg,#d4af7f18,#b8860b08)" : "#111111",
+                borderColor:  active ? "#d4af7f" : "#2a2a2a",
+              }}
+            >
+              <span className="text-xs font-bold mb-0.5"
+                style={{ color: active ? "#d4af7f" : "#888" }}>
+                {t.label}
+              </span>
+              <span className="text-[10px] leading-tight"
+                style={{ color: active ? "#b8860b" : "#555" }}>
+                {fmt(t.min)}–{fmt(t.max)}
+              </span>
+            </motion.button>
+          );
+        })}
       </div>
 
-      {/* Slider track */}
-      <div className="relative h-2 rounded-full" style={{ background: "#1a1a1a" }}>
-        {/* Filled portion */}
-        <div
-          className="absolute left-0 top-0 h-2 rounded-full transition-all"
-          style={{
-            width: `${pct}%`,
-            background: "linear-gradient(90deg,#d4af7f,#b8860b)",
-          }}
-        />
-        {/* Thumb */}
-        <input
-          type="range"
-          min={range.min}
-          max={range.max}
-          step={100}
-          value={value}
-          onChange={(e) => setValue(Number(e.target.value))}
-          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-          style={{ zIndex: 2 }}
-        />
-        <div
-          className="absolute top-1/2 -translate-y-1/2 w-5 h-5 rounded-full border-2 shadow-lg transition-all"
-          style={{
-            left: `calc(${pct}% - 10px)`,
-            background: "linear-gradient(135deg,#d4af7f,#b8860b)",
-            borderColor: "#0a0a0a",
-            boxShadow: "0 0 12px rgba(212,175,127,0.5)",
-          }}
-        />
-      </div>
+      {/* Description + range display */}
+      <motion.div
+        key={selectedTier}
+        initial={{ opacity: 0, y: 4 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex items-center justify-between px-3 py-2.5 rounded-xl border border-neutral-800 bg-[#0f0f0f]"
+      >
+        <p className="text-xs text-neutral-400">{tier.description}</p>
+        <p className="text-xs font-bold" style={{ color: "#d4af7f" }}>
+          {fmt(tier.min)} – {fmt(tier.max)}
+        </p>
+      </motion.div>
 
-      {/* Min / Max labels */}
-      <div className="flex justify-between text-[10px] text-neutral-600">
-        <span>{formatPrice(range.min)}</span>
-        <span>{formatPrice(range.max)}</span>
-      </div>
-
-      {/* Confirm button */}
+      {/* CTA */}
       <motion.button
-        whileTap={{ scale: 0.96 }}
-        onClick={() => {
-          setConfirmed(true);
-          onConfirm({ min: range.min, max: value, label: getBudgetLabel(value) });
-        }}
-        className="w-full py-2.5 rounded-full text-sm font-bold text-black transition-all"
+        onClick={handleConfirm}
+        disabled={confirmed}
+        whileTap={{ scale: 0.97 }}
+        className="w-full py-3 rounded-full text-sm font-bold text-black relative overflow-hidden transition-opacity disabled:opacity-60"
         style={{ background: "linear-gradient(135deg,#d4af7f,#b8860b)" }}
       >
-        Find Outfits in this Budget ✨
+        <span className="relative z-10">
+          Find Outfits in this Budget ✦
+        </span>
+        <motion.span
+          className="absolute inset-y-0 w-1/3 skew-x-[-15deg] pointer-events-none"
+          style={{ background: "linear-gradient(90deg,transparent,rgba(255,255,255,0.22),transparent)" }}
+          animate={{ left: ["-40%", "130%"] }}
+          transition={{ duration: 1.8, repeat: Infinity, repeatDelay: 2.5, ease: "linear" }}
+        />
       </motion.button>
     </motion.div>
   );
