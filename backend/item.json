@@ -1884,17 +1884,31 @@
     },
     {
       "id": 132,
-      "type": "dress",
-      "title": "Blue Ruffled Side Slit Tube Dress",
-      "occasion": "Party",
-      "mood": "Glam",
-      "website": "Myntra",
-      "price": 571,
-      "review": 4.2,
-      "fabric": "Georgette",
+      "type": "top",
+      "title": "Tricolor Shirt ",
+      "occasion": "College",
+      "mood": "Casual Cool",
+      "website": "Amazon",
+      "price": 639,
+      "review": 3.6,
+      "fabric": "Cotton",
+      "quality": "Average",
+      "image": "/outfits/132.jpg",
+      "affiliate_link": "https://amzn.to/3Qpbi3B"
+    },
+    {
+      "id": 133,
+      "type": "bottom",
+      "title": "Black Track Pants",
+      "occasion": "College",
+      "mood": "Casual Cool",
+      "website": "Flipkart",
+      "price": 258,
+      "review": 3.8,
+      "fabric": "Polyester",
       "quality": "Good",
-      "image": "/outfits/myntra/131.jpg",
-      "affiliate_link": "https://myntr.it/WzPGS8Y"
+      "image": "/outfits/133.jpg",
+      "affiliate_link": "https://fktr.in/zqvh1zu"
     }
 
 

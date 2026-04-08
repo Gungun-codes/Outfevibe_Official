@@ -43,6 +43,111 @@ function getCompliment(gender: string): string {
   return list[Math.floor(Math.random() * list.length)];
 }
 
+// ── Body shape compliments ─────────────────────────────────────────────────────
+const BODY_SHAPE_COMPLIMENTS: Record<string, { female: string; male: string }> = {
+  Hourglass: {
+    female: "Hourglass? That's literally the most coveted body shape! You share it with Beyoncé & Marilyn Monroe 👑",
+    male:   "Hourglass frame? Balanced shoulders and waist — the dream physique of Greek sculptures 🏛️",
+  },
+  Rectangle: {
+    female: "Rectangle body = model body! Kendall Jenner & Cameron Diaz rock it and so do you 🔥",
+    male:   "Rectangle build is pure athlete energy — think Chris Evans in his prime 💪",
+  },
+  Pear: {
+    female: "Pear shape is SO aesthetic! JLo, Beyoncé and Rihanna all share your silhouette 🍐✨",
+    male:   "Strong lower body like a sprinter — that's pure power and athleticism right there ⚡",
+  },
+  Apple: {
+    female: "Apple shape = bold and confident! Drew Barrymore & Jennifer Hudson absolutely own it 🌟",
+    male:   "Apple build is the classic power physique — Jonah Hill turned it into a whole style icon moment 😎",
+  },
+  "Inverted Triangle": {
+    female: "Inverted triangle? That's a warrior goddess silhouette! Strong shoulders = natural confidence ✨",
+    male:   "Inverted triangle is THE most sought-after male body — literally the superhero build 🦸",
+  },
+};
+
+// ── Skin tone compliments ──────────────────────────────────────────────────────
+const SKIN_TONE_COMPLIMENTS: Record<string, { female: string; male: string }> = {
+  Fair: {
+    female: "Fair skin glows like porcelain — jewel tones and pastels will look absolutely magical on you 💎",
+    male:   "Fair skin has that clean, sharp look — navy and earth tones make you look effortlessly sharp 🎯",
+  },
+  Wheatish: {
+    female: "Wheatish skin is literally golden hour personified — warm tones and bold colours are made for you ☀️",
+    male:   "Wheatish skin is the most versatile canvas — everything from whites to deep burgundy looks fire on you 🔥",
+  },
+  Dusky: {
+    female: "Dusky skin is absolutely stunning — vibrant colours pop on you like no one else can pull off 🌺",
+    male:   "Dusky skin with bold colours? That's a walking editorial moment every single time 📸",
+  },
+  Deep: {
+    female: "Deep skin tone is GORGEOUS — bright colours and metallics create the most striking looks on you 🌟",
+    male:   "Deep skin is powerful and striking — white, gold and bright hues make you look like royalty 👑",
+  },
+};
+
+// ── Profile compliment banner (shown after body + skin tone confirmed) ────────
+function ProfileComplimentBanner({ bodyShape, skinTone, gender }: {
+  bodyShape: string; skinTone: string; gender: string;
+}) {
+  const g = gender.toLowerCase() === "male" ? "male" : "female";
+
+  const shapeMsg = BODY_SHAPE_COMPLIMENTS[bodyShape]?.[g]
+    ?? `${bodyShape} body shape — a stunning silhouette to style! ✨`;
+
+  const toneMsg = SKIN_TONE_COMPLIMENTS[skinTone]?.[g]
+    ?? `${skinTone} skin tone — beautiful and full of styling potential 🌟`;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.92, y: 10 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ type: "spring", stiffness: 280, damping: 22 }}
+      className="rounded-2xl border relative overflow-hidden space-y-3 p-4"
+      style={{ background: "linear-gradient(135deg,#1a1200,#111111)", borderColor: "#d4af7f25" }}
+    >
+      {/* Shimmer sweep */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: "linear-gradient(105deg, transparent 35%, rgba(212,175,127,0.05) 50%, transparent 65%)" }}
+        animate={{ x: ["-100%", "200%"] }}
+        transition={{ duration: 3, repeat: Infinity, repeatDelay: 4, ease: "linear" }}
+      />
+
+      {/* Body shape row */}
+      <div className="flex items-start gap-3 relative z-10">
+        <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-base"
+          style={{ background: "#d4af7f18" }}>
+          {g === "female" ? "💃" : "🕺"}
+        </div>
+        <p className="text-sm font-semibold leading-relaxed" style={{ color: "#e8d5a3" }}>
+          {shapeMsg}
+        </p>
+      </div>
+
+      {/* Divider */}
+      <div className="h-px w-full relative z-10" style={{ background: "#d4af7f15" }} />
+
+      {/* Skin tone row */}
+      <div className="flex items-start gap-3 relative z-10">
+        <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-base"
+          style={{ background: "#d4af7f18" }}>
+          ✨
+        </div>
+        <p className="text-sm font-semibold leading-relaxed" style={{ color: "#e8d5a3" }}>
+          {toneMsg}
+        </p>
+      </div>
+
+      {/* Tagline */}
+      <p className="text-xs text-neutral-600 text-center relative z-10 pt-1">
+        Now let&apos;s find outfits that match your unique vibe 🛍️
+      </p>
+    </motion.div>
+  );
+}
+
 // ── Occasion vibes map ────────────────────────────────────────────────────────
 const OCCASION_VIBES: Record<string, { Female: string[]; Male: string[] }> = {
   College:  { Female: ["Casual Cool","Street Style","Minimal","Boho"],       Male: ["Street Style","Casual Cool","Minimal","Sporty"] },
@@ -153,7 +258,7 @@ function filterOutfits(
     })
     .map((o) => ({ ...o, _s: scoreOutfit(o, bs, st) + (o.vibe?.toLowerCase() === v ? 2 : 0) }))
     .sort((a, b) => b._s - a._s)
-    .slice(0, 2);
+    .slice(0, 1);
 }
 
 // ── Star rating ───────────────────────────────────────────────────────────────
@@ -690,6 +795,11 @@ export default function Page() {
           markAnswered(clarId);
           pu(`${bs} · ${st} skin ✓`);
           analysisRef.current = { body_shape: bs, skin_tone: st };
+          // Show body+skin compliment before colour palette
+          await pb(
+            <ProfileComplimentBanner bodyShape={bs} skinTone={st} gender={gender} />,
+            400
+          );
           await runPostClarification(pb, pu, gender, bs, st, toGenderProp(gender));
         }}
       />, 600
@@ -913,6 +1023,11 @@ export default function Page() {
           analysisRef.current = { body_shape: s, skin_tone: t };
           pu(`${s} · ${t} skin ✓`);
           await incrementUsage();
+          // Show body+skin compliment before colour palette
+          await pb(
+            <ProfileComplimentBanner bodyShape={s} skinTone={t} gender={gender} />,
+            400
+          );
           await runPostClarification(pb, pu, gender, s, t, genderProp);
         }} />
       </div>, 600
