@@ -156,6 +156,7 @@ const OCCASION_VIBES: Record<string, { Female: string[]; Male: string[] }> = {
   Party:    { Female: ["Glam","Edgy","Bold","Chic"],                          Male: ["Edgy","Bold","Smart Casual","Trendy"] },
   Wedding:  { Female: ["Glam","Traditional","Ethnic Chic","Regal"],           Male: ["Traditional","Regal","Festive Formal","Ethnic Smart"] },
   Festive:  { Female: ["Traditional","Ethnic Chic","Glam","Minimal"],         Male: ["Traditional","Ethnic Smart","Classic","Bold"] },
+  Gym:      { Female: ["Sporty","Casual Cool","Minimal","Bold"],               Male: ["Sporty","Casual Cool","Minimal","Bold"] },
 };
 
 // ── Persona → vibe mapping ────────────────────────────────────────────────────

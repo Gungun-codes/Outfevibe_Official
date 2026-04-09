@@ -5,19 +5,19 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Check } from "lucide-react";
 import { useAnswered } from "@/components/ChatBubble";
 
-// ── Only the vibes that are actually used (4 per occasion per gender) ─────────
 const OPTION_META: Record<string, { icon: string; desc?: string }> = {
   // Gender
   Female:             { icon: "👗" },
   Male:               { icon: "👔" },
 
-  // Occasions (6)
+  // Occasions (7 — Gym added)
   College:            { icon: "🎒", desc: "Casual & cool" },
   Work:               { icon: "💼", desc: "Power dressing" },
   Date:               { icon: "💕", desc: "Romantic vibes" },
   Party:              { icon: "🎉", desc: "Night out ready" },
   Wedding:            { icon: "💍", desc: "All dressed up" },
   Festive:            { icon: "✨", desc: "Celebrate it" },
+  Gym:                { icon: "🏋️", desc: "Sweat in style" },
 
   // Vibes — Female
   "Casual Cool":      { icon: "😎", desc: "Relaxed & stylish" },
@@ -70,7 +70,6 @@ interface ChipSelectorProps {
   actionLabel?: string;
 }
 
-// ── SelectedBadge ─────────────────────────────────────────────────────────────
 function SelectedBadge({ value }: { value: string }) {
   const meta = OPTION_META[value];
   return (
@@ -100,14 +99,15 @@ export function ChipSelector({
   const [selected,  setSelected]  = useState<string[]>([]);
   const [committed, setCommitted] = useState<string | null>(null);
 
-  const answered = useAnswered();
+  const answered  = useAnswered();
   const showChips = !answered && !committed;
 
   const isGender   = options.includes("Female") && options.includes("Male");
   const isPlatform = options.includes("Myntra");
-  // Occasion grid: exactly 6 items with desc
-  const isOccasion = options.length === 6 && options.every((o) => OPTION_META[o]?.desc);
-  // Vibe grid: 4 items with desc (not occasion, not gender, not platform)
+  // Occasion grid: 6 or 7 items — all must have a desc in OPTION_META
+  const isOccasion = (options.length === 6 || options.length === 7)
+    && options.every((o) => OPTION_META[o]?.desc);
+  // Vibe grid: 4 items with desc (not occasion, gender, or platform)
   const isVibe     = options.length === 4 && !isGender && !isPlatform && !isOccasion;
 
   const toggle = (opt: string) => {
@@ -122,7 +122,6 @@ export function ChipSelector({
     );
   };
 
-  // ── After selection: show badge only ──────────────────────────────────────
   if (!showChips) {
     const displayValue =
       multi && selected.length > 0
@@ -188,8 +187,10 @@ export function ChipSelector({
     );
   }
 
-  // ── Occasions — 3×2 grid (6 items, icon + name + desc) ───────────────────
+  // ── Occasions — responsive grid (6 items = 3×2, 7 items = 4+3) ───────────
   if (isOccasion) {
+    // 7 occasions: use a 4-column first row + 3-column second row via flex wrap
+    const cols = options.length === 7 ? "grid-cols-4" : "grid-cols-3";
     return (
       <AnimatePresence>
         <motion.div
@@ -197,7 +198,7 @@ export function ChipSelector({
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -6, scale: 0.97, transition: { duration: 0.2 } }}
-          className="grid grid-cols-3 gap-2 mt-2"
+          className={`grid ${cols} gap-2 mt-2`}
         >
           {options.map((opt) => {
             const meta = OPTION_META[opt];
@@ -206,18 +207,18 @@ export function ChipSelector({
                 key={opt}
                 onClick={() => toggle(opt)}
                 whileTap={{ scale: 0.94 }}
-                className="flex flex-col items-center gap-1.5 px-2 py-3 rounded-xl border-2 text-center transition-all duration-200"
+                className="flex flex-col items-center gap-1.5 px-1 py-3 rounded-xl border-2 text-center transition-all duration-200"
                 style={INACTIVE_STYLE}
               >
                 <span
-                  className="w-9 h-9 rounded-xl flex items-center justify-center text-xl"
+                  className="w-8 h-8 rounded-xl flex items-center justify-center text-lg"
                   style={{ background: "#1a1a1a" }}
                 >
                   {meta?.icon ?? "✦"}
                 </span>
-                <p className="text-xs font-bold text-white leading-tight">{opt}</p>
+                <p className="text-[10px] font-bold text-white leading-tight">{opt}</p>
                 {meta?.desc && (
-                  <p className="text-[10px] text-neutral-500 leading-tight">{meta.desc}</p>
+                  <p className="text-[9px] text-neutral-500 leading-tight">{meta.desc}</p>
                 )}
               </motion.button>
             );
@@ -227,7 +228,7 @@ export function ChipSelector({
     );
   }
 
-  // ── Vibes — 2×2 grid (4 items, icon + name + desc) ───────────────────────
+  // ── Vibes — 2×2 grid ─────────────────────────────────────────────────────
   if (isVibe) {
     return (
       <AnimatePresence>

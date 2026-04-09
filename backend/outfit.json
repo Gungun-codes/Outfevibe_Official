@@ -4,13 +4,32 @@
       "id": "FK_001",
       "website": "Flipkart",
       "gender": "Female",
-      "occasions": ["college", "casual"],
+      "occasions": [
+        "college",
+        "casual"
+      ],
       "vibe": "Casual Cool",
-      "moods": ["casual_cool", "minimal"],
-      "persona": "Classic",
-      "body_shapes": ["rectangle", "hourglass", "inverted_triangle"],
-      "skin_tones": ["fair", "wheatish", "dusky"],
-      "items": { "top": 1, "top_inner": 2, "bottom": 3, "shoes": 4 },
+      "moods": [
+        "casual_cool",
+        "minimal"
+      ],
+      "persona": "Comfort Queen",
+      "body_shapes": [
+        "rectangle",
+        "hourglass",
+        "inverted_triangle"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky"
+      ],
+      "items": {
+        "top": 1,
+        "top_inner": 2,
+        "bottom": 3,
+        "shoes": 4
+      },
       "total_price": 1601,
       "budget_range": "medium",
       "priority": 1,
@@ -24,13 +43,33 @@
       "id": "FK_002",
       "website": "Flipkart",
       "gender": "Female",
-      "occasions": ["college", "casual"],
+      "occasions": [
+        "college",
+        "casual"
+      ],
       "vibe": "Street Style",
-      "moods": ["street_style", "bold"],
-      "persona": "Trendy",
-      "body_shapes": ["rectangle", "pear", "apple"],
-      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
-      "items": { "top": 5, "bottom": 6, "bag": 7, "shoes": 8 },
+      "moods": [
+        "street_style",
+        "bold"
+      ],
+      "persona": "Edgy Trendsetter",
+      "body_shapes": [
+        "rectangle",
+        "pear",
+        "apple"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "top": 5,
+        "bottom": 6,
+        "bag": 7,
+        "shoes": 8
+      },
       "total_price": 1577,
       "budget_range": "medium",
       "priority": 1,
@@ -44,13 +83,34 @@
       "id": "FK_003",
       "website": "Flipkart",
       "gender": "Female",
-      "occasions": ["college", "work", "casual"],
+      "occasions": [
+        "college",
+        "work",
+        "casual"
+      ],
       "vibe": "Minimal",
-      "moods": ["minimal", "classic"],
-      "persona": "Minimalist",
-      "body_shapes": ["rectangle", "hourglass", "inverted_triangle", "pear"],
-      "skin_tones": ["fair", "wheatish", "dusky"],
-      "items": { "top": 9, "bottom": 10, "shoes": 11, "bag": 12 },
+      "moods": [
+        "minimal",
+        "classic"
+      ],
+      "persona": "Minimalist Maven",
+      "body_shapes": [
+        "rectangle",
+        "hourglass",
+        "inverted_triangle",
+        "pear"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky"
+      ],
+      "items": {
+        "top": 9,
+        "bottom": 10,
+        "shoes": 11,
+        "bag": 12
+      },
       "total_price": 1808,
       "budget_range": "medium",
       "priority": 2,
@@ -64,13 +124,33 @@
       "id": "FK_004",
       "website": "Flipkart",
       "gender": "Female",
-      "occasions": ["college", "casual", "festive"],
+      "occasions": [
+        "college",
+        "casual",
+        "festive"
+      ],
       "vibe": "Boho",
-      "moods": ["boho", "ethnic_chic"],
-      "persona": "Boho",
-      "body_shapes": ["pear", "rectangle", "hourglass"],
-      "skin_tones": ["wheatish", "dusky", "deep"],
-      "items": { "top": 13, "bottom": 14, "bag": 15, "shoes": 16 },
+      "moods": [
+        "boho",
+        "ethnic_chic"
+      ],
+      "persona": "Playful Creative",
+      "body_shapes": [
+        "pear",
+        "rectangle",
+        "hourglass"
+      ],
+      "skin_tones": [
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "top": 13,
+        "bottom": 14,
+        "bag": 15,
+        "shoes": 16
+      },
       "total_price": 1085,
       "budget_range": "low",
       "priority": 1,
@@ -84,13 +164,32 @@
       "id": "FK_005",
       "website": "Flipkart",
       "gender": "Female",
-      "occasions": ["work", "formal"],
+      "occasions": [
+        "work",
+        "formal"
+      ],
       "vibe": "Power Dressing",
-      "moods": ["power_dressing", "classic"],
-      "persona": "Classic",
-      "body_shapes": ["rectangle", "inverted_triangle", "hourglass"],
-      "skin_tones": ["fair", "wheatish", "dusky"],
-      "items": { "top": 1, "bottom": 17, "top_outer": 18, "accessory": 19 },
+      "moods": [
+        "power_dressing",
+        "classic"
+      ],
+      "persona": "Minimalist Maven",
+      "body_shapes": [
+        "rectangle",
+        "inverted_triangle",
+        "hourglass"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky"
+      ],
+      "items": {
+        "top": 1,
+        "bottom": 17,
+        "top_outer": 18,
+        "accessory": 19
+      },
       "total_price": 1772,
       "budget_range": "medium",
       "priority": 1,
@@ -104,13 +203,32 @@
       "id": "FK_006",
       "website": "Flipkart",
       "gender": "Female",
-      "occasions": ["work", "formal"],
+      "occasions": [
+        "work",
+        "formal"
+      ],
       "vibe": "Classic",
-      "moods": ["classic", "minimal"],
-      "persona": "Classic",
-      "body_shapes": ["rectangle", "hourglass", "inverted_triangle"],
-      "skin_tones": ["fair", "wheatish", "dusky"],
-      "items": { "top": 20, "bottom": 21, "shoes": 22, "bag": 23 },
+      "moods": [
+        "classic",
+        "minimal"
+      ],
+      "persona": "Minimalist Maven",
+      "body_shapes": [
+        "rectangle",
+        "hourglass",
+        "inverted_triangle"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky"
+      ],
+      "items": {
+        "top": 20,
+        "bottom": 21,
+        "shoes": 22,
+        "bag": 23
+      },
       "total_price": 1757,
       "budget_range": "medium",
       "priority": 1,
@@ -124,13 +242,32 @@
       "id": "FK_007",
       "website": "Flipkart",
       "gender": "Female",
-      "occasions": ["work", "casual"],
+      "occasions": [
+        "work",
+        "casual"
+      ],
       "vibe": "Minimal",
-      "moods": ["minimal", "power_dressing"],
-      "persona": "Minimalist",
-      "body_shapes": ["rectangle", "inverted_triangle", "hourglass"],
-      "skin_tones": ["fair", "wheatish", "dusky"],
-      "items": { "top": 24, "bottom": 25, "shoes": 22, "accessory": 19 },
+      "moods": [
+        "minimal",
+        "power_dressing"
+      ],
+      "persona": "Minimalist Maven",
+      "body_shapes": [
+        "rectangle",
+        "inverted_triangle",
+        "hourglass"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky"
+      ],
+      "items": {
+        "top": 24,
+        "bottom": 25,
+        "shoes": 22,
+        "accessory": 19
+      },
       "total_price": 1674,
       "budget_range": "medium",
       "priority": 2,
@@ -144,13 +281,34 @@
       "id": "FK_008",
       "website": "Flipkart",
       "gender": "Female",
-      "occasions": ["work", "college", "casual"],
+      "occasions": [
+        "work",
+        "college",
+        "casual"
+      ],
       "vibe": "Smart Casual",
-      "moods": ["smart_casual", "ethnic_chic"],
-      "persona": "Boho",
-      "body_shapes": ["pear", "rectangle", "hourglass", "apple"],
-      "skin_tones": ["wheatish", "dusky", "deep"],
-      "items": { "top": 26, "bag": 27, "shoes": 29, "accessory": 28 },
+      "moods": [
+        "smart_casual",
+        "ethnic_chic"
+      ],
+      "persona": "Playful Creative",
+      "body_shapes": [
+        "pear",
+        "rectangle",
+        "hourglass",
+        "apple"
+      ],
+      "skin_tones": [
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "top": 26,
+        "bag": 27,
+        "shoes": 29,
+        "accessory": 28
+      },
       "total_price": 1628,
       "budget_range": "medium",
       "priority": 1,
@@ -164,13 +322,32 @@
       "id": "FK_009",
       "website": "Flipkart",
       "gender": "Female",
-      "occasions": ["date", "party"],
+      "occasions": [
+        "date",
+        "party"
+      ],
       "vibe": "Romantic",
-      "moods": ["romantic", "chic"],
-      "persona": "Classic",
-      "body_shapes": ["hourglass", "pear", "rectangle"],
-      "skin_tones": ["fair", "wheatish", "dusky"],
-      "items": { "dress": 30, "bag": 32, "shoes": 31, "accessory": 33 },
+      "moods": [
+        "romantic",
+        "chic"
+      ],
+      "persona": "Romantic Softie",
+      "body_shapes": [
+        "hourglass",
+        "pear",
+        "rectangle"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky"
+      ],
+      "items": {
+        "dress": 30,
+        "bag": 32,
+        "shoes": 31,
+        "accessory": 33
+      },
       "total_price": 1768,
       "budget_range": "medium",
       "priority": 1,
@@ -184,13 +361,33 @@
       "id": "FK_010",
       "website": "Flipkart",
       "gender": "Female",
-      "occasions": ["date", "casual", "college"],
+      "occasions": [
+        "date",
+        "casual",
+        "college"
+      ],
       "vibe": "Minimal",
-      "moods": ["minimal", "romantic"],
-      "persona": "Minimalist",
-      "body_shapes": ["rectangle", "hourglass", "inverted_triangle"],
-      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
-      "items": { "dress": 34, "shoes": 16, "accessory": 35 },
+      "moods": [
+        "minimal",
+        "romantic"
+      ],
+      "persona": "Minimalist Maven",
+      "body_shapes": [
+        "rectangle",
+        "hourglass",
+        "inverted_triangle"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "dress": 34,
+        "shoes": 16,
+        "accessory": 35
+      },
       "total_price": 680,
       "budget_range": "low",
       "priority": 2,
@@ -204,13 +401,33 @@
       "id": "FK_011",
       "website": "Flipkart",
       "gender": "Female",
-      "occasions": ["date", "party", "casual"],
+      "occasions": [
+        "date",
+        "party",
+        "casual"
+      ],
       "vibe": "Chic",
-      "moods": ["chic", "classic"],
-      "persona": "Classic",
-      "body_shapes": ["hourglass", "pear", "rectangle"],
-      "skin_tones": ["fair", "wheatish", "dusky"],
-      "items": { "top": 36, "bottom": 39, "shoes": 38, "accessory": 37 },
+      "moods": [
+        "chic",
+        "classic"
+      ],
+      "persona": "Minimalist Maven",
+      "body_shapes": [
+        "hourglass",
+        "pear",
+        "rectangle"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky"
+      ],
+      "items": {
+        "top": 36,
+        "bottom": 39,
+        "shoes": 38,
+        "accessory": 37
+      },
       "total_price": 1686,
       "budget_range": "medium",
       "priority": 1,
@@ -224,13 +441,34 @@
       "id": "FK_012",
       "website": "Flipkart",
       "gender": "Female",
-      "occasions": ["date", "casual", "college"],
+      "occasions": [
+        "date",
+        "casual",
+        "college"
+      ],
       "vibe": "Trendy",
-      "moods": ["trendy", "street_style"],
-      "persona": "Trendy",
-      "body_shapes": ["rectangle", "hourglass", "inverted_triangle"],
-      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
-      "items": { "top": 40, "bottom": 42, "shoes": 41, "bag": 32 },
+      "moods": [
+        "trendy",
+        "street_style"
+      ],
+      "persona": "Edgy Trendsetter",
+      "body_shapes": [
+        "rectangle",
+        "hourglass",
+        "inverted_triangle"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "top": 40,
+        "bottom": 42,
+        "shoes": 41,
+        "bag": 32
+      },
       "total_price": 1281,
       "budget_range": "low",
       "priority": 1,
@@ -244,13 +482,33 @@
       "id": "FK_013",
       "website": "Flipkart",
       "gender": "Female",
-      "occasions": ["party", "date"],
+      "occasions": [
+        "party",
+        "date"
+      ],
       "vibe": "Edgy",
-      "moods": ["edgy", "bold"],
-      "persona": "Trendy",
-      "body_shapes": ["hourglass", "rectangle", "inverted_triangle"],
-      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
-      "items": { "dress": 43, "shoes": 46, "accessory": 44, "bag": 32 },
+      "moods": [
+        "edgy",
+        "bold"
+      ],
+      "persona": "Edgy Trendsetter",
+      "body_shapes": [
+        "hourglass",
+        "rectangle",
+        "inverted_triangle"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "dress": 43,
+        "shoes": 46,
+        "accessory": 44,
+        "bag": 32
+      },
       "total_price": 1005,
       "budget_range": "low",
       "priority": 1,
@@ -264,13 +522,32 @@
       "id": "FK_014",
       "website": "Flipkart",
       "gender": "Female",
-      "occasions": ["party", "date"],
+      "occasions": [
+        "party",
+        "date"
+      ],
       "vibe": "Glam",
-      "moods": ["glam", "chic"],
-      "persona": "Classic",
-      "body_shapes": ["hourglass", "rectangle", "pear"],
-      "skin_tones": ["fair", "wheatish", "dusky"],
-      "items": { "dress": 45, "shoes": 46, "accessory": 47, "bag": 32 },
+      "moods": [
+        "glam",
+        "chic"
+      ],
+      "persona": "Playful Creative",
+      "body_shapes": [
+        "hourglass",
+        "rectangle",
+        "pear"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky"
+      ],
+      "items": {
+        "dress": 45,
+        "shoes": 46,
+        "accessory": 47,
+        "bag": 32
+      },
       "total_price": 1571,
       "budget_range": "medium",
       "priority": 1,
@@ -284,13 +561,34 @@
       "id": "FK_015",
       "website": "Flipkart",
       "gender": "Female",
-      "occasions": ["party", "date", "casual"],
+      "occasions": [
+        "party",
+        "date",
+        "casual"
+      ],
       "vibe": "Chic",
-      "moods": ["chic", "minimal"],
-      "persona": "Minimalist",
-      "body_shapes": ["hourglass", "rectangle", "inverted_triangle"],
-      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
-      "items": { "dress": 48, "shoes": 41, "accessory": 47, "bag": 32 },
+      "moods": [
+        "chic",
+        "minimal"
+      ],
+      "persona": "Minimalist Maven",
+      "body_shapes": [
+        "hourglass",
+        "rectangle",
+        "inverted_triangle"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "dress": 48,
+        "shoes": 41,
+        "accessory": 47,
+        "bag": 32
+      },
       "total_price": 928,
       "budget_range": "low",
       "priority": 2,
@@ -304,13 +602,32 @@
       "id": "FK_016",
       "website": "Flipkart",
       "gender": "Female",
-      "occasions": ["party", "wedding"],
+      "occasions": [
+        "party",
+        "wedding"
+      ],
       "vibe": "Bold",
-      "moods": ["bold", "glam"],
-      "persona": "Trendy",
-      "body_shapes": ["hourglass", "rectangle", "pear"],
-      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
-      "items": { "dress": 49, "shoes": 50, "bag": 51 },
+      "moods": [
+        "bold",
+        "glam"
+      ],
+      "persona": "Edgy Trendsetter",
+      "body_shapes": [
+        "hourglass",
+        "rectangle",
+        "pear"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "dress": 49,
+        "shoes": 50,
+        "bag": 51
+      },
       "total_price": 1697,
       "budget_range": "medium",
       "priority": 1,
@@ -324,13 +641,32 @@
       "id": "FK_017",
       "website": "Flipkart",
       "gender": "Female",
-      "occasions": ["wedding", "festive"],
+      "occasions": [
+        "wedding",
+        "festive"
+      ],
       "vibe": "Ethnic Chic",
-      "moods": ["ethnic_chic", "glam"],
-      "persona": "Boho",
-      "body_shapes": ["hourglass", "pear", "rectangle", "apple"],
-      "skin_tones": ["wheatish", "dusky", "deep"],
-      "items": { "dress": 52, "shoes": 53, "accessory": 54 },
+      "moods": [
+        "ethnic_chic",
+        "glam"
+      ],
+      "persona": "Playful Creative",
+      "body_shapes": [
+        "hourglass",
+        "pear",
+        "rectangle",
+        "apple"
+      ],
+      "skin_tones": [
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "dress": 52,
+        "shoes": 53,
+        "accessory": 54
+      },
       "total_price": 3110,
       "budget_range": "high",
       "priority": 1,
@@ -344,13 +680,33 @@
       "id": "FK_018",
       "website": "Flipkart",
       "gender": "Female",
-      "occasions": ["wedding", "festive"],
+      "occasions": [
+        "wedding",
+        "festive"
+      ],
       "vibe": "Traditional",
-      "moods": ["traditional", "ethnic_chic"],
-      "persona": "Classic",
-      "body_shapes": ["pear", "hourglass", "rectangle", "apple"],
-      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
-      "items": { "dress": 55, "shoes": 53, "accessory": 56 },
+      "moods": [
+        "traditional",
+        "ethnic_chic"
+      ],
+      "persona": "Romantic Softie",
+      "body_shapes": [
+        "pear",
+        "hourglass",
+        "rectangle",
+        "apple"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "dress": 55,
+        "shoes": 53,
+        "accessory": 56
+      },
       "total_price": 1531,
       "budget_range": "medium",
       "priority": 2,
@@ -364,13 +720,32 @@
       "id": "FK_019",
       "website": "Flipkart",
       "gender": "Female",
-      "occasions": ["wedding", "festive", "party"],
+      "occasions": [
+        "wedding",
+        "festive",
+        "party"
+      ],
       "vibe": "Glam",
-      "moods": ["glam", "ethnic_chic"],
-      "persona": "Classic",
-      "body_shapes": ["hourglass", "pear", "rectangle"],
-      "skin_tones": ["fair", "wheatish", "dusky"],
-      "items": { "dress": 57, "shoes": 53, "accessory": 58 },
+      "moods": [
+        "glam",
+        "ethnic_chic"
+      ],
+      "persona": "Playful Creative",
+      "body_shapes": [
+        "hourglass",
+        "pear",
+        "rectangle"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky"
+      ],
+      "items": {
+        "dress": 57,
+        "shoes": 53,
+        "accessory": 58
+      },
       "total_price": 1810,
       "budget_range": "medium",
       "priority": 1,
@@ -384,13 +759,33 @@
       "id": "FK_020",
       "website": "Flipkart",
       "gender": "Female",
-      "occasions": ["wedding", "festive"],
+      "occasions": [
+        "wedding",
+        "festive"
+      ],
       "vibe": "Regal",
-      "moods": ["regal", "traditional"],
-      "persona": "Classic",
-      "body_shapes": ["hourglass", "pear", "rectangle", "apple"],
-      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
-      "items": { "dress": 59, "shoes": 60, "accessory": 61 },
+      "moods": [
+        "regal",
+        "traditional"
+      ],
+      "persona": "Romantic Softie",
+      "body_shapes": [
+        "hourglass",
+        "pear",
+        "rectangle",
+        "apple"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "dress": 59,
+        "shoes": 60,
+        "accessory": 61
+      },
       "total_price": 1085,
       "budget_range": "low",
       "priority": 2,
@@ -404,13 +799,33 @@
       "id": "FK_021",
       "website": "Flipkart",
       "gender": "Female",
-      "occasions": ["festive", "college", "casual"],
+      "occasions": [
+        "festive",
+        "college",
+        "casual"
+      ],
       "vibe": "Ethnic Chic",
-      "moods": ["ethnic_chic", "boho"],
-      "persona": "Boho",
-      "body_shapes": ["pear", "apple", "rectangle", "hourglass"],
-      "skin_tones": ["wheatish", "dusky", "deep"],
-      "items": { "dress": 62, "shoes": 41, "accessory": 63 },
+      "moods": [
+        "ethnic_chic",
+        "boho"
+      ],
+      "persona": "Playful Creative",
+      "body_shapes": [
+        "pear",
+        "apple",
+        "rectangle",
+        "hourglass"
+      ],
+      "skin_tones": [
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "dress": 62,
+        "shoes": 41,
+        "accessory": 63
+      },
       "total_price": 976,
       "budget_range": "low",
       "priority": 1,
@@ -424,13 +839,31 @@
       "id": "FK_022",
       "website": "Flipkart",
       "gender": "Female",
-      "occasions": ["festive", "wedding"],
+      "occasions": [
+        "festive",
+        "wedding"
+      ],
       "vibe": "Traditional",
-      "moods": ["traditional", "regal"],
-      "persona": "Classic",
-      "body_shapes": ["pear", "hourglass", "rectangle"],
-      "skin_tones": ["fair", "wheatish", "dusky"],
-      "items": { "dress": 64, "shoes": 53, "accessory": 54 },
+      "moods": [
+        "traditional",
+        "regal"
+      ],
+      "persona": "Romantic Softie",
+      "body_shapes": [
+        "pear",
+        "hourglass",
+        "rectangle"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky"
+      ],
+      "items": {
+        "dress": 64,
+        "shoes": 53,
+        "accessory": 54
+      },
       "total_price": 2237,
       "budget_range": "high",
       "priority": 1,
@@ -444,13 +877,34 @@
       "id": "FK_023",
       "website": "Flipkart",
       "gender": "Female",
-      "occasions": ["festive", "work", "casual"],
+      "occasions": [
+        "festive",
+        "work",
+        "casual"
+      ],
       "vibe": "Minimal",
-      "moods": ["minimal", "ethnic_chic"],
-      "persona": "Minimalist",
-      "body_shapes": ["rectangle", "pear", "hourglass", "apple"],
-      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
-      "items": { "dress": 65, "shoes": 53, "accessory": 56 },
+      "moods": [
+        "minimal",
+        "ethnic_chic"
+      ],
+      "persona": "Minimalist Maven",
+      "body_shapes": [
+        "rectangle",
+        "pear",
+        "hourglass",
+        "apple"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "dress": 65,
+        "shoes": 53,
+        "accessory": 56
+      },
       "total_price": 1363,
       "budget_range": "medium",
       "priority": 2,
@@ -464,13 +918,32 @@
       "id": "FK_024",
       "website": "Flipkart",
       "gender": "Female",
-      "occasions": ["festive", "party", "wedding"],
+      "occasions": [
+        "festive",
+        "party",
+        "wedding"
+      ],
       "vibe": "Glam",
-      "moods": ["glam", "ethnic_chic"],
-      "persona": "Trendy",
-      "body_shapes": ["hourglass", "pear", "rectangle"],
-      "skin_tones": ["wheatish", "dusky", "deep"],
-      "items": { "dress": 66, "shoes": 53, "accessory": 28 },
+      "moods": [
+        "glam",
+        "ethnic_chic"
+      ],
+      "persona": "Playful Creative",
+      "body_shapes": [
+        "hourglass",
+        "pear",
+        "rectangle"
+      ],
+      "skin_tones": [
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "dress": 66,
+        "shoes": 53,
+        "accessory": 28
+      },
       "total_price": 1356,
       "budget_range": "medium",
       "priority": 1,
@@ -480,18 +953,37 @@
         "Heel sandals keep the festive look complete"
       ]
     },
-
     {
       "id": "MH_001",
       "website": "Meesho",
       "gender": "Female",
-      "occasions": ["college", "casual", "festive"],
+      "occasions": [
+        "college",
+        "casual",
+        "festive"
+      ],
       "vibe": "Boho",
-      "moods": ["boho", "ethnic_chic"],
-      "persona": "Boho",
-      "body_shapes": ["pear", "rectangle", "hourglass"],
-      "skin_tones": ["wheatish", "dusky", "deep"],
-      "items": { "top": 67, "bottom": 68, "shoes": 69, "accessory": 70 },
+      "moods": [
+        "boho",
+        "ethnic_chic"
+      ],
+      "persona": "Playful Creative",
+      "body_shapes": [
+        "pear",
+        "rectangle",
+        "hourglass"
+      ],
+      "skin_tones": [
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "top": 67,
+        "bottom": 68,
+        "shoes": 69,
+        "accessory": 70
+      },
       "total_price": 1523,
       "budget_range": "medium",
       "priority": 1,
@@ -505,13 +997,34 @@
       "id": "MH_002",
       "website": "Meesho",
       "gender": "Female",
-      "occasions": ["college", "work", "casual"],
+      "occasions": [
+        "college",
+        "work",
+        "casual"
+      ],
       "vibe": "Minimal",
-      "moods": ["minimal", "ethnic_chic"],
-      "persona": "Minimalist",
-      "body_shapes": ["rectangle", "pear", "hourglass", "apple"],
-      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
-      "items": { "top": 71, "shoes": 72, "accessory": 73 },
+      "moods": [
+        "minimal",
+        "ethnic_chic"
+      ],
+      "persona": "Minimalist Maven",
+      "body_shapes": [
+        "rectangle",
+        "pear",
+        "hourglass",
+        "apple"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "top": 71,
+        "shoes": 72,
+        "accessory": 73
+      },
       "total_price": 582,
       "budget_range": "low",
       "priority": 1,
@@ -525,13 +1038,33 @@
       "id": "MH_003",
       "website": "Meesho",
       "gender": "Female",
-      "occasions": ["college", "casual"],
+      "occasions": [
+        "college",
+        "casual"
+      ],
       "vibe": "Casual Cool",
-      "moods": ["casual_cool", "trendy"],
-      "persona": "Trendy",
-      "body_shapes": ["rectangle", "hourglass", "inverted_triangle"],
-      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
-      "items": { "top": 74, "bottom": 75, "shoes": 76, "accessory": 77 },
+      "moods": [
+        "casual_cool",
+        "trendy"
+      ],
+      "persona": "Comfort Queen",
+      "body_shapes": [
+        "rectangle",
+        "hourglass",
+        "inverted_triangle"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "top": 74,
+        "bottom": 75,
+        "shoes": 76,
+        "accessory": 77
+      },
       "total_price": 1003,
       "budget_range": "low",
       "priority": 1,
@@ -545,13 +1078,34 @@
       "id": "MH_004",
       "website": "Meesho",
       "gender": "Female",
-      "occasions": ["college", "casual"],
+      "occasions": [
+        "college",
+        "casual"
+      ],
       "vibe": "Street Style",
-      "moods": ["street_style", "bold"],
-      "persona": "Trendy",
-      "body_shapes": ["rectangle", "hourglass", "pear", "inverted_triangle"],
-      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
-      "items": { "top": 78, "bottom": 79, "shoes": 76, "accessory": 80 },
+      "moods": [
+        "street_style",
+        "bold"
+      ],
+      "persona": "Edgy Trendsetter",
+      "body_shapes": [
+        "rectangle",
+        "hourglass",
+        "pear",
+        "inverted_triangle"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "top": 78,
+        "bottom": 79,
+        "shoes": 76,
+        "accessory": 80
+      },
       "total_price": 924,
       "budget_range": "low",
       "priority": 2,
@@ -565,13 +1119,32 @@
       "id": "MH_005",
       "website": "Meesho",
       "gender": "Female",
-      "occasions": ["festive", "wedding"],
+      "occasions": [
+        "festive",
+        "wedding"
+      ],
       "vibe": "Ethnic Chic",
-      "moods": ["ethnic_chic", "traditional"],
-      "persona": "Boho",
-      "body_shapes": ["pear", "hourglass", "rectangle", "apple"],
-      "skin_tones": ["wheatish", "dusky", "deep"],
-      "items": { "top": 81, "shoes": 82, "accessory": 83 },
+      "moods": [
+        "ethnic_chic",
+        "traditional"
+      ],
+      "persona": "Playful Creative",
+      "body_shapes": [
+        "pear",
+        "hourglass",
+        "rectangle",
+        "apple"
+      ],
+      "skin_tones": [
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "top": 81,
+        "shoes": 82,
+        "accessory": 83
+      },
       "total_price": 1492,
       "budget_range": "medium",
       "priority": 1,
@@ -585,13 +1158,35 @@
       "id": "MH_006",
       "website": "Meesho",
       "gender": "Female",
-      "occasions": ["festive", "wedding", "casual"],
+      "occasions": [
+        "festive",
+        "wedding",
+        "casual"
+      ],
       "vibe": "Traditional",
-      "moods": ["traditional", "regal"],
-      "persona": "Classic",
-      "body_shapes": ["pear", "hourglass", "rectangle", "apple"],
-      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
-      "items": { "dress": 84, "shoes": 87, "neckpiece": 85, "accessory": 86 },
+      "moods": [
+        "traditional",
+        "regal"
+      ],
+      "persona": "Romantic Softie",
+      "body_shapes": [
+        "pear",
+        "hourglass",
+        "rectangle",
+        "apple"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "dress": 84,
+        "shoes": 87,
+        "neckpiece": 85,
+        "accessory": 86
+      },
       "total_price": 1550,
       "budget_range": "medium",
       "priority": 1,
@@ -605,13 +1200,32 @@
       "id": "MH_007",
       "website": "Meesho",
       "gender": "Female",
-      "occasions": ["festive", "party", "wedding"],
+      "occasions": [
+        "festive",
+        "party",
+        "wedding"
+      ],
       "vibe": "Glam",
-      "moods": ["glam", "bold"],
-      "persona": "Trendy",
-      "body_shapes": ["hourglass", "pear", "rectangle"],
-      "skin_tones": ["fair", "wheatish", "dusky"],
-      "items": { "dress": 88, "shoes": 87, "neckpiece": 89 },
+      "moods": [
+        "glam",
+        "bold"
+      ],
+      "persona": "Playful Creative",
+      "body_shapes": [
+        "hourglass",
+        "pear",
+        "rectangle"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky"
+      ],
+      "items": {
+        "dress": 88,
+        "shoes": 87,
+        "neckpiece": 89
+      },
       "total_price": 2448,
       "budget_range": "high",
       "priority": 1,
@@ -625,13 +1239,35 @@
       "id": "MH_008",
       "website": "Meesho",
       "gender": "Female",
-      "occasions": ["festive", "casual", "work"],
+      "occasions": [
+        "festive",
+        "casual",
+        "work"
+      ],
       "vibe": "Minimal",
-      "moods": ["minimal", "ethnic_chic"],
-      "persona": "Minimalist",
-      "body_shapes": ["rectangle", "pear", "hourglass", "apple"],
-      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
-      "items": { "dress": 90, "shoes": 87, "neckpiece": 89, "accessory": 86 },
+      "moods": [
+        "minimal",
+        "ethnic_chic"
+      ],
+      "persona": "Minimalist Maven",
+      "body_shapes": [
+        "rectangle",
+        "pear",
+        "hourglass",
+        "apple"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "dress": 90,
+        "shoes": 87,
+        "neckpiece": 89,
+        "accessory": 86
+      },
       "total_price": 2118,
       "budget_range": "high",
       "priority": 2,
@@ -645,13 +1281,34 @@
       "id": "MH_009",
       "website": "Meesho",
       "gender": "Female",
-      "occasions": ["date", "casual", "college"],
+      "occasions": [
+        "date",
+        "casual",
+        "college"
+      ],
       "vibe": "Minimal",
-      "moods": ["minimal", "chic"],
-      "persona": "Minimalist",
-      "body_shapes": ["hourglass", "rectangle", "inverted_triangle"],
-      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
-      "items": { "dress": 91, "shoes": 92, "bag": 93, "neckpiece": 94 },
+      "moods": [
+        "minimal",
+        "chic"
+      ],
+      "persona": "Minimalist Maven",
+      "body_shapes": [
+        "hourglass",
+        "rectangle",
+        "inverted_triangle"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "dress": 91,
+        "shoes": 92,
+        "bag": 93,
+        "neckpiece": 94
+      },
       "total_price": 1191,
       "budget_range": "low",
       "priority": 1,
@@ -665,13 +1322,33 @@
       "id": "MH_010",
       "website": "Meesho",
       "gender": "Female",
-      "occasions": ["date", "party", "casual"],
+      "occasions": [
+        "date",
+        "party",
+        "casual"
+      ],
       "vibe": "Trendy",
-      "moods": ["trendy", "chic"],
-      "persona": "Trendy",
-      "body_shapes": ["hourglass", "rectangle", "inverted_triangle"],
-      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
-      "items": { "dress": 94, "shoes": 95, "bag": 96 },
+      "moods": [
+        "trendy",
+        "chic"
+      ],
+      "persona": "Edgy Trendsetter",
+      "body_shapes": [
+        "hourglass",
+        "rectangle",
+        "inverted_triangle"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "dress": 94,
+        "shoes": 95,
+        "bag": 96
+      },
       "total_price": 1120,
       "budget_range": "low",
       "priority": 1,
@@ -685,13 +1362,31 @@
       "id": "MH_011",
       "website": "Meesho",
       "gender": "Female",
-      "occasions": ["date", "party"],
+      "occasions": [
+        "date",
+        "party"
+      ],
       "vibe": "Chic",
-      "moods": ["chic", "romantic"],
-      "persona": "Classic",
-      "body_shapes": ["hourglass", "pear", "rectangle"],
-      "skin_tones": ["fair", "wheatish", "dusky"],
-      "items": { "dress": 97, "shoes": 92, "neckpiece": 85 },
+      "moods": [
+        "chic",
+        "romantic"
+      ],
+      "persona": "Romantic Softie",
+      "body_shapes": [
+        "hourglass",
+        "pear",
+        "rectangle"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky"
+      ],
+      "items": {
+        "dress": 97,
+        "shoes": 92,
+        "neckpiece": 85
+      },
       "total_price": 1019,
       "budget_range": "low",
       "priority": 2,
@@ -705,13 +1400,31 @@
       "id": "MH_012",
       "website": "Meesho",
       "gender": "Female",
-      "occasions": ["date", "casual"],
+      "occasions": [
+        "date",
+        "casual"
+      ],
       "vibe": "Romantic",
-      "moods": ["romantic", "minimal"],
-      "persona": "Classic",
-      "body_shapes": ["hourglass", "pear", "rectangle"],
-      "skin_tones": ["fair", "wheatish", "dusky"],
-      "items": { "dress": 98, "shoes": 99, "neckpiece": 85 },
+      "moods": [
+        "romantic",
+        "minimal"
+      ],
+      "persona": "Romantic Softie",
+      "body_shapes": [
+        "hourglass",
+        "pear",
+        "rectangle"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky"
+      ],
+      "items": {
+        "dress": 98,
+        "shoes": 99,
+        "neckpiece": 85
+      },
       "total_price": 443,
       "budget_range": "low",
       "priority": 2,
@@ -725,13 +1438,33 @@
       "id": "MH_013",
       "website": "Meesho",
       "gender": "Female",
-      "occasions": ["party", "date"],
+      "occasions": [
+        "party",
+        "date"
+      ],
       "vibe": "Chic",
-      "moods": ["chic", "glam"],
-      "persona": "Classic",
-      "body_shapes": ["hourglass", "rectangle", "pear"],
-      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
-      "items": { "dress": 100, "shoes": 99, "accessory": 101, "neckpiece": 85 },
+      "moods": [
+        "chic",
+        "glam"
+      ],
+      "persona": "Romantic Softie",
+      "body_shapes": [
+        "hourglass",
+        "rectangle",
+        "pear"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "dress": 100,
+        "shoes": 99,
+        "accessory": 101,
+        "neckpiece": 85
+      },
       "total_price": 790,
       "budget_range": "low",
       "priority": 1,
@@ -745,13 +1478,33 @@
       "id": "MH_014",
       "website": "Meesho",
       "gender": "Female",
-      "occasions": ["party", "date"],
+      "occasions": [
+        "party",
+        "date"
+      ],
       "vibe": "Edgy",
-      "moods": ["edgy", "bold"],
-      "persona": "Trendy",
-      "body_shapes": ["hourglass", "inverted_triangle", "rectangle"],
-      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
-      "items": { "dress": 100, "shoes": 92, "bag": 93, "neckpiece": 85 },
+      "moods": [
+        "edgy",
+        "bold"
+      ],
+      "persona": "Edgy Trendsetter",
+      "body_shapes": [
+        "hourglass",
+        "inverted_triangle",
+        "rectangle"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "dress": 100,
+        "shoes": 92,
+        "bag": 93,
+        "neckpiece": 85
+      },
       "total_price": 1244,
       "budget_range": "low",
       "priority": 2,
@@ -765,13 +1518,33 @@
       "id": "MH_015",
       "website": "Meesho",
       "gender": "Female",
-      "occasions": ["party", "date", "casual"],
+      "occasions": [
+        "party",
+        "date",
+        "casual"
+      ],
       "vibe": "Chic",
-      "moods": ["chic", "minimal"],
-      "persona": "Minimalist",
-      "body_shapes": ["hourglass", "rectangle", "inverted_triangle"],
-      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
-      "items": { "dress": 103, "shoes": 92, "accessory": 104 },
+      "moods": [
+        "chic",
+        "minimal"
+      ],
+      "persona": "Minimalist Maven",
+      "body_shapes": [
+        "hourglass",
+        "rectangle",
+        "inverted_triangle"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "dress": 103,
+        "shoes": 92,
+        "accessory": 104
+      },
       "total_price": 742,
       "budget_range": "low",
       "priority": 3,
@@ -785,13 +1558,32 @@
       "id": "MH_016",
       "website": "Meesho",
       "gender": "Female",
-      "occasions": ["party", "date"],
+      "occasions": [
+        "party",
+        "date"
+      ],
       "vibe": "Bold",
-      "moods": ["bold", "edgy"],
-      "persona": "Trendy",
-      "body_shapes": ["hourglass", "rectangle", "inverted_triangle"],
-      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
-      "items": { "dress": 105, "shoes": 95, "neckpiece": 85 },
+      "moods": [
+        "bold",
+        "edgy"
+      ],
+      "persona": "Edgy Trendsetter",
+      "body_shapes": [
+        "hourglass",
+        "rectangle",
+        "inverted_triangle"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "dress": 105,
+        "shoes": 95,
+        "neckpiece": 85
+      },
       "total_price": 996,
       "budget_range": "low",
       "priority": 2,
@@ -805,13 +1597,31 @@
       "id": "MH_017",
       "website": "Meesho",
       "gender": "Female",
-      "occasions": ["party", "date"],
+      "occasions": [
+        "party",
+        "date"
+      ],
       "vibe": "Glam",
-      "moods": ["glam", "chic"],
-      "persona": "Trendy",
-      "body_shapes": ["hourglass", "pear", "rectangle"],
-      "skin_tones": ["fair", "wheatish", "dusky"],
-      "items": { "dress": 106, "shoes": 99, "neckpiece": 85 },
+      "moods": [
+        "glam",
+        "chic"
+      ],
+      "persona": "Playful Creative",
+      "body_shapes": [
+        "hourglass",
+        "pear",
+        "rectangle"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky"
+      ],
+      "items": {
+        "dress": 106,
+        "shoes": 99,
+        "neckpiece": 85
+      },
       "total_price": 569,
       "budget_range": "low",
       "priority": 1,
@@ -825,13 +1635,31 @@
       "id": "MH_018",
       "website": "Meesho",
       "gender": "Female",
-      "occasions": ["work", "formal"],
+      "occasions": [
+        "work",
+        "formal"
+      ],
       "vibe": "Power Dressing",
-      "moods": ["power_dressing", "chic"],
-      "persona": "Classic",
-      "body_shapes": ["rectangle", "inverted_triangle", "hourglass"],
-      "skin_tones": ["fair", "wheatish", "dusky"],
-      "items": { "dress": 107, "shoes": 95, "bag": 108 },
+      "moods": [
+        "power_dressing",
+        "chic"
+      ],
+      "persona": "Minimalist Maven",
+      "body_shapes": [
+        "rectangle",
+        "inverted_triangle",
+        "hourglass"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky"
+      ],
+      "items": {
+        "dress": 107,
+        "shoes": 95,
+        "bag": 108
+      },
       "total_price": 1147,
       "budget_range": "low",
       "priority": 1,
@@ -845,13 +1673,33 @@
       "id": "MH_019",
       "website": "Meesho",
       "gender": "Female",
-      "occasions": ["work", "college", "casual"],
+      "occasions": [
+        "work",
+        "college",
+        "casual"
+      ],
       "vibe": "Minimal",
-      "moods": ["minimal", "classic"],
-      "persona": "Minimalist",
-      "body_shapes": ["rectangle", "hourglass", "inverted_triangle"],
-      "skin_tones": ["fair", "wheatish", "dusky"],
-      "items": { "top": 109, "bottom": 110, "shoes": 112, "bag": 111 },
+      "moods": [
+        "minimal",
+        "classic"
+      ],
+      "persona": "Minimalist Maven",
+      "body_shapes": [
+        "rectangle",
+        "hourglass",
+        "inverted_triangle"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky"
+      ],
+      "items": {
+        "top": 109,
+        "bottom": 110,
+        "shoes": 112,
+        "bag": 111
+      },
       "total_price": 1286,
       "budget_range": "low",
       "priority": 1,
@@ -865,13 +1713,32 @@
       "id": "MH_020",
       "website": "Meesho",
       "gender": "Female",
-      "occasions": ["work", "casual"],
+      "occasions": [
+        "work",
+        "casual"
+      ],
       "vibe": "Smart Casual",
-      "moods": ["smart_casual", "minimal"],
-      "persona": "Minimalist",
-      "body_shapes": ["rectangle", "hourglass", "pear"],
-      "skin_tones": ["fair", "wheatish", "dusky"],
-      "items": { "top": 113, "bottom": 110, "shoes": 112, "accessory": 114 },
+      "moods": [
+        "smart_casual",
+        "minimal"
+      ],
+      "persona": "Minimalist Maven",
+      "body_shapes": [
+        "rectangle",
+        "hourglass",
+        "pear"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky"
+      ],
+      "items": {
+        "top": 113,
+        "bottom": 110,
+        "shoes": 112,
+        "accessory": 114
+      },
       "total_price": 862,
       "budget_range": "low",
       "priority": 2,
@@ -885,13 +1752,32 @@
       "id": "MH_021",
       "website": "Meesho",
       "gender": "Female",
-      "occasions": ["work", "casual"],
+      "occasions": [
+        "work",
+        "casual"
+      ],
       "vibe": "Classic",
-      "moods": ["classic", "minimal"],
-      "persona": "Classic",
-      "body_shapes": ["rectangle", "hourglass", "inverted_triangle"],
-      "skin_tones": ["fair", "wheatish", "dusky"],
-      "items": { "top": 115, "bottom": 110, "shoes": 112, "accessory": 114 },
+      "moods": [
+        "classic",
+        "minimal"
+      ],
+      "persona": "Minimalist Maven",
+      "body_shapes": [
+        "rectangle",
+        "hourglass",
+        "inverted_triangle"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky"
+      ],
+      "items": {
+        "top": 115,
+        "bottom": 110,
+        "shoes": 112,
+        "accessory": 114
+      },
       "total_price": 810,
       "budget_range": "low",
       "priority": 3,
@@ -905,13 +1791,33 @@
       "id": "MH_022",
       "website": "Meesho",
       "gender": "Female",
-      "occasions": ["wedding", "festive"],
+      "occasions": [
+        "wedding",
+        "festive"
+      ],
       "vibe": "Traditional",
-      "moods": ["traditional", "regal"],
-      "persona": "Classic",
-      "body_shapes": ["pear", "hourglass", "rectangle", "apple"],
-      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
-      "items": { "dress": 116, "shoes": 118, "accessory": 117 },
+      "moods": [
+        "traditional",
+        "regal"
+      ],
+      "persona": "Romantic Softie",
+      "body_shapes": [
+        "pear",
+        "hourglass",
+        "rectangle",
+        "apple"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "dress": 116,
+        "shoes": 118,
+        "accessory": 117
+      },
       "total_price": 1944,
       "budget_range": "medium",
       "priority": 1,
@@ -925,13 +1831,32 @@
       "id": "MH_023",
       "website": "Meesho",
       "gender": "Female",
-      "occasions": ["wedding", "festive", "party"],
+      "occasions": [
+        "wedding",
+        "festive",
+        "party"
+      ],
       "vibe": "Glam",
-      "moods": ["glam", "regal"],
-      "persona": "Classic",
-      "body_shapes": ["hourglass", "pear", "rectangle"],
-      "skin_tones": ["fair", "wheatish", "dusky"],
-      "items": { "dress": 119, "shoes": 118, "accessory": 89 },
+      "moods": [
+        "glam",
+        "regal"
+      ],
+      "persona": "Playful Creative",
+      "body_shapes": [
+        "hourglass",
+        "pear",
+        "rectangle"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky"
+      ],
+      "items": {
+        "dress": 119,
+        "shoes": 118,
+        "accessory": 89
+      },
       "total_price": 1835,
       "budget_range": "medium",
       "priority": 1,
@@ -945,13 +1870,33 @@
       "id": "MH_024",
       "website": "Meesho",
       "gender": "Female",
-      "occasions": ["wedding", "festive"],
+      "occasions": [
+        "wedding",
+        "festive"
+      ],
       "vibe": "Regal",
-      "moods": ["regal", "traditional"],
-      "persona": "Classic",
-      "body_shapes": ["pear", "hourglass", "rectangle", "apple"],
-      "skin_tones": ["fair", "wheatish", "dusky", "deep"],
-      "items": { "dress": 120, "shoes": 87, "bag": 121 },
+      "moods": [
+        "regal",
+        "traditional"
+      ],
+      "persona": "Romantic Softie",
+      "body_shapes": [
+        "pear",
+        "hourglass",
+        "rectangle",
+        "apple"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "dress": 120,
+        "shoes": 87,
+        "bag": 121
+      },
       "total_price": 1085,
       "budget_range": "low",
       "priority": 2,
@@ -965,13 +1910,31 @@
       "id": "MH_025",
       "website": "Meesho",
       "gender": "Female",
-      "occasions": ["wedding", "festive"],
+      "occasions": [
+        "wedding",
+        "festive"
+      ],
       "vibe": "Ethnic Chic",
-      "moods": ["ethnic_chic", "glam"],
-      "persona": "Boho",
-      "body_shapes": ["hourglass", "pear", "rectangle"],
-      "skin_tones": ["wheatish", "dusky", "deep"],
-      "items": { "dress": 122, "shoes": 87, "neckpiece": 89 },
+      "moods": [
+        "ethnic_chic",
+        "glam"
+      ],
+      "persona": "Playful Creative",
+      "body_shapes": [
+        "hourglass",
+        "pear",
+        "rectangle"
+      ],
+      "skin_tones": [
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "dress": 122,
+        "shoes": 87,
+        "neckpiece": 89
+      },
       "total_price": 1436,
       "budget_range": "medium",
       "priority": 1,
@@ -985,144 +1948,1104 @@
       "id": "MY_001",
       "website": "Myntra",
       "gender": "Female",
-      "occasions": ["Party"],
-      "vibe": "edgy",
-      "moods": [""],
-      "persona": "",
-      "body_shapes": ["", "", ""],
-      "skin_tones": ["", "", ""],
-      "items": { "dress": 123, "shoes": 125, "accessory": 124 },
-      "total_price": 1143,
+      "occasions": [
+        "party"
+      ],
+      "vibe": "Edgy",
+      "moods": [
+        "edgy",
+        "bold"
+      ],
+      "persona": "Edgy Trendsetter",
+      "body_shapes": [
+        "hourglass",
+        "rectangle",
+        "inverted_triangle"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "dress": 123,
+        "shoes": 125,
+        "accessory": 124
+      },
+      "total_price": 1897,
       "budget_range": "medium",
-      "priority": "-",
+      "priority": 1,
       "why_this_outfit": [
-        ""
+        "Black bodycon is the ultimate edgy party essential",
+        "Stiletto heel sharpens every step with attitude",
+        "Pearl drop earrings add an unexpected elegant contrast"
       ]
     },
     {
       "id": "MY_002",
       "website": "Myntra",
       "gender": "Female",
-      "occasions": ["Party"],
+      "occasions": [
+        "party"
+      ],
       "vibe": "Bold",
-      "moods": [""],
-      "persona": "",
-      "body_shapes": ["", "", ""],
-      "skin_tones": ["", "", ""],
-      "items": { "dress": 126, "shoes": 128, "accessory": 127 },
+      "moods": [
+        "bold",
+        "glam"
+      ],
+      "persona": "Edgy Trendsetter",
+      "body_shapes": [
+        "hourglass",
+        "pear",
+        "rectangle"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "dress": 126,
+        "shoes": 128,
+        "accessory": 127
+      },
       "total_price": 1695,
       "budget_range": "medium",
-      "priority": "-",
+      "priority": 1,
       "why_this_outfit": [
-        ""
+        "Red mini bodycon is the boldest party entrance",
+        "Kitten bow heels add a playful feminine edge",
+        "Gold hoop earrings complete the confident bold look"
       ]
     },
     {
       "id": "MY_003",
       "website": "Myntra",
       "gender": "Female",
-      "occasions": ["Party"],
+      "occasions": [
+        "party"
+      ],
       "vibe": "Chic",
-      "moods": [""],
-      "persona": "",
-      "body_shapes": ["", "", ""],
-      "skin_tones": ["", "", ""],
-      "items": { "dress": 129, "shoes": 130, "accessory": 124 },
-      "total_price": 2656,
+      "moods": [
+        "chic",
+        "glam"
+      ],
+      "persona": "Romantic Softie",
+      "body_shapes": [
+        "hourglass",
+        "pear",
+        "rectangle"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky"
+      ],
+      "items": {
+        "dress": 129,
+        "shoes": 130,
+        "accessory": 124
+      },
+      "total_price": 2265,
       "budget_range": "medium",
-      "priority": "-",
+      "priority": 2,
       "why_this_outfit": [
-        ""
+        "Georgette dress drapes beautifully for a chic party look",
+        "Pink comfort sandals keep it stylish without sacrificing ease",
+        "Pearl drops add a delicate finishing touch"
       ]
     },
     {
       "id": "MY_004",
       "website": "Myntra",
       "gender": "Female",
-      "occasions": ["Party"],
+      "occasions": [
+        "party"
+      ],
       "vibe": "Glam",
-      "moods": [""],
-      "persona": "",
-      "body_shapes": ["", "", ""],
-      "skin_tones": ["", "", ""],
-      "items": { "dress": 131, "shoes": 125, "accessory": 127 },
-      "total_price": 1692,
+      "moods": [
+        "glam",
+        "bold"
+      ],
+      "persona": "Playful Creative",
+      "body_shapes": [
+        "hourglass",
+        "rectangle",
+        "pear"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "dress": 131,
+        "shoes": 125,
+        "accessory": 127
+      },
+      "total_price": 1813,
       "budget_range": "medium",
-      "priority": "-",
+      "priority": 1,
       "why_this_outfit": [
-        ""
+        "Blue ruffled tube dress is a showstopping glam statement",
+        "Stiletto heel adds dramatic height and confidence",
+        "Gold hoops keep the accessories bold and cohesive"
       ]
     },
     {
       "id": "MY_005",
       "website": "Myntra",
       "gender": "Male",
-      "occasions": ["college", "Date"],
+      "occasions": [
+        "college",
+        "date"
+      ],
       "vibe": "Casual Cool",
-      "moods": ["casual cool", "smart casual"],
-      "persona": "",
-      "body_shapes": ["", "", ""],
-      "skin_tones": ["", "", ""],
-      "items": { "top": 132, "bottom": 133, "shoes": 134, "watch": 135 },
+      "moods": [
+        "casual_cool",
+        "smart_casual"
+      ],
+      "persona": "Casual Cool",
+      "body_shapes": [
+        "rectangle",
+        "inverted_triangle",
+        "hourglass",
+        "pear",
+        "apple"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "top": 132,
+        "bottom": 133,
+        "shoes": 134,
+        "watch": 135
+      },
       "total_price": 6344,
-      "budget_range": "",
-      "priority": "-",
+      "budget_range": "high",
+      "priority": 1,
       "why_this_outfit": [
-        ""
+        "Clean brown shirt with white trousers is effortlessly sharp",
+        "White sneakers keep the look fresh and college-ready",
+        "The watch adds a polished finishing touch"
       ]
     },
     {
       "id": "MY_006",
       "website": "Myntra",
       "gender": "Male",
-      "occasions": ["college", "Date"],
+      "occasions": [
+        "college",
+        "date"
+      ],
       "vibe": "Street Style",
-      "moods": ["street style", "smart casual"],
-      "persona": "",
-      "body_shapes": ["", "", ""],
-      "skin_tones": ["", "", ""],
-      "items": { "top": 136, "bottom": 137, "shoes": 138, "watch": 139 },
+      "moods": [
+        "street_style",
+        "bold"
+      ],
+      "persona": "Streetwear Icon",
+      "body_shapes": [
+        "rectangle",
+        "inverted_triangle",
+        "hourglass",
+        "pear",
+        "apple"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "top": 136,
+        "bottom": 137,
+        "shoes": 138,
+        "watch": 139
+      },
       "total_price": 7322,
-      "budget_range": "",
-      "priority": "-",
+      "budget_range": "high",
+      "priority": 1,
       "why_this_outfit": [
-        ""
+        "Oversized graphic tee is the cornerstone of street style",
+        "Loose jeans amplify the urban, laid-back silhouette",
+        "Chunky sneakers and leather watch complete the look"
       ]
     },
     {
       "id": "MY_007",
       "website": "Myntra",
       "gender": "Male",
-      "occasions": ["college", "Date"],
+      "occasions": [
+        "college",
+        "date"
+      ],
       "vibe": "Minimal",
-      "moods": ["minimal"],
-      "persona": "",
-      "body_shapes": ["", "", ""],
-      "skin_tones": ["", "", ""],
-      "items": { "top": 140, "bottom": 141, "shoes": 138, "sunglasses": 142 },
-      "total_price": 4734,
-      "budget_range": "",
-      "priority": "-",
+      "moods": [
+        "minimal",
+        "classic"
+      ],
+      "persona": "Minimalist King",
+      "body_shapes": [
+        "rectangle",
+        "inverted_triangle",
+        "hourglass"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky"
+      ],
+      "items": {
+        "top": 140,
+        "bottom": 141,
+        "shoes": 134,
+        "sunglasses": 142
+      },
+      "total_price": 4288,
+      "budget_range": "high",
+      "priority": 2,
       "why_this_outfit": [
-        ""
+        "Casual shirt and cargo trousers is a minimal power combo",
+        "Sneakers keep the look grounded and versatile",
+        "Sunglasses add a cool, effortless edge"
       ]
     },
     {
       "id": "MY_008",
       "website": "Myntra",
       "gender": "Male",
-      "occasions": ["college"],
-      "vibe": "sporty",
-      "moods": ["sporty"],
-      "persona": "",
-      "body_shapes": ["", "", ""],
-      "skin_tones": ["", "", ""],
-      "items": { "top": 143, "bottom": 144, "shoes": 138},
-      "total_price": 2481,
-      "budget_range": "",
-      "priority": "-",
+      "occasions": [
+        "college"
+      ],
+      "vibe": "Sporty",
+      "moods": [
+        "sporty"
+      ],
+      "persona": "Athleisure Pro",
+      "body_shapes": [
+        "rectangle",
+        "inverted_triangle",
+        "hourglass",
+        "pear",
+        "apple"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "top": 143,
+        "bottom": 144,
+        "shoes": 138
+      },
+      "total_price": 2479,
+      "budget_range": "medium",
+      "priority": 1,
       "why_this_outfit": [
-        ""
+        "Tank vest and track pants is pure sporty energy",
+        "Chunky sneakers make every step feel performance-ready",
+        "Lightweight and comfortable for any active day"
+      ]
+    },
+    {
+      "id": "AM_001",
+      "website": "Amazon",
+      "gender": "Male",
+      "occasions": [
+        "work",
+        "formal"
+      ],
+      "vibe": "Classic",
+      "moods": [
+        "classic",
+        "smart_casual"
+      ],
+      "persona": "Modern Gentleman",
+      "body_shapes": [
+        "rectangle",
+        "inverted_triangle",
+        "hourglass"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky"
+      ],
+      "items": {
+        "top": 145,
+        "bottom": 146,
+        "shoes": 147,
+        "watch": 148
+      },
+      "total_price": 2417,
+      "budget_range": "medium",
+      "priority": 1,
+      "why_this_outfit": [
+        "Classic cream stripe shirt with camel trousers is timeless",
+        "Tan lace-ups add warmth and professionalism",
+        "Gold watch ties the classic look together perfectly"
+      ]
+    },
+    {
+      "id": "FK_025",
+      "website": "Flipkart",
+      "gender": "Male",
+      "occasions": [
+        "work",
+        "casual"
+      ],
+      "vibe": "Minimal",
+      "moods": [
+        "minimal",
+        "classic"
+      ],
+      "persona": "Minimalist King",
+      "body_shapes": [
+        "rectangle",
+        "inverted_triangle",
+        "hourglass"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky"
+      ],
+      "items": {
+        "top": 149,
+        "bottom": 150,
+        "shoes": 151,
+        "watch": 152
+      },
+      "total_price": 3384,
+      "budget_range": "medium",
+      "priority": 1,
+      "why_this_outfit": [
+        "Navy shirt and beige trousers is a clean minimal combo",
+        "Brown leather shoes elevate the look with subtle richness",
+        "Brown watch adds a refined, understated finishing touch"
+      ]
+    },
+    {
+      "id": "FK_026",
+      "website": "Flipkart",
+      "gender": "Male",
+      "occasions": [
+        "work",
+        "party"
+      ],
+      "vibe": "Smart Casual",
+      "moods": [
+        "smart_casual",
+        "minimal"
+      ],
+      "persona": "Modern Gentleman",
+      "body_shapes": [
+        "rectangle",
+        "inverted_triangle",
+        "hourglass"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "top": 153,
+        "bottom": 150,
+        "shoes": 154,
+        "watch": 155
+      },
+      "total_price": 1911,
+      "budget_range": "low",
+      "priority": 2,
+      "why_this_outfit": [
+        "Black polo with beige trousers strikes the smart casual mark",
+        "Black shoes keep the look sharp and versatile",
+        "Black watch completes the cohesive dark-accented palette"
+      ]
+    },
+    {
+      "id": "FK_028",
+      "website": "Flipkart",
+      "gender": "Male",
+      "occasions": [
+        "work",
+        "formal"
+      ],
+      "vibe": "Business Formal",
+      "moods": [
+        "business_formal",
+        "classic"
+      ],
+      "persona": "Modern Gentleman",
+      "body_shapes": [
+        "rectangle",
+        "inverted_triangle",
+        "hourglass"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "top": 156,
+        "bottom": 158,
+        "shoes": 154,
+        "blazer": 157
+      },
+      "total_price": 2800,
+      "budget_range": "medium",
+      "priority": 1,
+      "why_this_outfit": [
+        "Black shirt under a black blazer is powerful and commanding",
+        "Black trousers create a sharp monochrome business look",
+        "Black shoes sharpen the formal silhouette"
+      ]
+    },
+    {
+      "id": "FK_029",
+      "website": "Flipkart",
+      "gender": "Male",
+      "occasions": [
+        "date",
+        "party"
+      ],
+      "vibe": "Classic",
+      "moods": [
+        "classic",
+        "romantic",
+        "edgy"
+      ],
+      "persona": "Modern Gentleman",
+      "body_shapes": [
+        "rectangle",
+        "inverted_triangle",
+        "hourglass"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky"
+      ],
+      "items": {
+        "top": 159,
+        "bottom": 158,
+        "shoes": 154,
+        "watch": 160
+      },
+      "total_price": 1756,
+      "budget_range": "low",
+      "priority": 1,
+      "why_this_outfit": [
+        "Wine satin shirt is romantic and confident for a date",
+        "Black trousers keep the palette bold and balanced",
+        "Black shoes and silver watch add a polished edge"
+      ]
+    },
+    {
+      "id": "FK_030",
+      "website": "Flipkart",
+      "gender": "Male",
+      "occasions": [
+        "date",
+        "party"
+      ],
+      "vibe": "Smart Casual",
+      "moods": [
+        "smart_casual",
+        "classic",
+        "bold"
+      ],
+      "persona": "Modern Gentleman",
+      "body_shapes": [
+        "rectangle",
+        "inverted_triangle",
+        "hourglass"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "top": 161,
+        "bottom": 162,
+        "shoes": 163,
+        "watch": 160
+      },
+      "total_price": 1994,
+      "budget_range": "low",
+      "priority": 1,
+      "why_this_outfit": [
+        "White shirt with blue jeans is the most reliable date formula",
+        "White shoes keep the look clean and modern",
+        "Silver watch adds a subtle but refined accent"
+      ]
+    },
+    {
+      "id": "MY_009",
+      "website": "Myntra",
+      "gender": "Male",
+      "occasions": [
+        "date",
+        "party"
+      ],
+      "vibe": "Minimal",
+      "moods": [
+        "minimal",
+        "classic",
+        "smart_casual"
+      ],
+      "persona": "Minimalist King",
+      "body_shapes": [
+        "rectangle",
+        "inverted_triangle",
+        "hourglass"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky"
+      ],
+      "items": {
+        "top": 164,
+        "bottom": 133,
+        "shoes": 134,
+        "watch": 135
+      },
+      "total_price": 6129,
+      "budget_range": "high",
+      "priority": 2,
+      "why_this_outfit": [
+        "Striped shirt with white trousers is effortlessly minimal",
+        "Sneakers keep the look relaxed and modern",
+        "Analog watch adds sophisticated detail"
+      ]
+    },
+    {
+      "id": "MY_010",
+      "website": "Myntra",
+      "gender": "Male",
+      "occasions": [
+        "date",
+        "party",
+        "college"
+      ],
+      "vibe": "Trendy",
+      "moods": [
+        "trendy",
+        "street_style"
+      ],
+      "persona": "Streetwear Icon",
+      "body_shapes": [
+        "rectangle",
+        "inverted_triangle",
+        "hourglass",
+        "pear",
+        "apple"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "top": 165,
+        "bottom": 166,
+        "shoes": 134,
+        "sunglasses": 142
+      },
+      "total_price": 3359,
+      "budget_range": "medium",
+      "priority": 1,
+      "why_this_outfit": [
+        "Geometric drop-shoulder shirt is a confident trendy statement",
+        "Cargo pants add an urban edge and practical cool",
+        "Sneakers and sunglasses complete the street-forward look"
+      ]
+    },
+    {
+      "id": "MY_011",
+      "website": "Myntra",
+      "gender": "Male",
+      "occasions": [
+        "festive",
+        "wedding"
+      ],
+      "vibe": "Traditional",
+      "moods": [
+        "traditional",
+        "ethnic_smart"
+      ],
+      "persona": "Modern Gentleman",
+      "body_shapes": [
+        "rectangle",
+        "hourglass",
+        "pear",
+        "apple",
+        "inverted_triangle"
+      ],
+      "skin_tones": [
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "outfit": 167,
+        "shoes": 168,
+        "sunglasses": 142
+      },
+      "total_price": 4099,
+      "budget_range": "high",
+      "priority": 1,
+      "why_this_outfit": [
+        "Motif embroidered kurta set is festive and beautifully crafted",
+        "Mojaris add the perfect traditional footwear accent",
+        "Sunglasses give a modern twist to the traditional look"
+      ]
+    },
+    {
+      "id": "MY_011b",
+      "website": "Myntra",
+      "gender": "Male",
+      "occasions": [
+        "festive",
+        "wedding"
+      ],
+      "vibe": "Ethnic Smart",
+      "moods": [
+        "ethnic_smart",
+        "traditional"
+      ],
+      "persona": "Modern Gentleman",
+      "body_shapes": [
+        "rectangle",
+        "hourglass",
+        "pear",
+        "apple",
+        "inverted_triangle"
+      ],
+      "skin_tones": [
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "outfit": 169,
+        "shoes": 168
+      },
+      "total_price": 3425,
+      "budget_range": "medium",
+      "priority": 2,
+      "why_this_outfit": [
+        "Printed thread-work kurta set is ethnic smart and contemporary",
+        "Mojaris are the ideal traditional-modern shoe pairing",
+        "A polished ethnic look for any festive gathering"
+      ]
+    },
+    {
+      "id": "FK_031",
+      "website": "Flipkart",
+      "gender": "Male",
+      "occasions": [
+        "festive",
+        "wedding"
+      ],
+      "vibe": "Classic",
+      "moods": [
+        "classic",
+        "traditional"
+      ],
+      "persona": "Modern Gentleman",
+      "body_shapes": [
+        "rectangle",
+        "inverted_triangle",
+        "hourglass"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky"
+      ],
+      "items": {
+        "outfit": 170,
+        "shoes": 171,
+        "watch": 152
+      },
+      "total_price": 1955,
+      "budget_range": "low",
+      "priority": 2,
+      "why_this_outfit": [
+        "Navy kurta set is clean, classic and occasion-appropriate",
+        "Brown bellies add a warm earthy touch",
+        "Watch completes the groomed festive gentleman look"
+      ]
+    },
+    {
+      "id": "FK_032",
+      "website": "Flipkart",
+      "gender": "Male",
+      "occasions": [
+        "festive",
+        "wedding"
+      ],
+      "vibe": "Bold",
+      "moods": [
+        "bold",
+        "ethnic_smart"
+      ],
+      "persona": "Streetwear Icon",
+      "body_shapes": [
+        "rectangle",
+        "hourglass",
+        "pear",
+        "apple",
+        "inverted_triangle"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "outfit": 172,
+        "shoes": 171
+      },
+      "total_price": 1022,
+      "budget_range": "low",
+      "priority": 3,
+      "why_this_outfit": [
+        "Bold kurta set makes a vibrant festive entrance",
+        "Brown bellies ground the look with understated elegance",
+        "A statement-making outfit for celebrations"
+      ]
+    },
+    {
+      "id": "MY_012",
+      "website": "Myntra",
+      "gender": "Male",
+      "occasions": [
+        "wedding",
+        "festive"
+      ],
+      "vibe": "Traditional",
+      "moods": [
+        "traditional",
+        "regal"
+      ],
+      "persona": "Modern Gentleman",
+      "body_shapes": [
+        "rectangle",
+        "hourglass",
+        "pear",
+        "apple",
+        "inverted_triangle"
+      ],
+      "skin_tones": [
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "outfit": 173,
+        "shoes": 171
+      },
+      "total_price": 5682,
+      "budget_range": "high",
+      "priority": 1,
+      "why_this_outfit": [
+        "Georgette kurta set is rich and traditionally magnificent",
+        "Brown bellies complete the traditional wedding look",
+        "An impeccably crafted ensemble for grand occasions"
+      ]
+    },
+    {
+      "id": "MY_013",
+      "website": "Myntra",
+      "gender": "Male",
+      "occasions": [
+        "wedding",
+        "festive"
+      ],
+      "vibe": "Regal",
+      "moods": [
+        "regal",
+        "traditional"
+      ],
+      "persona": "Modern Gentleman",
+      "body_shapes": [
+        "rectangle",
+        "hourglass",
+        "pear",
+        "apple",
+        "inverted_triangle"
+      ],
+      "skin_tones": [
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "outfit": 174,
+        "shoes": 171
+      },
+      "total_price": 3351,
+      "budget_range": "medium",
+      "priority": 1,
+      "why_this_outfit": [
+        "Silk blend kurta set radiates regal presence",
+        "Brown bellies add a grounded traditional accent",
+        "Every detail speaks of occasion-appropriate elegance"
+      ]
+    },
+    {
+      "id": "AM_002",
+      "website": "Amazon",
+      "gender": "Male",
+      "occasions": [
+        "wedding",
+        "festive"
+      ],
+      "vibe": "Festive Formal",
+      "moods": [
+        "festive_formal",
+        "classic"
+      ],
+      "persona": "Modern Gentleman",
+      "body_shapes": [
+        "rectangle",
+        "hourglass",
+        "pear",
+        "apple",
+        "inverted_triangle"
+      ],
+      "skin_tones": [
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "outfit": 175,
+        "shoes": 171
+      },
+      "total_price": 4277,
+      "budget_range": "high",
+      "priority": 2,
+      "why_this_outfit": [
+        "Cotton blend kurta set is festive formal and dignified",
+        "Brown bellies add a refined traditional touch",
+        "A versatile pick for both wedding and festive functions"
+      ]
+    },
+    {
+      "id": "MY_014",
+      "website": "Myntra",
+      "gender": "Male",
+      "occasions": [
+        "wedding",
+        "festive"
+      ],
+      "vibe": "Ethnic Smart",
+      "moods": [
+        "ethnic_smart",
+        "regal"
+      ],
+      "persona": "Modern Gentleman",
+      "body_shapes": [
+        "rectangle",
+        "hourglass",
+        "pear",
+        "apple",
+        "inverted_triangle"
+      ],
+      "skin_tones": [
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "outfit": 176,
+        "shoes": 171
+      },
+      "total_price": 5327,
+      "budget_range": "high",
+      "priority": 1,
+      "why_this_outfit": [
+        "Silk cotton kurta set is ethnic smart and premium",
+        "Brown bellies complete the cultured, modern ethnic look",
+        "A standout outfit for any wedding or festive occasion"
+      ]
+    },
+    {
+      "id": "FK_033",
+      "website": "Flipkart",
+      "gender": "Male",
+      "occasions": [
+        "gym"
+      ],
+      "vibe": "Sporty",
+      "moods": [
+        "sporty"
+      ],
+      "persona": "Athleisure Pro",
+      "body_shapes": [
+        "rectangle",
+        "inverted_triangle",
+        "hourglass",
+        "pear",
+        "apple"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "top": 177,
+        "bottom": 179,
+        "shoes": 178
+      },
+      "total_price": 2285,
+      "budget_range": "medium",
+      "priority": 1,
+      "why_this_outfit": [
+        "Classic tee and gym trousers is the go-to workout combo",
+        "Sports shoes provide the grip and support you need",
+        "Lightweight and performance-ready for every session"
+      ]
+    },
+    {
+      "id": "FK_034",
+      "website": "Flipkart",
+      "gender": "Male",
+      "occasions": [
+        "gym"
+      ],
+      "vibe": "Sporty",
+      "moods": [
+        "sporty"
+      ],
+      "persona": "Athleisure Pro",
+      "body_shapes": [
+        "rectangle",
+        "inverted_triangle",
+        "hourglass",
+        "pear",
+        "apple"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "top": 180,
+        "bottom": 181,
+        "shoes": 178
+      },
+      "total_price": 2330,
+      "budget_range": "medium",
+      "priority": 2,
+      "why_this_outfit": [
+        "Hooded tee and boxers create a comfortable training fit",
+        "Sports shoes keep you agile and supported",
+        "A relaxed yet focused gym look"
+      ]
+    },
+    {
+      "id": "FK_035",
+      "website": "Flipkart",
+      "gender": "Male",
+      "occasions": [
+        "gym"
+      ],
+      "vibe": "Sporty",
+      "moods": [
+        "sporty"
+      ],
+      "persona": "Athleisure Pro",
+      "body_shapes": [
+        "rectangle",
+        "inverted_triangle",
+        "hourglass",
+        "pear",
+        "apple"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "top": 182,
+        "bottom": 181,
+        "shoes": 178
+      },
+      "total_price": 2318,
+      "budget_range": "medium",
+      "priority": 3,
+      "why_this_outfit": [
+        "Vest and boxers maximize movement and breathability",
+        "Sports shoes deliver performance with every step",
+        "The no-nonsense gym uniform for serious sessions"
+      ]
+    },
+    {
+      "id": "FK_036",
+      "website": "Flipkart",
+      "gender": "Male",
+      "occasions": [
+        "gym"
+      ],
+      "vibe": "Sporty",
+      "moods": [
+        "sporty"
+      ],
+      "persona": "Athleisure Pro",
+      "body_shapes": [
+        "rectangle",
+        "inverted_triangle",
+        "hourglass",
+        "pear",
+        "apple"
+      ],
+      "skin_tones": [
+        "fair",
+        "wheatish",
+        "dusky",
+        "deep"
+      ],
+      "items": {
+        "top": 183,
+        "bottom": 184,
+        "shoes": 178
+      },
+      "total_price": 2143,
+      "budget_range": "medium",
+      "priority": 2,
+      "why_this_outfit": [
+        "Slim vest and track pants is the ultimate athletic combo",
+        "Sports shoes complete the performance-first look",
+        "Ideal for cardio, weights or any active pursuit"
       ]
     }
   ]

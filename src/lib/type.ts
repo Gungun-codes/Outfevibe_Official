@@ -50,6 +50,7 @@ export const OCCASIONS = [
   "Festive",
   "Wedding",
   "Work",
+  "gym"
 ];
 
 export const VIBES: Record<string, string[]> = {
