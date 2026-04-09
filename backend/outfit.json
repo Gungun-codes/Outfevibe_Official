@@ -1052,6 +1052,78 @@
       "why_this_outfit": [
         ""
       ]
+    },
+    {
+      "id": "MY_005",
+      "website": "Myntra",
+      "gender": "Male",
+      "occasions": ["college", "Date"],
+      "vibe": "Casual Cool",
+      "moods": ["casual cool", "smart casual"],
+      "persona": "",
+      "body_shapes": ["", "", ""],
+      "skin_tones": ["", "", ""],
+      "items": { "top": 132, "bottom": 133, "shoes": 134, "watch": 135 },
+      "total_price": 6344,
+      "budget_range": "",
+      "priority": "-",
+      "why_this_outfit": [
+        ""
+      ]
+    },
+    {
+      "id": "MY_006",
+      "website": "Myntra",
+      "gender": "Male",
+      "occasions": ["college", "Date"],
+      "vibe": "Street Style",
+      "moods": ["street style", "smart casual"],
+      "persona": "",
+      "body_shapes": ["", "", ""],
+      "skin_tones": ["", "", ""],
+      "items": { "top": 136, "bottom": 137, "shoes": 138, "watch": 139 },
+      "total_price": 7322,
+      "budget_range": "",
+      "priority": "-",
+      "why_this_outfit": [
+        ""
+      ]
+    },
+    {
+      "id": "MY_007",
+      "website": "Myntra",
+      "gender": "Male",
+      "occasions": ["college", "Date"],
+      "vibe": "Minimal",
+      "moods": ["minimal"],
+      "persona": "",
+      "body_shapes": ["", "", ""],
+      "skin_tones": ["", "", ""],
+      "items": { "top": 140, "bottom": 141, "shoes": 138, "sunglasses": 142 },
+      "total_price": 4734,
+      "budget_range": "",
+      "priority": "-",
+      "why_this_outfit": [
+        ""
+      ]
+    },
+    {
+      "id": "MY_008",
+      "website": "Myntra",
+      "gender": "Male",
+      "occasions": ["college"],
+      "vibe": "sporty",
+      "moods": ["sporty"],
+      "persona": "",
+      "body_shapes": ["", "", ""],
+      "skin_tones": ["", "", ""],
+      "items": { "top": 143, "bottom": 144, "shoes": 138},
+      "total_price": 2481,
+      "budget_range": "",
+      "priority": "-",
+      "why_this_outfit": [
+        ""
+      ]
     }
   ]
 }
