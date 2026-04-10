@@ -590,6 +590,8 @@ export default function Page() {
   const analysisRef = useRef<{ body_shape: string; skin_tone: string } | null>(null);
   const pushBotRef  = useRef<((c: React.ReactNode, d?: number) => Promise<string>) | null>(null);
   const pushUserRef = useRef<((c: React.ReactNode) => void) | null>(null);
+  // Track live usage so EndCard can show dots without re-fetching
+  const usageRef    = useRef<{ used: number; limit: number }>({ used: 0, limit: 1 });
 
   const auth = useAuth();
   const user = auth?.user ?? null;
@@ -731,26 +733,42 @@ export default function Page() {
                                       <OutfitItemsGrid key={outfit.id} outfit={outfit} occasion={occ} outfitIndex={idx} />
                                     ))
                                   : (
-                                    <div className="rounded-2xl border border-neutral-800 bg-[#111111] p-4 text-center">
-                                      <p className="text-sm text-neutral-400">No outfits found for your selection yet.</p>
-                                      <p className="text-xs text-neutral-600 mt-1">We&apos;re adding more daily! 🛍️</p>
-                                    </div>
+                                    <NoOutfitCard
+                                      occasion={occ}
+                                      vibe={vibe}
+                                      budget={budgetRange.label}
+                                      onRetry={() => {
+                                        // Let user pick again — restart occasion flow WITHOUT consuming a usage
+                                        runOccasionFlow(pb, pu, gender, bs, st, preselectedPersona);
+                                      }}
+                                    />
                                   )}
                               </motion.div>
                             ),
                           } : m
                         ));
 
+                        // ── Increment usage after outfit shown ───────────────
+                        await incrementUsage();
+                        // Update live usage ref for EndCard dots
+                        const { used: usedNow, limit: limitNow, hasReferral: refNow } = await checkLimit();
+                        usageRef.current = { used: usedNow, limit: limitNow };
+
                         await pb(
                           <EndCard
                             onStartOver={handleStartOver}
                             onTryAnother={async () => {
-                              const { allowed, used, limit } = await checkLimit();
-                              if (!allowed) { await pb(<LimitCard used={used} limit={limit} user={user} />, 300); return; }
+                              const { allowed, used, limit, hasReferral } = await checkLimit();
+                              if (!allowed) {
+                                await pb(<LimitCard used={used} limit={limit} user={user} hasReferral={hasReferral} />, 300);
+                                return;
+                              }
                               runOccasionFlow(pb, pu, gender, bs, st, preselectedPersona);
                             }}
                             bodyShape={bs}
                             skinTone={st}
+                            used={usedNow}
+                            limit={limitNow}
                           />, 700
                         );
                       }} />
@@ -953,8 +971,11 @@ export default function Page() {
   }, [user, markAnswered, runOccasionFlow, runManualClarification, persona]);
 
   const handleStartOver = useCallback(async () => {
-    const { allowed, used, limit } = await checkLimit();
-    if (!allowed) { await pushBot(<LimitCard used={used} limit={limit} user={user} />, 300); return; }
+    const { allowed, used, limit, hasReferral } = await checkLimit();
+    if (!allowed) {
+      await pushBot(<LimitCard used={used} limit={limit} user={user} hasReferral={hasReferral} />, 300);
+      return;
+    }
     _n = 0;
     genderRef.current   = "";
     analysisRef.current = null;
@@ -976,8 +997,8 @@ export default function Page() {
     reader.onload = async (e) => {
       const url = e.target?.result as string;
       pu(<img src={url} alt="you" className="w-28 h-36 object-cover rounded-2xl shadow-md border-2 border-[#d4af7f]/40" />);
-      const { allowed, used, limit } = await checkLimit();
-      if (!allowed) { await pb(<LimitCard used={used} limit={limit} user={user} />, 400); return; }
+      const { allowed, used, limit, hasReferral } = await checkLimit();
+      if (!allowed) { await pb(<LimitCard used={used} limit={limit} user={user} hasReferral={hasReferral} />, 400); return; }
       if (!user) {
         await pb(
           <div className="space-y-3">
@@ -1023,7 +1044,6 @@ export default function Page() {
           markAnswered(editId);
           analysisRef.current = { body_shape: s, skin_tone: t };
           pu(`${s} · ${t} skin ✓`);
-          await incrementUsage();
           // Show body+skin compliment before colour palette
           await pb(
             <ProfileComplimentBanner bodyShape={s} skinTone={t} gender={gender} />,
@@ -1033,7 +1053,7 @@ export default function Page() {
         }} />
       </div>, 600
     );
-  }, [incrementUsage, markAnswered, runPostClarification]);
+  }, [markAnswered, runPostClarification]);
 
   const onAnalysisError = useCallback(async (message: string) => {
     setAnalysing(false);
@@ -1125,26 +1145,125 @@ export default function Page() {
 
 // ── Sub-components ────────────────────────────────────────────────────────────
 
-function LimitCard({ used, limit, user }: { used: number; limit: number; user: any }) {
+// ── No outfit found — lets user retry without using a suggestion ──────────────
+function NoOutfitCard({ occasion, vibe, budget, onRetry }: {
+  occasion: string; vibe: string; budget: string; onRetry: () => void;
+}) {
+  const [clicked, setClicked] = useState(false);
   return (
-    <div className="rounded-2xl border border-[#d4af7f]/20 bg-[#1a1400] p-4 space-y-3">
-      <p className="text-sm font-bold text-[#d4af7f]">⚡ Daily limit reached</p>
-      <p className="text-sm text-neutral-400 leading-relaxed">
-        You&apos;ve used <span className="text-white font-semibold">{used}/{limit}</span> analyses today.
-        {!user ? " Sign in to get more." : " Come back tomorrow! 🌅"}
-      </p>
-      {!user && (
-        <div className="flex gap-2 flex-wrap">
-          <a href="/login" className="px-4 py-2 rounded-full text-sm font-bold text-black" style={{ background: "linear-gradient(135deg,#d4af7f,#b8860b)" }}>Sign In for More</a>
-          <a href="/signup" className="px-4 py-2 rounded-full text-sm font-semibold text-[#d4af7f] border border-[#d4af7f]/30 bg-[#1a1a1a]">Create Account</a>
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="rounded-2xl border border-neutral-800 bg-[#111111] p-4 space-y-3"
+    >
+      <div className="flex items-center gap-2">
+        <span className="text-xl">🔍</span>
+        <div>
+          <p className="text-sm font-bold text-white">No outfits found</p>
+          <p className="text-xs text-neutral-500">for {vibe} · {occasion} · {budget} budget</p>
         </div>
-      )}
-    </div>
+      </div>
+      <p className="text-xs text-neutral-400 leading-relaxed">
+        We don&apos;t have an outfit matching that exact combo yet — but you can try a different occasion, vibe or budget and it won&apos;t count against your daily limit!
+      </p>
+      <div className="grid grid-cols-1 gap-2">
+        <motion.button
+          onClick={() => { if (clicked) return; setClicked(true); onRetry(); }}
+          disabled={clicked}
+          whileTap={{ scale: 0.97 }}
+          className="w-full py-3 rounded-xl text-sm font-bold text-black flex items-center justify-center gap-2"
+          style={{ background: "linear-gradient(135deg,#d4af7f,#b8860b)" }}
+        >
+          🔄 Try a different occasion / vibe / budget
+        </motion.button>
+      </div>
+      <p className="text-[10px] text-neutral-700 text-center">
+        We&apos;re adding new outfits daily — check back soon! 🛍️
+      </p>
+    </motion.div>
   );
 }
 
-function EndCard({ onStartOver, onTryAnother, bodyShape, skinTone }: {
+
+
+function LimitCard({ used, limit, user, hasReferral }: {
+  used: number; limit: number; user: any; hasReferral?: boolean;
+}) {
+  const now  = new Date();
+  const noon = new Date(now);
+  noon.setHours(12, 0, 0, 0);
+  if (now >= noon) noon.setDate(noon.getDate() + 1);
+  const diffMs  = noon.getTime() - now.getTime();
+  const diffH   = Math.floor(diffMs / 3_600_000);
+  const diffM   = Math.floor((diffMs % 3_600_000) / 60_000);
+  const resetIn = diffH > 0 ? `${diffH}h ${diffM}m` : `${diffM}m`;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95, y: 8 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ type: "spring", stiffness: 280, damping: 24 }}
+      className="rounded-2xl border relative overflow-hidden p-4 space-y-3"
+      style={{ background: "linear-gradient(135deg,#1a0a00,#111111)", borderColor: "#d4af7f30" }}
+    >
+      <div className="flex items-center gap-2">
+        <span className="text-xl">⚡</span>
+        <div>
+          <p className="text-sm font-bold text-[#d4af7f]">Daily limit reached</p>
+          <p className="text-[10px] text-neutral-500">Resets in {resetIn} (at noon)</p>
+        </div>
+        <div className="ml-auto flex gap-1">
+          {Array.from({ length: limit }).map((_, i) => (
+            <div
+              key={i}
+              className="w-2.5 h-2.5 rounded-full border"
+              style={{ background: i < used ? "#d4af7f" : "transparent", borderColor: "#d4af7f60" }}
+            />
+          ))}
+        </div>
+      </div>
+
+      <p className="text-xs text-neutral-400 leading-relaxed">
+        You&apos;ve used <span className="text-white font-semibold">{used}/{limit}</span> outfit suggestions today.
+      </p>
+
+      {!user && (
+        <div className="space-y-2">
+          <p className="text-xs text-neutral-500">
+            Sign in to get <span className="text-[#d4af7f] font-semibold">2 suggestions/day</span> + 1 bonus for referring a friend!
+          </p>
+          <div className="flex gap-2 flex-wrap">
+            <a href="/login" className="px-4 py-2 rounded-full text-sm font-bold text-black"
+              style={{ background: "linear-gradient(135deg,#d4af7f,#b8860b)" }}>Sign In for More</a>
+            <a href="/signup" className="px-4 py-2 rounded-full text-sm font-semibold text-[#d4af7f] border border-[#d4af7f]/30 bg-[#1a1a1a]">
+              Create Account</a>
+          </div>
+        </div>
+      )}
+
+      {user && !hasReferral && (
+        <div className="rounded-xl p-3 border border-[#d4af7f]/20 bg-[#d4af7f08]">
+          <p className="text-xs text-[#d4af7f] font-semibold mb-1">🎁 Unlock a 3rd suggestion</p>
+          <p className="text-[11px] text-neutral-400 leading-relaxed">
+            Refer a friend to Outfevibe and get a permanent +1 bonus suggestion every day.
+          </p>
+          <a href="/refer" className="mt-2 inline-block text-xs font-bold px-3 py-1.5 rounded-full text-black"
+            style={{ background: "linear-gradient(135deg,#d4af7f,#b8860b)" }}>
+            Refer a Friend →
+          </a>
+        </div>
+      )}
+
+      {user && hasReferral && (
+        <p className="text-xs text-neutral-500">✓ Referral bonus active · Come back after noon 🌅</p>
+      )}
+    </motion.div>
+  );
+}
+
+function EndCard({ onStartOver, onTryAnother, bodyShape, skinTone, used, limit }: {
   onStartOver: () => void; onTryAnother: () => void; bodyShape: string; skinTone: string;
+  used?: number; limit?: number;
 }) {
   const [rating,    setRating]    = useState(0);
   const [hovered,   setHovered]   = useState(0);
@@ -1172,6 +1291,28 @@ function EndCard({ onStartOver, onTryAnother, bodyShape, skinTone }: {
 
   return (
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-3">
+      {/* Usage indicator */}
+      {used !== undefined && limit !== undefined && (
+        <div className="flex items-center justify-between px-1">
+          <p className="text-xs text-neutral-600">
+            Today&apos;s suggestions:
+          </p>
+          <div className="flex items-center gap-1.5">
+            {Array.from({ length: limit }).map((_, i) => (
+              <div
+                key={i}
+                className="w-2 h-2 rounded-full border transition-all"
+                style={{
+                  background:  i < used ? "#d4af7f" : "transparent",
+                  borderColor: "#d4af7f60",
+                }}
+              />
+            ))}
+            <span className="text-[10px] text-neutral-600 ml-1">{used}/{limit}</span>
+          </div>
+        </div>
+      )}
+
       {/* Rating card */}
       <div className="rounded-2xl border border-neutral-800 bg-[#111111] overflow-hidden">
         {!submitted ? (

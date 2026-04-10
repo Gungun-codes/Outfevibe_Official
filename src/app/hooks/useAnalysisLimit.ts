@@ -3,115 +3,142 @@
 import { useCallback } from "react";
 import { supabase } from "@/lib/supabase";
 
-// ── Constants ────────────────────────────────────────────────────────────────
-const GUEST_LIMIT   = 1;   // guest: 1 free analysis
-const USER_LIMIT    = 2;   // logged in: 2 per day
-const LS_KEY        = "outfevibe_analysis_count";
-const LS_DATE_KEY   = "outfevibe_analysis_date";
+// ── Limits ────────────────────────────────────────────────────────────────────
+export const GUEST_LIMIT   = 1;   // guest (not signed in): 1 per day
+export const USER_LIMIT    = 2;   // signed-in user: 2 per day
+export const REFERRAL_BONUS = 1;  // +1 for users who referred a friend (one-time unlock)
+// Total max for referrer = USER_LIMIT + REFERRAL_BONUS = 3
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
-function todayStr() {
-  return new Date().toISOString().split("T")[0]; // "2026-03-21"
+// ── localStorage keys (guest) ─────────────────────────────────────────────────
+const LS_COUNT_KEY  = "outfevibe_outfit_count";
+const LS_DATE_KEY   = "outfevibe_outfit_date";
+
+// ── Daily reset at 12:00 PM (noon) ────────────────────────────────────────────
+function getResetDateStr(): string {
+  const now = new Date();
+  // If it's before noon today, the "day bucket" is yesterday-noon → today-noon
+  // i.e. the bucket key is the date of the most recent noon that has already passed.
+  // Simplest: use "YYYY-MM-DD HH" where HH is the noon boundary.
+  // We use the date portion of "the last noon that passed".
+  const noon = new Date(now);
+  noon.setHours(12, 0, 0, 0);
+  if (now < noon) {
+    // Before noon: we're still in yesterday's noon bucket
+    noon.setDate(noon.getDate() - 1);
+  }
+  return noon.toISOString().split("T")[0]; // "YYYY-MM-DD" of the noon that opened this bucket
 }
 
-// ── TESTING: All limit helpers commented out ──────────────────────────────────
-// function getGuestCount(): number {
-//   if (typeof window === "undefined") return 0;
-//   const date  = localStorage.getItem(LS_DATE_KEY);
-//   const count = parseInt(localStorage.getItem(LS_KEY) ?? "0", 10);
-//   if (date !== todayStr()) {
-//     localStorage.setItem(LS_DATE_KEY, todayStr());
-//     localStorage.setItem(LS_KEY, "0");
-//     return 0;
-//   }
-//   return count;
-// }
+function getGuestCount(): number {
+  if (typeof window === "undefined") return 0;
+  const storedDate  = localStorage.getItem(LS_DATE_KEY);
+  const currentDate = getResetDateStr();
+  if (storedDate !== currentDate) {
+    localStorage.setItem(LS_DATE_KEY,  currentDate);
+    localStorage.setItem(LS_COUNT_KEY, "0");
+    return 0;
+  }
+  return parseInt(localStorage.getItem(LS_COUNT_KEY) ?? "0", 10);
+}
 
-// function incrementGuestCount() {
-//   const current = getGuestCount();
-//   localStorage.setItem(LS_KEY, String(current + 1));
-//   localStorage.setItem(LS_DATE_KEY, todayStr());
-// }
+function incrementGuestCount() {
+  const current = getGuestCount();
+  localStorage.setItem(LS_COUNT_KEY, String(current + 1));
+  localStorage.setItem(LS_DATE_KEY,  getResetDateStr());
+}
 
 // ── Hook ──────────────────────────────────────────────────────────────────────
 export function useAnalysisLimit(userId: string | null | undefined) {
 
-  // ── TESTING: Always allow — limit checks bypassed ─────────────────────────
+  /**
+   * Returns { allowed, used, limit, hasReferral }
+   * - allowed: whether the user can start a new outfit recommendation
+   * - used: how many they've used today
+   * - limit: their personal daily limit (1 / 2 / 3)
+   * - hasReferral: whether they already unlocked the referral bonus
+   */
   const checkLimit = useCallback(async (): Promise<{
     allowed: boolean;
     used: number;
     limit: number;
+    hasReferral: boolean;
   }> => {
-    return { allowed: true, used: 0, limit: USER_LIMIT };
+    // ── Guest: localStorage ───────────────────────────────────────────────────
+    if (!userId) {
+      const used = getGuestCount();
+      return {
+        allowed:     used < GUEST_LIMIT,
+        used,
+        limit:       GUEST_LIMIT,
+        hasReferral: false,
+      };
+    }
 
-    // ── Restore below when testing is done ───────────────────────────────────
-    // // ── Guest: localStorage ─────────────────────────────────────────────────
-    // if (!userId) {
-    //   const used = getGuestCount();
-    //   return { allowed: used < GUEST_LIMIT, used, limit: GUEST_LIMIT };
-    // }
+    // ── Logged-in: Supabase ───────────────────────────────────────────────────
+    try {
+      const today = getResetDateStr();
 
-    // // ── Logged-in: Supabase ─────────────────────────────────────────────────
-    // try {
-    //   const today = todayStr();
+      // Fetch usage row and referral status in parallel
+      const [usageRes, referralRes] = await Promise.all([
+        supabase
+          .from("outfit_usage")
+          .select("count")
+          .eq("user_id", userId)
+          .eq("date", today)
+          .single(),
+        supabase
+          .from("referrals")
+          .select("id")
+          .eq("referrer_id", userId)
+          .limit(1),
+      ]);
 
-    //   const { data, error } = await supabase
-    //     .from("analysis_usage")
-    //     .select("count")
-    //     .eq("user_id", userId)
-    //     .eq("date", today)
-    //     .single();
+      const used        = usageRes.data?.count ?? 0;
+      const hasReferral = (referralRes.data?.length ?? 0) > 0;
+      const limit       = USER_LIMIT + (hasReferral ? REFERRAL_BONUS : 0);
 
-    //   if (error && error.code !== "PGRST116") {
-    //     // PGRST116 = no rows found (first time today)
-    //     console.error("Usage check error:", error);
-    //     return { allowed: true, used: 0, limit: USER_LIMIT }; // fail open
-    //   }
+      return { allowed: used < limit, used, limit, hasReferral };
 
-    //   const used = data?.count ?? 0;
-    //   return { allowed: used < USER_LIMIT, used, limit: USER_LIMIT };
-
-    // } catch {
-    //   return { allowed: true, used: 0, limit: USER_LIMIT }; // fail open
-    // }
+    } catch {
+      // Fail open — don't block user if DB is down
+      return { allowed: true, used: 0, limit: USER_LIMIT, hasReferral: false };
+    }
   }, [userId]);
 
-  // ── TESTING: incrementUsage is a no-op ───────────────────────────────────
+  /**
+   * Increment the usage counter after showing an outfit recommendation.
+   */
   const incrementUsage = useCallback(async () => {
-    return;
+    if (!userId) {
+      incrementGuestCount();
+      return;
+    }
 
-    // ── Restore below when testing is done ───────────────────────────────────
-    // if (!userId) {
-    //   incrementGuestCount();
-    //   return;
-    // }
+    try {
+      const today = getResetDateStr();
 
-    // try {
-    //   const today = todayStr();
+      const { data: existing } = await supabase
+        .from("outfit_usage")
+        .select("count")
+        .eq("user_id", userId)
+        .eq("date", today)
+        .single();
 
-    //   // Upsert: increment count or create row
-    //   const { data: existing } = await supabase
-    //     .from("analysis_usage")
-    //     .select("count")
-    //     .eq("user_id", userId)
-    //     .eq("date", today)
-    //     .single();
-
-    //   if (existing) {
-    //     await supabase
-    //       .from("analysis_usage")
-    //       .update({ count: (existing.count ?? 0) + 1 })
-    //       .eq("user_id", userId)
-    //       .eq("date", today);
-    //   } else {
-    //     await supabase
-    //       .from("analysis_usage")
-    //       .insert({ user_id: userId, date: today, count: 1 });
-    //   }
-    // } catch (e) {
-    //   console.error("Usage increment failed:", e);
-    // }
+      if (existing) {
+        await supabase
+          .from("outfit_usage")
+          .update({ count: (existing.count ?? 0) + 1 })
+          .eq("user_id", userId)
+          .eq("date", today);
+      } else {
+        await supabase
+          .from("outfit_usage")
+          .insert({ user_id: userId, date: today, count: 1 });
+      }
+    } catch (e) {
+      console.error("Usage increment failed:", e);
+    }
   }, [userId]);
 
-  return { checkLimit, incrementUsage, GUEST_LIMIT, USER_LIMIT };
+  return { checkLimit, incrementUsage, GUEST_LIMIT, USER_LIMIT, REFERRAL_BONUS };
 }
