@@ -1894,10 +1894,9 @@
       ],
       "items": {
         "dress": 120,
-        "shoes": 87,
-        "bag": 121
+        "shoes": 87
       },
-      "total_price": 1085,
+      "total_price": 1003,
       "budget_range": "low",
       "priority": 2,
       "why_this_outfit": [
