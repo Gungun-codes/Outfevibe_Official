@@ -62,8 +62,8 @@ const SCAN_LABELS = [
 // ── StatsBar ──────────────────────────────────────────────────────────────────
 function StatsBar({ isMobile }: { isMobile: boolean }) {
   const roundDown = (n: number) => Math.floor(n / 10) * 10;
-  const BASE_USERS = 150;
-  const BASE_QUIZZES = 80;
+  const BASE_USERS = 600;
+  const BASE_QUIZZES = 400;
 
   const [userCount, setUserCount] = useState(roundDown(BASE_USERS));
   const [quizCount, setQuizCount] = useState(roundDown(BASE_QUIZZES));
