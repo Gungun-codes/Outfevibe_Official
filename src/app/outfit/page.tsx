@@ -17,6 +17,87 @@ import outfitsData from "../../../backend/outfit.json";
 import itemsData from "../../../backend/item.json";
 import { ExternalLink, ShoppingBag, Heart, Bookmark } from "lucide-react";
 
+// ── Save analysis to Supabase users_profile ───────────────────────────────────
+async function saveAnalysisToProfile(
+  userId: string,
+  bodyShape: string,
+  skinTone: string,
+  gender: string,
+  imageDataUrl?: string,
+) {
+  try {
+    let imageUrl: string | null = null;
+
+    // Upload image to Supabase Storage if provided
+    if (imageDataUrl && imageDataUrl.startsWith("data:")) {
+      try {
+        const base64 = imageDataUrl.split(",")[1];
+        const byteArr = Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
+        const blob    = new Blob([byteArr], { type: "image/jpeg" });
+        const path    = `profile-photos/${userId}_${Date.now()}.jpg`;
+
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from("user-images")
+          .upload(path, blob, { upsert: true, contentType: "image/jpeg" });
+
+        if (!uploadError && uploadData) {
+          const { data: urlData } = supabase.storage
+            .from("user-images")
+            .getPublicUrl(uploadData.path);
+          imageUrl = urlData?.publicUrl ?? null;
+        }
+      } catch (imgErr) {
+        console.warn("Image upload failed (non-fatal):", imgErr);
+      }
+    }
+
+    // Upsert body_shape, skin_tone, gender into users_profile
+    const updatePayload: Record<string, any> = {
+      id:         userId,
+      body_shape: bodyShape,
+      skin_tone:  skinTone,
+      gender:     gender.toLowerCase(),
+      updated_at: new Date().toISOString(),
+    };
+    if (imageUrl) updatePayload.profile_image = imageUrl;
+
+    const { error } = await supabase
+      .from("users_profile")
+      .upsert(updatePayload, { onConflict: "id" });
+
+    if (error) console.warn("users_profile upsert error:", error.message);
+
+  } catch (err) {
+    console.error("saveAnalysisToProfile error:", err);
+  }
+}
+
+// ── Save referral to referrals table ─────────────────────────────────────────
+async function saveReferral(newUserId: string, referredBy: string) {
+  try {
+    if (!newUserId || !referredBy || newUserId === referredBy) return;
+
+    // Check not already referred
+    const { data: existing } = await supabase
+      .from("referrals")
+      .select("id")
+      .eq("referred_user_id", newUserId)
+      .maybeSingle();
+
+    if (existing) return; // Already saved
+
+    const { error } = await supabase.from("referrals").insert({
+      referred_user_id: newUserId,
+      referrer_user_id: referredBy,
+      created_at:       new Date().toISOString(),
+    });
+
+    if (error) console.warn("referral insert error:", error.message);
+  } catch (err) {
+    console.error("saveReferral error:", err);
+  }
+}
+
 // ── Compliments ────────────────────────────────────────────────────────────────
 const FEMALE_COMPLIMENTS = [
   "👑 Queen is about to slay this look!",
@@ -87,7 +168,7 @@ const SKIN_TONE_COMPLIMENTS: Record<string, { female: string; male: string }> = 
   },
 };
 
-// ── Profile compliment banner (shown after body + skin tone confirmed) ────────
+// ── Profile compliment banner ─────────────────────────────────────────────────
 function ProfileComplimentBanner({ bodyShape, skinTone, gender }: {
   bodyShape: string; skinTone: string; gender: string;
 }) {
@@ -107,15 +188,12 @@ function ProfileComplimentBanner({ bodyShape, skinTone, gender }: {
       className="rounded-2xl border relative overflow-hidden space-y-3 p-4"
       style={{ background: "linear-gradient(135deg,#1a1200,#111111)", borderColor: "#d4af7f25" }}
     >
-      {/* Shimmer sweep */}
       <motion.div
         className="absolute inset-0 pointer-events-none"
         style={{ background: "linear-gradient(105deg, transparent 35%, rgba(212,175,127,0.05) 50%, transparent 65%)" }}
         animate={{ x: ["-100%", "200%"] }}
         transition={{ duration: 3, repeat: Infinity, repeatDelay: 4, ease: "linear" }}
       />
-
-      {/* Body shape row */}
       <div className="flex items-start gap-3 relative z-10">
         <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-base"
           style={{ background: "#d4af7f18" }}>
@@ -125,11 +203,7 @@ function ProfileComplimentBanner({ bodyShape, skinTone, gender }: {
           {shapeMsg}
         </p>
       </div>
-
-      {/* Divider */}
       <div className="h-px w-full relative z-10" style={{ background: "#d4af7f15" }} />
-
-      {/* Skin tone row */}
       <div className="flex items-start gap-3 relative z-10">
         <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-base"
           style={{ background: "#d4af7f18" }}>
@@ -139,8 +213,6 @@ function ProfileComplimentBanner({ bodyShape, skinTone, gender }: {
           {toneMsg}
         </p>
       </div>
-
-      {/* Tagline */}
       <p className="text-xs text-neutral-600 text-center relative z-10 pt-1">
         Now let&apos;s find outfits that match your unique vibe 🛍️
       </p>
@@ -274,7 +346,7 @@ function StarRating({ rating }: { rating: number }) {
   );
 }
 
-// ── Item card — IMAGE FIX: removed imgLoaded opacity trick ────────────────────
+// ── Item card ─────────────────────────────────────────────────────────────────
 function ItemCard({ item, index }: { item: ItemJson; index: number }) {
   const [liked,    setLiked]    = useState(false);
   const [saved,    setSaved]    = useState(false);
@@ -282,9 +354,7 @@ function ItemCard({ item, index }: { item: ItemJson; index: number }) {
   const color = "#d4af7f";
 
   const rawImg = item.image?.trim() ?? "";
-  // Only accept absolute URLs or Next.js public-folder paths starting with "/"
   const imgSrc = rawImg.startsWith("http") || rawImg.startsWith("/") ? rawImg : null;
-  // Show image only when we have a src AND it hasn't errored
   const showImg = !!imgSrc && !imgError;
 
   return (
@@ -294,12 +364,8 @@ function ItemCard({ item, index }: { item: ItemJson; index: number }) {
       transition={{ delay: index * 0.07 }}
       className="bg-[#111111] rounded-2xl border border-neutral-800 overflow-hidden hover:border-neutral-700 transition-all"
     >
-      {/* Image container */}
       <div className="relative w-full bg-neutral-900" style={{ aspectRatio: "3/4" }}>
         {showImg ? (
-          // ── Real product image ──────────────────────────────────────────────
-          // KEY FIX: No opacity fade trick. Image is visible immediately.
-          // Only fall back on actual network/404 errors via onError.
           <img
             src={imgSrc}
             alt={item.title}
@@ -309,7 +375,6 @@ function ItemCard({ item, index }: { item: ItemJson; index: number }) {
             className="absolute inset-0 w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
           />
         ) : (
-          // ── Fallback placeholder ────────────────────────────────────────────
           <div
             className="absolute inset-0 flex flex-col items-center justify-center gap-1"
             style={{ background: `${color}10` }}
@@ -318,8 +383,6 @@ function ItemCard({ item, index }: { item: ItemJson; index: number }) {
             <span className="text-xs font-medium capitalize" style={{ color }}>{item.type}</span>
           </div>
         )}
-
-        {/* Like + Save buttons */}
         <div className="absolute top-2 right-2 flex flex-col gap-1.5 z-10">
           <motion.button
             whileTap={{ scale: 0.8 }}
@@ -346,8 +409,6 @@ function ItemCard({ item, index }: { item: ItemJson; index: number }) {
             <Bookmark className="w-3.5 h-3.5" fill={saved ? "#000" : "none"} stroke={saved ? "#000" : "#fff"} />
           </motion.button>
         </div>
-
-        {/* Category badge */}
         <div
           className="absolute bottom-2 left-2 z-10 text-white text-xs font-bold px-2 py-0.5 rounded-full capitalize"
           style={{ background: color }}
@@ -355,7 +416,6 @@ function ItemCard({ item, index }: { item: ItemJson; index: number }) {
           {item.type}
         </div>
       </div>
-
       <div className="p-3">
         <p className="text-xs font-semibold text-neutral-200 leading-tight mb-2 line-clamp-2">{item.title}</p>
         <StarRating rating={item.review} />
@@ -425,12 +485,9 @@ function ComplimentBanner({ gender, occasion }: { gender: string; occasion: stri
       className="rounded-2xl p-4 text-center border relative overflow-hidden"
       style={{ background: "linear-gradient(135deg,#1a1200,#111111)", borderColor: "#d4af7f30" }}
     >
-      {/* Subtle shimmer */}
       <motion.div
         className="absolute inset-0 pointer-events-none"
-        style={{
-          background: "linear-gradient(105deg, transparent 40%, rgba(212,175,127,0.06) 50%, transparent 60%)",
-        }}
+        style={{ background: "linear-gradient(105deg, transparent 40%, rgba(212,175,127,0.06) 50%, transparent 60%)" }}
         animate={{ x: ["-100%", "200%"] }}
         transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 3, ease: "linear" }}
       />
@@ -502,7 +559,6 @@ function ManualClarificationCard({ onConfirm }: { onConfirm: (bs: string, st: st
           Share your body shape and skin tone for better outfit recommendations.
         </p>
       </div>
-
       <div>
         <p className="text-xs font-semibold text-[#d4af7f] mb-2 uppercase tracking-wider">Body Shape</p>
         <div className="flex flex-wrap gap-2">
@@ -523,7 +579,6 @@ function ManualClarificationCard({ onConfirm }: { onConfirm: (bs: string, st: st
           ))}
         </div>
       </div>
-
       <div>
         <p className="text-xs font-semibold text-[#d4af7f] mb-2 uppercase tracking-wider">Skin Tone</p>
         <div className="flex flex-wrap gap-2">
@@ -544,7 +599,6 @@ function ManualClarificationCard({ onConfirm }: { onConfirm: (bs: string, st: st
           ))}
         </div>
       </div>
-
       {!submitted ? (
         <button
           onClick={() => {
@@ -590,7 +644,6 @@ export default function Page() {
   const analysisRef = useRef<{ body_shape: string; skin_tone: string } | null>(null);
   const pushBotRef  = useRef<((c: React.ReactNode, d?: number) => Promise<string>) | null>(null);
   const pushUserRef = useRef<((c: React.ReactNode) => void) | null>(null);
-  // Track live usage so EndCard can show dots without re-fetching
   const usageRef    = useRef<{ used: number; limit: number }>({ used: 0, limit: 1 });
 
   const auth = useAuth();
@@ -601,7 +654,6 @@ export default function Page() {
   useEffect(() => {
     const local = localStorage.getItem("userPersona");
     if (local) { setPersona(local); return; }
-
     if (user?.id) {
       supabase
         .from("quiz_result")
@@ -614,6 +666,16 @@ export default function Page() {
             localStorage.setItem("userPersona", data.persona_name);
           }
         });
+    }
+  }, [user?.id]);
+
+  // ── Handle referral from URL ?ref= param ─────────────────────────────────
+  useEffect(() => {
+    if (!user?.id) return;
+    const params = new URLSearchParams(window.location.search);
+    const ref = params.get("ref");
+    if (ref && ref !== user.id) {
+      saveReferral(user.id, ref);
     }
   }, [user?.id]);
 
@@ -680,7 +742,6 @@ export default function Page() {
                         markAnswered(budId);
                         pu(`${budgetRange.label} · up to ₹${budgetRange.max.toLocaleString("en-IN")}`);
 
-                        // ── Loading spinner ──────────────────────────────────
                         const loadId = uid();
                         setMsgs((p) => [...p, {
                           id: loadId, role: "bot",
@@ -706,7 +767,6 @@ export default function Page() {
 
                         await new Promise((r) => setTimeout(r, 1200));
 
-                        // ── Show compliment BEFORE outfits ───────────────────
                         await pb(
                           <ComplimentBanner gender={gender} occasion={occ} />,
                           300
@@ -738,7 +798,6 @@ export default function Page() {
                                       vibe={vibe}
                                       budget={budgetRange.label}
                                       onRetry={() => {
-                                        // Let user pick again — restart occasion flow WITHOUT consuming a usage
                                         runOccasionFlow(pb, pu, gender, bs, st, preselectedPersona);
                                       }}
                                     />
@@ -748,9 +807,7 @@ export default function Page() {
                           } : m
                         ));
 
-                        // ── Increment usage after outfit shown ───────────────
                         await incrementUsage();
-                        // Update live usage ref for EndCard dots
                         const { used: usedNow, limit: limitNow, hasReferral: refNow } = await checkLimit();
                         usageRef.current = { used: usedNow, limit: limitNow };
 
@@ -769,6 +826,7 @@ export default function Page() {
                             skinTone={st}
                             used={usedNow}
                             limit={limitNow}
+                            userId={user?.id}
                           />, 700
                         );
                       }} />
@@ -814,7 +872,12 @@ export default function Page() {
           markAnswered(clarId);
           pu(`${bs} · ${st} skin ✓`);
           analysisRef.current = { body_shape: bs, skin_tone: st };
-          // Show body+skin compliment before colour palette
+
+          // ── Save manual input to users_profile ──────────────────────────
+          if (user?.id) {
+            saveAnalysisToProfile(user.id, bs, st, gender);
+          }
+
           await pb(
             <ProfileComplimentBanner bodyShape={bs} skinTone={st} gender={gender} />,
             400
@@ -838,7 +901,7 @@ export default function Page() {
       300
     );
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [markAnswered, runOccasionFlow, runPostClarification, persona]);
+  }, [markAnswered, runOccasionFlow, runPostClarification, persona, user]);
 
   // ── Boot ──────────────────────────────────────────────────────────────────
   const boot = useCallback(async (pb: typeof pushBot, pu: typeof pushUser) => {
@@ -1036,6 +1099,11 @@ export default function Page() {
     const genderProp = toGenderProp(gender);
     analysisRef.current = { body_shape: shape, skin_tone: tone };
 
+    // ── Save AI-detected values to users_profile immediately ────────────────
+    if (user?.id) {
+      saveAnalysisToProfile(user.id, shape, tone, gender, analyseImgUrl);
+    }
+
     const editId = await pb(
       <div>
         <p className="mb-1 text-sm font-medium">Here&apos;s what I found! ✨</p>
@@ -1044,7 +1112,12 @@ export default function Page() {
           markAnswered(editId);
           analysisRef.current = { body_shape: s, skin_tone: t };
           pu(`${s} · ${t} skin ✓`);
-          // Show body+skin compliment before colour palette
+
+          // ── Save corrected values if user changed them ──────────────────
+          if (user?.id && (s !== shape || t !== tone)) {
+            saveAnalysisToProfile(user.id, s, t, gender, analyseImgUrl);
+          }
+
           await pb(
             <ProfileComplimentBanner bodyShape={s} skinTone={t} gender={gender} />,
             400
@@ -1053,7 +1126,7 @@ export default function Page() {
         }} />
       </div>, 600
     );
-  }, [markAnswered, runPostClarification]);
+  }, [markAnswered, runPostClarification, user, analyseImgUrl]);
 
   const onAnalysisError = useCallback(async (message: string) => {
     setAnalysing(false);
@@ -1145,7 +1218,6 @@ export default function Page() {
 
 // ── Sub-components ────────────────────────────────────────────────────────────
 
-// ── No outfit found — lets user retry without using a suggestion ──────────────
 function NoOutfitCard({ occasion, vibe, budget, onRetry }: {
   occasion: string; vibe: string; budget: string; onRetry: () => void;
 }) {
@@ -1166,25 +1238,21 @@ function NoOutfitCard({ occasion, vibe, budget, onRetry }: {
       <p className="text-xs text-neutral-400 leading-relaxed">
         We don&apos;t have an outfit matching that exact combo yet — but you can try a different occasion, vibe or budget and it won&apos;t count against your daily limit!
       </p>
-      <div className="grid grid-cols-1 gap-2">
-        <motion.button
-          onClick={() => { if (clicked) return; setClicked(true); onRetry(); }}
-          disabled={clicked}
-          whileTap={{ scale: 0.97 }}
-          className="w-full py-3 rounded-xl text-sm font-bold text-black flex items-center justify-center gap-2"
-          style={{ background: "linear-gradient(135deg,#d4af7f,#b8860b)" }}
-        >
-          🔄 Try a different occasion / vibe / budget
-        </motion.button>
-      </div>
+      <motion.button
+        onClick={() => { if (clicked) return; setClicked(true); onRetry(); }}
+        disabled={clicked}
+        whileTap={{ scale: 0.97 }}
+        className="w-full py-3 rounded-xl text-sm font-bold text-black flex items-center justify-center gap-2"
+        style={{ background: "linear-gradient(135deg,#d4af7f,#b8860b)" }}
+      >
+        🔄 Try a different occasion / vibe / budget
+      </motion.button>
       <p className="text-[10px] text-neutral-700 text-center">
         We&apos;re adding new outfits daily — check back soon! 🛍️
       </p>
     </motion.div>
   );
 }
-
-
 
 function LimitCard({ used, limit, user, hasReferral }: {
   used: number; limit: number; user: any; hasReferral?: boolean;
@@ -1222,11 +1290,9 @@ function LimitCard({ used, limit, user, hasReferral }: {
           ))}
         </div>
       </div>
-
       <p className="text-xs text-neutral-400 leading-relaxed">
         You&apos;ve used <span className="text-white font-semibold">{used}/{limit}</span> outfit suggestions today.
       </p>
-
       {!user && (
         <div className="space-y-2">
           <p className="text-xs text-neutral-500">
@@ -1240,7 +1306,6 @@ function LimitCard({ used, limit, user, hasReferral }: {
           </div>
         </div>
       )}
-
       {user && !hasReferral && (
         <div className="rounded-xl p-3 border border-[#d4af7f]/20 bg-[#d4af7f08]">
           <p className="text-xs text-[#d4af7f] font-semibold mb-1">🎁 Unlock a 3rd suggestion</p>
@@ -1253,7 +1318,6 @@ function LimitCard({ used, limit, user, hasReferral }: {
           </a>
         </div>
       )}
-
       {user && hasReferral && (
         <p className="text-xs text-neutral-500">✓ Referral bonus active · Come back after noon 🌅</p>
       )}
@@ -1261,9 +1325,9 @@ function LimitCard({ used, limit, user, hasReferral }: {
   );
 }
 
-function EndCard({ onStartOver, onTryAnother, bodyShape, skinTone, used, limit }: {
+function EndCard({ onStartOver, onTryAnother, bodyShape, skinTone, used, limit, userId }: {
   onStartOver: () => void; onTryAnother: () => void; bodyShape: string; skinTone: string;
-  used?: number; limit?: number;
+  used?: number; limit?: number; userId?: string;
 }) {
   const [rating,    setRating]    = useState(0);
   const [hovered,   setHovered]   = useState(0);
@@ -1281,9 +1345,12 @@ function EndCard({ onStartOver, onTryAnother, bodyShape, skinTone, used, limit }
   const handleShare = async () => {
     setSharing(true);
     const profile = [bodyShape && `${bodyShape} body shape`, skinTone && `${skinTone} skin tone`].filter(Boolean).join(" & ");
-    const text = `✨ ${profile} — check yours!\n\nI used Outfevibe\'s AI Stylist 🛍️\n\noutfevibe.com/outfit`;
+    // ── Include referral link with user ID ──────────────────────────────────
+    const refParam = userId ? `?ref=${userId}` : "";
+    const shareUrl = `https://www.outfevibe.com/outfit${refParam}`;
+    const text = `✨ ${profile} — check yours!\n\nI used Outfevibe's AI Stylist 🛍️\n\n${shareUrl}`;
     try {
-      if (navigator.share) await navigator.share({ title: "My Outfevibe Style", text, url: "https://www.outfevibe.com/outfit" });
+      if (navigator.share) await navigator.share({ title: "My Outfevibe Style", text, url: shareUrl });
       else { await navigator.clipboard.writeText(text); }
     } catch {}
     setSharing(false);
@@ -1294,18 +1361,13 @@ function EndCard({ onStartOver, onTryAnother, bodyShape, skinTone, used, limit }
       {/* Usage indicator */}
       {used !== undefined && limit !== undefined && (
         <div className="flex items-center justify-between px-1">
-          <p className="text-xs text-neutral-600">
-            Today&apos;s suggestions:
-          </p>
+          <p className="text-xs text-neutral-600">Today&apos;s suggestions:</p>
           <div className="flex items-center gap-1.5">
             {Array.from({ length: limit }).map((_, i) => (
               <div
                 key={i}
                 className="w-2 h-2 rounded-full border transition-all"
-                style={{
-                  background:  i < used ? "#d4af7f" : "transparent",
-                  borderColor: "#d4af7f60",
-                }}
+                style={{ background: i < used ? "#d4af7f" : "transparent", borderColor: "#d4af7f60" }}
               />
             ))}
             <span className="text-[10px] text-neutral-600 ml-1">{used}/{limit}</span>

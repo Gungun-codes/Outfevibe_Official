@@ -25,8 +25,9 @@ export default function LoginPage() {
 
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
+  // ── Redirect to /outfit after successful auth ──────────────────────────────
   useEffect(() => {
-    if (user) router.push("/");
+    if (user) router.push("/outfit");
   }, [user, router]);
 
   useEffect(() => {
@@ -43,7 +44,6 @@ export default function LoginPage() {
       setLoading(true);
       setError("");
 
-      // Verify password is correct
       const { error: pwError } = await supabase.auth.signInWithPassword({ email, password });
       if (pwError) {
         if (pwError.message.toLowerCase().includes("email not confirmed")) {
@@ -58,7 +58,6 @@ export default function LoginPage() {
       // Sign out immediately — real session comes after OTP
       await supabase.auth.signOut();
 
-      // Send OTP via authContext
       await loginWithOtp(email);
 
       setStep("otp");
@@ -72,14 +71,15 @@ export default function LoginPage() {
     }
   };
 
-  // ── Step 2: verify OTP → full session ────────────────────────────────────
+  // ── Step 2: verify OTP → full session → /outfit ───────────────────────────
   const verifyCode = async (code: string) => {
     if (code.length < 8) return;
     try {
       setLoading(true);
       setError("");
       await verifyLoginOtp(email, code);
-      router.push("/");
+      // ── Redirect to /outfit after successful login ─────────────────────────
+      router.push("/outfit");
     } catch (err: any) {
       setError("Invalid or expired code. Please try again.");
       setOtp(["", "", "", "", "", "", "", ""]);
@@ -129,13 +129,13 @@ export default function LoginPage() {
     }
   };
 
-  // ── Google login — no OTP needed ──────────────────────────────────────────
+  // ── Google login ──────────────────────────────────────────────────────────
   const handleGoogleLogin = async () => {
     try {
       setError("");
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
-        options: { redirectTo: `${window.location.origin}/` },
+        options: { redirectTo: `${window.location.origin}/outfit` }, // ← redirect to /outfit
       });
       if (error) throw error;
     } catch (err: any) {
@@ -324,7 +324,7 @@ export default function LoginPage() {
                 </div>
 
                 <p className="text-xs text-gray-600 text-center leading-relaxed">
-                  Enter all 8 digits. Check spam if you don't see it.
+                  Enter all 8 digits. Check spam if you don&apos;t see it.
                 </p>
               </motion.div>
             )}

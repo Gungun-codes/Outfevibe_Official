@@ -25,8 +25,9 @@ export default function SignupPage() {
   const [resendCooldown, setResendCooldown] = useState(0);
   const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
 
+  // ── Redirect to /outfit after successful auth ──────────────────────────────
   useEffect(() => {
-    if (user) router.push("/");
+    if (user) router.push("/outfit");
   }, [user, router]);
 
   useEffect(() => {
@@ -82,7 +83,8 @@ export default function SignupPage() {
         setOtp(["", "", "", "", "", "", "", ""]);
         otpRefs.current[0]?.focus();
       } else {
-        router.push("/");
+        // ── Redirect to /outfit after successful signup ──────────────────────
+        router.push("/outfit");
       }
     } catch (err: any) {
       setOtpError(err.message || "Verification failed.");
@@ -112,6 +114,7 @@ export default function SignupPage() {
     try {
       setError("");
       await loginWithGoogle();
+      // Google OAuth redirects automatically — useEffect above handles /outfit redirect
     } catch (err: any) {
       setError(err.message || "Google signup failed.");
     }
@@ -207,7 +210,6 @@ export default function SignupPage() {
                   {!loading && <ArrowRight className="w-5 h-5" />}
                 </button>
 
-                {/* ✅ Terms & Privacy consent under Sign Up button */}
                 <p className="text-xs text-gray-600 text-center leading-relaxed">
                   By signing up, you agree to our{" "}
                   <Link href="/terms-of-service" className="text-[#d4af7f] hover:underline">
@@ -218,7 +220,6 @@ export default function SignupPage() {
                     Privacy Policy
                   </Link>
                 </p>
-
               </form>
 
               <div className="text-center text-sm text-gray-400">
@@ -247,7 +248,6 @@ export default function SignupPage() {
                   Continue with Google
                 </button>
 
-                {/* ✅ Terms under Google button too */}
                 <p className="text-xs text-gray-600 text-center leading-relaxed">
                   By continuing with Google, you agree to our{" "}
                   <Link href="/terms-of-service" className="text-[#d4af7f] hover:underline">Terms</Link>
@@ -255,7 +255,6 @@ export default function SignupPage() {
                   <Link href="/privacy-policy" className="text-[#d4af7f] hover:underline">Privacy Policy</Link>
                 </p>
               </div>
-
             </motion.div>
           )}
 
@@ -341,7 +340,6 @@ export default function SignupPage() {
                   ← Wrong email? Go back
                 </button>
               </div>
-
             </motion.div>
           )}
 
