@@ -1504,6 +1504,7 @@
       "total_price": 790,
       "budget_range": "low",
       "priority": 1,
+      "outfit_img": "/outfit_img/36.png",
       "why_this_outfit": [
         "Bodycon party dress is sleek and effortlessly chic",
         "Korean stud earrings add a trendy minimalist touch",
@@ -1544,6 +1545,7 @@
       "total_price": 1244,
       "budget_range": "low",
       "priority": 2,
+      "outfit_img": "/outfit_img/37.png",
       "why_this_outfit": [
         "Net bodycon brings drama and an edgy texture to the party",
         "Pointed heel sharpens the look with attitude",
@@ -1584,6 +1586,7 @@
       "total_price": 742,
       "budget_range": "low",
       "priority": 3,
+      "outfit_img":"/outfit_img/38.png",
       "why_this_outfit": [
         "Clean bodycon in Lycra is comfortable yet party-ready",
         "Pointed heel adds instant polish to the simple dress",
@@ -1623,6 +1626,7 @@
       "total_price": 996,
       "budget_range": "low",
       "priority": 2,
+      "outfit_img": "/outfit_img/39.png",
       "why_this_outfit": [
         "Bold bodycon dress makes an unforgettable entrance",
         "Black heel adds height and sharpens the bold look",
@@ -1661,6 +1665,7 @@
       "total_price": 569,
       "budget_range": "low",
       "priority": 1,
+      "outfit_img":"/outfit_img/40.png",
       "why_this_outfit": [
         "Yellow bodycon dress is eye-catching and full of energy",
         "White flat sandals create a fresh, modern contrast",
@@ -1699,6 +1704,7 @@
       "total_price": 1147,
       "budget_range": "low",
       "priority": 1,
+      "outfit_img":"/outfit_img/41.png",
       "why_this_outfit": [
         "Lycra co-ord set in a structured silhouette commands respect",
         "Black heel adds authority and professional height",
@@ -1739,6 +1745,7 @@
       "total_price": 1286,
       "budget_range": "low",
       "priority": 1,
+      "outfit_img":"/outfit_img/42.png",
       "why_this_outfit": [
         "Waistcoat and black trousers create a sharp, minimal work look",
         "White patent sandals add a clean modern touch",
@@ -1778,6 +1785,7 @@
       "total_price": 862,
       "budget_range": "low",
       "priority": 2,
+      "outfit_img":"/outfit_img/43.png",
       "why_this_outfit": [
         "White shirt top and black trousers is a fail-proof work combo",
         "White sandals keep the look fresh and modern",
@@ -1817,6 +1825,7 @@
       "total_price": 810,
       "budget_range": "low",
       "priority": 3,
+      "outfit_img": "/outfit_img/44.png",
       "why_this_outfit": [
         "Formal shirt and black trousers is a timeless classic work outfit",
         "White patent sandals add a contemporary twist to the classic look",
@@ -1857,6 +1866,7 @@
       "total_price": 1944,
       "budget_range": "medium",
       "priority": 1,
+      "outfit_img": "/outfit_img/45.png",
       "why_this_outfit": [
         "Orange lehenga is vibrant and perfect for a traditional wedding",
         "Choker jewellery set frames the face beautifully",
@@ -1896,6 +1906,7 @@
       "total_price": 1835,
       "budget_range": "medium",
       "priority": 1,
+      "outfit_img":"/outfit_img/46.png",
       "why_this_outfit": [
         "Organza sharara is lightweight and absolutely stunning",
         "Gold plated necklace set adds a glamorous shine",
@@ -1930,11 +1941,13 @@
       ],
       "items": {
         "dress": 120,
-        "shoes": 87
+        "shoes": 87,
+        "bag": 122
       },
       "total_price": 1003,
       "budget_range": "low",
       "priority": 2,
+      "outfit_img":"/outfit_img/47.png",
       "why_this_outfit": [
         "Silk lehenga choli exudes regality at an accessible price",
         "Golden heels add celebratory shimmer to the ensemble",
@@ -1973,6 +1986,7 @@
       "total_price": 1436,
       "budget_range": "medium",
       "priority": 1,
+      "outfit_img":"/outfit_img/48.png",
       "why_this_outfit": [
         "Georgette lehenga choli is a modern ethnic chic statement",
         "Gold plated necklace set adds festive warmth and sparkle",
@@ -2011,6 +2025,7 @@
       "total_price": 1897,
       "budget_range": "medium",
       "priority": 1,
+      "outfit_img":"/outfit_img/49.png",
       "why_this_outfit": [
         "Black bodycon is the ultimate edgy party essential",
         "Stiletto heel sharpens every step with attitude",
@@ -2049,6 +2064,7 @@
       "total_price": 1695,
       "budget_range": "medium",
       "priority": 1,
+      "outfit_img":"/outfit_img/50.png",
       "why_this_outfit": [
         "Red mini bodycon is the boldest party entrance",
         "Kitten bow heels add a playful feminine edge",
@@ -2086,6 +2102,7 @@
       "total_price": 2265,
       "budget_range": "medium",
       "priority": 2,
+      "outfit_img": "/outfit_img/51.png",
       "why_this_outfit": [
         "Georgette dress drapes beautifully for a chic party look",
         "Pink comfort sandals keep it stylish without sacrificing ease",
@@ -2124,6 +2141,7 @@
       "total_price": 1813,
       "budget_range": "medium",
       "priority": 1,
+      "outfit_img":"/outfit_img/52.png",
       "why_this_outfit": [
         "Blue ruffled tube dress is a showstopping glam statement",
         "Stiletto heel adds dramatic height and confidence",
@@ -2166,6 +2184,7 @@
       "total_price": 6344,
       "budget_range": "high",
       "priority": 1,
+      "outfit_img":"/outfit_img/53.png",
       "why_this_outfit": [
         "Clean brown shirt with white trousers is effortlessly sharp",
         "White sneakers keep the look fresh and college-ready",
@@ -2208,6 +2227,7 @@
       "total_price": 7322,
       "budget_range": "high",
       "priority": 1,
+      "outfit_img":"/outfit_img/54.png",
       "why_this_outfit": [
         "Oversized graphic tee is the cornerstone of street style",
         "Loose jeans amplify the urban, laid-back silhouette",
@@ -2247,6 +2267,7 @@
       "total_price": 4288,
       "budget_range": "high",
       "priority": 2,
+      "outfit_img":"/outfit_img/55.png",
       "why_this_outfit": [
         "Casual shirt and cargo trousers is a minimal power combo",
         "Sneakers keep the look grounded and versatile",
@@ -2286,6 +2307,7 @@
       "total_price": 2479,
       "budget_range": "medium",
       "priority": 1,
+      "outfit_img":"/outfit_img/56.png",
       "why_this_outfit": [
         "Tank vest and track pants is pure sporty energy",
         "Chunky sneakers make every step feel performance-ready",
@@ -2325,6 +2347,7 @@
       "total_price": 2417,
       "budget_range": "medium",
       "priority": 1,
+      "outfit_img": "/outfit_img/57.png",
       "why_this_outfit": [
         "Classic cream stripe shirt with camel trousers is timeless",
         "Tan lace-ups add warmth and professionalism",
@@ -2364,6 +2387,7 @@
       "total_price": 3384,
       "budget_range": "medium",
       "priority": 1,
+      "outfit_img":"/outfit_img/58.png",
       "why_this_outfit": [
         "Navy shirt and beige trousers is a clean minimal combo",
         "Brown leather shoes elevate the look with subtle richness",
@@ -2404,6 +2428,7 @@
       "total_price": 1911,
       "budget_range": "low",
       "priority": 2,
+      "outfit_img":"/outfit_img/59.png",
       "why_this_outfit": [
         "Black polo with beige trousers strikes the smart casual mark",
         "Black shoes keep the look sharp and versatile",
@@ -2444,6 +2469,7 @@
       "total_price": 2800,
       "budget_range": "medium",
       "priority": 1,
+      "outfit_img":"/outfit_img/60.png",
       "why_this_outfit": [
         "Black shirt under a black blazer is powerful and commanding",
         "Black trousers create a sharp monochrome business look",
@@ -2484,6 +2510,7 @@
       "total_price": 1756,
       "budget_range": "low",
       "priority": 1,
+      "outfit_img":"/outfit_img/61.png",
       "why_this_outfit": [
         "Wine satin shirt is romantic and confident for a date",
         "Black trousers keep the palette bold and balanced",
@@ -2525,6 +2552,7 @@
       "total_price": 1994,
       "budget_range": "low",
       "priority": 1,
+      "outfit_img":"/outfit_img/62.png",
       "why_this_outfit": [
         "White shirt with blue jeans is the most reliable date formula",
         "White shoes keep the look clean and modern",
@@ -2565,6 +2593,7 @@
       "total_price": 6129,
       "budget_range": "high",
       "priority": 2,
+      "outfit_img": "/outfit_img/63.png",
       "why_this_outfit": [
         "Striped shirt with white trousers is effortlessly minimal",
         "Sneakers keep the look relaxed and modern",
@@ -2608,6 +2637,7 @@
       "total_price": 3359,
       "budget_range": "medium",
       "priority": 1,
+      "outfit_img":"/outfit_img/64.png",
       "why_this_outfit": [
         "Geometric drop-shoulder shirt is a confident trendy statement",
         "Cargo pants add an urban edge and practical cool",
@@ -2687,6 +2717,7 @@
       "total_price": 3425,
       "budget_range": "medium",
       "priority": 2,
+      "outfit_img":"/outfit_img/66.png",
       "why_this_outfit": [
         "Printed thread-work kurta set is ethnic smart and contemporary",
         "Mojaris are the ideal traditional-modern shoe pairing",
@@ -2725,6 +2756,7 @@
       "total_price": 1955,
       "budget_range": "low",
       "priority": 2,
+      "outfit_img":"/outfit_img/67.png",
       "why_this_outfit": [
         "Navy kurta set is clean, classic and occasion-appropriate",
         "Brown bellies add a warm earthy touch",
@@ -2804,6 +2836,7 @@
       "total_price": 5682,
       "budget_range": "high",
       "priority": 1,
+      "outfit_img":"/outfit_img/69.png",
       "why_this_outfit": [
         "Georgette kurta set is rich and traditionally magnificent",
         "Brown bellies complete the traditional wedding look",
@@ -2843,6 +2876,7 @@
       "total_price": 3351,
       "budget_range": "medium",
       "priority": 1,
+      "outfit_img": "/outfit_img/70.png",
       "why_this_outfit": [
         "Silk blend kurta set radiates regal presence",
         "Brown bellies add a grounded traditional accent",
@@ -2882,6 +2916,7 @@
       "total_price": 4277,
       "budget_range": "high",
       "priority": 2,
+      "outfit_img":"/outfit_img/71.png",
       "why_this_outfit": [
         "Cotton blend kurta set is festive formal and dignified",
         "Brown bellies add a refined traditional touch",
@@ -2921,6 +2956,7 @@
       "total_price": 5327,
       "budget_range": "high",
       "priority": 1,
+      "outfit_img":"/outfit_img/72.png",
       "why_this_outfit": [
         "Silk cotton kurta set is ethnic smart and premium",
         "Brown bellies complete the cultured, modern ethnic look",
@@ -2960,6 +2996,7 @@
       "total_price": 2285,
       "budget_range": "medium",
       "priority": 1,
+      "outfit_img":"/outfit_img/73.png",
       "why_this_outfit": [
         "Classic tee and gym trousers is the go-to workout combo",
         "Sports shoes provide the grip and support you need",
@@ -2999,6 +3036,7 @@
       "total_price": 2330,
       "budget_range": "medium",
       "priority": 2,
+      "outfit_img":"/outfit_img/74.png",
       "why_this_outfit": [
         "Hooded tee and boxers create a comfortable training fit",
         "Sports shoes keep you agile and supported",
@@ -3038,6 +3076,7 @@
       "total_price": 2318,
       "budget_range": "medium",
       "priority": 3,
+      "outfit_img":"/outfit_img/75.png",
       "why_this_outfit": [
         "Vest and boxers maximize movement and breathability",
         "Sports shoes deliver performance with every step",
@@ -3077,6 +3116,7 @@
       "total_price": 2143,
       "budget_range": "medium",
       "priority": 2,
+      "outfit_img":"/outfit_img/76.png",
       "why_this_outfit": [
         "Slim vest and track pants is the ultimate athletic combo",
         "Sports shoes complete the performance-first look",
