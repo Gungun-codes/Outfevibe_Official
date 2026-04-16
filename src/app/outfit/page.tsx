@@ -16,7 +16,21 @@ import { OCCASIONS } from "@/lib/type";
 import outfitsData from "../../../backend/outfit.json";
 import itemsData from "../../../backend/item.json";
 import { ExternalLink, ShoppingBag, Heart, Bookmark } from "lucide-react";
+import { usePushNotifications } from "@/app/hooks/usePushNotifications";
 
+export function EnableNotificationsButton({ userId }: { userId: string }) {
+  const { subscribe, loading } = usePushNotifications();
+
+  return (
+    <button
+      onClick={() => subscribe(userId)}
+      disabled={loading}
+      className="bg-[#d4af7f] text-black font-bold px-6 py-3 rounded-full"
+    >
+      {loading ? "Setting up..." : "🔔 Enable Notifications"}
+    </button>
+  );
+}
 // ── Save analysis to Supabase users_profile ───────────────────────────────────
 async function saveAnalysisToProfile(
   userId: string,

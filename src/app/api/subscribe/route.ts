@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
     if (apiKey) {
       const resend = new Resend(apiKey);
       const { error: emailError } = await resend.emails.send({
-        from: "Outfevibe <onboarding@resend.dev>",
+        from: "Outfevibe <hello@outfevibe.com>",
         to: email,
         subject: "You're on the list ✨ Welcome to Outfevibe",
         html: `
