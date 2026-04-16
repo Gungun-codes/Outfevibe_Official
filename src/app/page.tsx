@@ -11,7 +11,9 @@ import OutfitCard from "@/components/OutfitCard";
 import HowItWorks from "@/components/HowItWorks";
 import { usePWAInstall } from "@/app/hooks/usePWAInstall";
 import FestivalHero from "@/components/FestivalHero";
-import DefaultHero from "@/components/DefaultHero"; // ← NEW
+import DefaultHero from "@/components/DefaultHero";
+import { StreakBadge } from "@/components/StreakBadge";
+
 
 function FeedbackForm({ darkMode }: { darkMode: boolean }) {
   const [name, setName] = useState("");
@@ -166,7 +168,7 @@ export default function Home() {
   const [activeGender, setActiveGender] = useState<"women" | "men">("women");
   const [mounted, setMounted] = useState(false);
   const router = useRouter();
-  const { user, loading: authLoading } = useAuth();
+  const { user, session, loading: authLoading } = useAuth();
   const { isInstallable, install } = usePWAInstall();
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -249,6 +251,7 @@ export default function Home() {
       </header>
 
       {/* FESTIVAL HERO — passes DefaultHero as the default fallback */}
+      {session && <StreakBadge userId={session.user.id} />}
       <FestivalHero darkMode={darkMode} defaultHero={defaultHero} />
 
       {/* TRENDING */}
