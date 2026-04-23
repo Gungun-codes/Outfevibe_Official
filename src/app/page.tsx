@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useState, useEffect, useMemo, useRef } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import outfitsData from "../../backend/outfits.json";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/context/authContext";
@@ -162,11 +162,304 @@ function MobileInstallBanner({ install, darkMode }: { install: () => void; darkM
   );
 }
 
+// ── Hamburger icon — animates to X when open ──────────────────────────────────
+function HamburgerIcon({ darkMode }: { darkMode: boolean }) {
+  const color = darkMode ? "#F5F0E8" : "#0A0A0A";
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style={{ display: "block" }}>
+      <line x1="3" y1="5"  x2="15" y2="5"  stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="3" y1="9"  x2="15" y2="9"  stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="3" y1="13" x2="15" y2="13" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+// ── Mobile drawer ─────────────────────────────────────────────────────────────
+function MobileDrawer({
+  open,
+  onClose,
+  darkMode,
+  setDarkMode,
+  user,
+  userAvatar,
+  getUserInitials,
+  isInstallable,
+  install,
+  router,
+}: {
+  open: boolean;
+  onClose: () => void;
+  darkMode: boolean;
+  setDarkMode: (v: boolean) => void;
+  user: any;
+  userAvatar: string | null;
+  getUserInitials: () => string;
+  isInstallable: boolean;
+  install: () => void;
+  router: ReturnType<typeof useRouter>;
+}) {
+  // Lock body scroll when open
+  useEffect(() => {
+    if (open) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "";
+    return () => { document.body.style.overflow = ""; };
+  }, [open]);
+
+  const navLinks = [
+    { label: "Home", href: "/", icon: "🏠" },
+    { label: "Trending", href: "#trending", icon: "🔥" },
+    { label: "Features", href: "#features", icon: "✨" },
+    { label: "How it works", href: "#how-it-works", icon: "💡" },
+    { label: "About", href: "#about", icon: "📖" },
+    { label: "Blog", href: "/blog", icon: "✍️" },
+    { label: "Feedback", href: "#feedback", icon: "💬" },
+  ];
+
+  const handleNavClick = (href: string) => {
+    onClose();
+    if (href.startsWith("#")) {
+      setTimeout(() => {
+        const el = document.querySelector(href);
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      }, 320);
+    }
+  };
+
+  const bg = darkMode ? "#0A0A0A" : "#FAFAF8";
+  const text = darkMode ? "#F5F0E8" : "#0A0A0A";
+  const muted = darkMode ? "#6E6E6E" : "#8A8A8A";
+  const border = darkMode ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.08)";
+  const divider = darkMode ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)";
+  const hoverBg = darkMode ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.03)";
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <>
+          {/* Backdrop */}
+          <motion.div
+            key="backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={onClose}
+            style={{
+              position: "fixed",
+              inset: 0,
+              zIndex: 100,
+              background: "rgba(0,0,0,0.55)",
+              backdropFilter: "blur(3px)",
+              WebkitBackdropFilter: "blur(3px)",
+            }}
+          />
+
+          {/* Drawer */}
+          <motion.div
+            key="drawer"
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "spring", stiffness: 340, damping: 34 }}
+            style={{
+              position: "fixed",
+              top: 0,
+              right: 0,
+              bottom: 0,
+              width: "78vw",
+              maxWidth: 296,
+              zIndex: 101,
+              background: bg,
+              borderLeft: `0.5px solid ${border}`,
+              display: "flex",
+              flexDirection: "column",
+              fontFamily: "'DM Sans', sans-serif",
+              overflowY: "hidden",
+            }}
+          >
+            {/* ── Header ── */}
+            <div style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              padding: "16px 18px",
+              borderBottom: `0.5px solid ${divider}`,
+              flexShrink: 0,
+            }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <img src="/outfevibe_logo.png" alt="Outfevibe" style={{ width: 22, height: 22, borderRadius: 5 }} />
+                <span style={{ fontSize: 14, fontWeight: 600, color: text, letterSpacing: "0.01em" }}>Outfevibe</span>
+              </div>
+              <button onClick={onClose} style={{
+                width: 30, height: 30, borderRadius: "50%",
+                border: `0.5px solid ${border}`,
+                background: "transparent", color: muted,
+                fontSize: 14, display: "flex", alignItems: "center",
+                justifyContent: "center", cursor: "pointer",
+              }}>✕</button>
+            </div>
+
+            {/* ── Profile strip (logged in only) ── */}
+            {user && (
+              <button onClick={() => { onClose(); router.push("/profile"); }} style={{
+                display: "flex", alignItems: "center", gap: 12,
+                padding: "13px 18px",
+                borderBottom: `0.5px solid ${divider}`,
+                background: "transparent", cursor: "pointer",
+                width: "100%", textAlign: "left", flexShrink: 0,
+              }}>
+                <div style={{ position: "relative", flexShrink: 0 }}>
+                  {userAvatar ? (
+                    <img src={userAvatar} alt="Profile" style={{ width: 38, height: 38, borderRadius: "50%", border: "1.5px solid #C9A96E", objectFit: "cover" }} />
+                  ) : (
+                    <div style={{ width: 38, height: 38, borderRadius: "50%", border: "1.5px solid #C9A96E", background: "linear-gradient(135deg,#C9A96E,#E8C98A)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <span style={{ fontSize: 12, fontWeight: 700, color: "#0A0A0A" }}>{getUserInitials()}</span>
+                    </div>
+                  )}
+                  <span style={{ position: "absolute", bottom: 1, right: 1, width: 8, height: 8, borderRadius: "50%", background: "#4ADE80", border: `1.5px solid ${bg}` }} />
+                </div>
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: text, lineHeight: 1.3 }}>
+                    {user?.user_metadata?.display_name || user?.user_metadata?.full_name || user?.email?.split("@")[0] || "My Profile"}
+                  </div>
+                  <div style={{ fontSize: 11, color: "#C9A96E", marginTop: 1 }}>View profile →</div>
+                </div>
+              </button>
+            )}
+
+            {/* ── Nav links ── */}
+            <nav style={{ flex: 1, overflowY: "auto", padding: "6px 0" }}>
+              {navLinks.map((link, i) => {
+                const isAnchor = link.href.startsWith("#") || link.href === "/";
+                const sharedStyle: React.CSSProperties = {
+                  display: "flex", alignItems: "center", gap: 13,
+                  width: "100%", padding: "12px 18px",
+                  background: "transparent", border: "none",
+                  cursor: "pointer", textAlign: "left",
+                  borderBottom: i < navLinks.length - 1 ? `0.5px solid ${divider}` : "none",
+                  textDecoration: "none",
+                };
+                const inner = (
+                  <>
+                    <span style={{ fontSize: 15, width: 20, textAlign: "center", flexShrink: 0 }}>{link.icon}</span>
+                    <span style={{ fontSize: 14, color: text, fontWeight: 400 }}>{link.label}</span>
+                  </>
+                );
+                return isAnchor ? (
+                  <button key={link.label} onClick={() => handleNavClick(link.href)} style={sharedStyle}>{inner}</button>
+                ) : (
+                  <Link key={link.label} href={link.href} onClick={onClose} style={sharedStyle}>{inner}</Link>
+                );
+              })}
+
+              {/* ── CTA shortcuts ── */}
+              <div style={{ padding: "10px 14px 4px", borderTop: `0.5px solid ${divider}`, marginTop: 4 }}>
+                <Link href="/outfit" onClick={onClose} style={{
+                  display: "flex", alignItems: "center", justifyContent: "space-between",
+                  background: "#C9A96E", color: "#0A0A0A",
+                  padding: "11px 14px", borderRadius: 10,
+                  textDecoration: "none", marginBottom: 7,
+                }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
+                    <span style={{ fontSize: 15 }}>📸</span>
+                    <div>
+                      <div style={{ fontSize: 13, fontWeight: 600, lineHeight: 1 }}>Upload your photo</div>
+                      <div style={{ fontSize: 10, opacity: 0.65, marginTop: 2 }}>AI styles you instantly</div>
+                    </div>
+                  </div>
+                  <span style={{ fontSize: 13, opacity: 0.7 }}>→</span>
+                </Link>
+
+                <Link href="/quiz" onClick={onClose} style={{
+                  display: "flex", alignItems: "center", justifyContent: "space-between",
+                  background: "transparent", color: darkMode ? "rgba(245,240,232,0.7)" : "rgba(10,10,10,0.65)",
+                  padding: "9px 13px", borderRadius: 8,
+                  border: `0.5px solid ${border}`, textDecoration: "none", fontSize: 13,
+                }}>
+                  <span>✦ Style quiz · 2 min</span>
+                  <span style={{ fontSize: 11, opacity: 0.35 }}>→</span>
+                </Link>
+              </div>
+            </nav>
+
+            {/* ── Bottom controls ── */}
+            <div style={{
+              padding: "12px 14px",
+              borderTop: `0.5px solid ${divider}`,
+              display: "flex", flexDirection: "column", gap: 8,
+              flexShrink: 0,
+            }}>
+              {/* Dark mode toggle */}
+              <button onClick={() => setDarkMode(!darkMode)} style={{
+                display: "flex", alignItems: "center", justifyContent: "space-between",
+                padding: "9px 13px", borderRadius: 10,
+                border: `0.5px solid ${border}`, background: "transparent",
+                cursor: "pointer", width: "100%",
+              }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
+                  <span style={{ fontSize: 14 }}>{darkMode ? "🌙" : "☀️"}</span>
+                  <span style={{ fontSize: 13, color: text }}>{darkMode ? "Dark mode" : "Light mode"}</span>
+                </div>
+                {/* Toggle pill */}
+                <div style={{
+                  width: 34, height: 19, borderRadius: 10,
+                  background: darkMode ? "#C9A96E" : "rgba(0,0,0,0.12)",
+                  position: "relative", transition: "background 0.2s", flexShrink: 0,
+                }}>
+                  <div style={{
+                    position: "absolute", top: 2.5,
+                    left: darkMode ? 17 : 2.5,
+                    width: 14, height: 14, borderRadius: "50%",
+                    background: "#fff", transition: "left 0.2s",
+                  }} />
+                </div>
+              </button>
+
+              {/* Install app */}
+              {isInstallable && (
+                <button onClick={() => { install(); onClose(); }} style={{
+                  display: "flex", alignItems: "center", gap: 9,
+                  padding: "9px 13px", borderRadius: 10,
+                  border: `0.5px solid rgba(201,169,110,0.3)`,
+                  background: "rgba(201,169,110,0.06)",
+                  cursor: "pointer", width: "100%",
+                }}>
+                  <span style={{ fontSize: 14 }}>📲</span>
+                  <span style={{ fontSize: 13, color: "#C9A96E", fontWeight: 500 }}>Install app</span>
+                </button>
+              )}
+
+              {/* Login / go to profile */}
+              {!user ? (
+                <button onClick={() => { onClose(); router.push("/login"); }} style={{
+                  padding: "11px 13px", borderRadius: 10,
+                  background: darkMode ? "#F5F0E8" : "#0A0A0A",
+                  color: darkMode ? "#0A0A0A" : "#F5F0E8",
+                  border: "none", fontSize: 13, fontWeight: 600,
+                  cursor: "pointer", width: "100%",
+                }}>Login</button>
+              ) : (
+                <button onClick={() => { onClose(); router.push("/profile"); }} style={{
+                  padding: "11px 13px", borderRadius: 10,
+                  background: "transparent", color: muted,
+                  border: `0.5px solid ${border}`,
+                  fontSize: 13, cursor: "pointer", width: "100%",
+                }}>Go to profile →</button>
+              )}
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+}
+
 export default function Home() {
   const [darkMode, setDarkMode] = useState(true);
   const [activeCategory, setActiveCategory] = useState<"general" | "festive" | "forYou">("general");
   const [activeGender, setActiveGender] = useState<"women" | "men">("women");
   const [mounted, setMounted] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const router = useRouter();
   const { user, session, loading: authLoading } = useAuth();
   const { isInstallable, install } = usePWAInstall();
@@ -205,27 +498,32 @@ export default function Home() {
   };
   const userAvatar = user?.user_metadata?.avatar_url || null;
 
-  // ── Default hero — the new visual component ──────────────────────────────
   const defaultHero = <DefaultHero darkMode={darkMode} />;
 
   return (
     <div>
-      {/* NAVBAR */}
+      {/* ── NAVBAR ── */}
       <header className={`sticky top-0 z-50 backdrop-blur-xl border-b border-neutral-800/40 ${darkMode ? "bg-black" : "bg-white"}`}>
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+
+          {/* Logo */}
           <div className="flex items-center gap-2 font-semibold text-lg">
             <img src="/outfevibe_logo.png" alt="Outfevibe Logo" className="h-6 w-6" />
-            <span className={`${darkMode ? "text-white" : "text-black"}`}>Outfevibe</span>
+            <span className={darkMode ? "text-white" : "text-black"}>Outfevibe</span>
           </div>
+
+          {/* Desktop nav links */}
           <nav className={`hidden md:flex items-center gap-8 text-sm ${darkMode ? "text-neutral-300" : "text-neutral-700"}`}>
             <a href="#about" className="hover:text-yellow-400 transition">About</a>
             <a href="#trending" className="hover:text-yellow-400 transition">Trending</a>
             <a href="#features" className="hover:text-yellow-400 transition">Features</a>
             <a href="#feedback" className="hover:text-yellow-400 transition">Feedback</a>
           </nav>
-          <div className="flex items-center gap-4">
+
+          {/* Desktop right controls */}
+          <div className="hidden md:flex items-center gap-4">
             {isInstallable && (
-              <button onClick={install} className={`hidden md:flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold border transition ${darkMode ? "border-yellow-400/50 text-yellow-400 hover:bg-yellow-400 hover:text-black" : "border-yellow-500/50 text-yellow-600 hover:bg-yellow-400 hover:text-black"}`}>
+              <button onClick={install} className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold border transition ${darkMode ? "border-yellow-400/50 text-yellow-400 hover:bg-yellow-400 hover:text-black" : "border-yellow-500/50 text-yellow-600 hover:bg-yellow-400 hover:text-black"}`}>
                 📲 Install App
               </button>
             )}
@@ -247,10 +545,68 @@ export default function Home() {
               <button onClick={() => router.push("/login")} className={`px-6 py-2.5 rounded-full font-semibold transition ${darkMode ? "bg-white text-black hover:bg-[#d4af7f]" : "bg-black text-white hover:bg-neutral-800"}`}>Login</button>
             )}
           </div>
+
+          {/* Mobile right — profile/login + dark mode + hamburger */}
+          <div className="flex md:hidden items-center gap-2">
+            {/* Profile / Login — visible on mobile too */}
+            {authLoading ? (
+              <div className="w-8 h-8 rounded-full bg-neutral-800 animate-pulse" />
+            ) : user ? (
+              <button
+                onClick={() => router.push("/profile")}
+                className="relative w-8 h-8 rounded-full overflow-hidden border-2 border-yellow-400 flex items-center justify-center"
+              >
+                {userAvatar ? (
+                  <img src={userAvatar} alt="Profile" className="w-full h-full object-cover" />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center">
+                    <span className="text-black text-xs font-bold">{getUserInitials()}</span>
+                  </div>
+                )}
+                <span className="absolute bottom-0 right-0 w-2 h-2 bg-green-400 rounded-full border border-black" />
+              </button>
+            ) : (
+              <button
+                onClick={() => router.push("/login")}
+                className={`px-4 py-1.5 rounded-full text-xs font-semibold transition ${darkMode ? "bg-white text-black" : "bg-black text-white"}`}
+              >
+                Login
+              </button>
+            )}
+
+            <button
+              onClick={() => setDarkMode(!darkMode)}
+              className="w-8 h-8 flex items-center justify-center rounded-full border border-neutral-700 hover:border-yellow-400 transition text-sm"
+            >
+              ☀️
+            </button>
+
+            <button
+              onClick={() => setDrawerOpen((v) => !v)}
+              aria-label="Open navigation menu"
+              className={`w-9 h-9 flex items-center justify-center rounded-xl border transition ${darkMode ? "border-neutral-700 hover:border-yellow-400/50" : "border-neutral-300 hover:border-yellow-500/50"}`}
+            >
+              <HamburgerIcon darkMode={darkMode} />
+            </button>
+          </div>
         </div>
       </header>
 
-      {/* FESTIVAL HERO — passes DefaultHero as the default fallback */}
+      {/* Mobile drawer — rendered outside header so it overlays full page */}
+      <MobileDrawer
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        darkMode={darkMode}
+        setDarkMode={setDarkMode}
+        user={user}
+        userAvatar={userAvatar}
+        getUserInitials={getUserInitials}
+        isInstallable={isInstallable}
+        install={install}
+        router={router}
+      />
+
+      {/* FESTIVAL / DEFAULT HERO */}
       {session && <StreakBadge userId={session.user.id} />}
       <FestivalHero darkMode={darkMode} defaultHero={defaultHero} />
 
@@ -258,7 +614,6 @@ export default function Home() {
       <section id="trending" className={`px-6 py-20 overflow-x-hidden ${darkMode ? "bg-black text-white" : "bg-white text-black"}`}>
         <motion.h2 initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeIn} className={`text-4xl md:text-5xl font-extrabold text-center ${darkMode ? "text-white" : "text-black"}`}>Trending Outfits</motion.h2>
         <p className={`text-center mt-3 ${darkMode ? "text-neutral-400" : "text-neutral-600"}`}>Stay ahead of the curve. Curated fits that define the moment.</p>
-        {/* Streak Badge — only shown to logged in users */}
         {user && (
           <div className="flex justify-center mt-4">
             <StreakBadge userId={user.id} />
@@ -303,7 +658,7 @@ export default function Home() {
             <motion.a href="/outfit" whileHover={{ scale: 1.02 }} initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} style={{ transformOrigin: "center center" }}
               className={`p-8 rounded-2xl text-left transition shadow-lg block ${darkMode ? "bg-neutral-900 border border-neutral-800 hover:border-yellow-400" : "bg-neutral-100 border border-neutral-200 hover:border-yellow-500"}`}>
               <h3 className="text-xl font-semibold mb-3">AI Based Outfit Suggestions</h3>
-              <p className={`${darkMode ? "text-neutral-400" : "text-neutral-600"}`}>Upload your image and let our AI analyze your body shape, skin tone, and style preferences to recommend outfits that perfectly match your personality and occasion.</p>
+              <p className={darkMode ? "text-neutral-400" : "text-neutral-600"}>Upload your image and let our AI analyze your body shape, skin tone, and style preferences to recommend outfits that perfectly match your personality and occasion.</p>
             </motion.a>
             <motion.div whileHover={{ scale: 1.02 }} initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} style={{ transformOrigin: "center center" }}
               className={`p-8 rounded-2xl text-left shadow-lg ${darkMode ? "bg-neutral-900 border border-neutral-800" : "bg-neutral-100 border border-neutral-200"}`}>
@@ -352,12 +707,11 @@ export default function Home() {
                 className={`p-6 rounded-2xl border ${darkMode ? "bg-neutral-900 border-neutral-800 hover:border-yellow-400/40" : "bg-white border-neutral-200 hover:border-yellow-400/60"} transition group`}>
                 <div className="flex items-start justify-between mb-4">
                   <span className="text-2xl">{item.icon}</span>
-                  <span className={`text-xs font-mono px-2.5 py-1 rounded-full border ${
-                    item.tag === "AI-powered" ? "text-purple-400 border-purple-400/30 bg-purple-400/10"
-                    : item.tag === "Unique to us" ? "text-yellow-400 border-yellow-400/30 bg-yellow-400/10"
-                    : item.tag === "India-first" ? "text-green-400 border-green-400/30 bg-green-400/10"
-                    : "text-blue-400 border-blue-400/30 bg-blue-400/10"
-                  }`}>{item.tag}</span>
+                  <span className={`text-xs font-mono px-2.5 py-1 rounded-full border ${item.tag === "AI-powered" ? "text-purple-400 border-purple-400/30 bg-purple-400/10"
+                      : item.tag === "Unique to us" ? "text-yellow-400 border-yellow-400/30 bg-yellow-400/10"
+                        : item.tag === "India-first" ? "text-green-400 border-green-400/30 bg-green-400/10"
+                          : "text-blue-400 border-blue-400/30 bg-blue-400/10"
+                    }`}>{item.tag}</span>
                 </div>
                 <h3 className={`text-base font-bold mb-2 group-hover:text-yellow-400 transition ${darkMode ? "text-white" : "text-black"}`}>{item.title}</h3>
                 <p className={`text-sm leading-relaxed ${darkMode ? "text-neutral-400" : "text-neutral-600"}`}>{item.desc}</p>
