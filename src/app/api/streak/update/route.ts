@@ -3,10 +3,10 @@ import { createClient } from "@supabase/supabase-js";
 
 // Milestone definitions
 const MILESTONES: Record<number, { badge: string; reward: string; limitBonus: number }> = {
-  3:  { badge: "3_day_streak",          reward: "3-Day Streak badge 🔥",                    limitBonus: 0 },
-  7:  { badge: "week_warrior",          reward: "+1 outfit recommendation per day ⚡",        limitBonus: 1 },
-  14: { badge: "fortnight_fashionista", reward: "Early access to new outfit drops 💎",        limitBonus: 0 },
-  30: { badge: "style_legend",          reward: "Unlimited recommendations forever 👑",       limitBonus: 99 },
+  3: { badge: "3_day_streak", reward: "3-Day Streak badge 🔥", limitBonus: 0 },
+  7: { badge: "week_warrior", reward: "+1 outfit recommendation per day ⚡", limitBonus: 1 },
+  14: { badge: "fortnight_fashionista", reward: "Early access to new outfit drops 💎", limitBonus: 0 },
+  30: { badge: "style_legend", reward: "Unlimited recommendations forever 👑", limitBonus: 99 },
 };
 
 export async function POST(req: NextRequest) {
@@ -27,54 +27,69 @@ export async function POST(req: NextRequest) {
 
     if (error || !profile) return NextResponse.json({ error: "User not found" }, { status: 404 });
 
-    const today     = new Date().toISOString().split("T")[0];
-    const lastDate  = profile.last_streak_date;
+    const today = new Date().toISOString().split("T")[0];
+    const lastDate = profile.last_streak_date;
 
     // Already logged today
     if (lastDate === today) {
       return NextResponse.json({
-        streak_count:       profile.streak_count,
-        longest_streak:     profile.longest_streak,
-        already_done:       true,
-        badges:             profile.badges ?? [],
-        new_badge:          null,
+        streak_count: profile.streak_count,
+        longest_streak: profile.longest_streak,
+        already_done: true,
+        badges: profile.badges ?? [],
+        new_badge: null,
         outfit_limit_bonus: profile.outfit_limit_bonus ?? 0,
-        freeze_count:       profile.freeze_count ?? 1,
+        freeze_count: profile.freeze_count ?? 1,
       });
     }
 
-    const yesterday      = new Date(Date.now() - 86400000).toISOString().split("T")[0];
-    const isConsecutive  = lastDate === yesterday;
-    const newStreak      = isConsecutive ? profile.streak_count + 1 : 1;
-    const newLongest     = Math.max(newStreak, profile.longest_streak ?? 0);
+    const yesterday = new Date(Date.now() - 86400000).toISOString().split("T")[0];
+    const isConsecutive = lastDate === yesterday;
+    const newStreak = isConsecutive ? profile.streak_count + 1 : 1;
+
+    // Notify user their streak broke
+    if (!isConsecutive && profile.streak_count > 1) {
+      try {
+        await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/push/send`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            type: "streak_broken",
+            userId,
+          }),
+        });
+      } catch { /* non-fatal */ }
+    }
+
+    const newLongest = Math.max(newStreak, profile.longest_streak ?? 0);
 
     // Check badge + reward milestones
     const currentBadges: string[] = profile.badges ?? [];
-    const newBadges    = [...currentBadges];
-    let   newBadge: string | null = null;
-    let   newReward: string | null = null;
-    let   limitBonusDelta = 0;
+    const newBadges = [...currentBadges];
+    let newBadge: string | null = null;
+    let newReward: string | null = null;
+    let limitBonusDelta = 0;
 
     const milestone = MILESTONES[newStreak];
     if (milestone && !currentBadges.includes(milestone.badge)) {
       newBadges.push(milestone.badge);
-      newBadge       = milestone.badge;
-      newReward      = milestone.reward;
+      newBadge = milestone.badge;
+      newReward = milestone.reward;
       limitBonusDelta = milestone.limitBonus;
     }
 
-    const currentBonus   = profile.outfit_limit_bonus ?? 0;
-    const newLimitBonus  = Math.min(currentBonus + limitBonusDelta, 99); // cap at 99 = unlimited
+    const currentBonus = profile.outfit_limit_bonus ?? 0;
+    const newLimitBonus = Math.min(currentBonus + limitBonusDelta, 99); // cap at 99 = unlimited
 
     await supabase
       .from("users_profile")
       .update({
-        streak_count:       newStreak,
-        last_streak_date:   today,
-        longest_streak:     newLongest,
-        badges:             newBadges,
+        streak_count: newStreak,
+        last_streak_date: today,
+        longest_streak: newLongest,
+        badges: newBadges,
         outfit_limit_bonus: newLimitBonus,
-        last_active:        new Date().toISOString(),
+        last_active: new Date().toISOString(),
       })
       .eq("id", userId);
 
@@ -82,10 +97,10 @@ export async function POST(req: NextRequest) {
     if (newBadge && newReward) {
       try {
         await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/push/send`, {
-          method:  "POST",
+          method: "POST",
           headers: { "Content-Type": "application/json" },
-          body:    JSON.stringify({
-            type:    "streak_milestone",
+          body: JSON.stringify({
+            type: "streak_milestone",
             payload: `${newStreak} days — ${newReward}`,
             userId,
           }),
@@ -94,14 +109,14 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json({
-      streak_count:       newStreak,
-      longest_streak:     newLongest,
-      already_done:       false,
-      new_badge:          newBadge,
-      new_reward:         newReward,
-      badges:             newBadges,
+      streak_count: newStreak,
+      longest_streak: newLongest,
+      already_done: false,
+      new_badge: newBadge,
+      new_reward: newReward,
+      badges: newBadges,
       outfit_limit_bonus: newLimitBonus,
-      freeze_count:       profile.freeze_count ?? 1,
+      freeze_count: profile.freeze_count ?? 1,
     });
 
   } catch (err) {
