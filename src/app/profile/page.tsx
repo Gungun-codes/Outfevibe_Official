@@ -236,11 +236,7 @@ export default function ProfileDashboard() {
                 </div>
               </div>
 
-              {/* Sign out */}
-              <button onClick={() => logout()}
-                className="flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-xl text-red-400 border border-red-500/15 hover:bg-red-500/8 hover:border-red-500/30 transition text-sm font-medium">
-                <LogOut className="w-4 h-4" /> Sign Out
-              </button>
+
             </div>
 
             {/* Stats row */}
@@ -519,6 +515,14 @@ export default function ProfileDashboard() {
           </div>
         </div>
       </main>
+
+      {/* ── Sign Out ── */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 mt-2 border-t border-[#111] flex justify-center">
+        <button onClick={() => logout()}
+          className="flex items-center gap-2.5 px-7 py-3 rounded-2xl text-red-400 border border-red-500/12 hover:bg-red-500/8 hover:border-red-500/25 transition text-sm font-medium">
+          <LogOut className="w-4 h-4" /> Sign Out
+        </button>
+      </div>
     </div>
   );
 }
