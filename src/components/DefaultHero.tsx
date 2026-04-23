@@ -94,7 +94,6 @@ function StatsBar({ isMobile }: { isMobile: boolean }) {
   ];
 
   if (isMobile) {
-    // 2×2 grid on mobile
     return (
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -153,7 +152,6 @@ function StatsBar({ isMobile }: { isMobile: boolean }) {
     );
   }
 
-  // Desktop: horizontal row
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -273,7 +271,6 @@ function PhoneMockup({ small = false }: { small?: boolean }) {
     return () => cancelAnimationFrame(id);
   }, []);
 
-  // Only show 3 scan labels on small
   const labels = small ? SCAN_LABELS.slice(0, 3) : SCAN_LABELS;
 
   return (
@@ -518,7 +515,7 @@ function OutfitResultCard({
         border: "0.5px solid rgba(201,169,110,0.2)",
         borderRadius: small ? 10 : 14,
         padding: small ? "10px 12px" : "14px 16px",
-        width: small ? 130 : 164,
+        width: small ? "100%" : 164,
         backdropFilter: "blur(12px)",
         boxShadow: "0 16px 40px rgba(0,0,0,0.55)",
       }}
@@ -589,7 +586,208 @@ function OutfitResultCard({
   );
 }
 
-// ── Mobile visual cluster — phone center, two cards flanking ─────────────────
+// ── How it works strip ────────────────────────────────────────────────────────
+function HowItWorksStrip({ compact = false }: { compact?: boolean }) {
+  const steps = ["① Upload photo", "② AI reads your style", "③ Shop the look"];
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: compact ? 6 : 8,
+        flexWrap: "wrap",
+        marginBottom: compact ? 12 : 20,
+        rowGap: 6,
+      }}
+    >
+      {steps.map((step, i) => (
+        <div key={step} style={{ display: "flex", alignItems: "center", gap: compact ? 6 : 8 }}>
+          <span
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 5,
+              fontSize: compact ? 10 : 11,
+              color: "rgba(201,169,110,0.7)",
+              fontFamily: "'DM Sans', sans-serif",
+            }}
+          >
+            <span
+              style={{
+                width: 4,
+                height: 4,
+                borderRadius: "50%",
+                background: "rgba(201,169,110,0.35)",
+                display: "inline-block",
+                flexShrink: 0,
+              }}
+            />
+            {step}
+          </span>
+          {i < steps.length - 1 && (
+            <span style={{ fontSize: 10, color: "rgba(201,169,110,0.25)" }}>→</span>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ── CTA block ────────────────────────────────────────────────────────────────
+function CTABlock({ darkMode, mobile = false }: { darkMode: boolean; mobile?: boolean }) {
+  return (
+    <div
+      style={{
+        background: darkMode ? "rgba(10,10,10,0.6)" : "rgba(245,240,232,0.6)",
+        border: "0.5px solid rgba(201,169,110,0.15)",
+        borderRadius: 14,
+        padding: mobile ? 14 : 16,
+        width: "100%",
+        maxWidth: mobile ? "100%" : 400,
+      }}
+    >
+      {/* Primary CTA */}
+      <Link
+        href="/outfit"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          background: "#C9A96E",
+          color: "#0A0A0A",
+          padding: mobile ? "13px 16px" : "14px 18px",
+          borderRadius: 10,
+          textDecoration: "none",
+          marginBottom: 8,
+          fontFamily: "'DM Sans', sans-serif",
+          transition: "background 0.2s, transform 0.15s",
+        }}
+        onMouseEnter={(e) => {
+          (e.currentTarget as HTMLElement).style.background = "#E8C98A";
+          (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)";
+        }}
+        onMouseLeave={(e) => {
+          (e.currentTarget as HTMLElement).style.background = "#C9A96E";
+          (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <span style={{ fontSize: mobile ? 16 : 18 }}>📸</span>
+          <div>
+            <div style={{ fontSize: mobile ? 13 : 14, fontWeight: 600, lineHeight: 1, marginBottom: 2 }}>
+              Upload your photo
+            </div>
+            <div style={{ fontSize: 11, fontWeight: 400, opacity: 0.65 }}>
+              Takes 10 sec · AI styles you instantly
+            </div>
+          </div>
+        </div>
+        <span style={{ fontSize: mobile ? 14 : 16, opacity: 0.7 }}>→</span>
+      </Link>
+
+      {/* Divider */}
+      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+        <div style={{ flex: 1, height: "0.5px", background: "rgba(255,255,255,0.07)" }} />
+        <span
+          style={{
+            fontSize: 11,
+            color: "rgba(138,138,138,0.5)",
+            fontFamily: "'DM Sans', sans-serif",
+            whiteSpace: "nowrap",
+          }}
+        >
+          or not ready to upload?
+        </span>
+        <div style={{ flex: 1, height: "0.5px", background: "rgba(255,255,255,0.07)" }} />
+      </div>
+
+      {/* Secondary CTA */}
+      <Link
+        href="/quiz"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          background: "transparent",
+          color: darkMode ? "rgba(245,240,232,0.75)" : "rgba(10,10,10,0.7)",
+          padding: mobile ? "9px 14px" : "10px 14px",
+          borderRadius: 8,
+          border: "0.5px solid rgba(245,240,232,0.1)",
+          textDecoration: "none",
+          fontFamily: "'DM Sans', sans-serif",
+          fontSize: 13,
+          transition: "border-color 0.2s, background 0.2s",
+        }}
+        onMouseEnter={(e) => {
+          (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,169,110,0.35)";
+          (e.currentTarget as HTMLElement).style.background = "rgba(201,169,110,0.05)";
+        }}
+        onMouseLeave={(e) => {
+          (e.currentTarget as HTMLElement).style.borderColor = "rgba(245,240,232,0.1)";
+          (e.currentTarget as HTMLElement).style.background = "transparent";
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <span>✦ Find your style vibe first</span>
+          <span
+            style={{
+              fontSize: 10,
+              background: "rgba(201,169,110,0.08)",
+              color: "rgba(201,169,110,0.7)",
+              border: "0.5px solid rgba(201,169,110,0.18)",
+              borderRadius: 4,
+              padding: "1px 6px",
+              fontFamily: "'DM Sans', sans-serif",
+            }}
+          >
+            2 min quiz
+          </span>
+        </div>
+        <span style={{ fontSize: 12, opacity: 0.4 }}>→</span>
+      </Link>
+
+      {/* Trust strip */}
+      <div
+        style={{
+          display: "flex",
+          gap: 14,
+          marginTop: 12,
+          flexWrap: "wrap",
+          justifyContent: mobile ? "center" : "flex-start",
+        }}
+      >
+        {["No signup needed", "Free forever", "Real Indian brands"].map((t) => (
+          <div
+            key={t}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 5,
+              fontSize: 11,
+              color: "rgba(138,138,138,0.6)",
+              fontFamily: "'DM Sans', sans-serif",
+            }}
+          >
+            <div
+              style={{
+                width: 3,
+                height: 3,
+                borderRadius: "50%",
+                background: "rgba(201,169,110,0.4)",
+                flexShrink: 0,
+              }}
+            />
+            {t}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── Mobile visual cluster ─────────────────────────────────────────────────────
+// Phone centered on top, two cards side-by-side below — no absolute positioning,
+// no overlap, nothing clipped.
 function MobileVisualCluster({ darkMode }: { darkMode: boolean }) {
   return (
     <motion.div
@@ -597,55 +795,58 @@ function MobileVisualCluster({ darkMode }: { darkMode: boolean }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.5, duration: 0.7 }}
       style={{
-        position: "relative",
         width: "100%",
-        height: 340,
         display: "flex",
+        flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center",
+        gap: 12,
         marginTop: 8,
-        marginBottom: 40,
+        marginBottom: 28,
       }}
     >
-      {/* Card left */}
-      <div style={{ position: "absolute", left: 0, top: "50%", transform: "translateY(-52%)", zIndex: 3 }}>
-        <OutfitResultCard card={OUTFIT_CARDS[0]} delay={0.9} floatOffset={0} small />
-      </div>
-
-      {/* Phone center */}
-      <div style={{ position: "relative", zIndex: 4 }}>
+      {/* Phone — centered, no overlap */}
+      <div style={{ position: "relative" }}>
         <PhoneMockup small />
       </div>
 
-      {/* Card right */}
-      <div style={{ position: "absolute", right: 0, top: "50%", transform: "translateY(-40%)", zIndex: 3 }}>
-        <OutfitResultCard card={OUTFIT_CARDS[2]} delay={1.1} floatOffset={8} small />
+      {/* Two cards side by side — flex, no absolute */}
+      <div style={{ display: "flex", gap: 8, width: "100%" }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <OutfitResultCard card={OUTFIT_CARDS[0]} delay={0.9} floatOffset={0} small />
+        </div>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <OutfitResultCard card={OUTFIT_CARDS[2]} delay={1.1} floatOffset={0} small />
+        </div>
       </div>
 
-      {/* Platform strip */}
+      {/* Shopping strip — full width, all brands visible */}
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.5, duration: 0.5 }}
         style={{
-          position: "absolute",
-          bottom: -4,
-          left: "50%",
-          transform: "translateX(-50%)",
+          width: "100%",
           background: darkMode ? "rgba(12,12,12,0.92)" : "rgba(255,255,255,0.92)",
           border: "0.5px solid rgba(201,169,110,0.18)",
           borderRadius: 10,
-          padding: "6px 14px",
+          padding: "7px 14px",
           display: "flex",
           alignItems: "center",
-          gap: 10,
-          whiteSpace: "nowrap",
+          flexWrap: "wrap",
+          gap: "4px 10px",
           backdropFilter: "blur(10px)",
           boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
-          zIndex: 5,
         }}
       >
-        <span style={{ fontSize: 9, color: "#5A5A5A", letterSpacing: "0.1em", textTransform: "uppercase" as const }}>
+        <span
+          style={{
+            fontSize: 9,
+            color: "#5A5A5A",
+            letterSpacing: "0.1em",
+            textTransform: "uppercase" as const,
+            fontFamily: "'DM Sans', sans-serif",
+          }}
+        >
           Shops on
         </span>
         {["Myntra", "Meesho", "Ajio", "Amazon IN"].map((brand) => (
@@ -655,7 +856,6 @@ function MobileVisualCluster({ darkMode }: { darkMode: boolean }) {
               fontSize: 10,
               color: darkMode ? "#8A8A8A" : "#5A5A5A",
               fontWeight: 500,
-              letterSpacing: "0.03em",
               fontFamily: "'DM Sans', sans-serif",
             }}
           >
@@ -677,7 +877,7 @@ export default function DefaultHero({ darkMode }: DefaultHeroProps) {
   const springY = useSpring(cursorY, { stiffness: 80, damping: 20 });
 
   useEffect(() => {
-    if (isMobile) return; // skip cursor glow on touch devices
+    if (isMobile) return;
     const move = (e: MouseEvent) => {
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
@@ -861,17 +1061,14 @@ export default function DefaultHero({ darkMode }: DefaultHeroProps) {
               . Real Indian brands. Real you.
             </motion.p>
 
-            {/* Persona chips — scrollable row on mobile */}
+            {/* Persona chips — wrapping, nothing hidden */}
             <motion.div
               {...stagger(3)}
               style={{
                 display: "flex",
+                flexWrap: "wrap",
                 gap: 8,
                 marginBottom: 24,
-                overflowX: "auto",
-                paddingBottom: 4,
-                WebkitOverflowScrolling: "touch",
-                scrollbarWidth: "none",
               }}
             >
               {["🤍 Maven", "🔥 Streetwear", "🌸 Comfort", "✨ Indo-Fusion", "💼 Power"].map((chip) => (
@@ -880,7 +1077,6 @@ export default function DefaultHero({ darkMode }: DefaultHeroProps) {
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
-                    flexShrink: 0,
                     background: "rgba(201,169,110,0.06)",
                     border: "0.5px solid rgba(201,169,110,0.18)",
                     borderRadius: 100,
@@ -895,67 +1091,23 @@ export default function DefaultHero({ darkMode }: DefaultHeroProps) {
               ))}
             </motion.div>
 
-            {/* Visual cluster */}
+            {/* Visual cluster — phone top, cards below, strip full width */}
             <MobileVisualCluster darkMode={darkMode} />
 
-            {/* CTAs — stacked on mobile */}
-            <motion.div
-              {...stagger(4)}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: 12,
-                marginBottom: 36,
-              }}
-            >
-              <Link
-                href="/outfit"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 8,
-                  background: "#C9A96E",
-                  color: "#0A0A0A",
-                  fontSize: 15,
-                  fontWeight: 600,
-                  letterSpacing: "0.03em",
-                  padding: "16px 28px",
-                  borderRadius: 12,
-                  textDecoration: "none",
-                  fontFamily: "'DM Sans', sans-serif",
-                }}
-              >
-                ✨ Steal the Look
-              </Link>
+            {/* How it works */}
+            <motion.div {...stagger(4)}>
+              <HowItWorksStrip compact />
+            </motion.div>
 
-              <Link
-                href="/quiz"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 8,
-                  background: "transparent",
-                  color: darkMode ? "#F5F0E8" : "#0A0A0A",
-                  fontSize: 15,
-                  fontWeight: 400,
-                  letterSpacing: "0.03em",
-                  padding: "16px 28px",
-                  borderRadius: 12,
-                  border: darkMode
-                    ? "0.5px solid rgba(245,240,232,0.18)"
-                    : "0.5px solid rgba(10,10,10,0.2)",
-                  textDecoration: "none",
-                  fontFamily: "'DM Sans', sans-serif",
-                }}
-              >
-                Take Style Quiz →
-              </Link>
+            {/* CTA block */}
+            <motion.div {...stagger(5)}>
+              <CTABlock darkMode={darkMode} mobile />
             </motion.div>
 
             {/* Stats — 2×2 grid */}
-            <StatsBar isMobile />
+            <div style={{ marginTop: 36 }}>
+              <StatsBar isMobile />
+            </div>
           </div>
         ) : (
           /* ── DESKTOP LAYOUT ── */
@@ -1066,73 +1218,14 @@ export default function DefaultHero({ darkMode }: DefaultHeroProps) {
                 ))}
               </motion.div>
 
-              {/* CTAs */}
-              <motion.div
-                {...stagger(4)}
-                style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap", marginBottom: 52 }}
-              >
-                <Link
-                  href="/outfit"
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 8,
-                    background: "#C9A96E",
-                    color: "#0A0A0A",
-                    fontSize: 14,
-                    fontWeight: 500,
-                    letterSpacing: "0.04em",
-                    padding: "14px 28px",
-                    borderRadius: 10,
-                    textDecoration: "none",
-                    fontFamily: "'DM Sans', sans-serif",
-                    transition: "background 0.2s, transform 0.15s",
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.background = "#E8C98A";
-                    (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.background = "#C9A96E";
-                    (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-                  }}
-                >
-                  ✨ Steal the Look
-                </Link>
+              {/* How it works strip */}
+              <motion.div {...stagger(3.5)}>
+                <HowItWorksStrip />
+              </motion.div>
 
-                <Link
-                  href="/quiz"
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 8,
-                    background: "transparent",
-                    color: darkMode ? "#F5F0E8" : "#0A0A0A",
-                    fontSize: 14,
-                    fontWeight: 400,
-                    letterSpacing: "0.04em",
-                    padding: "14px 28px",
-                    borderRadius: 10,
-                    border: darkMode
-                      ? "0.5px solid rgba(245,240,232,0.18)"
-                      : "0.5px solid rgba(10,10,10,0.2)",
-                    textDecoration: "none",
-                    fontFamily: "'DM Sans', sans-serif",
-                    transition: "border-color 0.2s, background 0.2s",
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,169,110,0.5)";
-                    (e.currentTarget as HTMLElement).style.background = "rgba(201,169,110,0.06)";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.borderColor = darkMode
-                      ? "rgba(245,240,232,0.18)"
-                      : "rgba(10,10,10,0.2)";
-                    (e.currentTarget as HTMLElement).style.background = "transparent";
-                  }}
-                >
-                  Take Style Quiz →
-                </Link>
+              {/* CTA block */}
+              <motion.div {...stagger(4)} style={{ marginBottom: 52 }}>
+                <CTABlock darkMode={darkMode} />
               </motion.div>
 
               <StatsBar isMobile={false} />
