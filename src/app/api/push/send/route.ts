@@ -2,13 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import webpush from "web-push";
 import { createClient } from "@supabase/supabase-js";
 
-// ✅ Supabase safe at module level — NEXT_PUBLIC_ vars are inlined at build time
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
-
-// Notification templates
 export const NOTIFICATION_TEMPLATES = {
   new_feature: (featureName: string) => ({
     title: "New on Outfevibe ✨",
@@ -40,21 +33,43 @@ export const NOTIFICATION_TEMPLATES = {
     body: "We just added fresh looks to the trending section. Go explore!",
     url: "https://www.outfevibe.com/#trending",
   }),
+  // ── NEW: Streak warning ──────────────────────────────────────────────────
+  streak_warning: (streakCount: number) => ({
+    title: "⚠️ Your streak is about to break!",
+    body: `You have a ${streakCount}-day streak 🔥 Don't lose it — visit Outfevibe before midnight!`,
+    url: "https://www.outfevibe.com/outfit",
+  }),
+  // ── NEW: Streak milestone ────────────────────────────────────────────────
+  streak_milestone: (days: number, reward: string) => ({
+    title: `🏆 ${days}-Day Streak Unlocked!`,
+    body: `You've earned: ${reward}. Keep it going! 🔥`,
+    url: "https://www.outfevibe.com/profile",
+  }),
+  // ── NEW: Streak broken ───────────────────────────────────────────────────
+  streak_broken: () => ({
+    title: "💔 Your streak was reset",
+    body: "Don't give up! Start a new streak today and come back stronger 💪",
+    url: "https://www.outfevibe.com/outfit",
+  }),
 };
 
 export async function POST(req: NextRequest) {
-  // ✅ VAPID setup inside handler — env vars only available at runtime, not build time
-  const vapidEmail = process.env.VAPID_EMAIL;
-  const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+  const vapidEmail      = process.env.VAPID_EMAIL;
+  const vapidPublicKey  = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
   const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY;
 
   if (!vapidEmail || !vapidPublicKey || !vapidPrivateKey) {
-    console.error("VAPID env vars not set — push notifications disabled");
+    console.error("VAPID env vars not set");
     return NextResponse.json({ error: "Push service not configured" }, { status: 503 });
   }
 
-  // Safe to call here — all three keys are confirmed present
   webpush.setVapidDetails(vapidEmail, vapidPublicKey, vapidPrivateKey);
+
+  // ✅ Supabase inside handler — not at module level
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
 
   try {
     const { type, payload, userId } = await req.json();
@@ -63,10 +78,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Invalid notification type" }, { status: 400 });
     }
 
-    const template = NOTIFICATION_TEMPLATES[type as keyof typeof NOTIFICATION_TEMPLATES];
+    const template         = NOTIFICATION_TEMPLATES[type as keyof typeof NOTIFICATION_TEMPLATES];
     const notificationData = (template as any)(payload || "");
 
-    // Fetch subscriptions — specific user or all
     let query = supabase.from("push_subscriptions").select("*");
     if (userId) query = query.eq("user_id", userId);
 
@@ -76,7 +90,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ sent: 0, message: "No subscriptions found" });
     }
 
-    // Send to all subscriptions
     const results = await Promise.allSettled(
       subscriptions.map((sub) =>
         webpush.sendNotification(
@@ -86,13 +99,12 @@ export async function POST(req: NextRequest) {
       )
     );
 
-    // Clean up expired subscriptions (410 Gone)
+    // Clean expired subscriptions
     const expired = subscriptions.filter(
       (_, i) =>
         results[i].status === "rejected" &&
         (results[i] as PromiseRejectedResult).reason?.statusCode === 410
     );
-
     if (expired.length > 0) {
       await Promise.all(
         expired.map((sub) =>

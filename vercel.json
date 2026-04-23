@@ -3,6 +3,10 @@
     {
       "path": "/api/cron/daily-outfit",
       "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/cron/streak-warning",
+      "schedule": "0 15 * * *"
     }
   ]
 }

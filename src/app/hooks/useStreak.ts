@@ -5,7 +5,10 @@ interface StreakData {
   longest_streak: number;
   badges: string[];
   new_badge: string | null;
+  new_reward: string | null;      
   already_done: boolean;
+  freeze_count: number;           
+  outfit_limit_bonus: number;
 }
 
 export function useStreak(userId: string | null) {
