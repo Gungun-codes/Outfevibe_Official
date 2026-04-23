@@ -258,6 +258,12 @@ export default function Home() {
       <section id="trending" className={`px-6 py-20 overflow-x-hidden ${darkMode ? "bg-black text-white" : "bg-white text-black"}`}>
         <motion.h2 initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeIn} className={`text-4xl md:text-5xl font-extrabold text-center ${darkMode ? "text-white" : "text-black"}`}>Trending Outfits</motion.h2>
         <p className={`text-center mt-3 ${darkMode ? "text-neutral-400" : "text-neutral-600"}`}>Stay ahead of the curve. Curated fits that define the moment.</p>
+        {/* Streak Badge — only shown to logged in users */}
+        {user && (
+          <div className="flex justify-center mt-4">
+            <StreakBadge userId={user.id} />
+          </div>
+        )}
         <div className="flex justify-center mt-6">
           <div className={`flex flex-wrap items-center gap-2 px-2 py-2 rounded-full border ${darkMode ? "border-neutral-800 bg-neutral-900/50" : "border-neutral-200 bg-white"} shadow-sm`}>
             {(["general", "festive", "forYou"] as const).map((cat) => (
