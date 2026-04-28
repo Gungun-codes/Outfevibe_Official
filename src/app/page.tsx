@@ -13,6 +13,7 @@ import { usePWAInstall } from "@/app/hooks/usePWAInstall";
 import FestivalHero from "@/components/FestivalHero";
 import DefaultHero from "@/components/DefaultHero";
 import { StreakBadge } from "@/components/StreakBadge";
+import TrendingCarousel from "@/components/TrendingCarousel";
 
 
 function FeedbackForm({ darkMode }: { darkMode: boolean }) {
@@ -167,8 +168,8 @@ function HamburgerIcon({ darkMode }: { darkMode: boolean }) {
   const color = darkMode ? "#F5F0E8" : "#0A0A0A";
   return (
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style={{ display: "block" }}>
-      <line x1="3" y1="5"  x2="15" y2="5"  stroke={color} strokeWidth="1.5" strokeLinecap="round" />
-      <line x1="3" y1="9"  x2="15" y2="9"  stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="3" y1="5" x2="15" y2="5" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="3" y1="9" x2="15" y2="9" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
       <line x1="3" y1="13" x2="15" y2="13" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
     </svg>
   );
@@ -467,6 +468,7 @@ export default function Home() {
   const [isPaused, setIsPaused] = useState(false);
   const [dragStartX, setDragStartX] = useState<number | null>(null);
   const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
+  const [trendingIndex, setTrendingIndex] = useState(0);
 
   useEffect(() => { setMounted(true); }, []);
   useEffect(() => {
@@ -622,7 +624,7 @@ export default function Home() {
         <div className="flex justify-center mt-6">
           <div className={`flex flex-wrap items-center gap-2 px-2 py-2 rounded-full border ${darkMode ? "border-neutral-800 bg-neutral-900/50" : "border-neutral-200 bg-white"} shadow-sm`}>
             {(["general", "festive", "forYou"] as const).map((cat) => (
-              <button key={cat} onClick={() => setActiveCategory(cat)}
+              <button key={cat} onClick={() => { setActiveCategory(cat); setTrendingIndex(0); }}
                 className={`inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-semibold transition ${activeCategory === cat ? "bg-gradient-to-r from-pink-500 to-purple-500 text-white" : darkMode ? "text-neutral-300 hover:bg-neutral-800" : "text-neutral-700 hover:bg-neutral-100"}`}>
                 {cat === "general" ? "🔥 General" : cat === "festive" ? "✨ Festive" : "🫶 For You"}
               </button>
@@ -632,18 +634,19 @@ export default function Home() {
         <div className="flex justify-center mt-6">
           <div className={`flex items-center p-1 rounded-full ${darkMode ? "bg-neutral-900 border border-neutral-800" : "bg-neutral-100 border border-neutral-200"}`}>
             {(["women", "men"] as const).map((g) => (
-              <button key={g} onClick={() => setActiveGender(g)}
+              <button key={g} onClick={() => { setActiveGender(g); setTrendingIndex(0); }}
                 className={`px-5 py-2 rounded-full text-sm font-semibold transition ${activeGender === g ? "bg-neutral-800 text-white" : darkMode ? "text-neutral-300 hover:bg-neutral-800" : "text-neutral-700 hover:bg-white"}`}>
                 {g.charAt(0).toUpperCase() + g.slice(1)}
               </button>
             ))}
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
-          {trendingList.map((card: any, idx: number) => (
-            <OutfitCard key={`${card.title || card.image || "card"}-${idx}`} card={card} darkMode={darkMode} />
-          ))}
-        </div>
+        <TrendingCarousel
+          cards={trendingList}
+          darkMode={darkMode}
+          activeIndex={trendingIndex}
+          setActiveIndex={setTrendingIndex}
+        />
       </section>
 
       {/* HOW IT WORKS */}
@@ -708,9 +711,9 @@ export default function Home() {
                 <div className="flex items-start justify-between mb-4">
                   <span className="text-2xl">{item.icon}</span>
                   <span className={`text-xs font-mono px-2.5 py-1 rounded-full border ${item.tag === "AI-powered" ? "text-purple-400 border-purple-400/30 bg-purple-400/10"
-                      : item.tag === "Unique to us" ? "text-yellow-400 border-yellow-400/30 bg-yellow-400/10"
-                        : item.tag === "India-first" ? "text-green-400 border-green-400/30 bg-green-400/10"
-                          : "text-blue-400 border-blue-400/30 bg-blue-400/10"
+                    : item.tag === "Unique to us" ? "text-yellow-400 border-yellow-400/30 bg-yellow-400/10"
+                      : item.tag === "India-first" ? "text-green-400 border-green-400/30 bg-green-400/10"
+                        : "text-blue-400 border-blue-400/30 bg-blue-400/10"
                     }`}>{item.tag}</span>
                 </div>
                 <h3 className={`text-base font-bold mb-2 group-hover:text-yellow-400 transition ${darkMode ? "text-white" : "text-black"}`}>{item.title}</h3>
