@@ -7,14 +7,13 @@ import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/context/authContext";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import OutfitCard from "@/components/OutfitCard";
 import HowItWorks from "@/components/HowItWorks";
 import { usePWAInstall } from "@/app/hooks/usePWAInstall";
 import FestivalHero from "@/components/FestivalHero";
 import DefaultHero from "@/components/DefaultHero";
 import { StreakBadge } from "@/components/StreakBadge";
 import TrendingCarousel from "@/components/TrendingCarousel";
-
+import FeaturesSection from "@/components/FeaturesSection";
 
 function FeedbackForm({ darkMode }: { darkMode: boolean }) {
   const [name, setName] = useState("");
@@ -654,23 +653,7 @@ export default function Home() {
 
       {/* FEATURES */}
       <section id="features" className={`px-6 py-24 overflow-x-hidden ${darkMode ? "bg-black text-white" : "bg-white text-black"}`}>
-        <div className="max-w-6xl mx-auto text-center">
-          <motion.h2 initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} viewport={{ once: true }} className="text-4xl md:text-5xl font-bold">Explore Features</motion.h2>
-          <p className={`mt-4 ${darkMode ? "text-neutral-400" : "text-neutral-600"}`}>Powerful tools designed to elevate your fashion decisions.</p>
-          <div className="grid md:grid-cols-2 gap-8 mt-16">
-            <motion.a href="/outfit" whileHover={{ scale: 1.02 }} initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} style={{ transformOrigin: "center center" }}
-              className={`p-8 rounded-2xl text-left transition shadow-lg block ${darkMode ? "bg-neutral-900 border border-neutral-800 hover:border-yellow-400" : "bg-neutral-100 border border-neutral-200 hover:border-yellow-500"}`}>
-              <h3 className="text-xl font-semibold mb-3">AI Based Outfit Suggestions</h3>
-              <p className={darkMode ? "text-neutral-400" : "text-neutral-600"}>Upload your image and let our AI analyze your body shape, skin tone, and style preferences to recommend outfits that perfectly match your personality and occasion.</p>
-            </motion.a>
-            <motion.div whileHover={{ scale: 1.02 }} initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} style={{ transformOrigin: "center center" }}
-              className={`p-8 rounded-2xl text-left shadow-lg ${darkMode ? "bg-neutral-900 border border-neutral-800" : "bg-neutral-100 border border-neutral-200"}`}>
-              <h3 className="text-xl font-semibold mb-3">Virtual Wardrobe <span className="ml-3 text-sm text-yellow-400">Coming Soon</span></h3>
-              <p className={`mb-6 ${darkMode ? "text-neutral-400" : "text-neutral-600"}`}>Upload and organize your real wardrobe digitally. Mix and match your clothes, plan outfits for events, and get smart recommendations from the items you already own.</p>
-              <WaitlistForm darkMode={darkMode} />
-            </motion.div>
-          </div>
-        </div>
+        <FeaturesSection darkMode={darkMode} />
       </section>
 
       {/* ABOUT */}
