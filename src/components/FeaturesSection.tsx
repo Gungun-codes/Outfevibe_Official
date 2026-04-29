@@ -142,12 +142,13 @@ function QuizVisual({ darkMode }: { darkMode: boolean }) {
 function DiscoverVisual({ darkMode }: { darkMode: boolean }) {
   const platforms = [
     { label: "AMZ Find", icon: "A", color: "#FF9900", bg: "rgba(255,153,0,0.12)", border: "rgba(255,153,0,0.35)" },
-    { label: "Myn Find", icon: "M", color: "#FF3F6C", bg: "rgba(255,63,108,0.12)", border: "rgba(255,63,108,0.35)" },
-    { label: "Meesho", icon: "Me", color: "#9B51E0", bg: "rgba(155,81,224,0.12)", border: "rgba(155,81,224,0.35)" },
+    { label: "MYN Find", icon: "M", color: "#FF3F6C", bg: "rgba(255,63,108,0.12)", border: "rgba(255,63,108,0.35)" },
+    { label: "Meesho Find", icon: "Me", color: "#9B51E0", bg: "rgba(155,81,224,0.12)", border: "rgba(155,81,224,0.35)" },
   ];
   const styles = [
     { label: "Korean Look", color: "#60A5FA", bg: "rgba(96,165,250,0.12)", border: "rgba(96,165,250,0.35)" },
     { label: "Bollywood", color: "#F87171", bg: "rgba(248,113,113,0.12)", border: "rgba(248,113,113,0.35)" },
+    { label: "Old Money Look", color: "#3a0f0f", bg: "rgba(78, 20, 20, 0.12)", border: "rgba(248,113,113,0.35)" },
   ];
   const filters = [
     { label: "Body shape", color: "#C9A96E", bg: "rgba(201,169,110,0.1)", border: "rgba(201,169,110,0.3)" },
@@ -253,7 +254,7 @@ function CreatorVisual({ darkMode }: { darkMode: boolean }) {
 // ─── Visual: Seller ───────────────────────────────────────────────────────────
 function SellerVisual({ darkMode }: { darkMode: boolean }) {
   const stats = [
-    { value: "12K", label: "Sellers waitlisted" },
+    { value: "1K", label: "Sellers waitlisted" },
     { value: "₹0", label: "Commission at launch" },
     { value: "48hr", label: "Setup to live" },
   ];
