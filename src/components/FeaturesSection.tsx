@@ -148,12 +148,12 @@ function DiscoverVisual({ darkMode }: { darkMode: boolean }) {
   const styles = [
     { label: "Korean Look", color: "#60A5FA", bg: "rgba(96,165,250,0.12)", border: "rgba(96,165,250,0.35)" },
     { label: "Bollywood", color: "#F87171", bg: "rgba(248,113,113,0.12)", border: "rgba(248,113,113,0.35)" },
-    { label: "Old Money Look", color: "#3a0f0f", bg: "rgba(78, 20, 20, 0.12)", border: "rgba(248,113,113,0.35)" },
+    { label: "Old Money Look", color: "#aa1919", bg: "rgba(117, 32, 32, 0.12)", border: "rgba(248,113,113,0.35)" },
   ];
   const filters = [
     { label: "Body shape", color: "#C9A96E", bg: "rgba(201,169,110,0.1)", border: "rgba(201,169,110,0.3)" },
     { label: "Skin tone", color: "#A78BFA", bg: "rgba(167,139,250,0.1)", border: "rgba(167,139,250,0.3)" },
-    { label: "Budget", color: "#4ADE80", bg: "rgba(74,222,128,0.1)", border: "rgba(74,222,128,0.3)" },
+    { label: "Budget", color: "#4ADE80", bg: "rgba(74,222,128,0.1)", border: "rgba(143, 49, 37, 0.3)" },
   ];
 
   const muted = darkMode ? "rgba(255,255,255,0.35)" : "rgba(0,0,0,0.35)";
